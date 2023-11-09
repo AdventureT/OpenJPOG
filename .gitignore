@@ -3,6 +3,18 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Project files and the solution (we're using premake now so they aren't required)
+*.sln
+*.vcxitems
+*.vcxitems.*
+*.vcxproj
+*.vcxproj.*
+*.idb
+*.dll
+*.dll.*
+*.lib
+*.lib.*
+
 # User-specific files
 *.rsuser
 *.suo

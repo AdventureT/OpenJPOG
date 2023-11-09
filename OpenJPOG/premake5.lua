@@ -1,12 +1,11 @@
 project ("OpenJPOG")
 	language "C++"
 	cppdialect "C++20"
-	staticruntime "on"
 	characterset "ASCII"
 
 	links
 	{
-		"Toshi",
+		"TKernelInterface.dll",
 		"libtheora",
 		"theoraplay"
 	}
