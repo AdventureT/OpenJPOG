@@ -1,0 +1,50 @@
+name: Toshi
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: .
+
+  # Configuration type to build.
+  BUILD_CONFIGURATION: Release
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    env:
+      PREMAKE_VERSION: 5.0.0-beta2
+      
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        
+    - name: Setup premake
+      uses: abel0b/setup-premake@v2.3
+      with:
+        version: ${{ env.PREMAKE_VERSION }}
+        
+    - name: Premake
+      run: premake5 vs2022 --arch=x86
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Build Toshi
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      
+    - name: Publish Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Toshi Binaries
+        path: bin

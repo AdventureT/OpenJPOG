@@ -14,6 +14,7 @@
 *.dll.*
 *.lib
 *.lib.*
+*.exe.*
 
 # User-specific files
 *.rsuser

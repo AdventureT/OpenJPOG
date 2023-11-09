@@ -6,29 +6,13 @@ project ("TKernelInterface")
 	
 	links
 	{
-		"fmod_vc.lib",
-		"fmodstudio_vc.lib",
-		"fsbank_vc.lib",
-		"d3d11.lib",
-		"d3dcompiler.lib",
-		"dxguid.lib",
-		"dxgi.lib",
-		"winmm.lib",
-		"dinput8.lib",
-		"dbghelp.lib"
+		"winmm.lib"
 	}
 
 	includedirs
 	{
 		"Include",
 		"Include/TKernel",
-		"%{IncludeDir.fmod}",
-		"%{IncludeDir.stb}"
-	}
-	
-	libdirs
-	{
-		"%{LibDir.fmod}"
 	}
 
 	defines
@@ -78,24 +62,13 @@ project ("TApplication")
 	
 	links
 	{
-		"fmod_vc.lib",
-		"fmodstudio_vc.lib",
-		"fsbank_vc.lib",
-		"d3d11.lib",
-		"d3dcompiler.lib",
-		"dxguid.lib",
-		"dxgi.lib",
-		"winmm.lib",
-		"dinput8.lib",
-		"dbghelp.lib"
+		"winmm.lib"
 	}
 
 	includedirs
 	{
 		"Include",
-		"Include/TApplication",
-		"%{IncludeDir.fmod}",
-		"%{IncludeDir.stb}"
+		"Include/TApplication"
 	}
 	
 	files
@@ -105,11 +78,6 @@ project ("TApplication")
 		"Source/TApplication/**.cpp"
 	}
 	
-	libdirs
-	{
-		"%{LibDir.fmod}"
-	}
-
 	defines
 	{
 		"TOSHI_USER_ENGINE",
