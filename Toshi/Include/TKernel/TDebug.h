@@ -1,7 +1,5 @@
 #include "Defines.h"
 
-TOSHI_NAMESPACE_BEGIN
-
 #ifdef TOSHI_DEBUG
 
 #define TFIREFLAG static TBOOL FIREFLAG = TFALSE
@@ -13,6 +11,7 @@ TOSHI_NAMESPACE_BEGIN
 			__debugbreak();                                                                                                        \
 		}
 
+TOSHI_NAMESPACE_BEGIN
 
 class TOSHI_EXPORT TDebug
 {
