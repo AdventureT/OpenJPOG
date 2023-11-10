@@ -1,5 +1,7 @@
 #include "TDebug.h"
 
+#ifdef TOSHI_DEBUG
+
 TOSHI_NAMESPACE_USING
 
 static TCHAR idk[30]{};
@@ -9,3 +11,5 @@ TBOOL __stdcall TDebug::AssertHandler(TPCHAR a_pcExpression, TPCHAR a_pcFile, TI
 	TPCCHAR str = a_bUnk ? "(IGNORED)" : idk;
 	return TBOOL();
 }
+
+#endif
