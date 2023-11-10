@@ -11,8 +11,11 @@
 #define TOSHI_NAMESPACE_END }
 #define TOSHI_NAMESPACE_USING using namespace Toshi;
 
+#define _TS8(str) #str
+
 typedef bool         TBOOL;
 typedef int          TINT;
 typedef unsigned int TUINT;
 typedef const char*  TPCCHAR;
 typedef char*        TPCHAR;
+typedef char         TCHAR;

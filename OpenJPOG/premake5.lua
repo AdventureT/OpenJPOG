@@ -5,7 +5,7 @@ project ("OpenJPOG")
 
 	links
 	{
-		"TKernelInterface.dll",
+		"TKernelInterface",
 		"libtheora",
 		"theoraplay"
 	}
@@ -18,14 +18,8 @@ project ("OpenJPOG")
 
 	includedirs
 	{
-		"Source",
-		"%{wks.location}/Toshi/Source/Include",
-		"%{IncludeDir.fmod}",
-		"%{IncludeDir.libtheora}",
-		"%{IncludeDir.libogg}",
-		"%{IncludeDir.libvorbis}",
-		"%{IncludeDir.theoraplay}",
-		"%{IncludeDir.stb}"
+		"%{wks.location}/Toshi/Include",
+		"%{wks.location}/Toshi/Include/TKernel",
 	}
 	
 	defines
@@ -35,9 +29,7 @@ project ("OpenJPOG")
 	
 	postbuildcommands
 	{
-		--"{COPYDIR} Data \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}/Data\"",
-		--"{COPYDIR} \"" .. ClientContentCommon  .. "\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}/\"",
-		--"{COPYDIR} \"" .. ClientContentArch    .. "\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}/\"",
+		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TKernelInterface/TKernelInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 	}
 
 	filter "system:windows"

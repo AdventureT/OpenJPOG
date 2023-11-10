@@ -62,12 +62,14 @@ project ("TApplication")
 	
 	links
 	{
-		"winmm.lib"
+		"winmm.lib",
+		"TKernelInterface"
 	}
 
 	includedirs
 	{
 		"Include",
+		"Include/TKernel",
 		"Include/TApplication"
 	}
 	
