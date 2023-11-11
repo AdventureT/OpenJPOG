@@ -26,3 +26,6 @@ group "Third-Party"
 	include "Toshi/Vendor/libvorbis"
 	include "Toshi/Vendor/libtheora"
 	include "Toshi/Vendor/theoraplay"
+
+group "Tools"
+	include "Tools/UnitTests"

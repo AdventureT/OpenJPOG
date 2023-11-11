@@ -13,9 +13,13 @@
 
 #define _TS8(str) #str
 
-typedef bool         TBOOL;
-typedef int          TINT;
-typedef unsigned int TUINT;
-typedef const char*  TPCCHAR;
-typedef char*        TPCHAR;
-typedef char         TCHAR;
+typedef bool           TBOOL;
+typedef int            TINT;
+typedef unsigned int   TUINT;
+typedef const char*    TPCCHAR;
+typedef char*          TPCHAR;
+typedef char           TCHAR;
+typedef unsigned char  TBYTE;
+typedef unsigned char* TPBYTE;
+typedef void*          TPVOID;
+typedef const void*    TPCVOID;

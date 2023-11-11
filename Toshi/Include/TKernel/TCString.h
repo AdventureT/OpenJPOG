@@ -62,6 +62,16 @@ public:
 		return Compare(a_rOther.m_pBuffer) != 0;
 	}
 
+	bool operator==(TPCCHAR a_pcString) const
+	{
+		return Compare(a_pcString) == 0;
+	}
+
+	bool operator==(const TCString& a_rOther) const
+	{
+		return Compare(a_rOther.m_pBuffer) == 0;
+	}
+
 	TCString& operator=(TPCCHAR a_pcString)
 	{
 		Copy(a_pcString);
@@ -84,9 +94,12 @@ public:
 		return *this;
 	}
 
+	TINT ExcessLength() const { return m_iExcessLen; }
+	TINT Length() const { return m_iStrLen; }
+
 private:
 
-	TBOOL AllocBuffer(TINT m_iLength, TBOOL m_bClear = TTRUE);
+	TBOOL AllocBuffer(TINT a_iLength, TBOOL a_bClear = TTRUE);
 
 	void FreeBuffer()
 	{
@@ -110,8 +123,8 @@ private:
 	inline static char* m_aNull = TNULL;
 
 	TPCHAR m_pBuffer;           // 0x0
-	TUINT m_iExcessLen : 8 = 0; // 0x4
-	TUINT m_iStrLen : 24 = 0;   // 0x5
+	TINT m_iExcessLen : 8 = 0;  // 0x4
+	TINT m_iStrLen    : 24 = 0; // 0x5
 };
 
 TOSHI_NAMESPACE_END
