@@ -16,6 +16,8 @@
 typedef bool           TBOOL;
 typedef int            TINT;
 typedef unsigned int   TUINT;
+typedef short          TSHORT;
+typedef unsigned short TUSHORT;
 typedef const char*    TPCCHAR;
 typedef char*          TPCHAR;
 typedef char           TCHAR;
@@ -23,3 +25,4 @@ typedef unsigned char  TBYTE;
 typedef unsigned char* TPBYTE;
 typedef void*          TPVOID;
 typedef const void*    TPCVOID;
+typedef float          TFLOAT;

@@ -120,7 +120,7 @@ private:
 
 private:
 
-	inline static char* m_aNull = TNULL;
+	inline static TCHAR m_aNull[4] = { 0, 0, 0, 0 };
 
 	TPCHAR m_pBuffer;           // 0x0
 	TINT m_iExcessLen : 8 = 0;  // 0x4

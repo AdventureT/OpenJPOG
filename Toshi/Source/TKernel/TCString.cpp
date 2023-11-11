@@ -39,7 +39,7 @@ TBOOL TCString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 		}
 		m_iStrLen = a_iLength;
 	}
-	if (a_bClear) m_pBuffer[0] = '\0';
+	if (a_bClear) m_pBuffer[0] = 0;
 	return hasChanged;
 }
 

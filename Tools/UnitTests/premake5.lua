@@ -16,7 +16,8 @@ project "UnitTests"
 
 	links
 	{
-		"TKernelInterface"
+		"TKernelInterface",
+		"TApplication"
 	}
 	
 	libdirs
@@ -44,6 +45,7 @@ project "UnitTests"
 	postbuildcommands
 	{
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TKernelInterface/TKernelInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
+		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TApplication/TApplication.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\""
 	}
 
 	filter "system:windows"
