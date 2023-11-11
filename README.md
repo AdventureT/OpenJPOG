@@ -18,7 +18,7 @@ Building on Windows requires
 Clone the repository with the following commands:
 
 	git clone https://github.com/AdventureT/OpenJPOG.git
-	cd OpenToshi
+	cd OpenJPOG
 	git submodule update --init --recursive
 	./GenerateProjects-VS2019.bat (if you use Visual Studio 2019)
 	./GenerateProjects-VS2022.bat (if you use Visual Studio 2022)
