@@ -1,21 +1,24 @@
 #include "Defines.h"
+#include "TDebug.h"
 #include <new>
 TOSHI_NAMESPACE_BEGIN
 
 class TObject;
 
 // TClassProps definitions
-typedef class TObject* (*t_CreateTObject)();
-typedef class TObject* (*t_CreateTObjectInPlace)(TPVOID);
-typedef void  (*t_InitializeStatic)();
-typedef void  (*t_UninitializeStatic)();
+typedef class TObject* (__stdcall*t_CreateTObject)();
+typedef class TObject* (__stdcall*t_CreateTObjectInPlace)(TPVOID);
+typedef void  (__stdcall*t_InitializeStatic)();
+typedef void  (__stdcall*t_UninitializeStatic)();
 
 // RecurseTree definitions
 typedef TBOOL (*t_RecurceTreeCheck)(class TClass*, TPCVOID);
 typedef TBOOL (*t_RecurceTreeBaseBeginCb)(class TClass*, TPCVOID);
 typedef TBOOL (*t_RecurceTreeBaseEndCb)(class TClass*, TPCVOID);
 
-TOSHI_EXPORT class TClass
+#define TGetClass(X) &X::m_sClass
+
+class TOSHI_EXPORT TClass
 {
 public:
 	TClass(TPCCHAR a_pcName, TClass* a_pParent, t_CreateTObject a_Create, t_CreateTObjectInPlace a_CreateInPlace, t_InitializeStatic a_Init, t_UninitializeStatic a_Uninit, TUINT a_uiVersion);
@@ -91,21 +94,56 @@ private:
 	TBOOL m_bInitialised;                   // 0x24
 };
 
+
+#define DECLARE_DYNAMIC(class_name) \
+public: \
+	virtual TClass& GetClass() const;                \
+	static TClass m_sClass;                          \
+private: \
+	static TObject* __stdcall CreateObject();        \
+	static TObject* __stdcall CreateObjectInPlace(TPVOID a_pMem); \
+	static void __stdcall DeinitialiseStatic();      \
+	static void __stdcall InitialiseStatic();        \
+
+#define IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, pfnCreateObject, pfnCreateObjectInPlace, version) \
+	TClass& class_name::GetClass() const \
+		{ return class_name::m_sClass; } \
+	void __stdcall class_name::DeinitialiseStatic() \
+		{  } \
+	void __stdcall class_name::InitialiseStatic() \
+		{  } \
+	TClass class_name::m_sClass = TClass( \
+		#class_name, base_class_name, pfnCreateObject, pfnCreateObjectInPlace, \
+			class_name::InitialiseStatic, class_name::DeinitialiseStatic, version); \
+
+
+#define IMPLEMENT_DYNCREATE(class_name, base_class_name) \
+	TObject* __stdcall class_name::CreateObject() \
+		{ return new class_name; } \
+	TObject* __stdcall class_name::CreateObjectInPlace(TPVOID a_pMem) \
+		{ return new (a_pMem) class_name; } \
+	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, class_name::CreateObject, class_name::CreateObjectInPlace, 1)
+
+#define IMPLEMENT_DYNAMIC(class_name, base_class_name) \
+	TObject* __stdcall class_name::CreateObject() \
+		{ TASSERT(!"This class does not support dynamic creation!"); return TNULL; } \
+	TObject* __stdcall class_name::CreateObjectInPlace(TPVOID a_pMem) \
+		{ TASSERT(!"This class does not support dynamic creation!"); return TNULL; } \
+	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, class_name::CreateObject, class_name::CreateObjectInPlace, 1)
+
 class TOSHI_EXPORT TObject
 {
-private:
-	static TObject* __stdcall CreateObject()
-	{
-		TObject* pObject = new TObject();
-		return pObject ? pObject : TNULL;
-	}
-	static TObject* __stdcall CreateObjectInPlace(TPVOID m_pMem)
-	{
-		TObject* pObject = new (m_pMem) TObject();
-		return pObject ? pObject : TNULL;
-	}
+	DECLARE_DYNAMIC(TObject);
+	
 public:
-	//static TClass m_sClass;
+	virtual void Delete() { delete this; }
+
+	TBOOL IsA(const TClass& a_rClass) const { return GetClass().IsA(a_rClass); }
+	TBOOL IsExactly(const TClass& a_rClass) const { return GetClass().IsExactly(a_rClass); }
+
+protected:
+	virtual ~TObject() = default;
+
 };
 
 TOSHI_NAMESPACE_END

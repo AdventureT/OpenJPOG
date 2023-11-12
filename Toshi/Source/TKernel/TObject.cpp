@@ -4,7 +4,8 @@
 
 TOSHI_NAMESPACE_USING
 
-//TClass TObject::m_sClass = TClass("TObject", TNULL, TObject::CreateTObject, TObject::CreateTObjectInPlace, sizeof(TObject), alignof(TObject));
+IMPLEMENT_DYNCREATE(TObject, TNULL);
+//TClass TObject::m_sClass = TClass("TObject", TNULL, TObject::CreateObject, TObject::CreateObjectInPlace, TObject::InitialiseStatic, TObject::DeinitialiseStatic, 1);
 
 TClass::TClass(TPCCHAR a_pcName, TClass* a_pParent, t_CreateTObject a_Create, t_CreateTObjectInPlace a_CreateInPlace, t_InitializeStatic a_Init, t_UninitializeStatic a_Uninit, TUINT a_uiVersion)
 {
@@ -69,7 +70,7 @@ void __stdcall TClass::DumpObjectClassTree()
 const TClass* __stdcall TClass::Find(TPCCHAR a_pcClassName, const TClass* a_pClass)
 {
 	TASSERT(a_pcClassName[1]!=0);
-	//if (a_pClass == TNULL) a_pClass = &TObject::m_sClass;
+	if (a_pClass == TNULL) a_pClass = TGetClass(TObject);
 	return FindRecurse(a_pcClassName, a_pClass, TFALSE);
 }
 
@@ -102,10 +103,10 @@ void TClass::InitialiseStatic()
 	}
 }
 
-TBOOL TClass::IsA(const TClass& m_rClass) const
+TBOOL TClass::IsA(const TClass& a_rClass) const
 {
 	for (const TClass* pClass = this; pClass != TNULL; pClass = pClass->m_pParent) {
-		if (IsExactly(m_rClass)) return TTRUE;
+		if (IsExactly(a_rClass)) return TTRUE;
 	}
 	return TFALSE;
 }
@@ -146,7 +147,7 @@ TBOOL TClass::IsAttached() const
 {
 	if (m_pParent) {
 		for (TClass* i = m_pParent->m_pLastAttached; i!=TNULL; i = i->m_pPrevious) {
-			if (m_pParent->m_pLastAttached == this) return TTRUE;
+			if (i == this) return TTRUE;
 		}
 	}
 	return TFALSE;

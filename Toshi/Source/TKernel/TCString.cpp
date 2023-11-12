@@ -5,7 +5,6 @@
 
 TOSHI_NAMESPACE_USING
 
-
 TBOOL TCString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 {
 	TASSERT(a_iLength >= 0);
@@ -24,9 +23,8 @@ TBOOL TCString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 			TINT newExcessLen = (m_iStrLen - a_iLength) + m_iExcessLen;
 
 			if (newExcessLen < 0 || newExcessLen > 0xFF) {
-				if (m_iStrLen != 0 && a_bClear) {
-					free(m_pBuffer);
-				}
+				if (m_iStrLen != 0 && a_bClear) free(m_pBuffer);
+				
 				m_pBuffer = (TPCHAR)malloc(a_iLength + 1);
 				m_iExcessLen = 0;
 				TASSERT(m_pBuffer!=TNULL);
