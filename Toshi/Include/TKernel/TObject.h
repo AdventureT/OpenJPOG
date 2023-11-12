@@ -1,5 +1,5 @@
 #include "Defines.h"
-#include "TDebug.h"
+#include "TCString.h"
 #include <new>
 TOSHI_NAMESPACE_BEGIN
 
@@ -132,10 +132,7 @@ private: \
 	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, class_name::CreateObject, class_name::CreateObjectInPlace, 1)
 
 class TOSHI_EXPORT TObject
-{
-public: \
-	virtual TClass& GetClass() const { return m_sClass; }
-	static TClass m_sClass;                          
+{	
 private: 
 	static TObject* __stdcall CreateObject()
 	{
@@ -154,12 +151,13 @@ public:
 	TBOOL IsA(const TClass& a_rClass) const { return GetClass().IsA(a_rClass); }
 	TBOOL IsExactly(const TClass& a_rClass) const { return GetClass().IsExactly(a_rClass); }
 
+	virtual TClass& GetClass() const { return m_sClass; }
+	inline static TClass m_sClass = TClass("TObject", TNULL, CreateObject, TObject::CreateObjectInPlace, TObject::InitialiseStatic, TObject::DeinitialiseStatic, 1);
+
 protected:
 	TObject() {}
 	virtual ~TObject() = default;
 
 };
-
-TClass TObject::m_sClass = TClass("TObject", TNULL, TObject::CreateObject, TObject::CreateObjectInPlace, TObject::InitialiseStatic, TObject::DeinitialiseStatic, 1);
 
 TOSHI_NAMESPACE_END

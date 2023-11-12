@@ -1,5 +1,4 @@
 #include "TApplication.h"
-#include "TDebug.h"
 
 TOSHI_NAMESPACE_USING
 
@@ -18,5 +17,6 @@ TBOOL TApplication::Create(TPCCHAR a_pcName, TINT argc, TPCCHAR* argv)
 			}
 		}
 	}
+	m_pKernel = new TKernelInterface(a_pcName, argc, argv, m_bVerbose);
 	return TTRUE;
 }

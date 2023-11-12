@@ -1,6 +1,5 @@
 #pragma once
-#include "Defines.h"
-#include "TKernel/TCString.h"
+#include "TKernel/TKernelInterface.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -57,10 +56,11 @@ public:
 	}
 
 private:
-	TCString m_pcName;    // 0x8
-	TINT m_uiState;       // 0x10
-	TBOOL m_bVerbose;     // 0x14
-	TBOOL m_bShowConsole; // 0x15
+	TKernelInterface* m_pKernel; //0x4
+	TCString m_pcName;           // 0x8
+	TINT m_uiState;              // 0x10
+	TBOOL m_bVerbose;            // 0x14
+	TBOOL m_bShowConsole;        // 0x15
 };
 
 TOSHI_NAMESPACE_END

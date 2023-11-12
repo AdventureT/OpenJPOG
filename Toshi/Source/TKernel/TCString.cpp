@@ -1,5 +1,4 @@
 #include "TCString.h"
-#include "TDebug.h"
 #include "TSystem.h"
 #include <string.h>
 
@@ -81,6 +80,6 @@ TCString& __cdecl TCString::Format(TPCCHAR a_pcFormat, ...)
 	va_start(vargs, a_pcFormat);
 	_vsnprintf(buffer, sizeof(buffer), a_pcFormat, vargs);
 	va_end(vargs);
-	TCString res = buffer;
-	return res;
+	Copy(buffer);
+	return *this;
 }

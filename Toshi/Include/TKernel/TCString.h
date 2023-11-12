@@ -1,7 +1,7 @@
 #include "Defines.h"
 #include <corecrt_malloc.h>
 #include <stdio.h>
-#include <cstdarg>
+#include "TDebug.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -94,6 +94,13 @@ public:
 
 	TCString& operator+=(TPCCHAR a_pcString)
 	{
+		return *this;
+	}
+
+	const TCString& Print() const
+	{
+		TASSERT(GetString()!=TNULL);
+		TDPRINTF("%s", GetString());
 		return *this;
 	}
 

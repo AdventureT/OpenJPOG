@@ -1,6 +1,5 @@
 #include "TObject.h"
 #include "TSystem.h"
-#include <TKernel/TCString.h>
 
 TOSHI_NAMESPACE_USING
 
@@ -52,13 +51,17 @@ TBOOL DumpObjectClassTree_BaseEnd(TClass*, TPCVOID)
 	return TTRUE;
 }
 
-TBOOL DumpObjectClassTree_Check(TClass*, TPCVOID)
+TBOOL DumpObjectClassTree_Check(TClass* a_pClass, TPCVOID a_pData)
 {
-	TDPRINTF("DumpObjectClassTree_Check() Not Implemented\n");
 	for (TINT i = 0; i < s_iCounter; i++)
 	{
 		TCString idk;
+		idk.Format("%.4s", s_FourSpaces);
+		idk.Print();
 	}
+	TCString idk2;
+	idk2.Format("%s : ver=%u.%u\n", a_pClass->GetName(), a_pClass->GetVersionMajor(), a_pClass->GetVersionMinor());
+	idk2.Print();
 	return TTRUE;
 }
 
@@ -85,7 +88,7 @@ const TClass* __stdcall TClass::FindRecurse(TPCCHAR a_pcClassName, const TClass*
 {
 	while (a_pClass) {
 		TClass* pPrevious = a_bHasPrevious ? a_pClass->m_pPrevious : TNULL;
-		int difference = TSystem::StringCompareNoCase(a_pClass->m_pcName, a_pcClassName, -1);
+		int difference = TSystem::StringCompareNoCase(a_pClass->GetName(), a_pcClassName, -1);
 		if (difference == 0) return a_pClass;
 		if (a_pClass->m_pLastAttached) {
 			const TClass* result = FindRecurse(a_pcClassName, a_pClass->m_pLastAttached, TTRUE);
