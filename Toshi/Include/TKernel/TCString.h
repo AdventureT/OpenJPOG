@@ -1,5 +1,7 @@
 #include "Defines.h"
 #include <corecrt_malloc.h>
+#include <stdio.h>
+#include <cstdarg>
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -41,6 +43,7 @@ public:
 	void Copy(const TCString& a_rOther, TINT a_iLength = -1);
 	void Copy(TPCCHAR a_pcString, TINT a_iLength = -1);
 
+	TCString& __cdecl Format(TPCCHAR a_pcFormat, ...);
 
 	TBOOL IsIndexValid(TINT a_iIndex = 0) const
 	{

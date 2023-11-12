@@ -1,5 +1,6 @@
 #include "TObject.h"
 #include "TSystem.h"
+#include <TKernel/TCString.h>
 
 TOSHI_NAMESPACE_USING
 
@@ -37,6 +38,7 @@ void TClass::DeinitialiseStatic()
 }
 
 static TINT s_iCounter;
+static TCHAR s_FourSpaces[4] = { ' ', ' ', ' ', ' ' };
 
 TBOOL DumpObjectClassTree_BaseBegin(TClass*, TPCVOID)
 {
@@ -53,6 +55,10 @@ TBOOL DumpObjectClassTree_BaseEnd(TClass*, TPCVOID)
 TBOOL DumpObjectClassTree_Check(TClass*, TPCVOID)
 {
 	TDPRINTF("DumpObjectClassTree_Check() Not Implemented\n");
+	for (TINT i = 0; i < s_iCounter; i++)
+	{
+		TCString idk;
+	}
 	return TTRUE;
 }
 

@@ -73,3 +73,14 @@ void TCString::Copy(TPCCHAR a_pcString, TINT a_iLength)
 		m_pBuffer[a_iLength] = '\0';
 	}
 }
+
+TCString& __cdecl TCString::Format(TPCCHAR a_pcFormat, ...)
+{
+	char buffer[0x400];
+	va_list vargs;
+	va_start(vargs, a_pcFormat);
+	_vsnprintf(buffer, sizeof(buffer), a_pcFormat, vargs);
+	va_end(vargs);
+	TCString res = buffer;
+	return res;
+}
