@@ -65,6 +65,8 @@ public:
 		m_Initialize = a_rClass.m_Initialize;
 		m_Uninitialize = a_rClass.m_Uninitialize;
 		m_pParent = a_rClass.m_pParent;
+		m_pPrevious = a_rClass.m_pPrevious;
+		m_pLastAttached = a_rClass.m_pLastAttached;
 		m_uiVersion = a_rClass.m_uiVersion;
 		m_bInitialised = TFALSE;
 		return *this;

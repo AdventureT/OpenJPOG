@@ -15,7 +15,7 @@ TINT __stdcall TSystem::StringLength(TPCCHAR a_String)
 TINT __stdcall TSystem::StringCompareNoCase(TPCCHAR a_String1, TPCCHAR a_String2, TINT a_uiSize)
 {
 	TASSERT((a_String1!=TNULL) && (a_String2!=TNULL));
-	return a_uiSize == -1 ? _strnicmp(a_String1, a_String2, a_uiSize) : _stricmp(a_String1, a_String2);
+	return a_uiSize != -1 ? _strnicmp(a_String1, a_String2, a_uiSize) : _stricmp(a_String1, a_String2);
 }
 
 TPVOID __stdcall TSystem::MemCopy(TPVOID a_dest, TPCVOID a_src, TUINT a_iSize)

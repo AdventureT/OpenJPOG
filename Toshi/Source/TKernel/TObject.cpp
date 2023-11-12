@@ -1,5 +1,4 @@
 #include "TObject.h"
-#include "TDebug.h"
 #include "TSystem.h"
 
 TOSHI_NAMESPACE_USING
@@ -53,7 +52,7 @@ TBOOL DumpObjectClassTree_BaseEnd(TClass*, TPCVOID)
 
 TBOOL DumpObjectClassTree_Check(TClass*, TPCVOID)
 {
-	TDPRINTF("DumpObjectClassTree_Check() Not Implemented");
+	TDPRINTF("DumpObjectClassTree_Check() Not Implemented\n");
 	return TTRUE;
 }
 
@@ -124,7 +123,7 @@ void TClass::RecurseTree2(t_RecurceTreeBaseBeginCb a_BaseBegin, t_RecurceTreeBas
 		if (a_Check) a_Check(pClass, a_pMem);
 		if (pClass->m_pLastAttached) {
 			if (a_BaseBegin) a_BaseBegin(pClass, a_pMem);
-			RecurseTree2(a_BaseBegin, a_BaseEnd, a_Check, a_pMem);
+			pClass->RecurseTree2(a_BaseBegin, a_BaseEnd, a_Check, a_pMem);
 			if (a_BaseEnd) a_BaseEnd(pClass, a_pMem);
 		}
 	}

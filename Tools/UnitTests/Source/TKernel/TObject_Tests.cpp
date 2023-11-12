@@ -24,7 +24,7 @@ class Test3 : public TObject
 
 IMPLEMENT_DYNAMIC(Test3, TObject);
 
-TEST_CASE("TObject Creation", "[TObject]")
+TEST_CASE("IsA", "[TObject]")
 {
 	Test test;
 	REQUIRE(test.IsA(TGetClass(TObject)));
@@ -32,4 +32,16 @@ TEST_CASE("TObject Creation", "[TObject]")
 	REQUIRE(test.IsA(TGetClass(Test)));
 	REQUIRE(test.IsA(TGetClass(TObject)));
 	REQUIRE_FALSE(test.IsA(TGetClass(Test3)));
+}
+
+TEST_CASE("DumpObjectClassHierachie", "[TObject]")
+{
+	TClass::DumpObjectClassTree();
+}
+
+TEST_CASE("Create Object", "[TObject]")
+{
+	TObject* obj = TGetClass(Test2).CreateObject();
+	REQUIRE(obj != TNULL);
+	REQUIRE(obj->IsA(TGetClass(Test2)));
 }
