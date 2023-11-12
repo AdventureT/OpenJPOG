@@ -10,11 +10,22 @@ TKernelInterface::TKernelInterface(TPCCHAR a_pcName, TINT argc, TPCCHAR* argv, T
 
 }
 
+static int GetProcessorSpeed()
+{
+	LARGE_INTEGER qwFreq, qwStart, qwStop;
+	BOOL bSuccess = QueryPerformanceFrequency(&qwFreq);
+	if (bSuccess == FALSE) return 0;
+	QueryPerformanceCounter(&qwStart);
+	unsigned __int64 Start = __rdtsc();
+	Sleep(10);
+	QueryPerformanceCounter(&qwStop);
+	return ((__rdtsc() - Start) * qwFreq.LowPart) / (qwStop.LowPart - qwStart.HighPart);
+}
+
 void TKernelInterface::DumpInfo()
 {
 	TDPRINTF("> Toshi system info:\n");
 	OSVERSIONINFOEX osvi;
-	BOOL bIsWindowsXPorLater;
 
 	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
@@ -25,7 +36,7 @@ void TKernelInterface::DumpInfo()
 	{
 		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 		bSuccess = GetVersionExA((LPOSVERSIONINFO)&osvi);
-		//if (!bSuccess) goto skipPlatform;
+		if (!bSuccess) goto skipPlatform;
 	}
 	TPCCHAR system;
 	if (osvi.dwPlatformId == 2) system = "Microsoft Windows NT";
@@ -50,7 +61,7 @@ void TKernelInterface::DumpInfo()
 			osvi.wServicePackMajor, osvi.wServicePackMinor)
 	}
 
-//skipPlatform:
+skipPlatform:
 	TCHAR pcComputerName[16];
 	DWORD size = sizeof(pcComputerName);
 	if (GetComputerName(pcComputerName, &size)) {
@@ -62,5 +73,14 @@ void TKernelInterface::DumpInfo()
 	if (GetUserName(pcUserName, &size)) {
 		TDPRINTF("User name: \"%s\"\n", pcUserName);
 	}
-	TDPRINTF("Implement the rest...\n");
+	SYSTEM_INFO sysInfo;
+	GetSystemInfo(&sysInfo);
+	TDPRINTF("Number of processors: %d\n", sysInfo.dwNumberOfProcessors);
+	TDPRINTF("CPU Speed: %dMHZ\n", GetProcessorSpeed());
+	MEMORYSTATUS memStatus;
+	memStatus.dwLength = sizeof(memStatus);
+	GlobalMemoryStatus(&memStatus);
+	TDPRINTF("Total physical memory: %uKB\n", memStatus.dwTotalPhys >> 16);
+	TDPRINTF("Available physical memory: %uKB\n", memStatus.dwAvailPhys >> 16);
+	TDPRINTF("<\n");
 }
