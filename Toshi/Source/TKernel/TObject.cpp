@@ -55,7 +55,7 @@ TBOOL DumpObjectClassTree_BaseEnd(TClass*, TPCVOID)
 
 TBOOL DumpObjectClassTree_Check(TClass*, TPCVOID)
 {
-	TDebug_Printf("DumpObjectClassTree_Check() Not Implemented");
+	TDPRINTF("DumpObjectClassTree_Check() Not Implemented");
 	return TTRUE;
 }
 

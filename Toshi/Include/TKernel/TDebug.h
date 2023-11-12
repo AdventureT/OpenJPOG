@@ -15,6 +15,8 @@
             __debugbreak();                                                                                                        \
         }
 
+#define TDPRINTF(format, ...) TDebug_Printf(format, __VA_ARGS__);
+
 TOSHI_NAMESPACE_BEGIN
 
 enum TDebug_Flags : TUINT
@@ -56,6 +58,7 @@ TOSHI_NAMESPACE_END
 #else
 
 #define TASSERT(expression)
+#define TDPRINTF(format, ...)
 
 #endif // TOSHI_DEBUG
 
