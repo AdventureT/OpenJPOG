@@ -3,8 +3,6 @@
 #include <new>
 TOSHI_NAMESPACE_BEGIN
 
-class TObject;
-
 // TClassProps definitions
 typedef class TObject* (__stdcall*t_CreateTObject)();
 typedef class TObject* (__stdcall*t_CreateTObjectInPlace)(TPVOID);
@@ -16,7 +14,7 @@ typedef TBOOL (*t_RecurceTreeCheck)(class TClass*, TPCVOID);
 typedef TBOOL (*t_RecurceTreeBaseBeginCb)(class TClass*, TPCVOID);
 typedef TBOOL (*t_RecurceTreeBaseEndCb)(class TClass*, TPCVOID);
 
-#define TGetClass(X) &X::m_sClass
+#define TGetClass(X) X::m_sClass
 
 class TOSHI_EXPORT TClass
 {
@@ -113,7 +111,7 @@ private: \
 	void __stdcall class_name::InitialiseStatic() \
 		{  } \
 	TClass class_name::m_sClass = TClass( \
-		#class_name, base_class_name, pfnCreateObject, pfnCreateObjectInPlace, \
+		#class_name, &TGetClass(base_class_name), pfnCreateObject, pfnCreateObjectInPlace, \
 			class_name::InitialiseStatic, class_name::DeinitialiseStatic, version); \
 
 
@@ -133,7 +131,20 @@ private: \
 
 class TOSHI_EXPORT TObject
 {
-	DECLARE_DYNAMIC(TObject);
+public: \
+	virtual TClass& GetClass() const { return m_sClass; }
+	static TClass m_sClass;                          
+private: 
+	static TObject* __stdcall CreateObject()
+	{
+		return new TObject;
+	}
+	static TObject* __stdcall CreateObjectInPlace(TPVOID a_pMem)
+	{
+		return new (a_pMem) TObject;
+	}
+	static void __stdcall DeinitialiseStatic() {}
+	static void __stdcall InitialiseStatic() {}
 	
 public:
 	virtual void Delete() { delete this; }
@@ -142,8 +153,11 @@ public:
 	TBOOL IsExactly(const TClass& a_rClass) const { return GetClass().IsExactly(a_rClass); }
 
 protected:
+	TObject() {}
 	virtual ~TObject() = default;
 
 };
+
+TClass TObject::m_sClass = TClass("TObject", TNULL, TObject::CreateObject, TObject::CreateObjectInPlace, TObject::InitialiseStatic, TObject::DeinitialiseStatic, 1);
 
 TOSHI_NAMESPACE_END
