@@ -30,6 +30,10 @@ project ("TKernelInterface")
 		files
 		{
 			"Include/*.h",
+			"resource.h",
+			"Icons/Toshi.ico",
+			"TKernelInterface.rc",
+			"TKernelInterface.aps",
 			"Include/TKernel/**.h",
 			"Source/TKernel/**.cpp"
 		}

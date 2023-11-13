@@ -5,8 +5,8 @@
 
 #define COMBINE1(X,Y) X##Y  // helper macro
 #define COMBINE(X,Y) COMBINE1(X,Y)
-#define TFIREFLAG_CREATE(line) static TBOOL COMBINE(FIREFLAG, line) = TFALSE
-#define TFIREFLAG(line) COMBINE(FIREFLAG, line)
+#define TFIREFLAG_CREATE(line) static TBOOL COMBINE(IGNOREALL, line) = TFALSE
+#define TFIREFLAG(line) COMBINE(IGNOREALL, line)
 
 #define TASSERT(expression)                                                                                                        \
         TFIREFLAG_CREATE(__LINE__);                                                                                            \
