@@ -45,7 +45,90 @@ void __cdecl TDebug_Printf(TPCCHAR a_pcFormat, ...)
 	va_end(args);
 }
 
-static TCHAR idk[30]{};
+void __cdecl TDebug_Printf(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...)
+{
+	va_list args;
+	va_start(args, a_pcFormat);
+	TDebug_VPrintf(a_uiFlags, a_pcFormat, args);
+	va_end(args);
+}
+
+void __cdecl TDebug_PrintfDirect(TPCCHAR a_pcFormat, ...)
+{
+	HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hConsoleOutput != INVALID_HANDLE_VALUE) {
+		SetConsoleTextAttribute(hConsoleOutput, FOREGROUND_RED | FOREGROUND_GREEN);
+	}
+	TDebug_VPrintfDirect(0, a_pcFormat, TNULL);
+	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hConsoleOutput != INVALID_HANDLE_VALUE) {
+		SetConsoleTextAttribute(hConsoleOutput, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+	}
+}
+
+void __cdecl TDebug_PrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...)
+{
+	va_list vargs;
+	va_start(vargs, a_pcFormat);
+	TDebug_VPrintf(a_uiFlags, a_pcFormat, vargs);
+	va_end(vargs);
+}
+
+void __cdecl TDebug_CPrintf(TINT a_iFlags, TPCCHAR a_pcFormat, ...)
+{
+	if (a_iFlags != 0) {
+		va_list vargs;
+		va_start(vargs, a_pcFormat);
+		TDebug_VPrintf(FLAG_UNK, a_pcFormat, vargs);
+		va_end(vargs);
+	}
+}
+
+void __cdecl TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...)
+{
+	if (TDebug::s_iMessageLevel <= a_eMsgLevel) {
+		va_list vargs;
+		va_start(vargs, a_pcFormat);
+		vprintf(a_pcFormat, vargs);
+		va_end(vargs);
+	}
+}
+
+void __cdecl TDebug_PrintError(TPCCHAR a_pcFormat, ...)
+{
+	HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hConsoleOutput != INVALID_HANDLE_VALUE) {
+		SetConsoleTextAttribute(hConsoleOutput, FOREGROUND_RED);
+	}
+	TDebug_VPrintfDirect(0, "[Toshi Error]:", TNULL);
+	va_list vargs;
+	va_start(vargs, a_pcFormat);
+	TDebug_VPrintfDirect(FLAG_UNK3, a_pcFormat, vargs);
+	va_end(vargs);
+	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hConsoleOutput != INVALID_HANDLE_VALUE) {
+		SetConsoleTextAttribute(hConsoleOutput, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+	}
+}
+
+void __cdecl TDebug_PrintWarning(TPCCHAR a_pcFormat, ...)
+{
+	HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hConsoleOutput != INVALID_HANDLE_VALUE) {
+		SetConsoleTextAttribute(hConsoleOutput, FOREGROUND_GREEN);
+	}
+	TDebug_VPrintfDirect(0, "[Toshi Warning]:", TNULL);
+	va_list vargs;
+	va_start(vargs, a_pcFormat);
+	TDebug_VPrintfDirect(FLAG_UNK3, a_pcFormat, vargs);
+	va_end(vargs);
+	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hConsoleOutput != INVALID_HANDLE_VALUE) {
+		SetConsoleTextAttribute(hConsoleOutput, BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+	}
+}
+
+static TPCCHAR g_szAssertIgnored = "";
 static TPCCHAR g_szAssertFilename;
 static TINT g_uiAssertLineNumber;
 static TPCCHAR g_szAssertExpression;
@@ -88,7 +171,7 @@ INT_PTR CALLBACK AssertionDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM
 
 TBOOL __stdcall TDebug::AssertHandler(TPCHAR a_pcExpression, TPCHAR a_pcFile, TINT a_iLine, TBOOL& a_bIgnoreAll)
 {
-	TPCCHAR str = a_bIgnoreAll ? "(IGNORED)" : idk;
+	TPCCHAR str = a_bIgnoreAll ? "(IGNORED)" : g_szAssertIgnored;
 	TDebug_Printf("TASSERT \"%s\" failed: file \"%s\", line %d %s\n", a_pcExpression, a_pcFile, a_iLine, str);
 	if (a_bIgnoreAll) return TFALSE;
 	g_szAssertExpression = a_pcExpression;

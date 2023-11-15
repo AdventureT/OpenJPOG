@@ -5,7 +5,7 @@
 
 #define COMBINE1(X,Y) X##Y  // helper macro
 #define COMBINE(X,Y) COMBINE1(X,Y)
-#define TFIREFLAG_CREATE(line) static TBOOL COMBINE(IGNOREALL, line) = TFALSE
+#define TFIREFLAG_CREATE(line) static TBOOL COMBINE(IGNOREALL, line)
 #define TFIREFLAG(line) COMBINE(IGNOREALL, line)
 
 #define TASSERT(expression)                                                                                                        \
@@ -15,7 +15,8 @@
             __debugbreak();                                                                                                        \
         }
 
-#define TDPRINTF(format, ...) TDebug_Printf(format, __VA_ARGS__);
+#define TDPRINTF(format, ...) TDebug_Printf(format, __VA_ARGS__)
+#define TVALIDADDRESS(expression) TASSERT(TDebug::IsValidAddress(expression))
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -27,16 +28,14 @@ enum TDebug_Flags : TUINT
 	FLAG_UNK3 = BITFIELD(2)
 };
 
-void TOSHI_EXPORT __stdcall TDebug_VPrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
-
-void TOSHI_EXPORT __stdcall TDebug_VPrintf(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
-
-void TOSHI_EXPORT __cdecl TDebug_Printf(TPCCHAR a_pcFormat, ...);
-
-
 class TOSHI_EXPORT TDebug
 {
 public:
+
+	enum MSGLEVEL
+	{
+
+	};
 
 	static TBOOL __stdcall AssertHandler(TPCHAR a_pcExpression, TPCHAR a_pcFile, TINT a_iLine, TBOOL& a_bUnk);
 	static void __stdcall PrintIndent();
@@ -48,17 +47,37 @@ public:
 
 	inline static TINT s_iLogIndent = 0;
 	inline static TCHAR s_sSixteenSpace[16] = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
-	inline static void* m_pDebugFile = TNULL;
+	inline static TPVOID m_pDebugFile = TNULL;
 	inline static TBOOL m_bEnableDebugFile = TFALSE;
+	inline static TINT s_iMessageLevel = 0;
 
 };
+
+void TOSHI_EXPORT __stdcall TDebug_VPrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
+
+void TOSHI_EXPORT __stdcall TDebug_VPrintf(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
+
+void TOSHI_EXPORT __cdecl TDebug_Printf(TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT __cdecl TDebug_Printf(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...);
+
+void TOSHI_EXPORT __cdecl TDebug_PrintfDirect(TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT __cdecl TDebug_PrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...);
+
+void TOSHI_EXPORT __cdecl TDebug_CPrintf(TINT a_iFlags, TPCCHAR a_pcFormat, ...);
+
+void TOSHI_EXPORT __cdecl TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...);
+
+void TOSHI_EXPORT __cdecl TDebug_PrintError(TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT __cdecl TDebug_PrintWarning(TPCCHAR a_pcFormat, ...);
+
 
 TOSHI_NAMESPACE_END
 
 #else
 
-#define TASSERT(expression)
-#define TDPRINTF(format, ...)
+#define TASSERT(expression) (void)0
+#define TDPRINTF(format, ...) (void)0
+#define TVALIDADDRESS(expression) (void)0
 
 #endif // TOSHI_DEBUG
 

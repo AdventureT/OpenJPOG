@@ -53,12 +53,12 @@ void TKernelInterface::DumpInfo()
 	}
 	if (!bSuccess) {
 		TDPRINTF("Windows version: %s version %d.%d (Build %d)\n", system, osvi.dwMajorVersion,
-			osvi.dwMinorVersion, osvi.dwBuildNumber)
+			osvi.dwMinorVersion, osvi.dwBuildNumber);
 	}
 	else {
 		TDPRINTF("Windows version: %s version %d.%d (Build %d) Service Pack %d.%d\n", system, osvi.dwMajorVersion,
 			osvi.dwMinorVersion, osvi.dwBuildNumber,
-			osvi.wServicePackMajor, osvi.wServicePackMinor)
+			osvi.wServicePackMajor, osvi.wServicePackMinor);
 	}
 
 skipPlatform:
