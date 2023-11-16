@@ -1,0 +1,181 @@
+#include <TKernel/TDebug.h>
+
+TOSHI_NAMESPACE_BEGIN
+
+class TOSHI_EXPORT TGenericDList
+{
+protected:
+	class TOSHI_EXPORT TNode
+	{
+	protected:
+
+		enum TUnititialised
+		{
+
+		};
+
+		TNode(TUnititialised){}
+
+		TNode()
+		{
+			Reset();
+		}
+
+		TNode* Next() const
+		{
+			return m_pNext;
+		}
+
+		TNode* Prev() const
+		{
+			return m_pPrev;
+		}
+
+	public:
+		TNode& operator=(const TNode& a_rNode)
+		{
+			m_pNext = a_rNode.m_pNext;
+			m_pPrev = a_rNode.m_pPrev;
+			return *this;
+		}
+
+		TBOOL IsLinked() const { return this != m_pNext; }
+		void Reset() { m_pNext = this; m_pPrev = this; }
+
+		void InsertAfter(TNode* a_pNode)
+		{
+			TASSERT(!IsLinked());
+
+			m_pPrev = a_pNode;
+			m_pNext = a_pNode->m_pNext;
+			a_pNode->m_pNext = this;
+			m_pNext->m_pPrev = this;
+		}
+
+		void InsertBefore(TNode* a_pNode)
+		{
+			TASSERT(!IsLinked());
+
+			m_pNext = a_pNode;
+			m_pPrev = a_pNode->m_pPrev;
+			a_pNode->m_pPrev = this;
+			m_pPrev->m_pNext = this;
+		}
+
+		void Remove()
+		{
+			m_pPrev->m_pNext = m_pNext;
+			m_pNext->m_pPrev = m_pPrev;
+			Reset();
+		}
+
+	public:
+		template<class T> friend class TDList;
+		friend TGenericDList;
+
+
+	protected:
+		TNode* m_pNext;
+		TNode* m_pPrev;
+	};
+
+protected:
+	void InsertHead(TNode* a_pNode) { a_pNode->InsertAfter(&m_Root); }
+	void InsertTail(TNode* a_pNode) { a_pNode->InsertBefore(&m_Root); }
+	void RemoveHead() { if (!IsEmpty()) m_Root.Next()->Remove(); }
+	void RemoveTail() { if (!IsEmpty()) m_Root.Prev()->Remove(); }
+	TBOOL IsEmpty() const { return m_Root.Next() == &m_Root; }
+	TNode* Head() const { return m_Root.Next(); }
+	TNode* Tail() const { return m_Root.Prev(); }
+	TNode* Begin() const { return m_Root.Next(); }
+	TNode* RBegin() const { return m_Root.Prev(); }
+	const TNode* End() const { return &m_Root; }
+	const TNode* REnd() const { return &m_Root; }
+
+	static void __stdcall InsertSegmentAfter(TNode* node1, TNode* node2, TNode* node3)
+	{
+		node1->m_pNext = node3;
+		node2->m_pPrev = node3->m_pPrev;
+		node1->m_pNext->m_pPrev = node1;
+		node2->m_pPrev->m_pNext = node2;
+	}
+
+	static void __stdcall InsertSegmentBefore(TNode* node1, TNode* node2, TNode* node3)
+	{
+		node2->m_pPrev = node3;
+		node1->m_pNext = node3->m_pNext;
+		node2->m_pPrev->m_pNext = node2;
+		node1->m_pNext->m_pPrev = node1;
+	}
+
+	void InsertSegmentAtHead(TNode* node1, TNode* node2)
+	{
+		node1->m_pNext = &m_Root;
+		node2->m_pPrev = m_Root.m_pPrev;
+		node1->m_pNext->m_pPrev = node1;
+		node2->m_pPrev->m_pNext = node2;
+	}
+
+	void InsertSegmentAtTail(TNode* node1, TNode* node2)
+	{
+		node2->m_pPrev = &m_Root;
+		node1->m_pNext = m_Root.m_pNext;
+		node2->m_pPrev->m_pNext = node2;
+		node1->m_pNext->m_pPrev = node1;
+	}
+
+	static void __stdcall RemoveSegment(TNode* node1, TNode* node2)
+	{
+		node1->m_pPrev->m_pNext = node2->m_pNext;
+		node2->m_pNext->m_pPrev = node1->m_pPrev;
+		node1->m_pPrev = node1;
+		node2->m_pNext = node2;
+	}
+
+	void RemoveAll()
+	{
+		for (TNode* pNode = m_Root.Next(); pNode != &m_Root; pNode = pNode->Next()) {
+			pNode->m_pPrev->m_pNext = pNode->m_pNext->m_pNext;
+			pNode->m_pNext->m_pNext = pNode;
+			pNode->m_pPrev = pNode;
+		}
+	}
+
+protected:
+	TGenericDList() {}
+
+	~TGenericDList() { RemoveAll(); }
+
+protected:
+	TNode m_Root;
+};
+
+template <class T>
+class TDList : public TGenericDList
+{
+public:
+	TDList() { }
+
+	class TNode : public TGenericDList::TNode
+	{
+		friend class TDList;
+	public:
+		TNode(const T& data) : m_oData(data) {}
+
+	private:
+		T m_oData;
+	};
+
+	T& Head() { return static_cast<TNode*>(TGenericDList::Head())->m_oData; }
+	T& Tail() { return static_cast<TNode*>(TGenericDList::Tail())->m_oData; }
+	TNode* Begin() { return static_cast<TNode*>(TGenericDList::Begin()); }
+	TNode* End() const { return static_cast<TNode*>(TGenericDList::End()); }
+	TBOOL IsEmpty() { return TGenericDList::IsEmpty(); }
+	TBOOL IsLinked() { return m_Root.IsLinked(); }
+	void RemoveHead() { TGenericDList::RemoveHead(); }
+	void RemoveTail() { TGenericDList::RemoveTail(); }
+	void InsertHead(const T& a_Data) { TGenericDList::InsertHead(new TNode(a_Data)); }
+	void InsertTail(const T& a_Data) { TGenericDList::InsertTail(new TNode(a_Data)); }
+};
+
+TOSHI_NAMESPACE_END
