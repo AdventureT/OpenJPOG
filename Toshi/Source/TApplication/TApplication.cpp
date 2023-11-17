@@ -20,3 +20,9 @@ TBOOL TApplication::Create(TPCCHAR a_pcName, TINT argc, TPCCHAR* argv)
 	m_pKernel = new TKernelInterface(a_pcName, argc, argv, m_bVerbose);
 	return TTRUE;
 }
+
+TBOOL TApplication::Execute()
+{
+	TASSERT(TTRUE==TApplication::IsCreated());
+	return TBOOL();
+}

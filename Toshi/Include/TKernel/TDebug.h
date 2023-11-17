@@ -17,6 +17,8 @@
         }
 
 #define TDPRINTF(format, ...) TDebug_Printf(format, __VA_ARGS__)
+#define TWARNING(format, ...) TDebug_PrintWarning(format, __VA_ARGS__)
+#define TERROR(format, ...) TDebug_PrintError(format, __VA_ARGS__)
 #define TVALIDADDRESS(expression) TASSERT(TDebug::IsValidAddress(expression))
 
 TOSHI_NAMESPACE_BEGIN
@@ -79,6 +81,8 @@ TOSHI_NAMESPACE_END
 
 #define TASSERT(expression)
 #define TDPRINTF(format, ...)
+#define TWARNING(format, ...)
+#define TERROR(format, ...)
 #define TVALIDADDRESS(expression)
 
 TOSHI_NAMESPACE_BEGIN

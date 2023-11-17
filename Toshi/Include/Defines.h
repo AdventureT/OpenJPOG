@@ -9,6 +9,19 @@
 #define TOSHI_NOFINAL
 #endif
 
+#define STRINGIFY2(X) #X
+#define STRINGIFY(X) STRINGIFY2(X)    
+
+#define STRCAT2(X, Y) X##Y
+#define STRCAT(X, Y) STRCAT2(X, Y)
+#define STRCAT_2 CAT
+#define STRCAT_3(X, Y, Z) STRCAT(X, STRCAT(Y, Z))
+#define STRCAT_4(A, X, Y, Z) STRCAT(A, STRCAT_3(X, Y, Z))
+
+#ifdef TOSHI_SKU_WINDOWS
+#define TOSHI_MULTIPLATFORM(FILENAME) STRINGIFY(STRCAT_3(Win/, FILENAME, Win.h))
+#endif
+
 #define TOSHI_EXPORT __declspec(dllexport)
 
 #define TOSHI_NAMESPACE_BEGIN namespace Toshi {

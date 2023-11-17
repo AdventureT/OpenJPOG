@@ -7,7 +7,13 @@ IMPLEMENT_DYNAMIC(TKernelInterface, TObject);
 
 TKernelInterface::TKernelInterface(TPCCHAR a_pcName, TINT argc, TPCCHAR* argv, TBOOL a_bVerbose)
 {
+	TWARNING("TKernelInterface::TKernelInterface() not implemented");
+}
 
+TBOOL TKernelInterface::Update()
+{
+	TWARNING("TKernelInterface::Update() not implemented");
+	return TTRUE;
 }
 
 static int GetProcessorSpeed()

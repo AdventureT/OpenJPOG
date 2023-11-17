@@ -76,8 +76,8 @@ public:
 
 
 	protected:
-		TNode* m_pNext;
-		TNode* m_pPrev;
+		TNode* m_pNext; // 0x0
+		TNode* m_pPrev; // 0x4
 	};
 
 protected:
