@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include <windows.h>
 #include "TSystem.h"
-#include "../resource.h"
 
-#ifdef TOSHI_DEBUG
+#ifdef TOSHI_NOFINAL
+
+#include "../resource.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -214,6 +215,32 @@ void __stdcall TDebug::PrintIndent()
 	}
 	if (i > 0) {
 		DebugFilePrintString(&s_sSixteenSpace[16-i]);
+	}
+}
+
+void __stdcall TDebug::DebugFilePrintString(TPCHAR a_pcString)
+{
+	if (m_pDebugFile && m_bEnableDebugFile) {
+
+	}
+	else {
+		printf("%s", a_pcString);
+	}
+}
+
+TOSHI_NAMESPACE_END
+
+#else
+
+TOSHI_NAMESPACE_BEGIN
+
+void __cdecl TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...)
+{
+	if (TDebug::s_iMessageLevel <= a_eMsgLevel) {
+		va_list vargs;
+		va_start(vargs, a_pcFormat);
+		vprintf(a_pcFormat, vargs);
+		va_end(vargs);
 	}
 }
 

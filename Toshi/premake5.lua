@@ -53,8 +53,8 @@ project ("TKernelInterface")
 		runtime "Release"
 		optimize "On"
 
-	filter "configurations:Dist"
-		defines "TOSHI_DIST"
+	filter "configurations:Final"
+		defines "TOSHI_FINAL"
 		runtime "Release"
 		optimize "On"
 		
@@ -111,7 +111,7 @@ project ("TApplication")
 		runtime "Release"
 		optimize "On"
 
-	filter "configurations:Dist"
-		defines "TOSHI_DIST"
+	filter "configurations:Final"
+		defines "TOSHI_FINAL"
 		runtime "Release"
 		optimize "On"

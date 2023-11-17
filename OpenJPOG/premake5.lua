@@ -52,8 +52,8 @@ project ("OpenJPOG")
 		defines "TOSHI_RELEASE"
 		optimize "On"
 
-	filter "configurations:Dist"
+	filter "configurations:Final"
 		kind "WindowedApp"
 		runtime "Release"
-		defines "TOSHI_DIST"
+		defines "TOSHI_FINAL"
 		optimize "On"

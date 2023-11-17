@@ -1,7 +1,7 @@
 #include "Defines.h"
 #include <cstdarg>
 
-#ifdef TOSHI_DEBUG
+#ifdef TOSHI_NOFINAL
 
 #define COMBINE1(X,Y) X##Y  // helper macro
 #define COMBINE(X,Y) COMBINE1(X,Y)
@@ -73,11 +73,49 @@ void TOSHI_EXPORT __cdecl TDebug_PrintWarning(TPCCHAR a_pcFormat, ...);
 
 TOSHI_NAMESPACE_END
 
+
 #else
 
 #define TASSERT(expression)
 #define TDPRINTF(format, ...)
 #define TVALIDADDRESS(expression)
+
+TOSHI_NAMESPACE_BEGIN
+
+enum TDebug_Flags : TUINT
+{
+	FLAG_UNK = 0,
+	FLAG_UNK1 = BITFIELD(0),
+	FLAG_UNK2 = BITFIELD(1),
+	FLAG_UNK3 = BITFIELD(2)
+};
+
+class TOSHI_EXPORT TDebug
+{
+public:
+
+	enum MSGLEVEL
+	{
+
+	};
+
+	static void __stdcall DebugFilePrintString(TPCHAR a_pcString);
+
+	static TBOOL EnableDebugFile(TBOOL a_bEnable) { TBOOL previous = m_bEnableDebugFile; m_bEnableDebugFile = a_bEnable; return previous; }
+	static TBOOL IsDebugFileEnabled() { return m_bEnableDebugFile; }
+	static TBOOL IsValidAddress(TPCVOID a_pMem) { return a_pMem && a_pMem != (TPCVOID)0xCDCDCDCD && a_pMem >= (TPCVOID)80; }
+
+	inline static TINT s_iLogIndent = 0;
+	inline static TCHAR s_sSixteenSpace[16] = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
+	inline static TPVOID m_pDebugFile = TNULL;
+	inline static TBOOL m_bEnableDebugFile = TFALSE;
+	inline static TINT s_iMessageLevel = 0;
+
+};
+
+void TOSHI_EXPORT __cdecl TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...);
+
+TOSHI_NAMESPACE_END
 
 #endif // TOSHI_DEBUG
 

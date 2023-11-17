@@ -83,10 +83,10 @@ project "UnitTests"
 			"Catch2.lib"
 		}
 
-	filter "configurations:Dist"
+	filter "configurations:Final"
 		kind "ConsoleApp"
 		runtime "Release"
-		defines "TOSHI_DIST"
+		defines "TOSHI_FINAL"
 		optimize "On"
 		
 		ExtractLib { dbg = "" }

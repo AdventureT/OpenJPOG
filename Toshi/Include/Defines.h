@@ -5,6 +5,10 @@
 #define TTRUE true
 #define BITFIELD(x) (1 << x)
 
+#if defined(TOSHI_RELEASE) || defined(TOSHI_DEBUG)
+#define TOSHI_NOFINAL
+#endif
+
 #define TOSHI_EXPORT __declspec(dllexport)
 
 #define TOSHI_NAMESPACE_BEGIN namespace Toshi {

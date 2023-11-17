@@ -3,7 +3,7 @@ include "Dependencies.lua"
 
 workspace ("OpenJPOG")
 	platforms "Windows"
-	configurations { "Debug", "Release", "Dist" }
+	configurations { "Debug", "Release", "Final" }
 	
 	disablewarnings { "4996" }
 	
