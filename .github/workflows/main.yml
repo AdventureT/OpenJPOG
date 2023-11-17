@@ -11,7 +11,7 @@ env:
   SOLUTION_FILE_PATH: .
 
   # Configuration type to build.
-  BUILD_CONFIGURATION: Release
+  BUILD_CONFIGURATION: Final
 
 permissions:
   contents: read
