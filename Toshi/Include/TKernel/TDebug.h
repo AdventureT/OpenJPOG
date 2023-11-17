@@ -75,9 +75,9 @@ TOSHI_NAMESPACE_END
 
 #else
 
-#define TASSERT(expression) (void)0
-#define TDPRINTF(format, ...) (void)0
-#define TVALIDADDRESS(expression) (void)0
+#define TASSERT(expression)
+#define TDPRINTF(format, ...)
+#define TVALIDADDRESS(expression)
 
 #endif // TOSHI_DEBUG
 
