@@ -53,7 +53,7 @@ project ("OpenJPOG")
 		optimize "On"
 
 	filter "configurations:Final"
-		kind "WindowedApp"
+		kind "ConsoleApp"
 		runtime "Release"
 		defines "TOSHI_FINAL"
 		optimize "On"
