@@ -1,3 +1,4 @@
+#pragma once
 #include "Defines.h"
 
 TOSHI_NAMESPACE_BEGIN

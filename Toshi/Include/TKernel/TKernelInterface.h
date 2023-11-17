@@ -1,3 +1,4 @@
+#pragma once
 #include "TObject.h"
 
 TOSHI_NAMESPACE_BEGIN

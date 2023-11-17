@@ -1,8 +1,15 @@
+#pragma once
 #include "TCString.h"
+#include "TDList.h"
 
 TOSHI_NAMESPACE_BEGIN
 
 class TFile;
+
+class TOSHI_EXPORT TFileSystem : public TDList<TFileSystem>::TNode
+{
+
+};
 
 class TOSHI_EXPORT TFileManager
 {
@@ -11,13 +18,14 @@ public:
     TFile* CreateFile(const TCString& a_sName, TUINT a_uiMode);
 
     static TFileManager* __stdcall GetFileManager() { return s_pFileManager; }
+
+private:
+    void ValidateSystemPath();
 private:
     inline static TFileManager* s_pFileManager = TNULL;
-};
 
-class TOSHI_EXPORT TFileSystem
-{
-
+    TBOOL m_bValidated;                // 0x0
+    TDList<TFileSystem> m_Validated;   // 0x20
 };
 
 class TOSHI_EXPORT TFile
@@ -33,8 +41,6 @@ public:
     };
 
     static TFile* Create(const TCString& a_sName, TUINT a_uiMode);
-
-    
 
 };
 

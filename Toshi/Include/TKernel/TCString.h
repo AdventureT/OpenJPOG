@@ -1,3 +1,4 @@
+#pragma once
 #include "Defines.h"
 #include <corecrt_malloc.h>
 #include <stdio.h>

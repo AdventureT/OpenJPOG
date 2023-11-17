@@ -1,10 +1,11 @@
+#pragma once
 #include <TKernel/TDebug.h>
 
 TOSHI_NAMESPACE_BEGIN
 
 class TOSHI_EXPORT TGenericDList
 {
-protected:
+public:
 	class TOSHI_EXPORT TNode
 	{
 	protected:
@@ -70,7 +71,7 @@ protected:
 		}
 
 	public:
-		template<class T> friend class TDList;
+		template<class T, int C> friend class TDList;
 		friend TGenericDList;
 
 
@@ -150,32 +151,21 @@ protected:
 	TNode m_Root;
 };
 
-template <class T>
+template <class T, int C = 0>
 class TDList : public TGenericDList
 {
 public:
 	TDList() { }
 
-	class TNode : public TGenericDList::TNode
-	{
-		friend class TDList;
-	public:
-		TNode(const T& data) : m_oData(data) {}
-
-	private:
-		T m_oData;
-	};
-
-	T& Head() { return static_cast<TNode*>(TGenericDList::Head())->m_oData; }
-	T& Tail() { return static_cast<TNode*>(TGenericDList::Tail())->m_oData; }
-	TNode* Begin() { return static_cast<TNode*>(TGenericDList::Begin()); }
-	TNode* End() const { return static_cast<TNode*>(TGenericDList::End()); }
+	T* Head() { return static_cast<T*>(TGenericDList::Head()); }
+	T* Tail() { return static_cast<T*>(TGenericDList::Tail()); }
+	TNode* Begin() { return TGenericDList::Begin(); }
+	TNode* End() const { return TGenericDList::End(); }
 	TBOOL IsEmpty() { return TGenericDList::IsEmpty(); }
 	TBOOL IsLinked() { return m_Root.IsLinked(); }
 	void RemoveHead() { TGenericDList::RemoveHead(); }
 	void RemoveTail() { TGenericDList::RemoveTail(); }
-	void InsertHead(const T& a_Data) { TGenericDList::InsertHead(new TNode(a_Data)); }
-	void InsertTail(const T& a_Data) { TGenericDList::InsertTail(new TNode(a_Data)); }
+	void InsertHead(TNode* a_pNode) { TGenericDList::InsertHead(a_pNode); }
 };
 
 TOSHI_NAMESPACE_END

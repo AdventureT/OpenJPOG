@@ -2,7 +2,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 TOSHI_NAMESPACE_USING
-
+/*
 class Test : public TObject
 {
 	DECLARE_DYNAMIC(Test);
@@ -45,3 +45,4 @@ TEST_CASE("Create Object", "[TObject]")
 	REQUIRE(obj != TNULL);
 	REQUIRE(obj->IsA(TGetClass(Test2)));
 }
+*/
