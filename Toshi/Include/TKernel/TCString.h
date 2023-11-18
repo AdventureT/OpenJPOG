@@ -99,6 +99,18 @@ public:
 		return *this;
 	}
 
+	TCCHAR& operator[](TINT a_iIndex) const
+	{
+		TASSERT((a_iIndex>=0) && (a_iIndex<=(TINT)m_iStrLen));
+		return m_pBuffer[a_iIndex];
+	}
+
+	TCHAR& operator[](TINT a_iIndex)
+	{
+		TASSERT((a_iIndex >= 0) && (a_iIndex <= (TINT)m_iStrLen));
+		return m_pBuffer[a_iIndex];
+	}
+
 	const TCString& Print() const
 	{
 		TASSERT(GetString()!=TNULL);

@@ -109,4 +109,11 @@ void TFileManager::ValidateSystemPath()
 
 void TFileSystem::SetPrefix(const TCString& a_rPrefix)
 {
+	m_sPrefix = a_rPrefix;
+
+	for (TINT i = 0; i < m_sPrefix.Length(); i++) {
+		if (m_sPrefix[i] == '/') {
+			m_sPrefix[i] = '\\';
+		}
+	}
 }
