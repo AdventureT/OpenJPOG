@@ -83,3 +83,12 @@ TCString& __cdecl TCString::Format(TPCCHAR a_pcFormat, ...)
 	Copy(buffer);
 	return *this;
 }
+
+TINT TCString::Find(char a_cFind, TINT a_iIndex) const
+{
+	if (!IsIndexValid(a_iIndex)) return -1;
+	TPCCHAR foundAt = strchr(GetString() + a_iIndex, a_cFind);
+	if (foundAt == TNULL) return -1;
+
+	return foundAt - GetString();
+}

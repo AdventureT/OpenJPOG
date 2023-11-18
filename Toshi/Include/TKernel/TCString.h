@@ -45,6 +45,7 @@ public:
 	void Copy(TPCCHAR a_pcString, TINT a_iLength = -1);
 
 	TCString& __cdecl Format(TPCCHAR a_pcFormat, ...);
+	TINT Find(char a_cFind, TINT a_iIndex = 0) const;
 
 	TBOOL IsIndexValid(TINT a_iIndex = 0) const
 	{

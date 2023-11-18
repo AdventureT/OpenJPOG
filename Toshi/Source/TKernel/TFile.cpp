@@ -27,13 +27,83 @@ TFile* TFileManager::CreateFile(const TCString& a_sName, TUINT a_uiMode)
 {
 	TASSERT(a_sName.Length() > 0);
 	ValidateSystemPath();
-	return nullptr;
+	TINT pos = a_sName.Find(':', 0);
+
+	if (pos >= 0) {
+		TCString str1;
+		TCString str2;
+
+		str1.Copy(a_sName, pos);
+		str2.Copy(a_sName.GetString(pos + 1));
+		TFileSystem* fs = FindFileSystem(str1);
+
+		if (fs != TNULL) {
+			return fs->CreateFile(str2, a_uiMode);
+		}
+	}
+
+	for (auto pNode = m_aValidated.Begin(); pNode != m_aValidated.End(); pNode++) {
+		TFile* pFile = pNode->CreateFile(a_sName, a_uiMode);
+		if (pFile != TNULL) return pFile;
+	}
+
+	return TNULL;
+}
+
+TFileSystem* TFileManager::FindFileSystem(const TCString& a_rFileSysName)
+{
+	TFileSystem* pFileSystem = TFileManager::FindFileSystem(m_aValidated, a_rFileSysName);
+
+	if (!pFileSystem) {
+		pFileSystem = TFileManager::FindFileSystem(m_aInvalidated, a_rFileSysName);
+	}
+
+	return pFileSystem;
+}
+
+void TFileManager::MountFileSystem(TFileSystem* a_pFileSystem)
+{
+	TASSERT(FindFileSystem(a_pFileSystem->GetName()) == NULL);
+	m_aInvalidated.InsertTail(a_pFileSystem);
+	InvalidateSystemPath();
+}
+
+void TFileManager::UnmountFileSystem(TFileSystem* a_pFileSystem)
+{
+	TASSERT(FindFileSystem(a_pFileSystem->GetName()) == NULL);
+	a_pFileSystem->Remove();
+	InvalidateSystemPath();
+}
+
+TFileSystem* __stdcall TFileManager::FindFileSystem(TDList<TFileSystem>& a_rFileSystems, const TCString& a_rFileSysName)
+{
+	for (auto pNode = a_rFileSystems.Begin(); pNode != a_rFileSystems.End(); pNode++) {
+		if (pNode->GetName() == a_rFileSysName) return pNode;
+	}
+	return TNULL;
 }
 
 void TFileManager::ValidateSystemPath()
 {
 	if (!m_bValidated) {
 
+		for (auto pNode = m_aValidated.Tail(); pNode != m_aValidated.End(); pNode--) {
+			pNode->Remove();
+			m_aInvalidated.InsertHead(pNode);
+		}
+
+		TCString fsName;
+		TSysPathIter pathIter(m_pcSystemPath);
+
+		for (TBOOL hasPath = pathIter.First(fsName); hasPath; hasPath = pathIter.Next(fsName)) {
+			TFileSystem* pFS = FindFileSystem(m_aInvalidated, fsName);
+			if (pFS) {
+				pFS->Remove();
+				m_aValidated.InsertTail(pFS);
+			}
+		}
+
+		m_bValidated = TTRUE;
 	}
 }
 
