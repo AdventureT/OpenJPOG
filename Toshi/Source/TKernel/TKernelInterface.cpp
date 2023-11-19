@@ -5,7 +5,7 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TKernelInterface, TObject);
 
-TKernelInterface::TKernelInterface(TPCCHAR a_pcName, TINT argc, TPCCHAR* argv, TBOOL a_bVerbose)
+TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbose)
 {
 	TWARNING("TKernelInterface::TKernelInterface() not implemented");
 }

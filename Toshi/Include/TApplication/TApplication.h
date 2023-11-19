@@ -16,25 +16,24 @@ private:
 
 public:
 
-	TApplication()
-	{
-		m_uiState = 0;
-		m_bVerbose = TTRUE;
-		m_bShowConsole = TTRUE;
-	}
+	TApplication();
+	virtual ~TApplication();
 
-	TBOOL Create(TPCCHAR a_pcName, TINT argc, TPCCHAR* argv);
+	TBOOL Create(TPCCHAR a_pcName, TINT argc, TPCHAR* const argv);
 	TBOOL Execute();
 
 	TBOOL IsCreated()
 	{
-		return (m_uiState & TApplicationFlag_Created) != 0;
+		return HASFLAG(m_uiState & TApplicationFlag_Created);
 	}
 
 	void SetVerbose(TBOOL a_bVerbose)
 	{
 		m_bVerbose = a_bVerbose;
 	}
+
+	TBOOL ShowConsole(TBOOL a_bShowConsole);
+	TBOOL ToggleConsole() { ShowConsole(!m_bShowConsole); return m_bShowConsole; }
 
 	void Destroy()
 	{
@@ -43,10 +42,10 @@ public:
 
 	void DisplayErrorMessageBox(TCString a_oErrorMessage)
 	{
-		MessageBox(m_hError, a_oErrorMessage.GetString(), "Error", 0);
+		MessageBox(*m_hConsole, a_oErrorMessage.GetString(), "Error", 0);
 	}
 
-	virtual TBOOL OnCreate(TINT argc, TPCCHAR* argv)
+	virtual TBOOL OnCreate(TINT argc, TPCHAR* const argv)
 	{
 		m_uiState |= TApplicationFlag_Created;
 		return TTRUE;
@@ -59,16 +58,18 @@ public:
 
 	virtual TBOOL OnUpdate(TFLOAT a_fDelta)
 	{
-		return (m_uiState & TApplicationFlag_Destroyed) != 0;
+		return HASFLAG(m_uiState & TApplicationFlag_Destroyed);
 	}
 
+	TKernelInterface* GetKernel() { return m_pKernel; }
+
 private:
-	TKernelInterface* m_pKernel; //0x4
+	TKernelInterface* m_pKernel; // 0x4
 	TCString m_pcName;           // 0x8
 	TINT m_uiState;              // 0x10
 	TBOOL m_bVerbose;            // 0x14
 	TBOOL m_bShowConsole;        // 0x15
-	HWND m_hError;               // 0x18
+	HWND* m_hConsole;            // 0x18
 };
 
 TOSHI_NAMESPACE_END

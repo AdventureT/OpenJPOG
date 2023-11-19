@@ -5,6 +5,6 @@ TOSHI_NAMESPACE_USING
 
 TEST_CASE("DumpInfo", "[TKernelInterface]")
 {
-	TKernelInterface ki = TKernelInterface("", 0, 0, 0);
+	TKernelInterface ki = TKernelInterface(0, (TPCHAR*)"", TTRUE);
 	ki.DumpInfo();
 }

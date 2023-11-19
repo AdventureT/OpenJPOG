@@ -18,6 +18,8 @@
 #define STRCAT_3(X, Y, Z) STRCAT(X, STRCAT(Y, Z))
 #define STRCAT_4(A, X, Y, Z) STRCAT(A, STRCAT_3(X, Y, Z))
 
+#define HASFLAG(flag) (flag) != 0
+
 #ifdef TOSHI_SKU_WINDOWS
 #define TOSHI_MULTIPLATFORM(FILENAME) STRINGIFY(STRCAT_3(Win/, FILENAME, Win.h))
 #endif
@@ -30,17 +32,19 @@
 
 #define _TS8(str) #str
 
-typedef bool           TBOOL;
-typedef int            TINT;
-typedef unsigned int   TUINT;
-typedef short          TSHORT;
-typedef unsigned short TUSHORT;
-typedef const char*    TPCCHAR;
-typedef char*          TPCHAR;
-typedef char           TCHAR;
-typedef const char     TCCHAR;
-typedef unsigned char  TBYTE;
-typedef unsigned char* TPBYTE;
-typedef void*          TPVOID;
-typedef const void*    TPCVOID;
-typedef float          TFLOAT;
+typedef bool               TBOOL;
+typedef int                TINT;
+typedef unsigned int       TUINT;
+typedef unsigned __int64   TUINT64;
+typedef short              TSHORT;
+typedef unsigned short     TUSHORT;
+typedef const char*        TPCCHAR;
+typedef char*              TPCHAR;
+typedef char               TCHAR;
+typedef const char         TCCHAR;
+typedef unsigned char      TBYTE;
+typedef unsigned char*     TPBYTE;
+typedef void*              TPVOID;
+typedef const void*        TPCVOID;
+typedef float              TFLOAT;
+typedef const float        TCFLOAT;
