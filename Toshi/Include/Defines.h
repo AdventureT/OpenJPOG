@@ -6,7 +6,7 @@
 #define BITFIELD(x) (1 << x)
 
 #if defined(TOSHI_RELEASE) || defined(TOSHI_DEBUG)
-#define TOSHI_NOFINAL
+#define TOSHI_NOTFINAL
 #endif
 
 #define STRINGIFY2(X) #X
@@ -35,6 +35,7 @@
 typedef bool               TBOOL;
 typedef int                TINT;
 typedef unsigned int       TUINT;
+typedef unsigned int       TUINT32;
 typedef unsigned __int64   TUINT64;
 typedef short              TSHORT;
 typedef unsigned short     TUSHORT;
@@ -42,6 +43,7 @@ typedef const char*        TPCCHAR;
 typedef char*              TPCHAR;
 typedef char               TCHAR;
 typedef const char         TCCHAR;
+typedef unsigned char      TUINT8;
 typedef unsigned char      TBYTE;
 typedef unsigned char*     TPBYTE;
 typedef void*              TPVOID;

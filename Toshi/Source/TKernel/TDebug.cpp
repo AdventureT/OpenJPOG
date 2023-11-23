@@ -3,7 +3,7 @@
 #include <windows.h>
 #include "TSystem.h"
 
-#ifdef TOSHI_NOFINAL
+#ifdef TOSHI_NOTFINAL
 
 #include "../resource.h"
 
@@ -170,7 +170,7 @@ INT_PTR CALLBACK AssertionDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM
 }
 
 
-TBOOL __stdcall TDebug::AssertHandler(TPCHAR a_pcExpression, TPCHAR a_pcFile, TINT a_iLine, TBOOL& a_bIgnoreAll)
+TBOOL TDebug::AssertHandler(TPCHAR a_pcExpression, TPCHAR a_pcFile, TINT a_iLine, TBOOL& a_bIgnoreAll)
 {
 	TPCCHAR str = a_bIgnoreAll ? "(IGNORED)" : g_szAssertIgnored;
 	TDebug_Printf("TASSERT \"%s\" failed: file \"%s\", line %d %s\n", a_pcExpression, a_pcFile, a_iLine, str);

@@ -2,19 +2,24 @@
 #include "Defines.h"
 #include <cstdarg>
 
-#ifdef TOSHI_NOFINAL
+#ifdef TOSHI_NOTFINAL
 
 #define COMBINE1(X,Y) X##Y  // helper macro
 #define COMBINE(X,Y) COMBINE1(X,Y)
 #define TFIREFLAG_CREATE(line) static TBOOL COMBINE(IGNOREALL, line) = TFALSE
 #define TFIREFLAG(line) COMBINE(IGNOREALL, line)
 
-#define TASSERT(expression)                                                                                                        \
-        TFIREFLAG_CREATE(__LINE__);                                                                                            \
-        if (!(expression) &&                                                                                                       \
-            TDebug::AssertHandler(const_cast<TPCHAR>(#expression), const_cast<TPCHAR>(__FILE__), __LINE__, TFIREFLAG(__LINE__))) {            \
-            __debugbreak();                                                                                                        \
-        }
+#define TASSERT_START(expression) \
+	TFIREFLAG_CREATE(__LINE__); \
+	if (!(expression)) { \
+		if (TDebug::AssertHandler(const_cast<TPCHAR>(#expression), const_cast<TPCHAR>(__FILE__), __LINE__, TFIREFLAG(__LINE__))) { \
+			__debugbreak; \
+		}
+#define TASSERT_STOP }
+
+#define TASSERT(expression) \
+        TASSERT_START(expression) \
+        TASSERT_STOP
 
 #define TDPRINTF(format, ...) TDebug_Printf(format, __VA_ARGS__)
 #define TWARNING(format, ...) TDebug_PrintWarning(format, __VA_ARGS__)
@@ -44,9 +49,9 @@ public:
 	static void __stdcall PrintIndent();
 	static void __stdcall DebugFilePrintString(TPCHAR a_pcString);
 
-	static TBOOL EnableDebugFile(TBOOL a_bEnable) { TBOOL previous = m_bEnableDebugFile; m_bEnableDebugFile = a_bEnable; return previous; }
-	static TBOOL IsDebugFileEnabled() { return m_bEnableDebugFile; }
-	static TBOOL IsValidAddress(TPCVOID a_pMem) { return a_pMem && a_pMem != (TPCVOID)0xCDCDCDCD && a_pMem >= (TPCVOID)80; }
+	static TBOOL __stdcall EnableDebugFile(TBOOL a_bEnable) { TBOOL previous = m_bEnableDebugFile; m_bEnableDebugFile = a_bEnable; return previous; }
+	static TBOOL __stdcall IsDebugFileEnabled() { return m_bEnableDebugFile; }
+	static TBOOL __stdcall IsValidAddress(TPCVOID a_pMem) { return a_pMem && a_pMem != (TPCVOID)0xCDCDCDCD && a_pMem >= (TPCVOID)80; }
 
 	inline static TINT s_iLogIndent = 0;
 	inline static TCHAR s_sSixteenSpace[16] = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };

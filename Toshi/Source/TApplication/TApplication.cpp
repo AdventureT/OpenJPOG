@@ -31,7 +31,7 @@ TApplication::TApplication()
 
 TApplication::~TApplication()
 {
-#ifdef TOSHI_NOFINAL
+#ifdef TOSHI_NOTFINAL
 	if (m_bVerbose) {
 		TDPRINTF("Destroying Toshi Application \"%s\".\n", m_pcName.GetString());
 	}
@@ -41,7 +41,7 @@ TApplication::~TApplication()
 TBOOL TApplication::Create(TPCCHAR a_pcName, TINT argc, TPCHAR* const argv)
 {
 	m_pcName = a_pcName;
-#ifdef TOSHI_NOFINAL
+#ifdef TOSHI_NOTFINAL
 	if (m_bVerbose)
 	{
 		TDPRINTF("Creating Toshi Application \"%s\".\n", m_pcName.GetString());
