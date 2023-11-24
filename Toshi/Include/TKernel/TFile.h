@@ -1,7 +1,7 @@
 #pragma once
 #include "TCString.h"
 #include "TDList.h"
-#include TOSHI_MULTIPLATFORM(TThread)
+#include "TThread.h"
 
 #ifdef CreateFile
 #undef CreateFile

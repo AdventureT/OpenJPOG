@@ -9,21 +9,17 @@
 #define TFIREFLAG_CREATE(line) static TBOOL COMBINE(IGNOREALL, line) = TFALSE
 #define TFIREFLAG(line) COMBINE(IGNOREALL, line)
 
-#define TASSERT_START(expression) \
+#define TASSERT(expression) \
 	TFIREFLAG_CREATE(__LINE__); \
 	if (!(expression)) { \
 		if (TDebug::AssertHandler(const_cast<TPCHAR>(#expression), const_cast<TPCHAR>(__FILE__), __LINE__, TFIREFLAG(__LINE__))) { \
 			__debugbreak; \
-		}
-#define TASSERT_STOP }
-
-#define TASSERT(expression) \
-        TASSERT_START(expression) \
-        TASSERT_STOP
+		} \
+	}
 
 #define TDPRINTF(format, ...) TDebug_Printf(format, __VA_ARGS__)
 #define TWARNING(format, ...) TDebug_PrintWarning(format, __VA_ARGS__)
-#define TERROR(format, ...) TDebug_PrintError(format, __VA_ARGS__)
+#define TERROR(format, ...)   TDebug_PrintError(format, __VA_ARGS__)
 #define TVALIDADDRESS(expression) TASSERT(TDebug::IsValidAddress(expression))
 
 TOSHI_NAMESPACE_BEGIN
@@ -86,7 +82,9 @@ TOSHI_NAMESPACE_END
 
 #define TASSERT(expression)
 #define TDPRINTF(format, ...)
+#define TDPRINTF(format)
 #define TWARNING(format, ...)
+#define TWARNING(format)
 #define TERROR(format, ...)
 #define TVALIDADDRESS(expression)
 

@@ -1,8 +1,11 @@
 #pragma once
 #include "TDebug.h"
+#include "TThread.h"
 
 #define TMEMORY_ROUNDUP 4
 
+inline static Toshi::TMutex* g_pMutex = TNULL;
+//inline static Toshi::TMemory g_oMemManager;
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -47,6 +50,9 @@ public:
 	static void __stdcall DebugPrintHALMemInfo(TCHAR const*) {};
 
 	TPVOID Alloc(TUINT a_iUnk, TUINT a_uiAlignment, MemBlock* a_pMemBlock, TPCHAR a_pBuffer ,TINT a_iUnk3);
+
+private:
+	inline static TBOOL m_bInitialised = TFALSE;
 };
 
 TOSHI_NAMESPACE_END
