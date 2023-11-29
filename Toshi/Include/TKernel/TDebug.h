@@ -13,7 +13,7 @@
 	TFIREFLAG_CREATE(__LINE__); \
 	if (!(expression)) { \
 		if (TDebug::AssertHandler(const_cast<TPCHAR>(#expression), const_cast<TPCHAR>(__FILE__), __LINE__, TFIREFLAG(__LINE__))) { \
-			__debugbreak; \
+			__debugbreak(); \
 		} \
 	}
 
