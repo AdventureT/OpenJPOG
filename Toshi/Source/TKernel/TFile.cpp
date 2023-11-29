@@ -4,9 +4,23 @@ TOSHI_NAMESPACE_USING
 
 TFile* TFile::Create(const TCString& a_sName, TUINT a_uiMode)
 {
-	TFileManager* pFileManager = TFileManager::GetFileManager();
+	TFileManager *pFileManager = TFileManager::GetFileManager();
 	TVALIDADDRESS(pFileManager);
 	return pFileManager->CreateFile(a_sName, a_uiMode);
+}
+
+void TFile::Destroy(TFile* a_pFile)
+{
+	TFileManager *pFileManager = TFileManager::GetFileManager();
+	TVALIDADDRESS(pFileManager);
+	if (a_pFile) {
+		a_pFile->GetFileSystem()->DestroyFile(a_pFile);
+	}
+}
+
+void TFile::Destroy()
+{
+	Destroy(this);
 }
 
 TFileManager::TFileManager() : m_pcWorkingDirectory("/")

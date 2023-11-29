@@ -39,6 +39,7 @@ typedef unsigned int       TUINT32;
 typedef unsigned __int64   TUINT64;
 typedef short              TSHORT;
 typedef unsigned short     TUSHORT;
+typedef unsigned short     TWCHAR;
 typedef const char*        TPCCHAR;
 typedef char*              TPCHAR;
 typedef char               TCHAR;

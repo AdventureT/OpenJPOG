@@ -29,7 +29,7 @@ public:
 
     virtual ~TFileSystem() = default;
     virtual TFile* CreateFile(const TCString &a_rsFileName, TUINT a_uiMode) = 0;
-    virtual void DestroyFile(TFile*) = 0;
+    virtual void DestroyFile(TFile* a_pFile) = 0;
     virtual TBOOL RemoveFile(const TCString& a_rsFilename) { return TTRUE; }
     virtual TCString MakeInternalPath(const TCString &a_rsPath) = 0;
     virtual TBOOL GetFirstFile(const TCString& a_rFolder, TCString& a_rFilename, TUINT a_uiMode) { return TFALSE; }
@@ -129,10 +129,39 @@ enum TMODE : TUINT
 
 class TOSHI_EXPORT TFile
 {
+protected:
+    TFile(TFileSystem* a_pFileSystem)
+    {
+        m_pFileSystem = a_pFileSystem;
+    }
 public:
 
-    static TFile* Create(const TCString& a_sName, TUINT a_uiMode);
+    enum TSEEK
+    {
 
+    };
+
+    virtual TBOOL Seek(TINT a_iOffset, TSEEK a_eSeek) = 0;
+    virtual TINT Tell() = 0;
+    virtual TINT GetSize() = 0;
+    virtual TUINT64 GetDate() { return 0; }
+    virtual TINT GetCChar() = 0;
+    virtual TINT GetWChar() = 0;
+    virtual TINT PutCChar(TCHAR a_cChar) = 0;
+    virtual TINT PutWChar(TWCHAR a_wcChar) = 0;
+    virtual TINT VCPrintf(TCHAR const *a_pFormat, va_list a_args) = 0;
+    virtual TINT VWPrintf(TWCHAR const *a_pFormat, va_list a_args) = 0;
+
+    static TFile* Create(const TCString& a_sName, TUINT a_uiMode);
+    static void Destroy(TFile* a_pFile);
+    static void PrintFileAccess(TBOOL a_bFileAccess) {}
+
+    void Destroy();
+    TFileSystem* GetFileSystem() const { return m_pFileSystem; }
+
+private:
+                                // 0x0 vftable
+    TFileSystem* m_pFileSystem; // 0x4
 };
 
 TOSHI_NAMESPACE_END

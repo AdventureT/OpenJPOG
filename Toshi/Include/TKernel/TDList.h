@@ -151,7 +151,7 @@ protected:
 };
 
 template <class T, int C = 0>
-class TOSHI_EXPORT TDList : public TGenericDList
+class TDList : public TGenericDList
 {
 public:
 
@@ -161,17 +161,17 @@ public:
 	{
 	public:
 
-		Iterator()
+		__forceinline Iterator()
 		{
 			m_pPtr = TNULL;
 		}
 
-		Iterator(TNode* pPtr)
+		__forceinline Iterator(TNode* pPtr)
 		{
 			m_pPtr = static_cast<T*>(pPtr);
 		}
 
-		Iterator(T* pPtr)
+		__forceinline Iterator(T* pPtr)
 		{
 			m_pPtr = pPtr;
 		}
@@ -186,29 +186,29 @@ public:
 			return m_pNode != ptr;
 		}*/
 
-		void operator=(const Iterator& other)
+		__forceinline void operator=(const Iterator& other)
 		{
 			m_pPtr = other.m_pPtr;
 		}
 
-		void operator=(T* pPtr)
+		__forceinline void operator=(T* pPtr)
 		{
 			m_pPtr = pPtr;
 		}
 
-		T* operator->() const
+		__forceinline T* operator->() const
 		{
 			TASSERT(m_pPtr != TNULL);
 			return m_pPtr;
 		}
 
-		operator T* () const
+		__forceinline operator T* () const
 		{
 			TASSERT(m_pPtr != TNULL);
 			return static_cast<T*>(m_pPtr);
 		}
 
-		Iterator operator++(int)
+		__forceinline Iterator operator++(int)
 		{
 			TASSERT(m_pPtr != TNULL);
 			Iterator old = m_pPtr;
@@ -216,7 +216,7 @@ public:
 			return old;
 		}
 
-		Iterator operator--(int)
+		__forceinline Iterator operator--(int)
 		{
 			TASSERT(m_pPtr != TNULL);
 			Iterator old = m_pPtr;
@@ -224,14 +224,14 @@ public:
 			return old;
 		}
 
-		Iterator operator++()
+		__forceinline Iterator operator++()
 		{
 			TASSERT(m_pPtr != TNULL);
 			m_pPtr = static_cast<T*>(m_pPtr->Next());
 			return Iterator{ m_pPtr };
 		}
 
-		Iterator operator--()
+		__forceinline Iterator operator--()
 		{
 			TASSERT(m_pPtr != TNULL);
 			m_pPtr = static_cast<T*>(m_pPtr->Prev());
@@ -241,7 +241,6 @@ public:
 	private:
 		T* m_pPtr;
 	};
-
 
 
 	T* Head() { return static_cast<T*>(TGenericDList::Head()); }
