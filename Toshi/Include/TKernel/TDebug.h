@@ -82,9 +82,7 @@ TOSHI_NAMESPACE_END
 
 #define TASSERT(expression)
 #define TDPRINTF(format, ...)
-#define TDPRINTF(format)
 #define TWARNING(format, ...)
-#define TWARNING(format)
 #define TERROR(format, ...)
 #define TVALIDADDRESS(expression)
 

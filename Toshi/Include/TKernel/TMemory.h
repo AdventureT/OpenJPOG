@@ -6,24 +6,6 @@
 
 inline static Toshi::TMutex* g_pMutex = TNULL;
 
-TPVOID TOSHI_EXPORT __stdcall tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk)
-{
-#ifdef TOSHI_NOTFINAL
-	return malloc(a_iSize);
-#else
-	return Toshi::TMemory::GetMemMangager().Alloc(a_iSize, 16, Toshi::TMemory::GetGlobalBlock(), a_pBuffer, a_iUnk);
-#endif
-}
-
-void TOSHI_EXPORT __stdcall tfree(TPVOID a_pMem)
-{
-#ifdef TOSHI_NOTFINAL
-	free(a_pMem);
-#else
-	Toshi::TMemory::GetMemMangager().Free(a_pMem);
-#endif
-}
-
 TOSHI_NAMESPACE_BEGIN
 
 class TOSHI_EXPORT TMemory
@@ -81,3 +63,21 @@ private:
 inline static TMemory g_oMemManager;
 
 TOSHI_NAMESPACE_END
+
+TPVOID TOSHI_EXPORT __stdcall tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk)
+{
+#ifdef TOSHI_NOTFINAL
+	return malloc(a_iSize);
+#else
+	return Toshi::TMemory::GetMemMangager().Alloc(a_iSize, 16, Toshi::TMemory::GetGlobalBlock(), a_pBuffer, a_iUnk);
+#endif
+}
+
+void TOSHI_EXPORT __stdcall tfree(TPVOID a_pMem)
+{
+#ifdef TOSHI_NOTFINAL
+	free(a_pMem);
+#else
+	Toshi::TMemory::GetMemMangager().Free(a_pMem);
+#endif
+}
