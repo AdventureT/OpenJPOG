@@ -37,7 +37,7 @@ TFileManager::~TFileManager()
 	s_pFileManager = TNULL;
 }
 
-TFile* TFileManager::CreateFile(const TCString& a_sName, TUINT a_uiMode)
+TFile* TFileManager::CreateFile(TCString const& a_sName, TUINT a_uiMode)
 {
 	TASSERT(a_sName.Length() > 0);
 	ValidateSystemPath();
@@ -77,14 +77,14 @@ TFileSystem* TFileManager::FindFileSystem(const TCString& a_rFileSysName)
 
 void TFileManager::MountFileSystem(TFileSystem* a_pFileSystem)
 {
-	TASSERT(FindFileSystem(a_pFileSystem->GetName()) == NULL);
+	TASSERT(FindFileSystem(a_pFileSystem->GetName()) == TNULL);
 	m_aInvalidated.InsertTail(a_pFileSystem);
 	InvalidateSystemPath();
 }
 
 void TFileManager::UnmountFileSystem(TFileSystem* a_pFileSystem)
 {
-	TASSERT(FindFileSystem(a_pFileSystem->GetName()) == NULL);
+	TASSERT(FindFileSystem(a_pFileSystem->GetName()) == TNULL);
 	a_pFileSystem->Remove();
 	InvalidateSystemPath();
 }

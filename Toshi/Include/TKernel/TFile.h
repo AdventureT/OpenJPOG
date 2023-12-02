@@ -59,8 +59,17 @@ public:
     class TSysPathIter
     {
     public:
-        TSysPathIter(const TCString &a_rsSysPath) : m_sSysPath(a_rsSysPath), m_iPosition(-1) { };
-        TSysPathIter(const TSysPathIter &a_rOther) : m_sSysPath(a_rOther.m_sSysPath), m_iPosition(a_rOther.m_iPosition) { };
+        TSysPathIter(const TCString &a_rsSysPath) 
+        {
+            m_sSysPath = a_rsSysPath;
+            m_iPosition = -1;
+        }
+
+        TSysPathIter(const TSysPathIter &a_rOther) 
+        {
+            m_sSysPath = a_rOther.m_sSysPath;
+            m_iPosition = a_rOther.m_iPosition;
+        }
 
         TBOOL First(TCString &a_rSysPath)
         {
@@ -90,19 +99,24 @@ public:
         }
 
     private:
-        const TCString& m_sSysPath; // 0x0
-        TINT m_iPosition;           // 0x4
+        TCString m_sSysPath;  // 0x0
+        TINT m_iPosition;     // 0x4
     };
 
     TFileManager();
     ~TFileManager();
 
-    TFile* CreateFile(const TCString& a_sName, TUINT a_uiMode);
+    TFile* CreateFile(TCString const &a_sName, TUINT a_uiMode);
     TFileSystem* FindFileSystem(const TCString& a_rFileSysName);
     void MountFileSystem(TFileSystem* a_pFileSystem);
     void UnmountFileSystem(TFileSystem* a_pFileSystem);
 
     static TFileManager* __stdcall GetFileManager() { return s_pFileManager; }
+    void SetSystemPath(TCString const& a_rSysPath)
+    {
+        m_pcSystemPath = a_rSysPath;
+        InvalidateSystemPath();
+    }
 
 private:
     void ValidateSystemPath();
@@ -125,6 +139,7 @@ enum TMODE : TUINT
     TMODE_WRITEONLY = BITFIELD(1),
     TMODE_READWRITE = BITFIELD(2),
     TMODE_CREATE = BITFIELD(3),
+    TMODE_NOBUFFER = BITFIELD(4)
 };
 
 class TOSHI_EXPORT TFile
@@ -134,13 +149,18 @@ protected:
     {
         m_pFileSystem = a_pFileSystem;
     }
+    virtual ~TFile() = default;
 public:
 
     enum TSEEK
     {
-
+        TSEEK_SET,
+        TSEEK_CUR,
+        TSEEK_END
     };
-
+    
+    virtual TINT Read(TPVOID a_pBuffer, TINT m_iSize) = 0;
+    virtual TINT Write(void const *a_pBuffer, TINT m_iSize) = 0;
     virtual TBOOL Seek(TINT a_iOffset, TSEEK a_eSeek) = 0;
     virtual TINT Tell() = 0;
     virtual TINT GetSize() = 0;
@@ -159,7 +179,7 @@ public:
     void Destroy();
     TFileSystem* GetFileSystem() const { return m_pFileSystem; }
 
-private:
+protected:
                                 // 0x0 vftable
     TFileSystem* m_pFileSystem; // 0x4
 };

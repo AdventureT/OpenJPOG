@@ -1,5 +1,8 @@
 #include "TKernelInterface.h"
 #include <windows.h>
+#include <direct.h> // _getcwd
+#include <TKernel/TFile.h>
+#include TOSHI_MULTIPLATFORM(TNativeFile)
 
 TOSHI_NAMESPACE_USING
 
@@ -8,6 +11,18 @@ IMPLEMENT_DYNAMIC(TKernelInterface, TObject);
 TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbose)
 {
 	TWARNING("TKernelInterface::TKernelInterface() not implemented");
+	TCHAR pPath[260];
+	TPCHAR pBuffer = _getcwd(pPath, sizeof(pPath));
+	TVALIDADDRESS(pBuffer);
+	TFileManager *pFileManager = new TFileManager();
+	TVALIDADDRESS(pFileManager);
+	TNativeFileSystem *pLocalSystem = new TNativeFileSystem("local");
+	TVALIDADDRESS(pLocalSystem);
+	pLocalSystem->SetPrefix(pBuffer);
+	TNativeFileSystem *pAbsSystem = new TNativeFileSystem("abs");
+	TVALIDADDRESS(pAbsSystem);
+	pAbsSystem->SetPrefix("");
+	pFileManager->SetSystemPath("local");
 }
 
 TBOOL TKernelInterface::Update()

@@ -53,18 +53,17 @@ TINT TCString::Compare(TPCCHAR a_pcString, int a_iLength) const
 
 void TCString::Copy(const TCString& a_rOther, TINT a_iLength)
 {
-	if (*this != a_rOther)
-	{
-		if (m_iStrLen < a_iLength || a_iLength == -1) a_iLength = m_iStrLen;
+	if (*this != a_rOther) {
+		if (a_rOther.m_iStrLen < a_iLength || a_iLength == -1) a_iLength = a_rOther.m_iStrLen;
 		AllocBuffer(a_iLength);
+		TSystem::MemCopy(m_pBuffer, a_rOther.m_pBuffer, a_iLength);
 		m_pBuffer[a_iLength] = '\0';
 	}
 }
 
 void TCString::Copy(TPCCHAR a_pcString, TINT a_iLength)
 {
-	if (m_pBuffer != a_pcString)
-	{
+	if (m_pBuffer != a_pcString) {
 		TINT iLength = a_pcString ? TSystem::StringLength(a_pcString) : 0;
 		if (iLength < a_iLength || a_iLength == -1) a_iLength = iLength;
 		AllocBuffer(a_iLength, TTRUE);

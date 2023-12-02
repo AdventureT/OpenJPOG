@@ -15,6 +15,9 @@
 *.lib
 *.lib.*
 *.exe.*
+bin
+bin-int
+act.exe
 
 # User-specific files
 *.rsuser
