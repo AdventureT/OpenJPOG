@@ -30,6 +30,8 @@ TMemory::MemBlock* __stdcall TMemory::GetGlobalBlock()
 
 TPVOID TMemory::Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock* a_pMemBlock, TPCHAR a_pBuffer, TINT a_iUnk3)
 {
+	// Let's just use malloc until i implemented this
+	return malloc(a_uiSize);
 	TMutexLock lock;
 	Initialise();
 	lock.Create(g_pMutex);
@@ -49,6 +51,9 @@ TPVOID TMemory::Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock* a_pMemBlock
 
 TBOOL TMemory::Free(TPVOID a_pMem)
 {
+	// Let's just use free until i implemented this
+	free(a_pMem);
+	return TTRUE;
 	TMutexLock lock;
 	Initialise();
 	lock.Create(g_pMutex);
