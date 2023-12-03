@@ -8,3 +8,11 @@ TEST_CASE("Constructor", "[TCString]")
 	TCString string("ABCD");
 	REQUIRE(string == "ABCD");
 }
+
+TEST_CASE("Concat Strings", "[TCString]")
+{
+	TCString string("ABCD");
+	TCString string2("EFGH");
+	string += string2;
+	REQUIRE(string == "ABCDEFGH");
+}

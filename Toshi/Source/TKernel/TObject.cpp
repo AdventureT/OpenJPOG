@@ -1,5 +1,5 @@
 #include "TObject.h"
-#include "TSystem.h"
+#include "TSystemTools.h"
 
 TOSHI_NAMESPACE_USING
 

@@ -1,4 +1,4 @@
-#include "TSystem.h"
+#include "TSystemTools.h"
 #include "TDebug.h"
 #include <string.h>
 
@@ -16,6 +16,19 @@ TINT __stdcall TSystem::StringCompareNoCase(TPCCHAR a_String1, TPCCHAR a_String2
 {
 	TASSERT((a_String1!=TNULL) && (a_String2!=TNULL));
 	return a_uiSize != -1 ? _strnicmp(a_String1, a_String2, a_uiSize) : _stricmp(a_String1, a_String2);
+}
+
+TCHAR const* __stdcall TSystem::StringCopy(TPCHAR a_DestinationString, TCHAR const* a_SourceString, TINT a_iCount)
+{
+	TASSERT((a_DestinationString!=TNULL) && (a_SourceString!=TNULL));
+	if (a_iCount != -1) {
+		return strncpy(a_DestinationString, a_SourceString, a_iCount);
+	}
+	TPCHAR d = a_DestinationString;
+	TCHAR const* s = a_SourceString;
+	while (*s != '\0')
+		*d++ = *s++;
+	return a_DestinationString;
 }
 
 TPVOID __stdcall TSystem::MemCopy(TPVOID a_dest, TPCVOID a_src, TUINT a_iSize)

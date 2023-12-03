@@ -39,6 +39,7 @@ public:
 		FreeBuffer();
 	}
 
+	TCString& Concat(TCString const& a_rString, TINT a_iLength = -1);
 	TINT Compare(TPCCHAR a_pcString, int a_iLength = -1) const;
 
 	void Copy(const TCString& a_rOther, TINT a_iLength = -1);
@@ -46,6 +47,8 @@ public:
 
 	TCString& __cdecl Format(TPCCHAR a_pcFormat, ...);
 	TINT Find(char a_cFind, TINT a_iIndex = 0) const;
+
+	void Truncate(TINT a_iLength);
 
 	TBOOL IsIndexValid(TINT a_iIndex = 0) const
 	{
@@ -96,6 +99,12 @@ public:
 
 	TCString& operator+=(TPCCHAR a_pcString)
 	{
+		return *this;
+	}
+
+	TCString& operator+=(TCString const& a_rString)
+	{
+		Concat(a_rString);
 		return *this;
 	}
 

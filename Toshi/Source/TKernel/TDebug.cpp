@@ -1,7 +1,7 @@
 #include "TDebug.h"
 #include <stdio.h>
 #include <windows.h>
-#include "TSystem.h"
+#include "TSystemTools.h"
 
 #ifdef TOSHI_NOTFINAL
 

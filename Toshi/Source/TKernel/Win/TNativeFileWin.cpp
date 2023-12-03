@@ -37,8 +37,21 @@ TBOOL TNativeFileSystem::RemoveFile(TCString const& a_rFilename)
     return DeleteFile(a_rFilename.GetString());
 }
 
-TCString TNativeFileSystem::MakeInternalPath(const TCString& a_rsPath)
+TCString TNativeFileSystem::MakeInternalPath(TCString const& a_rsPath)
 {
+    TCString prefix = GetPrefix();
+    if (prefix.Length() > 0) {
+        if (prefix[prefix.Length() - 1] == '/' || prefix[prefix.Length() - 1] == '\\') {
+            prefix.Truncate(prefix.Length() - 1);
+        }
+    }
+    TFileManager *pFileManager = TFileManager::GetFileManager();
+    TVALIDADDRESS(pFileManager);
+    {
+        TCString empty;
+        pFileManager->MakeAbsolutePath(empty);
+        prefix += empty;
+    }
     return TCString();
 }
 

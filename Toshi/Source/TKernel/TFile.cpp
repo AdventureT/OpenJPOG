@@ -18,6 +18,13 @@ void TFile::Destroy(TFile* a_pFile)
 	}
 }
 
+TCString __stdcall TFile::ConcatPath(TCString const& a_rPath1, TCString const& a_rPath2)
+{
+	TCString str = TCString();
+
+	return TCString();
+}
+
 void TFile::Destroy()
 {
 	Destroy(this);
@@ -87,6 +94,11 @@ void TFileManager::UnmountFileSystem(TFileSystem* a_pFileSystem)
 	TASSERT(FindFileSystem(a_pFileSystem->GetName()) == TNULL);
 	a_pFileSystem->Remove();
 	InvalidateSystemPath();
+}
+
+TCString TFileManager::MakeAbsolutePath(TCString const& a_rPath)
+{
+	return TFile::ConcatPath(a_rPath, GetWorkingDirectory());
 }
 
 TFileSystem* __stdcall TFileManager::FindFileSystem(TDList<TFileSystem>& a_rFileSystems, const TCString& a_rFileSysName)

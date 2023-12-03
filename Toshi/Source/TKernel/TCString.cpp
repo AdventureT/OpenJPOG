@@ -1,6 +1,7 @@
 #include "TCString.h"
-#include "TSystem.h"
+#include "TSystemTools.h"
 #include <string.h>
+#include <TKernel/TMemory.h>
 
 TOSHI_NAMESPACE_USING
 
@@ -36,8 +37,28 @@ TBOOL TCString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 		}
 		m_iStrLen = a_iLength;
 	}
-	if (a_bClear) m_pBuffer[0] = 0;
+	if (a_bClear) m_pBuffer[0] = '\0';
 	return hasChanged;
+}
+
+TCString& TCString::Concat(TCString const& a_rString, TINT a_iLength)
+{
+	TINT len = a_rString.Length();
+	if (len < a_iLength || a_iLength == -1) {
+		a_iLength = len;
+	}
+	TPCHAR pBuffer = m_pBuffer;
+	len = Length();
+	TBOOL ret = AllocBuffer(len + a_iLength, TFALSE);
+	if (ret) {
+		TSystem::StringCopy(m_pBuffer, pBuffer, -1);
+	}
+	TSystem::StringCopy(m_pBuffer + len, a_rString.m_pBuffer, a_iLength);
+	m_pBuffer[len + a_iLength] = '\0';
+	if (ret && len != 0) {
+		tfree(pBuffer);
+	}
+	return *this;
 }
 
 TINT TCString::Compare(TPCCHAR a_pcString, int a_iLength) const
@@ -90,4 +111,21 @@ TINT TCString::Find(char a_cFind, TINT a_iIndex) const
 	if (foundAt == TNULL) return -1;
 
 	return foundAt - GetString();
+}
+
+void TCString::Truncate(TINT a_iLength)
+{
+	TINT len = Length();
+	if (len < a_iLength) {
+		a_iLength = len;
+	}
+	TPCHAR pBuffer = m_pBuffer;
+	TBOOL ret = AllocBuffer(a_iLength, TFALSE);
+	if (ret) {
+		TSystem::StringCopy(m_pBuffer, pBuffer, a_iLength);
+	}
+	m_pBuffer[a_iLength] = '\0';
+	if (ret && len != 0) {
+		tfree(pBuffer);
+	}
 }

@@ -13,7 +13,7 @@ public:
 	virtual TFile* CreateFile(Toshi::TCString const& a_rFilename, TUINT a_uiMode) override;
 	virtual void DestroyFile(TFile* a_pFile) override;
 	virtual TBOOL RemoveFile(TCString const& a_rFilename) override;
-	virtual TCString MakeInternalPath(const TCString& a_rsPath) override;
+	virtual TCString MakeInternalPath(TCString const& a_rsPath) override;
 
 private:
 	HANDLE m_hFileSystem; // 0x1C

@@ -111,12 +111,15 @@ public:
     void MountFileSystem(TFileSystem* a_pFileSystem);
     void UnmountFileSystem(TFileSystem* a_pFileSystem);
 
+    TCString MakeAbsolutePath(TCString const& a_rPath);
+
     static TFileManager* __stdcall GetFileManager() { return s_pFileManager; }
     void SetSystemPath(TCString const& a_rSysPath)
     {
         m_pcSystemPath = a_rSysPath;
         InvalidateSystemPath();
     }
+    TCString const& GetWorkingDirectory() const { return m_pcWorkingDirectory; }
 
 private:
     void ValidateSystemPath();
@@ -175,6 +178,7 @@ public:
     static TFile* Create(const TCString& a_sName, TUINT a_uiMode);
     static void Destroy(TFile* a_pFile);
     static void PrintFileAccess(TBOOL a_bFileAccess) {}
+    static TCString __stdcall ConcatPath(TCString const& a_rPath1, TCString const& a_rPath2);
 
     void Destroy();
     TFileSystem* GetFileSystem() const { return m_pFileSystem; }
