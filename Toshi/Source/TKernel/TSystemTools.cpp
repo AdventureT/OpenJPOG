@@ -40,3 +40,11 @@ TPVOID __stdcall TSystem::MemCopy(TPVOID a_dest, TPCVOID a_src, TUINT a_iSize)
 		*d++ = *s++;
 	return a_dest;
 }
+
+TPVOID __stdcall TSystem::MemSet(TPVOID a_dest, TINT a_iValue, TINT m_iSize)
+{
+	TPCHAR dest = (TPCHAR)a_dest;
+	while (m_iSize--)
+		*dest++ = (TCHAR)a_iValue;
+	return a_dest;
+}
