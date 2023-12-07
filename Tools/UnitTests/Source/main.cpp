@@ -5,6 +5,16 @@ TOSHI_NAMESPACE_USING
 
 class AApplication : public Toshi::TApplication
 {
+	virtual TBOOL OnCreate(TINT argc, TPCHAR* const argv) override
+	{
+		return TApplication::OnCreate(argc, argv);
+	}
+
+	virtual TBOOL OnUpdate(TFLOAT a_fDelta)
+	{
+		// Skip Updating
+		return TFALSE;
+	}
 };
 
 static AApplication g_oTheApp;
@@ -13,7 +23,7 @@ int main(int argc, char* argv[])
 {
 	int result;
 	if (g_oTheApp.Create("UnitTests", argc, argv)) {
-		//g_oTheApp.Execute();
+		g_oTheApp.Execute();
 		result = Catch::Session().run(argc, argv);
 	}
 

@@ -138,6 +138,7 @@ public:
 			// Check if the node belongs to the current tree
 			if (nodeRoot != this)
 			{
+				TASSERT(!"A node is being removed from a different tree from it's current tree.");
 				return &node;
 			}
 

@@ -7,7 +7,21 @@ IMPLEMENT_DYNAMIC(TTask, TObject);
 TBOOL TTask::Create()
 {
 	TASSERT(IsCreated()==TFALSE);
-	return TBOOL();
+	if (!IsCreated()) {
+		if (!OnCreate()) {
+			OnDestroy();
+			m_Tree->Remove(this, TFALSE);
+			Delete();
+
+			return TFALSE;
+		}
+
+		//auto oldState = m_State;
+		//m_State |= State_Created;
+		//Activate(TTRUE);
+	}
+
+	return TTRUE;
 }
 
 TBOOL TTask::CreateFailed()
