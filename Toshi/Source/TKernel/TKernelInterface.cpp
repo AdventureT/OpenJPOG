@@ -23,6 +23,7 @@ TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbo
 	TVALIDADDRESS(pAbsSystem);
 	pAbsSystem->SetPrefix("");
 	pFileManager->SetSystemPath("local");
+	m_pScheduler = new TScheduler(); 
 }
 
 TBOOL TKernelInterface::Update()

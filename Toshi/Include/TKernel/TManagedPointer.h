@@ -22,6 +22,12 @@ public:
         delete m_pObject; 
     }
 
+    T* operator=(T* a_pObject)
+    {
+        m_pObject = a_pObject;
+        return m_pObject;
+    }
+
     T& operator*() { TASSERT(m_pObject != TNULL); return *m_pObject; }
 
     operator T* () { TASSERT(m_pObject!=TNULL); return m_pObject; }

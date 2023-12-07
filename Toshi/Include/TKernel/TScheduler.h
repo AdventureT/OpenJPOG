@@ -1,11 +1,12 @@
 #pragma once
 
-#include "TDebug.h"
+#include "TObject.h"
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TScheduler
+class TOSHI_EXPORT TScheduler : public TObject
 {
+	DECLARE_DYNAMIC(TKernelInterface);
 public:
 	void Update();
 };
