@@ -1,11 +1,11 @@
 #include "TApplication/TApplication.h"
-#include "TMemory.h"
+#include "TKernel/TMemory.h"
 
 class AApplication : public Toshi::TApplication
 {
 	virtual TBOOL OnCreate(TINT argc, TPCHAR* const argv) override
 	{
-		return TTRUE;
+		return TApplication::OnCreate(argc, argv);
 	}
 };
 

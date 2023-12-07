@@ -6,6 +6,7 @@ project ("OpenJPOG")
 	links
 	{
 		"TKernelInterface",
+		"TApplication",
 		"libtheora",
 		"theoraplay"
 	}
@@ -19,7 +20,6 @@ project ("OpenJPOG")
 	includedirs
 	{
 		"%{wks.location}/Toshi/Include",
-		"%{wks.location}/Toshi/Include/TKernel",
 	}
 	
 	defines
@@ -30,6 +30,7 @@ project ("OpenJPOG")
 	postbuildcommands
 	{
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TKernelInterface/TKernelInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
+		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TApplication/TApplication.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 	}
 
 	filter "system:windows"

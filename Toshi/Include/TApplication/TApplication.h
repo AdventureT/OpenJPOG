@@ -58,7 +58,7 @@ public:
 
 	virtual TBOOL OnUpdate(TFLOAT a_fDelta)
 	{
-		return HASFLAG(m_uiState & TApplicationFlag_Destroyed);
+		return (m_uiState & TApplicationFlag_Destroyed) == 0;
 	}
 
 	TKernelInterface* GetKernel() { return m_pKernel; }

@@ -10,7 +10,7 @@ IMPLEMENT_DYNAMIC(TKernelInterface, TObject);
 
 TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbose)
 {
-	TWARNING("TKernelInterface::TKernelInterface() not implemented");
+	TWARNING("TKernelInterface::TKernelInterface() not implemented\n");
 	TCHAR pPath[260];
 	TPCHAR pBuffer = _getcwd(pPath, sizeof(pPath));
 	TVALIDADDRESS(pBuffer);
@@ -27,7 +27,17 @@ TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbo
 
 TBOOL TKernelInterface::Update()
 {
-	TWARNING("TKernelInterface::Update() not implemented");
+	THPTimer *pSysTimer = GetSystemTimer();
+	pSysTimer->Update();
+	TFLOAT deltaTime = pSysTimer->GetDelta();
+	m_fDeltaTime += deltaTime;
+
+	if (m_fDeltaTime > 1.0f) {
+		m_fAvgFPS += (1.0f / deltaTime) * 0.5f;
+		m_fDeltaTime = 0.0f;
+	}
+
+	m_pScheduler->Update();
 	return TTRUE;
 }
 
