@@ -72,6 +72,15 @@ TPVOID TOSHI_EXPORT __stdcall tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUn
 #endif
 }
 
+TPVOID TOSHI_EXPORT __stdcall tmemalign(TINT a_iAlign, TINT a_iSize)
+{
+#ifdef TOSHI_NOTFINAL
+	return malloc(a_iSize);
+#else
+	return Toshi::TMemory::GetMemMangager().Alloc(a_iSize, a_iAlign, Toshi::TMemory::GetGlobalBlock(), TNULL, -1);
+#endif
+}
+
 void TOSHI_EXPORT __stdcall tfree(TPVOID a_pMem)
 {
 #ifdef TOSHI_NOTFINAL

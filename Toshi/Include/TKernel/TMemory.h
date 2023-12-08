@@ -65,4 +65,5 @@ inline static TMemory g_oMemManager;
 TOSHI_NAMESPACE_END
 
 TPVOID TOSHI_EXPORT __stdcall tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk);
+TPVOID TOSHI_EXPORT __stdcall tmemalign(TINT a_iAlign, TINT a_iSize);
 void TOSHI_EXPORT __stdcall tfree(TPVOID a_pMem);
