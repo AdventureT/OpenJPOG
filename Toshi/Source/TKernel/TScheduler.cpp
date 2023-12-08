@@ -9,10 +9,10 @@ TBOOL Profiler_Control_ParentStart = TFALSE;
 TBOOL Profiler_Control_ParentStop = TFALSE;
 TProfiler Profiler_Program;
 
-TScheduler::TScheduler()
+TScheduler::TScheduler(TKernelInterface* a_pKernel)
 {
 	m_pCurrentTask = TNULL;
-	m_pKernel = TNULL;
+	m_pKernel = a_pKernel;
 	m_fCurrentTimeDelta = 0.0f;
 	m_fTotalTime = 0.0f;
 	m_fDebugSlowTime = 1.0f;

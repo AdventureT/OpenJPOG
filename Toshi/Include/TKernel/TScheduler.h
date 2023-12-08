@@ -14,7 +14,7 @@ class TOSHI_EXPORT TScheduler : public TObject
 	DECLARE_DYNAMIC(TScheduler);
 public:
 
-	TScheduler();
+	TScheduler(TKernelInterface* a_pKernel);
 
 	TTask* CreateTask(TClass const& a_rTaskClass, TTask* a_pTask);
 	void Update();

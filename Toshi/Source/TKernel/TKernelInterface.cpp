@@ -44,7 +44,7 @@ TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbo
 	pAbsSystem->SetPrefix("");
 	pFileManager->SetSystemPath("local");
 
-	m_pScheduler = new TScheduler();
+	m_pScheduler = new TScheduler(this);
 }
 
 TBOOL TKernelInterface::Update()

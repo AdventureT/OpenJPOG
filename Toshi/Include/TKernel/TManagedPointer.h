@@ -7,7 +7,7 @@ template<class T>
 class TOSHI_EXPORT TManagedPointer
 {
 public:
-    TManagedPointer() : m_pObject(new T())
+    TManagedPointer() : m_pObject(TNULL)
     {
 
     }
