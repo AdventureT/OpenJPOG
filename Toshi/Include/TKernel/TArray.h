@@ -2,6 +2,7 @@
 #include <TKernel/TDebug.h>
 #include "TMemory.h"
 #include "TSystemTools.h"
+#include "TMath.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -59,8 +60,9 @@ public:
 			m_iIndex++;
 			TASSERT(m_poArray);
 
-			if (m_poArray->m_iNumElements <= m_iIndex || m_iIndex == 0)
+			if (m_poArray->m_iNumElements <= m_iIndex || m_iIndex == 0) {
 				m_iIndex = -1;
+			}
 
 			return m_iIndex;
 		}
@@ -148,12 +150,10 @@ public:
 		m_iNumAllocElements = a_iSize;
 		m_iNumElements = 0;
 
-		if (m_iNumAllocElements > 0)
-		{
-			m_pData = TSTATICCAST(T*, Tmemalign(alignof(T), m_iNumAllocElements * sizeof(T)));
+		if (m_iNumAllocElements > 0) {
+			m_pData = TSTATICCAST(T*, tmemalign(alignof(T), m_iNumAllocElements * sizeof(T)));
 		}
-		else
-		{
+		else {
 			TASSERT(m_iGrowSize != 0);
 			m_pData = TNULL;
 		}
@@ -161,18 +161,15 @@ public:
 
 	~TArray()
 	{
-		if (m_pData)
-		{
+		if (m_pData) {
 			tfree(m_pData);
 		}
 	}
 
 	void Clear()
 	{
-		if (m_iNumAllocElements < 0)
-		{
-			if (m_pData)
-			{
+		if (m_iNumAllocElements < 0) {
+			if (m_pData) {
 				tfree(m_pData);
 				m_pData = TNULL;
 			}
@@ -242,35 +239,30 @@ public:
 private:
 	void GrowBy(TINT a_iGrowBy)
 	{
-		if (m_iNumAllocElements < m_iNumElements + a_iGrowBy)
-		{
+		if (m_iNumAllocElements < m_iNumElements + a_iGrowBy) {
 			TASSERT(m_iGrowSize != 0);
 
-
-
-			auto iNewSize = m_iNumAllocElements + m_iGrowSize < m_iNumElements + a_iGrowBy ? TMath::Max(m_iNumAllocElements + m_iGrowSize, m_iNumElements + a_iGrowBy);
+			TINT iNewSize = TMAX(m_iNumAllocElements + m_iGrowSize, m_iNumElements + a_iGrowBy);
 			Resize(iNewSize);
 		}
 	}
 
 	void Resize(TINT a_iNewSize)
 	{
-		if (a_iNewSize != 0)
-		{
-			T* pNewBuffer = TSTATICCAST(T*, TMemalign(alignof(T), a_iNewSize * sizeof(T)));
-			size_t uiCopySize = TMath::Min(m_iNumElements, a_iNewSize);
+		if (a_iNewSize != 0) {
+			T* pNewBuffer = TSTATICCAST(T*, tmemalign(alignof(T), a_iNewSize * sizeof(T)));
+			size_t uiCopySize = TMIN(m_iNumElements, a_iNewSize);
 
-			TUtil::MemCopy(pNewBuffer, m_pData, sizeof(T) * uiCopySize);
+			TSystem::MemCopy(pNewBuffer, m_pData, sizeof(T) * uiCopySize);
 
 			m_iNumAllocElements = a_iNewSize;
 			TASSERT(m_iNumElements <= m_iNumAllocElements);
 
-			if (m_pData) TFree(m_pData);
+			if (m_pData) tfree(m_pData);
 			m_pData = pNewBuffer;
 		}
-		else
-		{
-			if (m_pData) TFree(m_pData);
+		else {
+			if (m_pData) tfree(m_pData);
 			m_pData = TNULL;
 			m_iNumAllocElements = 0;
 			m_iNumElements = 0;
