@@ -16,6 +16,8 @@ class TOSHI_EXPORT TTask : public TObject, public TNodeTree<TTask>::TNode
 		State_Dying = BITFIELD(2),
 	};
 
+	friend class TScheduler;
+
 public:
 	virtual TBOOL Create();
 	virtual TBOOL CreateFailed();

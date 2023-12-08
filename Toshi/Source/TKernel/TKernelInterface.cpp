@@ -3,14 +3,34 @@
 #include <direct.h> // _getcwd
 #include <TKernel/TFile.h>
 #include TOSHI_MULTIPLATFORM(TNativeFile)
+#include "TUser.h"
 
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TKernelInterface, TObject);
 
+static TUINT s_iFlagUser = 0;
+static TKernelInterface* s_pKernel;
+
 TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbose)
 {
 	TWARNING("TKernelInterface::TKernelInterface() not implemented\n");
+	m_pScheduler = TNULL;
+	m_fDeltaTime = 0.0f;
+	m_fAvgFPS = 0.0f;
+	m_bVerbose = a_bVerbose;
+
+	if (!HASFLAG(s_iFlagUser & 1)) {
+		s_iFlagUser |= 1;
+		static TUser s_oUser = TUser("Toshi");
+		s_pKernel = TNULL;
+		s_oUser.Register();
+		// FUN_1003213a WTF is that???
+	}
+	s_pKernel = this;
+
+	if (m_bVerbose) TDPRINTF("Creating TKernelInterface\n");
+
 	TCHAR pPath[260];
 	TPCHAR pBuffer = _getcwd(pPath, sizeof(pPath));
 	TVALIDADDRESS(pBuffer);
@@ -23,7 +43,8 @@ TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbo
 	TVALIDADDRESS(pAbsSystem);
 	pAbsSystem->SetPrefix("");
 	pFileManager->SetSystemPath("local");
-	m_pScheduler = new TScheduler(); 
+
+	m_pScheduler = new TScheduler();
 }
 
 TBOOL TKernelInterface::Update()

@@ -18,10 +18,11 @@ public:
 
 	THPTimer* GetSystemTimer() { return &m_oSysTimer; }
 private:
-	THPTimer m_oSysTimer; // 0x8
+	THPTimer m_oSysTimer;                     // 0x8
 	TManagedPointer<TScheduler> m_pScheduler; // 0x30
-	TFLOAT m_fDeltaTime;  // 0x44
-	TFLOAT m_fAvgFPS;     // 0x48
+	TFLOAT m_fDeltaTime;                      // 0x44
+	TFLOAT m_fAvgFPS;                         // 0x48
+	TBOOL m_bVerbose;                         // 0x4C
 };
 
 TOSHI_NAMESPACE_END

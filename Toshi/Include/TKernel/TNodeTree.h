@@ -63,15 +63,15 @@ public:
 	* Inserts node as a child of another node.
 	*
 	* @param parentNode Pointer to the parent node.
-	* @param sourceNode Pointer to the node you want to insert.
+	* @param a_pSourceNode Pointer to the node you want to insert.
 	*/
-	void Insert(T* parentNode, T* sourceNode)
+	void Insert(T* parentNode, T* a_pSourceNode)
 	{
 		// Toshi::TNodeTree<Toshi::TResource>::Insert - 00691aa0
-		TASSERT(sourceNode->IsLinked() == TFALSE, "The source node shouldn't be linked");
+		TASSERT(a_pSourceNode->IsLinked() == TFALSE);
 
 		// Remove the source node from the tree
-		Remove(*sourceNode, TFALSE);
+		Remove(*a_pSourceNode, TFALSE);
 
 		// Get the first attached to parent node
 		T* firstAttached = parentNode->Attached();
@@ -81,27 +81,27 @@ public:
 			// Attach node to other attached nodes
 			T* lastAttached = firstAttached->Prev();
 
-			lastAttached->m_Next = sourceNode;
-			firstAttached->m_Prev = sourceNode;
+			lastAttached->m_Next = a_pSourceNode;
+			firstAttached->m_Prev = a_pSourceNode;
 
-			sourceNode->m_Next = firstAttached;
-			sourceNode->m_Prev = lastAttached;
+			a_pSourceNode->m_Next = firstAttached;
+			a_pSourceNode->m_Prev = lastAttached;
 		}
 		else
 		{
 			// Attach node as the first one
-			parentNode->m_Attached = sourceNode;
+			parentNode->m_Attached = a_pSourceNode;
 		}
 
-		sourceNode->m_Tree = this;
-		sourceNode->m_Parent = parentNode;
+		a_pSourceNode->m_Tree = this;
+		a_pSourceNode->m_Parent = parentNode;
 		m_Count += 1;
 	}
 
 	/**
 	* Inserts node to the default tree.
 	*
-	* @param sourceNode Pointer to the node you want to insert.
+	* @param a_pSourceNode Pointer to the node you want to insert.
 	*/
 	void InsertAtRoot(T* sourceNode)
 	{
@@ -109,7 +109,7 @@ public:
 	}
 
 	/**
-	 * Tries to remove sourceNode from the tree and inserts it to the parentNode or to the root
+	 * Tries to remove a_pSourceNode from the tree and inserts it to the parentNode or to the root
 	 */
 	void ReInsert(T* parentNode, T* sourceNode)
 	{

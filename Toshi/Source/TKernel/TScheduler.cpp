@@ -1,17 +1,36 @@
 #include "TScheduler.h"
+#include "TKernelInterface.h"
 
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TScheduler, TObject);
 
+TBOOL Profiler_Control_ParentStart = TFALSE;
+TBOOL Profiler_Control_ParentStop = TFALSE;
+TProfiler Profiler_Program;
+
 TScheduler::TScheduler()
 {
+	m_pCurrentTask = TNULL;
 	m_pKernel = TNULL;
 	m_fCurrentTimeDelta = 0.0f;
 	m_fTotalTime = 0.0f;
 	m_fDebugSlowTime = 1.0f;
 	m_iFrameCount = 0;
 	TDPRINTF("Creating TScheduler.\n");
+}
+
+TTask* TScheduler::CreateTask(TClass const& a_rTaskClass, TTask* a_pTask)
+{
+	TASSERT(a_rTaskClass.IsA(TGetClass(TTask)) == TTRUE);
+	TTask *pTask = (TTask*)a_rTaskClass.CreateObject();
+	TASSERT(pTask != TNULL);
+	m_oTaskTree.InsertAtRoot(pTask);
+	if (a_pTask) {
+		m_oTaskTree.Remove(pTask, TFALSE);
+		m_oTaskTree.Insert(a_pTask, pTask);
+	}
+	return pTask;
 }
 
 void TScheduler::Update()
@@ -61,8 +80,46 @@ void TScheduler::DestroyDyingTasks(TTask* a_pTask)
 	}
 }
 
+void TScheduler::DestroyTaskRecurse(TTask* a_pTask)
+{
+	for (TTask* pTask = a_pTask; pTask != TNULL; pTask = (pTask->Next() != a_pTask) ? a_pTask->Next() : TNULL) {
+		pTask->m_iState |= TTask::State_Dying;
+
+		if (pTask->Attached() != TNULL) {
+			DestroyTaskRecurse(pTask->Attached());
+		}
+	}
+}
+
 void TScheduler::UpdateActiveTasks(TTask* a_pTask)
 {
+	for (TTask* pTask = a_pTask; pTask != TNULL; pTask = (pTask->Next() != a_pTask) ? a_pTask->Next() : TNULL) {
+		TBOOL recurse = TTRUE;
+		if (pTask->IsCreated() && pTask->IsActive()) {
+			recurse = pTask->OnUpdate(m_fCurrentTimeDelta);
+		}
+
+		if (pTask->Attached() != TNULL && recurse) {
+			UpdateActiveTasks(pTask->Attached());
+		}
+	}
+}
+
+void TScheduler::DestroyAllTasks()
+{
+	TTask* pAttached = m_oTaskTree.AttachedToRoot();
+	if (pAttached) {
+		DestroyTask(*pAttached);
+		DeleteTaskAtomic(pAttached);
+	}
+}
+
+void TScheduler::DestroyTask(TTask& a_rTask)
+{
+	if (!a_rTask.IsDying()) {
+		a_rTask.m_iState |= TTask::State_Dying;
+		DestroyTaskRecurse(&a_rTask);
+	}
 }
 
 void TScheduler::DeleteTask(TTask* a_pTask)
