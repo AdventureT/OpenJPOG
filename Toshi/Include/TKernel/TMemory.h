@@ -1,6 +1,7 @@
 #pragma once
 #include "TDebug.h"
 #include "TThread.h"
+#include "TNodeList.h"
 
 #define TMEMORY_ROUNDUP 4
 
@@ -34,14 +35,20 @@ class TOSHI_EXPORT TMemory
 
 	};
 
-	class MemBlockSlot
-	{
 
+	class MemBlockSlot : TNodeList<MemBlockSlot>::TNode
+	{
+	public:
+		TINT m_iSlot; // 0xC
 	};
 
 	class MemBlock
 	{
-		TPVOID m_pMemBlockSlot; // 0x0 TNodeList
+	public:
+		MemBlockSlot* m_pMemBlockSlot; // 0x0
+		                               // 0x4
+		TPVOID m_pMemory;              // 0x8
+		TUINT m_uiMemorySize;          // 0xC
 	};
 public:
 
@@ -49,9 +56,14 @@ public:
 	static void __stdcall DebugPrintHALMemInfo(TCHAR const*) {};
 	static TMemory& __stdcall GetMemMangager();
 	static MemBlock* __stdcall GetGlobalBlock();
+	static MemNode* __stdcall GetMemNodeFromAddress(TPVOID a_pAddr);
+	static void __stdcall ExtendNodeSize(MemNode* a_pMemNode, TUINT a_iuSize);
 
 	TPVOID Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock* a_pMemBlock, TPCHAR a_pBuffer ,TINT a_iUnk3);
 	TBOOL Free(TPVOID a_pMem);
+
+protected:
+	static TUINT __stdcall GetFreePhysicalMemory() { return 0x8000000; }
 
 private:
 	inline static TBOOL m_bInitialised = TFALSE;

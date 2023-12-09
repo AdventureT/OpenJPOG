@@ -323,26 +323,12 @@ protected:
 	TINT m_iCount; // 0x10
 };
 
-template <class T, int C = 0>
-class TDList : public TGenericDList
+template <class T>
+class TNodeList : public TGenericNodeList
 {
 public:
 
-	TDList() { }
-
-	
-
-
-	T* Head() { return static_cast<T*>(TGenericDList::Head()); }
-	T* Tail() { return static_cast<T*>(TGenericDList::Tail()); }
-	Iterator Begin() { return (T*)(TGenericDList::Begin()); }
-	Iterator End() const { return (T*)(TGenericDList::End()); }
-	TBOOL IsEmpty() { return TGenericDList::IsEmpty(); }
-	TBOOL IsLinked() { return m_Root.IsLinked(); }
-	void RemoveHead() { TGenericDList::RemoveHead(); }
-	void RemoveTail() { TGenericDList::RemoveTail(); }
-	void InsertHead(TNode* a_pNode) { TGenericDList::InsertHead(a_pNode); }
-	void InsertTail(TNode* a_pNode) { TGenericDList::InsertTail(a_pNode); }
+	TNodeList() { }
 };
 
 TOSHI_NAMESPACE_END

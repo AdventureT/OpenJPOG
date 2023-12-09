@@ -28,6 +28,15 @@ TMemory::MemBlock* __stdcall TMemory::GetGlobalBlock()
 	return g_oMemManager.m_pMemBlock;
 }
 
+TMemory::MemNode* __stdcall TMemory::GetMemNodeFromAddress(TPVOID a_pAddr)
+{
+	return TNULL;
+}
+
+void __stdcall TMemory::ExtendNodeSize(MemNode* a_pMemNode, TUINT a_uiSize)
+{
+}
+
 TPVOID TMemory::Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock* a_pMemBlock, TPCHAR a_pBuffer, TINT a_iUnk3)
 {
 	// Let's just use malloc until i implemented this
