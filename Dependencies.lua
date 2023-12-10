@@ -16,6 +16,6 @@ ClientContentCommon = "%{wks.location}Content/Common/"
 ClientContentArch   = "%{wks.location}Content"
 
 -- modify paths based on architecture
-LibDir.fmod = LibDir.fmod .. "/" .. _OPTIONS["arch"] .. "/"
+--LibDir.fmod = LibDir.fmod .. "/" .. _OPTIONS["arch"] .. "/"
 LibDir.catch2 = LibDir.catch2 .. "/" .. _OPTIONS["arch"] .. "/"
 ClientContentArch = ClientContentArch .. "/" .. _OPTIONS["arch"] .. "/"

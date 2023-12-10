@@ -6,13 +6,15 @@ project ("TKernelInterface")
 	
 	links
 	{
-		"winmm.lib"
+		"winmm.lib",
+		"fmod.dll"
 	}
 
 	includedirs
 	{
 		"Include",
 		"Include/TKernel",
+		"%{IncludeDir.fmod}"
 	}
 
 	defines
