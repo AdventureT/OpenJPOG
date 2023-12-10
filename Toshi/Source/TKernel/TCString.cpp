@@ -93,7 +93,7 @@ void TCString::Copy(TPCCHAR a_pcString, TINT a_iLength)
 	}
 }
 
-TCString& __cdecl TCString::Format(TPCCHAR a_pcFormat, ...)
+TCString& TOSHI_CALLBACKAPI TCString::Format(TPCCHAR a_pcFormat, ...)
 {
 	char buffer[0x400];
 	va_list vargs;

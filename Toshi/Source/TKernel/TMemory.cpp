@@ -2,7 +2,7 @@
 
 TOSHI_NAMESPACE_USING
 
-TBOOL __stdcall TMemory::Initialise()
+TBOOL TOSHI_API TMemory::Initialise()
 {
 #ifdef TOSHI_NOTFINAL
 	TASSERT(!"TOSHI MEMORY SYSTEM IS NOT IN USE!!!");
@@ -16,24 +16,24 @@ TBOOL __stdcall TMemory::Initialise()
 	return TTRUE;
 }
 
-TMemory& __stdcall TMemory::GetMemMangager()
+TMemory& TOSHI_API TMemory::GetMemMangager()
 {
 	Initialise(); 
 	return g_oMemManager;
 }
 
-TMemory::MemBlock* __stdcall TMemory::GetGlobalBlock()
+TMemory::MemBlock* TOSHI_API TMemory::GetGlobalBlock()
 {
 	Initialise(); 
 	return g_oMemManager.m_pMemBlock;
 }
 
-TMemory::MemNode* __stdcall TMemory::GetMemNodeFromAddress(TPVOID a_pAddr)
+TMemory::MemNode* TOSHI_API TMemory::GetMemNodeFromAddress(TPVOID a_pAddr)
 {
 	return TNULL;
 }
 
-void __stdcall TMemory::ExtendNodeSize(MemNode* a_pMemNode, TUINT a_uiSize)
+void TOSHI_API TMemory::ExtendNodeSize(MemNode* a_pMemNode, TUINT a_uiSize)
 {
 }
 
@@ -72,7 +72,7 @@ TBOOL TMemory::Free(TPVOID a_pMem)
 	return TBOOL();
 }
 
-TPVOID TOSHI_EXPORT __stdcall tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk)
+TPVOID TOSHI_EXPORT TOSHI_API tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk)
 {
 #ifdef TOSHI_NOTFINAL
 	return malloc(a_iSize);
@@ -81,7 +81,7 @@ TPVOID TOSHI_EXPORT __stdcall tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUn
 #endif
 }
 
-TPVOID TOSHI_EXPORT __stdcall tmemalign(TINT a_iAlign, TINT a_iSize)
+TPVOID TOSHI_EXPORT TOSHI_API tmemalign(TINT a_iAlign, TINT a_iSize)
 {
 #ifdef TOSHI_NOTFINAL
 	return malloc(a_iSize);
@@ -90,7 +90,7 @@ TPVOID TOSHI_EXPORT __stdcall tmemalign(TINT a_iAlign, TINT a_iSize)
 #endif
 }
 
-void TOSHI_EXPORT __stdcall tfree(TPVOID a_pMem)
+void TOSHI_EXPORT TOSHI_API tfree(TPVOID a_pMem)
 {
 #ifdef TOSHI_NOTFINAL
 	free(a_pMem);

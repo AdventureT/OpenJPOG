@@ -5,10 +5,10 @@
 TOSHI_NAMESPACE_BEGIN
 
 // TClassProps definitions
-typedef class TObject* (__stdcall*t_CreateTObject)();
-typedef class TObject* (__stdcall*t_CreateTObjectInPlace)(TPVOID);
-typedef void  (__stdcall*t_InitializeStatic)();
-typedef void  (__stdcall*t_UninitializeStatic)();
+typedef class TObject* (TOSHI_API*t_CreateTObject)();
+typedef class TObject* (TOSHI_API*t_CreateTObjectInPlace)(TPVOID);
+typedef void  (TOSHI_API*t_InitializeStatic)();
+typedef void  (TOSHI_API*t_UninitializeStatic)();
 
 // RecurseTree definitions
 typedef TBOOL (*t_RecurceTreeCheck)(class TClass*, TPCVOID);
@@ -35,10 +35,10 @@ public:
 
 	void DeinitialiseStatic();
 	TBOOL DetachClassFromParent() { return TTRUE; }
-	static void __stdcall DumpObjectClassTree();
-	static const TClass* __stdcall Find(TPCCHAR a_pcClassName, const TClass* a_pClass);
-	static const TClass* __stdcall FindCommonBaseClass(const TClass& a_rClass, const TClass& a_rBaseClass);
-	static const TClass* __stdcall FindRecurse(TPCCHAR a_pcClassName, const TClass* a_pClass, TBOOL a_bHasPrevious);
+	static void TOSHI_API DumpObjectClassTree();
+	static const TClass* TOSHI_API Find(TPCCHAR a_pcClassName, const TClass* a_pClass);
+	static const TClass* TOSHI_API FindCommonBaseClass(const TClass& a_rClass, const TClass& a_rBaseClass);
+	static const TClass* TOSHI_API FindRecurse(TPCCHAR a_pcClassName, const TClass* a_pClass, TBOOL a_bHasPrevious);
 
 	TPCCHAR GetName() const { return m_pcName; }
 	const TClass* GetParent() const { return m_pParent; }
@@ -101,17 +101,17 @@ public: \
 	virtual TClass& GetClass() const;                \
 	static TClass m_sClass;                          \
 private: \
-	static TObject* __stdcall CreateObject();        \
-	static TObject* __stdcall CreateObjectInPlace(TPVOID a_pMem); \
-	static void __stdcall DeinitialiseStatic();      \
-	static void __stdcall InitialiseStatic();        \
+	static TObject* TOSHI_API CreateObject();        \
+	static TObject* TOSHI_API CreateObjectInPlace(TPVOID a_pMem); \
+	static void TOSHI_API DeinitialiseStatic();      \
+	static void TOSHI_API InitialiseStatic();        \
 
 #define IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, pfnCreateObject, pfnCreateObjectInPlace, version) \
 	TClass& class_name::GetClass() const \
 		{ return class_name::m_sClass; } \
-	void __stdcall class_name::DeinitialiseStatic() \
+	void TOSHI_API class_name::DeinitialiseStatic() \
 		{  } \
-	void __stdcall class_name::InitialiseStatic() \
+	void TOSHI_API class_name::InitialiseStatic() \
 		{  } \
 	TClass class_name::m_sClass = TClass( \
 		#class_name, &TGetClass(base_class_name), pfnCreateObject, pfnCreateObjectInPlace, \
@@ -119,32 +119,32 @@ private: \
 
 
 #define IMPLEMENT_DYNCREATE(class_name, base_class_name) \
-	TObject* __stdcall class_name::CreateObject() \
+	TObject* TOSHI_API class_name::CreateObject() \
 		{ return new class_name; } \
-	TObject* __stdcall class_name::CreateObjectInPlace(TPVOID a_pMem) \
+	TObject* TOSHI_API class_name::CreateObjectInPlace(TPVOID a_pMem) \
 		{ return new (a_pMem) class_name; } \
 	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, class_name::CreateObject, class_name::CreateObjectInPlace, 1)
 
 #define IMPLEMENT_DYNAMIC(class_name, base_class_name) \
-	TObject* __stdcall class_name::CreateObject() \
+	TObject* TOSHI_API class_name::CreateObject() \
 		{ TASSERT(!"This class does not support dynamic creation!"); return TNULL; } \
-	TObject* __stdcall class_name::CreateObjectInPlace(TPVOID a_pMem) \
+	TObject* TOSHI_API class_name::CreateObjectInPlace(TPVOID a_pMem) \
 		{ TASSERT(!"This class does not support dynamic creation!"); return TNULL; } \
 	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, class_name::CreateObject, class_name::CreateObjectInPlace, 1)
 
 class TOSHI_EXPORT TObject
 {	
 private: 
-	static TObject* __stdcall CreateObject()
+	static TObject* TOSHI_API CreateObject()
 	{
 		return new TObject;
 	}
-	static TObject* __stdcall CreateObjectInPlace(TPVOID a_pMem)
+	static TObject* TOSHI_API CreateObjectInPlace(TPVOID a_pMem)
 	{
 		return new (a_pMem) TObject;
 	}
-	static void __stdcall DeinitialiseStatic() {}
-	static void __stdcall InitialiseStatic() {}
+	static void TOSHI_API DeinitialiseStatic() {}
+	static void TOSHI_API InitialiseStatic() {}
 	
 public:
 	virtual void Delete() { delete this; }

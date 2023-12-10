@@ -14,7 +14,7 @@ public:
 class TOSHI_EXPORT TLocalisedString
 {
 public:
-	static TFreeList& __stdcall GetFreeList() { return m_oFreelist; }
+	static TFreeList& TOSHI_API GetFreeList() { return m_oFreelist; }
 
 private:
 	static TFreeList m_oFreelist;

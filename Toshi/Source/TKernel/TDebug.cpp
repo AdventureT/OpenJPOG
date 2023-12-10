@@ -9,7 +9,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-void __stdcall TDebug_VPrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs)
+void TOSHI_API TDebug_VPrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs)
 {
 	if ((a_uiFlags & FLAG_UNK3) == 0) {
 		if ((a_uiFlags & FLAG_UNK1) == 0) {
@@ -33,12 +33,12 @@ void __stdcall TDebug_VPrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list
 	TDebug::DebugFilePrintString(pcString);
 }
 
-void __stdcall TDebug_VPrintf(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs)
+void TOSHI_API TDebug_VPrintf(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs)
 {
 	TDebug_VPrintfDirect(a_uiFlags, a_pcFormat, a_vargs);
 }
 
-void __cdecl TDebug_Printf(TPCCHAR a_pcFormat, ...)
+void TOSHI_CALLBACKAPI TDebug_Printf(TPCCHAR a_pcFormat, ...)
 {
 	va_list args;
 	va_start(args, a_pcFormat);
@@ -46,7 +46,7 @@ void __cdecl TDebug_Printf(TPCCHAR a_pcFormat, ...)
 	va_end(args);
 }
 
-void __cdecl TDebug_Printf(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...)
+void TOSHI_CALLBACKAPI TDebug_Printf(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...)
 {
 	va_list args;
 	va_start(args, a_pcFormat);
@@ -54,7 +54,7 @@ void __cdecl TDebug_Printf(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...)
 	va_end(args);
 }
 
-void __cdecl TDebug_PrintfDirect(TPCCHAR a_pcFormat, ...)
+void TOSHI_CALLBACKAPI TDebug_PrintfDirect(TPCCHAR a_pcFormat, ...)
 {
 	HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (hConsoleOutput != INVALID_HANDLE_VALUE) {
@@ -67,7 +67,7 @@ void __cdecl TDebug_PrintfDirect(TPCCHAR a_pcFormat, ...)
 	}
 }
 
-void __cdecl TDebug_PrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...)
+void TOSHI_CALLBACKAPI TDebug_PrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...)
 {
 	va_list vargs;
 	va_start(vargs, a_pcFormat);
@@ -75,7 +75,7 @@ void __cdecl TDebug_PrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...)
 	va_end(vargs);
 }
 
-void __cdecl TDebug_CPrintf(TINT a_iFlags, TPCCHAR a_pcFormat, ...)
+void TOSHI_CALLBACKAPI TDebug_CPrintf(TINT a_iFlags, TPCCHAR a_pcFormat, ...)
 {
 	if (a_iFlags != 0) {
 		va_list vargs;
@@ -85,7 +85,7 @@ void __cdecl TDebug_CPrintf(TINT a_iFlags, TPCCHAR a_pcFormat, ...)
 	}
 }
 
-void __cdecl TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...)
+void TOSHI_CALLBACKAPI TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...)
 {
 	if (TDebug::s_iMessageLevel <= a_eMsgLevel) {
 		va_list vargs;
@@ -95,7 +95,7 @@ void __cdecl TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ..
 	}
 }
 
-void __cdecl TDebug_PrintError(TPCCHAR a_pcFormat, ...)
+void TOSHI_CALLBACKAPI TDebug_PrintError(TPCCHAR a_pcFormat, ...)
 {
 	HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (hConsoleOutput != INVALID_HANDLE_VALUE) {
@@ -112,7 +112,7 @@ void __cdecl TDebug_PrintError(TPCCHAR a_pcFormat, ...)
 	}
 }
 
-void __cdecl TDebug_PrintWarning(TPCCHAR a_pcFormat, ...)
+void TOSHI_CALLBACKAPI TDebug_PrintWarning(TPCCHAR a_pcFormat, ...)
 {
 	HANDLE hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (hConsoleOutput != INVALID_HANDLE_VALUE) {
@@ -207,7 +207,7 @@ TBOOL TDebug::AssertHandler(TPCHAR a_pcExpression, TPCHAR a_pcFile, TINT a_iLine
 	return bRes;
 }
 
-void __stdcall TDebug::PrintIndent()
+void TOSHI_API TDebug::PrintIndent()
 {
 	TINT i;
 	for (i = s_iLogIndent * 2; i >= 16; i-=16) {
@@ -218,7 +218,7 @@ void __stdcall TDebug::PrintIndent()
 	}
 }
 
-void __stdcall TDebug::DebugFilePrintString(TPCHAR a_pcString)
+void TOSHI_API TDebug::DebugFilePrintString(TPCHAR a_pcString)
 {
 	if (m_pDebugFile && m_bEnableDebugFile) {
 
@@ -234,7 +234,7 @@ TOSHI_NAMESPACE_END
 
 TOSHI_NAMESPACE_BEGIN
 
-void __cdecl TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...)
+void TOSHI_CALLBACKAPI TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...)
 {
 	if (TDebug::s_iMessageLevel <= a_eMsgLevel) {
 		va_list vargs;
@@ -244,7 +244,7 @@ void __cdecl TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ..
 	}
 }
 
-void __stdcall TDebug::DebugFilePrintString(TPCHAR a_pcString)
+void TOSHI_API TDebug::DebugFilePrintString(TPCHAR a_pcString)
 {
 	if (m_pDebugFile && m_bEnableDebugFile) {
 

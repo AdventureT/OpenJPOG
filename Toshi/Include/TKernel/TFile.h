@@ -113,7 +113,7 @@ public:
 
     TCString MakeAbsolutePath(TCString const& a_rPath);
 
-    static TFileManager* __stdcall GetFileManager() { return s_pFileManager; }
+    static TFileManager* TOSHI_API GetFileManager() { return s_pFileManager; }
     void SetSystemPath(TCString const& a_rSysPath)
     {
         m_pcSystemPath = a_rSysPath;
@@ -124,7 +124,7 @@ public:
 private:
     void ValidateSystemPath();
     void InvalidateSystemPath() { m_bValidated = false; };
-    static TFileSystem* __stdcall FindFileSystem(TDList<TFileSystem>& a_rFileSystems, const TCString& a_rFileSysName);
+    static TFileSystem* TOSHI_API FindFileSystem(TDList<TFileSystem>& a_rFileSystems, const TCString& a_rFileSysName);
 private:
     inline static TFileManager *s_pFileManager = TNULL;
 
@@ -178,7 +178,7 @@ public:
     static TFile* Create(const TCString& a_sName, TUINT a_uiMode);
     static void Destroy(TFile* a_pFile);
     static void PrintFileAccess(TBOOL a_bFileAccess) {}
-    static TCString __stdcall ConcatPath(TCString const& a_rPath1, TCString const& a_rPath2);
+    static TCString TOSHI_API ConcatPath(TCString const& a_rPath1, TCString const& a_rPath2);
 
     void Destroy();
     TFileSystem* GetFileSystem() const { return m_pFileSystem; }

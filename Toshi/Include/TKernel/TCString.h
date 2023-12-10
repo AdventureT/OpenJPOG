@@ -45,7 +45,7 @@ public:
 	void Copy(const TCString& a_rOther, TINT a_iLength = -1);
 	void Copy(TPCCHAR a_pcString, TINT a_iLength = -1);
 
-	TCString& __cdecl Format(TPCCHAR a_pcFormat, ...);
+	TCString& TOSHI_CALLBACKAPI Format(TPCCHAR a_pcFormat, ...);
 	TINT Find(char a_cFind, TINT a_iIndex = 0) const;
 
 	void Truncate(TINT a_iLength);

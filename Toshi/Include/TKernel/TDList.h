@@ -92,7 +92,7 @@ protected:
 	const TNode* End() const { return &m_Root; }
 	const TNode* REnd() const { return &m_Root; }
 
-	static void __stdcall InsertSegmentAfter(TNode* node1, TNode* node2, TNode* node3)
+	static void TOSHI_API InsertSegmentAfter(TNode* node1, TNode* node2, TNode* node3)
 	{
 		node1->m_pNext = node3;
 		node2->m_pPrev = node3->m_pPrev;
@@ -100,7 +100,7 @@ protected:
 		node2->m_pPrev->m_pNext = node2;
 	}
 
-	static void __stdcall InsertSegmentBefore(TNode* node1, TNode* node2, TNode* node3)
+	static void TOSHI_API InsertSegmentBefore(TNode* node1, TNode* node2, TNode* node3)
 	{
 		node2->m_pPrev = node3;
 		node1->m_pNext = node3->m_pNext;
@@ -124,7 +124,7 @@ protected:
 		node1->m_pNext->m_pPrev = node1;
 	}
 
-	static void __stdcall RemoveSegment(TNode* node1, TNode* node2)
+	static void TOSHI_API RemoveSegment(TNode* node1, TNode* node2)
 	{
 		node1->m_pPrev->m_pNext = node2->m_pNext;
 		node2->m_pNext->m_pPrev = node1->m_pPrev;

@@ -52,18 +52,18 @@ class TOSHI_EXPORT TMemory
 	};
 public:
 
-	static TBOOL __stdcall Initialise();
-	static void __stdcall DebugPrintHALMemInfo(TCHAR const*) {};
-	static TMemory& __stdcall GetMemMangager();
-	static MemBlock* __stdcall GetGlobalBlock();
-	static MemNode* __stdcall GetMemNodeFromAddress(TPVOID a_pAddr);
-	static void __stdcall ExtendNodeSize(MemNode* a_pMemNode, TUINT a_iuSize);
+	static TBOOL TOSHI_API Initialise();
+	static void TOSHI_API DebugPrintHALMemInfo(TCHAR const*) {};
+	static TMemory& TOSHI_API GetMemMangager();
+	static MemBlock* TOSHI_API GetGlobalBlock();
+	static MemNode* TOSHI_API GetMemNodeFromAddress(TPVOID a_pAddr);
+	static void TOSHI_API ExtendNodeSize(MemNode* a_pMemNode, TUINT a_iuSize);
 
 	TPVOID Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock* a_pMemBlock, TPCHAR a_pBuffer ,TINT a_iUnk3);
 	TBOOL Free(TPVOID a_pMem);
 
 protected:
-	static TUINT __stdcall GetFreePhysicalMemory() { return 0x8000000; }
+	static TUINT TOSHI_API GetFreePhysicalMemory() { return 0x8000000; }
 
 private:
 	inline static TBOOL m_bInitialised = TFALSE;
@@ -76,6 +76,6 @@ inline static TMemory g_oMemManager;
 
 TOSHI_NAMESPACE_END
 
-TPVOID TOSHI_EXPORT __stdcall tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk);
-TPVOID TOSHI_EXPORT __stdcall tmemalign(TINT a_iAlign, TINT a_iSize);
-void TOSHI_EXPORT __stdcall tfree(TPVOID a_pMem);
+TPVOID TOSHI_EXPORT TOSHI_API tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk);
+TPVOID TOSHI_EXPORT TOSHI_API tmemalign(TINT a_iAlign, TINT a_iSize);
+void TOSHI_EXPORT TOSHI_API tfree(TPVOID a_pMem);

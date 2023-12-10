@@ -11,7 +11,7 @@ public:
 	void Start();
 	void Stop();
 
-	static void __stdcall PrintSummary();
+	static void TOSHI_API PrintSummary();
 
 private:
 	inline static TBOOL m_sProfilerStopped = TTRUE;

@@ -18,7 +18,7 @@ void TFile::Destroy(TFile* a_pFile)
 	}
 }
 
-TCString __stdcall TFile::ConcatPath(TCString const& a_rPath1, TCString const& a_rPath2)
+TCString TOSHI_API TFile::ConcatPath(TCString const& a_rPath1, TCString const& a_rPath2)
 {
 	TCString str = TCString();
 
@@ -101,7 +101,7 @@ TCString TFileManager::MakeAbsolutePath(TCString const& a_rPath)
 	return TFile::ConcatPath(a_rPath, GetWorkingDirectory());
 }
 
-TFileSystem* __stdcall TFileManager::FindFileSystem(TDList<TFileSystem>& a_rFileSystems, const TCString& a_rFileSysName)
+TFileSystem* TOSHI_API TFileManager::FindFileSystem(TDList<TFileSystem>& a_rFileSystems, const TCString& a_rFileSysName)
 {
 	for (auto pNode = a_rFileSystems.Begin(); pNode != a_rFileSystems.End(); pNode++) {
 		if (pNode->GetName() == a_rFileSysName) return pNode;

@@ -38,7 +38,7 @@ public:
 
 	TINT GetUserCount() { return m_iUserCount; }
 	TUser* GetUser(TINT a_iUserID) { return m_pUsers[a_iUserID]; }
-	static TUserHandler& __stdcall GetSingleton();
+	static TUserHandler& TOSHI_API GetSingleton();
 
 private:
 	static TUserHandler ms_oSingleton;

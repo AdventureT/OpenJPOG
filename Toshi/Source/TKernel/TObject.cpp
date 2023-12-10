@@ -65,26 +65,26 @@ TBOOL DumpObjectClassTree_Check(TClass* a_pClass, TPCVOID a_pData)
 	return TTRUE;
 }
 
-void __stdcall TClass::DumpObjectClassTree()
+void TOSHI_API TClass::DumpObjectClassTree()
 {
 	s_iCounter = 0;
 	TClass* pObject = (TClass*)Find("TObject", TNULL);
 	pObject->RecurseTree(DumpObjectClassTree_BaseBegin, DumpObjectClassTree_BaseEnd, DumpObjectClassTree_Check, TNULL);
 }
 
-const TClass* __stdcall TClass::Find(TPCCHAR a_pcClassName, const TClass* a_pClass)
+const TClass* TOSHI_API TClass::Find(TPCCHAR a_pcClassName, const TClass* a_pClass)
 {
 	TASSERT(a_pcClassName[1]!=0);
 	if (a_pClass == TNULL) a_pClass = &TGetClass(TObject);
 	return FindRecurse(a_pcClassName, a_pClass, TFALSE);
 }
 
-const TClass* __stdcall TClass::FindCommonBaseClass(const TClass& a_rClass, const TClass& a_rBaseClass)
+const TClass* TOSHI_API TClass::FindCommonBaseClass(const TClass& a_rClass, const TClass& a_rBaseClass)
 {
 	return nullptr;
 }
 
-const TClass* __stdcall TClass::FindRecurse(TPCCHAR a_pcClassName, const TClass* a_pClass, TBOOL a_bHasPrevious)
+const TClass* TOSHI_API TClass::FindRecurse(TPCCHAR a_pcClassName, const TClass* a_pClass, TBOOL a_bHasPrevious)
 {
 	while (a_pClass) {
 		TClass* pPrevious = a_bHasPrevious ? a_pClass->m_pPrevious : TNULL;

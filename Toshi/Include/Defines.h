@@ -24,7 +24,9 @@
 #define TOSHI_MULTIPLATFORM(FILENAME) STRINGIFY(STRCAT_3(Win/, FILENAME, Win.h))
 #endif
 
-#define TOSHI_EXPORT __declspec(dllexport)
+#define TOSHI_EXPORT      __declspec(dllexport)
+#define TOSHI_API         __stdcall
+#define TOSHI_CALLBACKAPI __cdecl
 
 #define TOSHI_NAMESPACE_BEGIN namespace Toshi {
 #define TOSHI_NAMESPACE_END }

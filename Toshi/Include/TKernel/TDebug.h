@@ -41,13 +41,13 @@ public:
 
 	};
 
-	static TBOOL __stdcall AssertHandler(TPCHAR a_pcExpression, TPCHAR a_pcFile, TINT a_iLine, TBOOL& a_bUnk);
-	static void __stdcall PrintIndent();
-	static void __stdcall DebugFilePrintString(TPCHAR a_pcString);
+	static TBOOL TOSHI_API AssertHandler(TPCHAR a_pcExpression, TPCHAR a_pcFile, TINT a_iLine, TBOOL& a_bUnk);
+	static void TOSHI_API PrintIndent();
+	static void TOSHI_API DebugFilePrintString(TPCHAR a_pcString);
 
-	static TBOOL __stdcall EnableDebugFile(TBOOL a_bEnable) { TBOOL previous = m_bEnableDebugFile; m_bEnableDebugFile = a_bEnable; return previous; }
-	static TBOOL __stdcall IsDebugFileEnabled() { return m_bEnableDebugFile; }
-	static TBOOL __stdcall IsValidAddress(TPCVOID a_pMem) { return a_pMem && a_pMem != (TPCVOID)0xCDCDCDCD && a_pMem >= (TPCVOID)80; }
+	static TBOOL TOSHI_API EnableDebugFile(TBOOL a_bEnable) { TBOOL previous = m_bEnableDebugFile; m_bEnableDebugFile = a_bEnable; return previous; }
+	static TBOOL TOSHI_API IsDebugFileEnabled() { return m_bEnableDebugFile; }
+	static TBOOL TOSHI_API IsValidAddress(TPCVOID a_pMem) { return a_pMem && a_pMem != (TPCVOID)0xCDCDCDCD && a_pMem >= (TPCVOID)80; }
 
 	inline static TINT s_iLogIndent = 0;
 	inline static TCHAR s_sSixteenSpace[16] = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
@@ -57,22 +57,22 @@ public:
 
 };
 
-void TOSHI_EXPORT __stdcall TDebug_VPrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
+void TOSHI_EXPORT TOSHI_API TDebug_VPrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
 
-void TOSHI_EXPORT __stdcall TDebug_VPrintf(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
+void TOSHI_EXPORT TOSHI_API TDebug_VPrintf(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
 
-void TOSHI_EXPORT __cdecl TDebug_Printf(TPCCHAR a_pcFormat, ...);
-void TOSHI_EXPORT __cdecl TDebug_Printf(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_Printf(TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_Printf(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...);
 
-void TOSHI_EXPORT __cdecl TDebug_PrintfDirect(TPCCHAR a_pcFormat, ...);
-void TOSHI_EXPORT __cdecl TDebug_PrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_PrintfDirect(TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_PrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...);
 
-void TOSHI_EXPORT __cdecl TDebug_CPrintf(TINT a_iFlags, TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_CPrintf(TINT a_iFlags, TPCCHAR a_pcFormat, ...);
 
-void TOSHI_EXPORT __cdecl TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...);
 
-void TOSHI_EXPORT __cdecl TDebug_PrintError(TPCCHAR a_pcFormat, ...);
-void TOSHI_EXPORT __cdecl TDebug_PrintWarning(TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_PrintError(TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_PrintWarning(TPCCHAR a_pcFormat, ...);
 
 
 TOSHI_NAMESPACE_END
@@ -105,7 +105,7 @@ public:
 
 	};
 
-	static void __stdcall DebugFilePrintString(TPCHAR a_pcString);
+	static void TOSHI_API DebugFilePrintString(TPCHAR a_pcString);
 
 	static TBOOL EnableDebugFile(TBOOL a_bEnable) { TBOOL previous = m_bEnableDebugFile; m_bEnableDebugFile = a_bEnable; return previous; }
 	static TBOOL IsDebugFileEnabled() { return m_bEnableDebugFile; }
@@ -119,7 +119,7 @@ public:
 
 };
 
-void TOSHI_EXPORT __cdecl TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...);
+void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...);
 
 TOSHI_NAMESPACE_END
 
