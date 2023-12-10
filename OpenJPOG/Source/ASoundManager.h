@@ -1,13 +1,30 @@
 #pragma once
 #include "TKernel/TDebug.h"
+#include "TKernel/TObject.h"
 #include "fmod.h"
 
-TOSHI_NAMESPACE_BEGIN
+TOSHI_NAMESPACE_USING
 
-class ASoundManager
+class ASample
 {
-public:
-	TFLOAT GetPitch(TINT a_iChannel) const;
+
 };
 
-TOSHI_NAMESPACE_END
+class ASoundManager : public TObject
+{
+	DECLARE_DYNAMIC(ASoundManager);
+
+	struct AChannel
+	{
+
+	};
+
+protected:
+	inline static ASample** s_aSamples = TNULL;
+
+public:
+	TFLOAT GetPitch(TINT a_iChannel) const;
+	TBOOL GetPaused(TINT a_iChannel) const { return a_iChannel != -1 ? FSOUND_GetPaused(a_iChannel) : TFALSE; }
+	TFLOAT GetPan(TINT a_iChannel) const { return a_iChannel != -1 ? -1.0f + (FSOUND_GetPan(a_iChannel) / 127.5f) : 0.0f; }
+	TFLOAT GetSFXVolume() { return 1.0f; };
+};

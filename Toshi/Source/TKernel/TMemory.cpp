@@ -66,7 +66,8 @@ TBOOL TMemory::Free(TPVOID a_pMem)
 	TMutexLock lock;
 	Initialise();
 	lock.Create(g_pMutex);
-	if (a_pMem) {
+	TUINT uiMem = reinterpret_cast<TUINT>(a_pMem);
+	if ((uiMem & 3) == 0 && a_pMem) {
 		Initialise();
 	}
 	return TBOOL();
