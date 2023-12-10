@@ -10,7 +10,6 @@
 *.vcxproj
 *.vcxproj.*
 *.idb
-*.dll
 *.dll.*
 *.lib
 *.lib.*
