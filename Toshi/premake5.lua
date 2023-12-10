@@ -6,8 +6,7 @@ project ("TKernelInterface")
 	
 	links
 	{
-		"winmm.lib",
-		"fmod.dll"
+		"winmm.lib"
 	}
 
 	includedirs
@@ -21,6 +20,11 @@ project ("TKernelInterface")
 	{
 		"TOSHI_USER_ENGINE",
 		"_CRT_SECURE_NO_WARNINGS"
+	}
+	
+	libdirs
+	{
+		"%{LibDir.fmod}"
 	}
 	
 	filter "files:**.c"
