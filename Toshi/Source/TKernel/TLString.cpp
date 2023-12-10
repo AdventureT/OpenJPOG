@@ -2,4 +2,4 @@
 
 TOSHI_NAMESPACE_USING
 
-TFreeList TLocalisedString::m_oFreelist = TFreeList(sizeof(TLocalisedString), 0, 2000, (char*)"")
+TFreeList TLocalisedString::m_oFreelist = TFreeList(sizeof(TLocalisedString), 0, 2000, (char*)"");

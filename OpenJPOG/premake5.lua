@@ -20,6 +20,7 @@ project ("OpenJPOG")
 	includedirs
 	{
 		"%{wks.location}/Toshi/Include",
+		"%{IncludeDir.fmod}"
 	}
 	
 	defines
@@ -27,10 +28,16 @@ project ("OpenJPOG")
 		"TOSHI_USER_CLIENT"
 	}
 	
+	libdirs
+	{
+		"%{LibDir.fmod}"
+	}
+	
 	postbuildcommands
 	{
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TKernelInterface/TKernelInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TApplication/TApplication.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
+		--"{COPY} \"%{wks.location}Toshi/vendor/fmod/fmod.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 	}
 
 	filter "system:windows"
