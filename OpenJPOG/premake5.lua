@@ -8,7 +8,8 @@ project ("OpenJPOG")
 		"TKernelInterface",
 		"TApplication",
 		"libtheora",
-		"theoraplay"
+		"theoraplay",
+		"fmodvc.lib"
 	}
 
 	files
@@ -33,7 +34,7 @@ project ("OpenJPOG")
 		"%{LibDir.fmod}"
 	}
 	
-	prebuildcommands
+	postbuildcommands
 	{
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TKernelInterface/TKernelInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TApplication/TApplication.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
