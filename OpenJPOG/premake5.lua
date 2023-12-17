@@ -2,6 +2,7 @@ project ("OpenJPOG")
 	language "C++"
 	cppdialect "C++20"
 	characterset "ASCII"
+	staticruntime "on"
 
 	links
 	{

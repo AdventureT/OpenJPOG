@@ -7,7 +7,7 @@ TOSHI_NAMESPACE_BEGIN
 
 class TOSHI_EXPORT TTask : public TObject, public TNodeTree<TTask>::TNode
 {
-	DECLARE_DYNAMIC(TKernelInterface);
+	DECLARE_DYNAMIC(TTask, TObject);
 
 	enum State
 	{

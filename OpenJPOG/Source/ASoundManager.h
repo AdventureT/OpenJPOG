@@ -3,14 +3,12 @@
 #include "TKernel/TObject.h"
 #include "fmod.h"
 
-TOSHI_NAMESPACE_USING
-
 class ASample
 {
 
 };
 
-class ASoundManager : public TObject
+class ASoundManager : public Toshi::TObject
 {
 	DECLARE_DYNAMIC(ASoundManager);
 

@@ -95,40 +95,39 @@ private:
 	TBOOL m_bInitialised;                   // 0x24
 };
 
-
 #define DECLARE_DYNAMIC(class_name) \
 public: \
-	virtual TClass& GetClass() const;                \
-	static TClass m_sClass;                          \
+	virtual Toshi::TClass& GetClass() const;                \
+	static Toshi::TClass m_sClass;                          \
 private: \
-	static TObject* TOSHI_API CreateObject();        \
-	static TObject* TOSHI_API CreateObjectInPlace(TPVOID a_pMem); \
+	static Toshi::TObject* TOSHI_API CreateObject();        \
+	static Toshi::TObject* TOSHI_API CreateObjectInPlace(TPVOID a_pMem); \
 	static void TOSHI_API DeinitialiseStatic();      \
 	static void TOSHI_API InitialiseStatic();        \
 
 #define IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, pfnCreateObject, pfnCreateObjectInPlace, version) \
-	TClass& class_name::GetClass() const \
+	Toshi::TClass& class_name::GetClass() const \
 		{ return class_name::m_sClass; } \
 	void TOSHI_API class_name::DeinitialiseStatic() \
 		{  } \
 	void TOSHI_API class_name::InitialiseStatic() \
 		{  } \
-	TClass class_name::m_sClass = TClass( \
+	Toshi::TClass class_name::m_sClass = { \
 		#class_name, &TGetClass(base_class_name), pfnCreateObject, pfnCreateObjectInPlace, \
-			class_name::InitialiseStatic, class_name::DeinitialiseStatic, version); \
+			class_name::InitialiseStatic, class_name::DeinitialiseStatic, version }; \
 
 
 #define IMPLEMENT_DYNCREATE(class_name, base_class_name) \
-	TObject* TOSHI_API class_name::CreateObject() \
+	Toshi::TObject* TOSHI_API class_name::CreateObject() \
 		{ return new class_name; } \
-	TObject* TOSHI_API class_name::CreateObjectInPlace(TPVOID a_pMem) \
+	Toshi::TObject* TOSHI_API class_name::CreateObjectInPlace(TPVOID a_pMem) \
 		{ return new (a_pMem) class_name; } \
 	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, class_name::CreateObject, class_name::CreateObjectInPlace, 1)
 
 #define IMPLEMENT_DYNAMIC(class_name, base_class_name) \
-	TObject* TOSHI_API class_name::CreateObject() \
+	Toshi::TObject* TOSHI_API class_name::CreateObject() \
 		{ TASSERT(!"This class does not support dynamic creation!"); return TNULL; } \
-	TObject* TOSHI_API class_name::CreateObjectInPlace(TPVOID a_pMem) \
+	Toshi::TObject* TOSHI_API class_name::CreateObjectInPlace(TPVOID a_pMem) \
 		{ TASSERT(!"This class does not support dynamic creation!"); return TNULL; } \
 	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, class_name::CreateObject, class_name::CreateObjectInPlace, 1)
 

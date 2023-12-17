@@ -1,0 +1,6 @@
+#include "ARootTask.h"
+
+TOSHI_NAMESPACE_USING
+
+IMPLEMENT_DYNCREATE(ARootTask, TTask);
+
