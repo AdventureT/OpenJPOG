@@ -29,6 +29,8 @@ public:
 	virtual void OnActivate();
 	virtual void OnDeactivate();
 
+	void Activate(TBOOL a_bActivate);
+
 	TBOOL IsCreated() const { return HASFLAG(m_iState & State_Created); }
 	TBOOL IsActive() const { return HASFLAG(m_iState & State_Active); }
 	TBOOL IsDying() const { return HASFLAG(m_iState & State_Dying); }

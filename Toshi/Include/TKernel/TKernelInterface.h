@@ -17,6 +17,7 @@ public:
 	void DumpInfo();
 
 	THPTimer* GetSystemTimer() { return &m_oSysTimer; }
+	TScheduler* GetScheduler() const { return (TScheduler*)&m_pScheduler; }
 private:
 	THPTimer m_oSysTimer;                     // 0x8
 	TManagedPointer<TScheduler> m_pScheduler; // 0x30

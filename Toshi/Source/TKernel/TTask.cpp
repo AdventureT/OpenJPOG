@@ -59,3 +59,7 @@ void TTask::OnActivate()
 void TTask::OnDeactivate()
 {
 }
+
+void TTask::Activate(TBOOL a_bActivate)
+{
+}
