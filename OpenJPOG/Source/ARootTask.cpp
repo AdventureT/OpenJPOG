@@ -1,7 +1,5 @@
 #include "ARootTask.h"
-
-class AApplication;
-extern AApplication g_oTheApp;
+#include "main.h"
 
 TOSHI_NAMESPACE_USING
 
@@ -13,5 +11,4 @@ void ARootTask::AllocateInputSystem()
 	ADummyTask* pInputTask = g_oTheApp.GetInputRootTask();
 	m_pInputTask = pScheduler->CreateTask(TGetClass(ADummyTask), pInputTask);
 	m_pVibrationTask = (AVibrationManager*)pScheduler->CreateTask(TGetClass(AVibrationManager), pInputTask);
-
 }

@@ -22,5 +22,3 @@ public:
 private:
 	Toshi::TCString m_szName;
 };
-
-IMPLEMENT_DYNCREATE(ADummyTask, Toshi::TTask);

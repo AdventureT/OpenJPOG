@@ -10,7 +10,8 @@ project ("OpenJPOG")
 		"TApplication",
 		"libtheora",
 		"theoraplay",
-		"fmodvc.lib"
+		"fmodvc.lib",
+		"TKernelInterface.lib"
 	}
 
 	files

@@ -2,8 +2,6 @@
 
 TOSHI_NAMESPACE_USING
 
-IMPLEMENT_DYNAMIC(TTask, TObject);
-
 TBOOL TTask::Create()
 {
 	TASSERT(IsCreated()==TFALSE);

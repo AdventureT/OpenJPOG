@@ -103,7 +103,31 @@ private: \
 	static Toshi::TObject* TOSHI_API CreateObject();        \
 	static Toshi::TObject* TOSHI_API CreateObjectInPlace(TPVOID a_pMem); \
 	static void TOSHI_API DeinitialiseStatic();      \
-	static void TOSHI_API InitialiseStatic();        \
+	static void TOSHI_API InitialiseStatic();      
+
+#define TOBJECT_DYNCREATE(class_name, base_class_name) \
+public: \
+	virtual Toshi::TClass& GetClass() const { return class_name::m_sClass; } \
+	inline static Toshi::TClass m_sClass = { \
+		#class_name, &TGetClass(base_class_name), class_name::CreateObject, class_name::CreateObjectInPlace, \
+			class_name::InitialiseStatic, class_name::DeinitialiseStatic, 1 }; \
+public: \
+	static Toshi::TObject* TOSHI_API CreateObject() { return new class_name; } \
+	static Toshi::TObject* TOSHI_API CreateObjectInPlace(TPVOID a_pMem){ return new (a_pMem) class_name; } \
+	static void TOSHI_API DeinitialiseStatic() {} \
+	static void TOSHI_API InitialiseStatic() {}
+
+#define TOBJECT_DYN(class_name, base_class_name) \
+public: \
+	virtual Toshi::TClass& GetClass() const { return class_name::m_sClass; } \
+	inline static Toshi::TClass m_sClass = { \
+		#class_name, &TGetClass(base_class_name), class_name::CreateObject, class_name::CreateObjectInPlace, \
+			class_name::InitialiseStatic, class_name::DeinitialiseStatic, 1 }; \
+public: \
+	static Toshi::TObject* TOSHI_API CreateObject() { TASSERT(!"This class does not support dynamic creation!"); return TNULL; } \
+	static Toshi::TObject* TOSHI_API CreateObjectInPlace(TPVOID a_pMem){ TASSERT(!"This class does not support dynamic creation!"); return TNULL; } \
+	static void TOSHI_API DeinitialiseStatic() {} \
+	static void TOSHI_API InitialiseStatic() {}
 
 #define IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, pfnCreateObject, pfnCreateObjectInPlace, version) \
 	Toshi::TClass& class_name::GetClass() const \
@@ -133,7 +157,7 @@ private: \
 
 class TOSHI_EXPORT TObject
 {	
-private: 
+public: 
 	static TObject* TOSHI_API CreateObject()
 	{
 		return new TObject;
