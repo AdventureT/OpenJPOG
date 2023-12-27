@@ -7,7 +7,7 @@ TOSHI_NAMESPACE_BEGIN
 
 class TOSHI_EXPORT TTask : public TObject, public TNodeTree<TTask>::TNode
 {
-	TOBJECT_DYN(TTask, TObject);
+	DECLARE_DYNAMIC(TTask);
 
 	enum State
 	{
@@ -19,6 +19,12 @@ class TOSHI_EXPORT TTask : public TObject, public TNodeTree<TTask>::TNode
 	friend class TScheduler;
 
 public:
+
+	TTask()
+	{
+		m_iState = 0;
+	}
+
 	virtual TBOOL Create();
 	virtual TBOOL CreateFailed();
 	virtual TBOOL OnCreate();

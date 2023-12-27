@@ -21,10 +21,15 @@
 #define HASFLAG(flag) (flag) != 0
 
 #ifdef TOSHI_SKU_WINDOWS
-#define TOSHI_MULTIPLATFORM(FILENAME) STRINGIFY(STRCAT_3(Win/, FILENAME, Win.h))
+	#define TOSHI_MULTIPLATFORM(FILENAME) STRINGIFY(STRCAT_3(Win/, FILENAME, Win.h))
 #endif
 
-#define TOSHI_EXPORT      __declspec(dllexport)
+#ifdef TOSHI_USER_ENGINE
+	#define TOSHI_EXPORT      __declspec(dllexport)
+#else
+	#define TOSHI_EXPORT      __declspec(dllimport)
+#endif
+
 #define TOSHI_API         __stdcall
 #define TOSHI_CALLBACKAPI __cdecl
 
