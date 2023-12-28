@@ -8,6 +8,7 @@ project ("OpenJPOG")
 	{
 		"TKernelInterface",
 		"TApplication",
+		"TRenderInterface",
 		"libtheora",
 		"theoraplay",
 		"fmodvc.lib"

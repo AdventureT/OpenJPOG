@@ -7,7 +7,7 @@ TOSHI_NAMESPACE_BEGIN
 class TOSHI_EXPORT TFreeList
 {
 public:
-	struct Node
+	struct TOSHI_EXPORT Node
 	{
 		friend class TFreeList;
 	public:

@@ -23,7 +23,7 @@ TScheduler::TScheduler(TKernelInterface* a_pKernel)
 TTask* TScheduler::CreateTask(TClass const& a_rTaskClass, TTask* a_pTask)
 {
 	TASSERT(a_rTaskClass.IsA(TGetClass(TTask)) == TTRUE);
-	TTask *pTask = (TTask*)a_rTaskClass.CreateObject();
+	TTask *pTask = static_cast<TTask*>(a_rTaskClass.CreateObject());
 	TASSERT(pTask != TNULL);
 	m_oTaskTree.InsertAtRoot(pTask);
 	if (a_pTask) {

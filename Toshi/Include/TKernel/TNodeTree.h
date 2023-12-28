@@ -7,10 +7,10 @@ TOSHI_NAMESPACE_BEGIN
 // Code from OpenToshi
 
 template <class T>
-class TNodeTree
+class TOSHI_EXPORT TNodeTree
 {
 public:
-	class TNode
+	class TOSHI_EXPORT TNode
 	{
 	public:
 		friend TNodeTree;
@@ -95,7 +95,7 @@ public:
 
 		a_pSourceNode->m_Tree = this;
 		a_pSourceNode->m_Parent = parentNode;
-		m_Count += 1;
+		m_Count++;
 	}
 
 	/**
@@ -142,7 +142,7 @@ public:
 				return &node;
 			}
 
-			m_Count -= 1;
+			m_Count--;
 		}
 
 		if (flag)
@@ -198,7 +198,7 @@ public:
 
 			if (node->Tree() == this)
 			{
-				m_Count -= 1;
+				m_Count--;
 			}
 
 			if (node->Tree() == TNULL || node->Tree() == this)

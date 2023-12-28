@@ -107,7 +107,7 @@ public:
 			return *this;
 		}
 
-		Iterator& operator++(int)
+		Iterator operator++(int)
 		{
 			TASSERT(m_pPtr != TNULL);
 			Iterator old = m_pPtr;
