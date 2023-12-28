@@ -104,8 +104,8 @@ TINT TNativeFile::Read(TPVOID a_pBuffer, TINT a_iSize)
     if (readedCount != a_iSize && LoadBuffer(curBufferPos))
     {
         a_iSize -= readedCount;
-        DWORD bufferLeftSize = m_iPosition - curBufferPos;
-        DWORD readCount = m_iLastBufferSize - bufferLeftSize;
+        TINT bufferLeftSize = m_iPosition - curBufferPos;
+        TINT readCount = m_iLastBufferSize - bufferLeftSize;
         if (readCount < a_iSize) {
             readCount = a_iSize;
         }

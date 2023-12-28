@@ -4,7 +4,6 @@
 #include "TKernel/TVector2.h"
 #include "TRender/TTextureResource.h"
 
-
 TOSHI_NAMESPACE_BEGIN
 
 class AMoviePlayer
@@ -152,7 +151,7 @@ private:
 		return TNULL;
 	}
 
-private:
+protected:
 	                        // 0x0 vftable
 	TBOOL m_bIsStopped;     // 0x4
 	TBOOL m_bIsInitialized; // 0x5

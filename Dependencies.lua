@@ -1,5 +1,6 @@
 IncludeDir = {}
 IncludeDir.fmod = "%{wks.location}/Toshi/vendor/fmod/include"
+IncludeDir.bink = "%{wks.location}/Toshi/vendor/bink/include"
 IncludeDir.libogg = "%{wks.location}/Toshi/Vendor/libogg/include"
 IncludeDir.libvorbis = "%{wks.location}/Toshi/Vendor/libvorbis/include"
 IncludeDir.libtheora = "%{wks.location}/Toshi/Vendor/libtheora/include"
@@ -9,6 +10,7 @@ IncludeDir.catch2 = "%{wks.location}/Tools/Vendor/Catch2/include"
 
 LibDir = {}
 LibDir.fmod = "%{wks.location}/Toshi/vendor/fmod/lib"
+LibDir.bink = "%{wks.location}/Toshi/vendor/bink/lib"
 LibDir.catch2 = "%{wks.location}/Tools/Vendor/Catch2/lib"
 
 -- content of these folders should be copied to any client application

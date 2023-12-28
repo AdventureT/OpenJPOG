@@ -132,7 +132,7 @@ private: \
 
 class TOSHI_EXPORT TObject
 {	
-public: 
+private: 
 	static TObject* TOSHI_API CreateObject()
 	{
 		return new TObject;
@@ -151,7 +151,7 @@ public:
 	TBOOL IsExactly(const TClass& a_rClass) const { return GetClass().IsExactly(a_rClass); }
 
 	virtual TClass& GetClass() const { return m_sClass; }
-	inline static TClass m_sClass = TClass("TObject", TNULL, CreateObject, TObject::CreateObjectInPlace, TObject::InitialiseStatic, TObject::DeinitialiseStatic, 1);
+	inline static TClass m_sClass = TClass("TObject", TNULL, TObject::CreateObject, TObject::CreateObjectInPlace, TObject::InitialiseStatic, TObject::DeinitialiseStatic, 1);
 
 protected:
 	TObject() {}

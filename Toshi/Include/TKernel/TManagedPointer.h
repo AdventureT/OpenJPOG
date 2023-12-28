@@ -34,7 +34,7 @@ public:
 
     T* operator->() { TASSERT(m_pObject != TNULL); return m_pObject; }
 
-private:
+public:
 	T* m_pObject;
 };
 

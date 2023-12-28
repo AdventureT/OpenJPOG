@@ -7,7 +7,8 @@ TBOOL AApplication::OnCreate(TINT argc, TPCHAR* const argv)
 	m_pInputTask = (ADummyTask*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ADummyTask), TNULL);
 	m_pInputTask->Create();
 	m_pInputTask->Activate(TTRUE);
-	m_pInputTask->SetName((TPCHAR)"InputTask");
+	TPCHAR str = (TPCHAR)"InputTask";
+	m_pInputTask->SetName(str);
 
 	return TApplication::OnCreate(argc, argv);
 }
