@@ -30,4 +30,5 @@ Then compile the generated solution and that's it
 - [fmod](https://fmod.com/)
 - [premake](https://github.com/premake/premake-core)
 - [spdlog](https://github.com/gabime/spdlog)
+- [bink](http://www.radgametools.com/bnkmain.htm)
 - Fork of [theoraplay](https://github.com/InfiniteC0re/theoraplay)
