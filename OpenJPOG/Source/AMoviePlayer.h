@@ -103,7 +103,6 @@ public:
 		return TFALSE;
 	}
 
-	// Probably a spelling mistake from the devs (Bit)
 	virtual TBOOL Render_BackBufferBlit()
 	{
 		return TFALSE;
