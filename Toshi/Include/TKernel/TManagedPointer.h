@@ -4,7 +4,7 @@
 TOSHI_NAMESPACE_BEGIN
 
 template<class T>
-class TOSHI_EXPORT TManagedPointer
+class TManagedPointer
 {
 public:
     TManagedPointer() : m_pObject(TNULL)

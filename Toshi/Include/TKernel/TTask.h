@@ -27,13 +27,13 @@ public:
 
 	virtual TBOOL Create();
 	virtual TBOOL CreateFailed();
-	virtual TBOOL OnCreate();
-	virtual TBOOL OnUpdate(TFLOAT a_fDeltaTime);
-	virtual void OnDestroy();
-	virtual TBOOL OnChildDying(TTask* child);
-	virtual void OnChildDied(TClass* a_pClass, TTask* a_pDeletedTask);
-	virtual void OnActivate();
-	virtual void OnDeactivate();
+	virtual TBOOL OnCreate() { return TTRUE; }
+	virtual TBOOL OnUpdate(TFLOAT a_fDeltaTime) { return TTRUE; }
+	virtual void OnDestroy() {}
+	virtual TBOOL OnChildDying(TTask* child) { return TTRUE; }
+	virtual void OnChildDied(TClass* a_pClass, TTask* a_pDeletedTask) {}
+	virtual void OnActivate() {}
+	virtual void OnDeactivate() {}
 
 	void Activate(TBOOL a_bActivate);
 

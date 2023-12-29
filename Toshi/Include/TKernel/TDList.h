@@ -151,7 +151,7 @@ protected:
 };
 
 template <class T, int C = 0>
-class TOSHI_EXPORT TDList : public TGenericDList
+class TDList : public TGenericDList
 {
 public:
 

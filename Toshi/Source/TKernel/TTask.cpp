@@ -16,9 +16,8 @@ TBOOL TTask::Create()
 			return TFALSE;
 		}
 
-		//auto oldState = m_State;
-		//m_State |= State_Created;
-		//Activate(TTRUE);
+		m_iState |= State_Created;
+		Activate(TTRUE);
 	}
 
 	return TTRUE;
@@ -26,40 +25,28 @@ TBOOL TTask::Create()
 
 TBOOL TTask::CreateFailed()
 {
-	return TBOOL();
-}
+	TASSERT(IsCreated() == TFALSE);
 
-TBOOL TTask::OnCreate()
-{
-	return TBOOL();
-}
+	if (!IsCreated()) {
+		m_Tree->Remove(this, TFALSE);
+		Delete();
+	}
 
-TBOOL TTask::OnUpdate(TFLOAT a_fDeltaTime)
-{
-	return TBOOL();
-}
-
-void TTask::OnDestroy()
-{
-}
-
-TBOOL TTask::OnChildDying(TTask* child)
-{
-	return TBOOL();
-}
-
-void TTask::OnChildDied(TClass* a_pClass, TTask* a_pDeletedTask)
-{
-}
-
-void TTask::OnActivate()
-{
-}
-
-void TTask::OnDeactivate()
-{
+	return TFALSE;
 }
 
 void TTask::Activate(TBOOL a_bActivate)
 {
+	TUINT8 oldState = m_iState;
+	TUINT8 newFlags = a_bActivate ? State_Active : 0;
+	m_iState = (m_iState & ~State_Active) | newFlags;
+
+	if (oldState != m_iState) {
+		if (a_bActivate) {
+			OnActivate();
+		}
+		else {
+			OnDeactivate();
+		}
+	}
 }
