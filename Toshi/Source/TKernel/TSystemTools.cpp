@@ -1,8 +1,26 @@
 #include "TSystemTools.h"
 #include "TDebug.h"
 #include <string.h>
+#include <stdio.h>
 
 TOSHI_NAMESPACE_USING
+
+TPCCHAR TOSHI_API TSystem::StringIntToString(TINT a_iInt, TPCHAR a_szString, TINT a_iRadix)
+{
+	if (a_iRadix == 8) {
+		sprintf(a_szString, "%o", a_iInt);
+	} 
+	else if (a_iRadix == 10) {
+		sprintf(a_szString, "%d", a_iInt);
+	}
+	else if (a_iRadix == 16) {
+		sprintf(a_szString, "%x", a_iInt);
+	}
+	else {
+		TASSERT(!"_itoa: radix not supported");
+	}
+	return a_szString;
+}
 
 TINT TOSHI_API TSystem::StringLength(TPCCHAR a_String)
 {

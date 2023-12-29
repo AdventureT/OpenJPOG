@@ -7,6 +7,7 @@ class TOSHI_EXPORT TSystem
 {
 public:
 
+	static TPCCHAR TOSHI_API StringIntToString(TINT a_iInt, TPCHAR a_szString, TINT a_iRadix);
 	static TINT TOSHI_API StringLength(TPCCHAR a_String);
 	static TINT TOSHI_API StringCompareNoCase(TPCCHAR a_String1, TPCCHAR a_String2, TINT a_uiSize);
 	static TCHAR const* TOSHI_API StringCopy(TPCHAR a_DestinationString, TCHAR const* a_SourceString, TINT a_iCount);

@@ -4,7 +4,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TTextureResource
+class TOSHI_EXPORT TTextureResource
 {
 
 };

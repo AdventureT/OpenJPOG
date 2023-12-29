@@ -54,6 +54,7 @@ typedef const char*        TPCCHAR;
 typedef char*              TPCHAR;
 typedef char               TCHAR;
 typedef const char         TCCHAR;
+typedef char               TINT8;
 typedef unsigned char      TUINT8;
 typedef unsigned char      TBYTE;
 typedef unsigned char*     TPBYTE;

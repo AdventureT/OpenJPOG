@@ -17,7 +17,8 @@ project "UnitTests"
 	links
 	{
 		"TKernelInterface",
-		"TApplication"
+		"TApplication",
+		"TRenderInterface"
 	}
 	
 	libdirs
@@ -29,6 +30,7 @@ project "UnitTests"
 	{
 		"Source/**.h",
 		"Source/**.cpp",
+		"%{wks.location}/Toshi/Include/*.h",
 	}
 
 	includedirs
@@ -45,7 +47,8 @@ project "UnitTests"
 	postbuildcommands
 	{
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TKernelInterface/TKernelInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
-		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TApplication/TApplication.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\""
+		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TApplication/TApplication.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
+		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TRenderInterface/TRenderInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\""
 	}
 
 	filter "system:windows"

@@ -21,7 +21,7 @@ static AApplication g_oTheApp;
 
 int main(int argc, char* argv[]) 
 {
-	int result;
+	int result = 0;
 	if (g_oTheApp.Create("UnitTests", argc, argv)) {
 		g_oTheApp.Execute();
 		result = Catch::Session().run(argc, argv);

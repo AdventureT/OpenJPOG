@@ -42,6 +42,7 @@ project ("OpenJPOG")
 	{
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TKernelInterface/TKernelInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TApplication/TApplication.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
+		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TRenderInterface/TRenderInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}Toshi/vendor/fmod/lib/fmod.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}Toshi/vendor/bink/lib/binkw32.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 	}

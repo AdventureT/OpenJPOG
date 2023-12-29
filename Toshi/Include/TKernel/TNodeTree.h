@@ -7,10 +7,10 @@ TOSHI_NAMESPACE_BEGIN
 // Code from OpenToshi
 
 template <class T>
-class TOSHI_EXPORT TNodeTree
+class TNodeTree
 {
 public:
-	class TOSHI_EXPORT TNode
+	class TNode
 	{
 	public:
 		friend TNodeTree;
@@ -29,14 +29,14 @@ public:
 		TBOOL IsChildOfDefaultRoot() const
 		{
 			TASSERT(IsLinked() == TTRUE);
-			return m_Parent == (T*)(&Tree()->m_Root);
+			return m_Parent == (T*)(&GetTree()->m_Root);
 		}
 
 		TBOOL IsLinked() const { return m_Tree != TNULL; }
 		T* Parent() const { return m_Parent; }
 		T* Next() const { return m_Next; }
 		T* Prev() const { return m_Prev; }
-		TNodeTree<T>* Tree() const { return m_Tree; }
+		TNodeTree<T>* GetTree() const { return m_Tree; }
 		T* Attached() const { return m_Attached; }
 
 	protected:
@@ -130,7 +130,7 @@ public:
 	T* Remove(T& node, TBOOL flag = TFALSE)
 	{
 		// Toshi::TNodeTree<Toshi::TResource>::Remove - 00691e70
-		TNodeTree<T>* nodeRoot = node.Tree();
+		TNodeTree<T>* nodeRoot = node.GetTree();
 		T* nodeParent = node.Parent();
 
 		if (nodeRoot != TNULL)
@@ -151,7 +151,7 @@ public:
 
 			while (attachedNode != TNULL)
 			{
-				TNodeTree<T>* nodeRoot = node.Tree();
+				TNodeTree<T>* nodeRoot = node.GetTree();
 
 				Remove(*attachedNode, TFALSE);
 				Insert(node.Parent(), attachedNode);
@@ -196,12 +196,12 @@ public:
 				DeleteRecurse(node->Attached());
 			}
 
-			if (node->Tree() == this)
+			if (node->GetTree() == this)
 			{
 				m_Count--;
 			}
 
-			if (node->Tree() == TNULL || node->Tree() == this)
+			if (node->GetTree() == TNULL || node->GetTree() == this)
 			{
 				T* nodeParent = node->Parent();
 
