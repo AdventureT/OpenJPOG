@@ -5,6 +5,8 @@
 
 TOSHI_NAMESPACE_BEGIN
 
+class TScheduler;
+
 class TOSHI_EXPORT TTask : public TObject, public TNodeTree<TTask>::TNode
 {
 	DECLARE_DYNAMIC(TTask);
@@ -36,13 +38,17 @@ public:
 	virtual void OnDeactivate() {}
 
 	void Activate(TBOOL a_bActivate);
+	void DestroyTask();
 
 	TBOOL IsCreated() const { return HASFLAG(m_iState & State_Created); }
 	TBOOL IsActive() const { return HASFLAG(m_iState & State_Active); }
 	TBOOL IsDying() const { return HASFLAG(m_iState & State_Dying); }
 
+	TScheduler* GetScheduler();
+
 private:
 	TINT m_iState;
+	TScheduler* m_pScheduler; // 0x20
 };
 
 TOSHI_NAMESPACE_END

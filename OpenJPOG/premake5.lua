@@ -9,6 +9,7 @@ project ("OpenJPOG")
 		"TKernelInterface",
 		"TApplication",
 		"TRenderInterface",
+		"dsound.lib",
 		"fmodvc.lib",
 		"binkw32.lib"
 	}

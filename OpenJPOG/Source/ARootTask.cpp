@@ -5,6 +5,17 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(ARootTask, TTask);
 
+ARootTask::ARootTask()
+{
+	m_pMoviePlayer = TNULL;
+}
+
+TBOOL ARootTask::OnCreate()
+{
+	m_pMoviePlayer = new ABINKMoviePlayer();
+	return TTask::OnCreate();
+}
+
 void ARootTask::AllocateInputSystem()
 {
 	TScheduler* pScheduler = g_oTheApp.GetKernel()->GetScheduler();

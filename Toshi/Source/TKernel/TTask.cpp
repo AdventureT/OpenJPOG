@@ -1,4 +1,5 @@
 #include "TTask.h"
+#include "TScheduler.h"
 
 TOSHI_NAMESPACE_USING
 
@@ -49,4 +50,14 @@ void TTask::Activate(TBOOL a_bActivate)
 			OnDeactivate();
 		}
 	}
+}
+
+void TTask::DestroyTask()
+{
+	m_pScheduler->DestroyTask(*this);
+}
+
+TScheduler* TTask::GetScheduler()
+{
+	return m_pScheduler;
 }

@@ -124,7 +124,7 @@ public:
 		m_bIsFullscreen = a_bFullscreen;
 	}
 
-	virtual TBOOL SetFrameReady(TBOOL a_bFreameReady)
+	virtual void SetFrameReady(TBOOL a_bFreameReady)
 	{
 		m_bIsFrameReady = a_bFreameReady;
 	}
