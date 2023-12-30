@@ -42,11 +42,17 @@ TBOOL TRenderInterface::CreateSystemResources()
 		TCString("  Adding base resources\n").Print();
 	}
 
-	m_aSysResources[SYSRESOURCE_VFACTORIES] = CreateResource(&TGetClass(TNullResource), "VFactories", TNULL);
-	m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1] = CreateResource(TFindClass(TVertexFactoryResource, TNULL), "VFSYSSVNDUV1", GetSystemResource(SYSRESOURCE_VFACTORIES));
-	TVALIDADDRESS(m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1]);
+	TBOOL bRes = TFALSE;
 
-	return TBOOL();
+	m_aSysResources[SYSRESOURCE_VFACTORIES] = CreateResource(&TGetClass(TNullResource), "VFactories", TNULL);
+	//m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1] = CreateResource(TFindClass(TVertexFactoryResource, TNULL), "VFSYSSVNDUV1", GetSystemResource(SYSRESOURCE_VFACTORIES));
+	//TVALIDADDRESS(m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1]);
+
+	m_aSysResources[SYSRESOURCE_TEXTUREFACTORY] = CreateResource(TFindClass(TTextureFactoryHAL, TNULL), "TextureFactory", TNULL);
+	bRes = m_aSysResources[SYSRESOURCE_TEXTUREFACTORY]->Create();
+	TASSERT(TTRUE==bRes);
+
+	return TTRUE;
 }
 
 TResource* TRenderInterface::CreateResource(const TClass* a_pClass, TPCCHAR a_szResName, TResource* a_pParent)
