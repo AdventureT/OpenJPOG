@@ -22,8 +22,8 @@ void TResource::SetParent(TResource* a_pParent)
 
 void TResource::SetName(TPCCHAR a_strName)
 {
-	char szName[12];
 	if (!a_strName) {
+		char szName[12];
 		a_strName = szName;
 		szName[0] = 'r';
 		szName[1] = 'e';

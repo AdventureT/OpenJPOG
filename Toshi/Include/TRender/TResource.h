@@ -24,7 +24,9 @@ public:
 	
 	TResource()
 	{
-
+		*m_szName = 0;
+		m_iState = 0;
+		m_uiUId = 0;
 	}
 
 	void SetParent(TResource *a_pParent);
@@ -32,11 +34,12 @@ public:
 	TBOOL IsDying() { return HASFLAG(m_iState & TResourceState_Dying); }
 
 	TUINT GetUId() const { return m_uiUId; }
+	TPCCHAR GetName() const { return m_szName; }
 
 private:
-	TCHAR m_szName[MAXNAMELEN]; // 0x1C
-	TINT8 m_iState;             // 0x2B
-	TUINT m_uiUId;              // 0x2C
+	TCHAR m_szName[MAXNAMELEN];       // 0x1C
+	TINT8 m_iState;                   // 0x2B
+	TUINT m_uiUId;                    // 0x2C
 };
 
 TOSHI_NAMESPACE_END

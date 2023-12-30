@@ -44,8 +44,10 @@ TCHAR const* TOSHI_API TSystem::StringCopy(TPCHAR a_DestinationString, TCHAR con
 	}
 	TPCHAR d = a_DestinationString;
 	TCHAR const* s = a_SourceString;
-	while (*s != '\0')
+	while (*s != '\0') {
 		*d++ = *s++;
+	}
+	*d = '\0';
 	return a_DestinationString;
 }
 
