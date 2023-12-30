@@ -179,3 +179,60 @@ project ("TRenderInterface")
 		defines "TOSHI_FINAL"
 		runtime "Release"
 		optimize "On"
+
+project ("TRenderD3DInterface")
+	kind "SharedLib"
+	language "C++"
+	cppdialect "C++20"
+	characterset "ASCII"
+	
+	links
+	{
+		"winmm.lib",
+		"TKernelInterface",
+		"TRenderInterface"
+	}
+
+	includedirs
+	{
+		"Include"
+	}
+
+	defines
+	{
+		"TOSHI_USER_ENGINE",
+		"_CRT_SECURE_NO_WARNINGS"
+	}
+	
+	filter "files:**.c"
+		flags { "NoPCH" }
+
+	filter "system:windows"
+		systemversion "latest"
+		
+		files
+		{
+			"Include/*.h",
+			"Include/TRenderD3D/**.h",
+			"Source/TRenderD3D/**.cpp"
+		}
+
+		defines
+		{
+			"TOSHI_SKU_WINDOWS"
+		}
+
+	filter "configurations:Debug"
+		defines "TOSHI_DEBUG"
+		runtime "Debug"
+		symbols "On"
+
+	filter "configurations:Release"
+		defines "TOSHI_RELEASE"
+		runtime "Release"
+		optimize "On"
+
+	filter "configurations:Final"
+		defines "TOSHI_FINAL"
+		runtime "Release"
+		optimize "On"

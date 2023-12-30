@@ -16,6 +16,7 @@ typedef TBOOL (*t_RecurceTreeBaseBeginCb)(class TClass*, TPCVOID);
 typedef TBOOL (*t_RecurceTreeBaseEndCb)(class TClass*, TPCVOID);
 
 #define TGetClass(X) X::m_sClass
+#define TFindClass(X, Y) Toshi::TClass::Find(#X, Y)
 
 class TOSHI_EXPORT TClass
 {

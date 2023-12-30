@@ -6,6 +6,8 @@
 
 TOSHI_NAMESPACE_BEGIN
 
+class TRenderInterface;
+
 class TOSHI_EXPORT TResource : public TObject, public TNodeTree<TResource>::TNode
 {
 	DECLARE_DYNAMIC(TResource)
@@ -24,19 +26,25 @@ public:
 	
 	TResource()
 	{
+		m_pRenderer = TNULL;
 		*m_szName = 0;
 		m_iState = 0;
 		m_uiUId = 0;
 	}
 
+	virtual TBOOL Create();
+
 	void SetParent(TResource *a_pParent);
 	void SetName(TPCCHAR a_strName);
+
 	TBOOL IsDying() { return HASFLAG(m_iState & TResourceState_Dying); }
+	TBOOL IsCreated() { return HASFLAG(m_iState & TResourceState_Created); }
 
 	TUINT GetUId() const { return m_uiUId; }
 	TPCCHAR GetName() const { return m_szName; }
 
-private:
+public:
+	TRenderInterface* m_pRenderer;    // 0x18
 	TCHAR m_szName[MAXNAMELEN];       // 0x1C
 	TINT8 m_iState;                   // 0x2B
 	TUINT m_uiUId;                    // 0x2C

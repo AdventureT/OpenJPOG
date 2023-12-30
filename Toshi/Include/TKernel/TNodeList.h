@@ -167,7 +167,7 @@ private:
 		return *this;
 	}
 
-protected:
+public:
 	TBOOL IsEmpty() const
 	{
 		return m_oRoot.Next() == &m_oRoot;
@@ -329,6 +329,7 @@ class TNodeList : public TGenericNodeList
 public:
 
 	TNodeList() { }
+
 };
 
 TOSHI_NAMESPACE_END

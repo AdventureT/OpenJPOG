@@ -5,6 +5,13 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TResource, TObject)
 
+TBOOL TResource::Create()
+{
+	TASSERT(TFALSE == IsCreated());
+	m_iState |= TResourceState_Created;
+	return TTRUE;
+}
+
 void TResource::SetParent(TResource* a_pParent)
 {
 	TASSERT((TNULL == a_pParent) || (TTRUE == IsDying()) || (TFALSE == a_pParent->IsDying()));
