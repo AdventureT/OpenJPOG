@@ -188,14 +188,24 @@ project ("TRenderD3DInterface")
 	
 	links
 	{
-		"winmm.lib",
+		"d3d8.lib",
+		"d3dx8.lib",
+		"dxguid.lib",
+		"dxgi.lib",
 		"TKernelInterface",
 		"TRenderInterface"
 	}
 
 	includedirs
 	{
-		"Include"
+		"Include",
+		"%{IncludeDir.dx8}"
+	}
+
+	
+	libdirs
+	{
+		"%{LibDir.dx8}"
 	}
 
 	defines

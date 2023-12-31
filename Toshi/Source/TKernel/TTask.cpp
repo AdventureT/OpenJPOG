@@ -17,7 +17,7 @@ TBOOL TTask::Create()
 			return TFALSE;
 		}
 
-		m_iState |= State_Created;
+		m_Flags |= State_Created;
 		Activate(TTRUE);
 	}
 
@@ -38,11 +38,11 @@ TBOOL TTask::CreateFailed()
 
 void TTask::Activate(TBOOL a_bActivate)
 {
-	TUINT8 oldState = m_iState;
+	TUINT8 oldState = m_Flags;
 	TUINT8 newFlags = a_bActivate ? State_Active : 0;
-	m_iState = (m_iState & ~State_Active) | newFlags;
+	m_Flags = (m_Flags & ~State_Active) | newFlags;
 
-	if (oldState != m_iState) {
+	if (oldState != m_Flags) {
 		if (a_bActivate) {
 			OnActivate();
 		}

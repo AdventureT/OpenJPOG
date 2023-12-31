@@ -52,6 +52,8 @@ public:
 		return (TTextureFactory*)a_pRenderer->CreateResource(TClass::Find("TTextureFactoryHAL", TNULL), a_szName, a_pResource);
 	}
 
+	TTextureResource* FindTexture(TPCCHAR a_szName);
+
 protected:
 
 	TUINT HashName(TPCCHAR a_szName);

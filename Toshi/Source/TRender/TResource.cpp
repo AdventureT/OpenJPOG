@@ -8,7 +8,16 @@ IMPLEMENT_DYNCREATE(TResource, TObject)
 TBOOL TResource::Create()
 {
 	TASSERT(TFALSE == IsCreated());
-	m_iState |= TResourceState_Created;
+	m_Flags |= FLAGS_CREATED;
+	return TTRUE;
+}
+
+TBOOL TResource::Validate()
+{
+	TASSERT((TNULL==Parent()) || (TFALSE==Parent()->IsDying()));
+	TASSERT(!(m_Flags&TResource::FLAGS_DYING));
+	if (IsDying()) return TFALSE;
+	m_Flags |= FLAGS_VALID;
 	return TTRUE;
 }
 

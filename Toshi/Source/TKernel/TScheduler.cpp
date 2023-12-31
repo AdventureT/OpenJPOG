@@ -83,7 +83,7 @@ void TScheduler::DestroyDyingTasks(TTask* a_pTask)
 void TScheduler::DestroyTaskRecurse(TTask* a_pTask)
 {
 	for (TTask* pTask = a_pTask; pTask != TNULL; pTask = (pTask->Next() != a_pTask) ? a_pTask->Next() : TNULL) {
-		pTask->m_iState |= TTask::State_Dying;
+		pTask->m_Flags |= TTask::State_Dying;
 
 		if (pTask->Attached() != TNULL) {
 			DestroyTaskRecurse(pTask->Attached());
@@ -117,7 +117,7 @@ void TScheduler::DestroyAllTasks()
 void TScheduler::DestroyTask(TTask& a_rTask)
 {
 	if (!a_rTask.IsDying()) {
-		a_rTask.m_iState |= TTask::State_Dying;
+		a_rTask.m_Flags |= TTask::State_Dying;
 		DestroyTaskRecurse(&a_rTask);
 	}
 }

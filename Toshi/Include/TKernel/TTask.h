@@ -24,7 +24,7 @@ public:
 
 	TTask()
 	{
-		m_iState = 0;
+		m_Flags = 0;
 	}
 
 	virtual TBOOL Create();
@@ -40,14 +40,14 @@ public:
 	void Activate(TBOOL a_bActivate);
 	void DestroyTask();
 
-	TBOOL IsCreated() const { return HASFLAG(m_iState & State_Created); }
-	TBOOL IsActive() const { return HASFLAG(m_iState & State_Active); }
-	TBOOL IsDying() const { return HASFLAG(m_iState & State_Dying); }
+	TBOOL IsCreated() const { return HASFLAG(m_Flags & State_Created); }
+	TBOOL IsActive() const { return HASFLAG(m_Flags & State_Active); }
+	TBOOL IsDying() const { return HASFLAG(m_Flags & State_Dying); }
 
 	TScheduler* GetScheduler();
 
 private:
-	TINT m_iState;
+	TINT m_Flags;
 	TScheduler* m_pScheduler; // 0x20
 };
 
