@@ -218,8 +218,11 @@ project ("TRenderD3DInterface")
 	defines
 	{
 		"TRENDERINTERFACED3D",
+		"SAFESEH=0",
 		"_CRT_SECURE_NO_WARNINGS"
 	}
+	
+	linkoptions "/SAFESEH:NO"
 	
 	filter "files:**.c"
 		flags { "NoPCH" }
