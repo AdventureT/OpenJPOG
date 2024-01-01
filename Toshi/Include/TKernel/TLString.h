@@ -5,13 +5,13 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TLocale
+class TKERNELINTERFACE_EXPORTS TLocale
 {
 public:
 	static int const TEMP_START_INDEX = 0x40000000;
 };
 
-class TOSHI_EXPORT TLocalisedString
+class TKERNELINTERFACE_EXPORTS TLocalisedString
 {
 public:
 	static TFreeList& TOSHI_API GetFreeList() { return m_oFreelist; }

@@ -4,7 +4,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TMutexLock
+class TKERNELINTERFACE_EXPORTS TMutexLock
 {
 public:
 

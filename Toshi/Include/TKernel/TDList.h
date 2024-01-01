@@ -3,10 +3,10 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TGenericDList
+class TKERNELINTERFACE_EXPORTS TGenericDList
 {
 public:
-	class TOSHI_EXPORT TNode
+	class TKERNELINTERFACE_EXPORTS TNode
 	{
 	protected:
 

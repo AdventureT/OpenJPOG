@@ -4,10 +4,10 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TFreeList
+class TKERNELINTERFACE_EXPORTS TFreeList
 {
 public:
-	struct TOSHI_EXPORT Node
+	struct TKERNELINTERFACE_EXPORTS Node
 	{
 		friend class TFreeList;
 	public:

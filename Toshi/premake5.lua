@@ -18,7 +18,7 @@ project ("TKernelInterface")
 
 	defines
 	{
-		"TOSHI_USER_ENGINE",
+		"TKERNELINTERFACE",
 		"_CRT_SECURE_NO_WARNINGS"
 	}
 	
@@ -92,7 +92,7 @@ project ("TApplication")
 	
 	defines
 	{
-		"TOSHI_USER_ENGINE",
+		"TAPPLICATION",
 		"_CRT_SECURE_NO_WARNINGS"
 	}
 	
@@ -143,7 +143,7 @@ project ("TRenderInterface")
 
 	defines
 	{
-		"TOSHI_USER_ENGINE",
+		"TRENDERINTERFACE",
 		"_CRT_SECURE_NO_WARNINGS"
 	}
 	
@@ -217,7 +217,7 @@ project ("TRenderD3DInterface")
 
 	defines
 	{
-		"TOSHI_USER_ENGINE",
+		"TRENDERINTERFACED3D",
 		"_CRT_SECURE_NO_WARNINGS"
 	}
 	

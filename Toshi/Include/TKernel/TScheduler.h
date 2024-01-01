@@ -9,7 +9,7 @@ TOSHI_NAMESPACE_BEGIN
 
 class TKernelInterface;
 
-class TOSHI_EXPORT TScheduler : public TObject
+class TKERNELINTERFACE_EXPORTS TScheduler : public TObject
 {
 	DECLARE_DYNAMIC(TScheduler);
 public:

@@ -1,10 +1,11 @@
 #pragma once
 #include "TRender/TTextureResource.h"
+#include "Defines.h"
 #include <d3dx8tex.h>
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TTextureResourceHAL : public TTextureResource
+class TRENDERINTERFACED3D_EXPORTS TTextureResourceHAL : public TTextureResource
 {
 	DECLARE_DYNAMIC(TTextureResourceHAL)
 

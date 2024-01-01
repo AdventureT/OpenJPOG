@@ -23,7 +23,7 @@ public:
 
 class TVertexPoolResourceInterface;
 
-class TOSHI_EXPORT TVertexFactoryResourceInterface : public TResource
+class TRENDERINTERFACE_EXPORTS TVertexFactoryResourceInterface : public TResource
 {
 	DECLARE_DYNAMIC(TVertexFactoryResourceInterface)
 public:

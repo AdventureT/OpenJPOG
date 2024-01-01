@@ -9,7 +9,7 @@ enum TMutexLockFlag
 	TMutexLockFlag_DoNotWait = 1,
 };
 
-class TOSHI_EXPORT TMutex
+class TKERNELINTERFACE_EXPORTS TMutex
 {
 public:
 	TMutex()

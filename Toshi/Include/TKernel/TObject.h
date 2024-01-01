@@ -20,7 +20,7 @@ typedef TBOOL (*t_RecurceTreeBaseEndCb)(class TClass*, TPCVOID);
 #define TGetClass(X) X::m_sClass
 #define TFindClass(X, Y) Toshi::TClass::Find(#X, Y)
 
-class TOSHI_EXPORT TClass
+class TKERNELINTERFACE_EXPORTS TClass
 {
 public:
 	TClass(TPCCHAR a_pcName, TClass* a_pParent, t_CreateTObject a_Create, t_CreateTObjectInPlace a_CreateInPlace, t_InitializeStatic a_Init, t_UninitializeStatic a_Uninit, TUINT a_uiVersion);
@@ -133,7 +133,7 @@ private: \
 		{ TASSERT(!"This class does not support dynamic creation!"); return TNULL; } \
 	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, class_name::CreateObject, class_name::CreateObjectInPlace, 1)
 
-class TOSHI_EXPORT TObject
+class TKERNELINTERFACE_EXPORTS TObject
 {	
 private: 
 	static TObject* TOSHI_API CreateObject()

@@ -7,7 +7,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TRenderInterface : public TObject
+class TRENDERINTERFACE_EXPORTS TRenderInterface : public TObject
 {
 	DECLARE_DYNAMIC(TRenderInterface)
 

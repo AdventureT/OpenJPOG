@@ -7,7 +7,7 @@ TOSHI_NAMESPACE_BEGIN
 
 class TScheduler;
 
-class TOSHI_EXPORT TTask : public TObject, public TNodeTree<TTask>::TNode
+class TKERNELINTERFACE_EXPORTS TTask : public TObject, public TNodeTree<TTask>::TNode
 {
 	DECLARE_DYNAMIC(TTask);
 

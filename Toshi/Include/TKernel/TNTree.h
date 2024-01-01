@@ -4,7 +4,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TGenericNTree
+class TKERNELINTERFACE_EXPORTS TGenericNTree
 {
 	class TNode
 	{

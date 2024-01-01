@@ -4,10 +4,10 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TGenericNodeList
+class TKERNELINTERFACE_EXPORTS TGenericNodeList
 {
 public:
-	class TOSHI_EXPORT TNode
+	class TKERNELINTERFACE_EXPORTS TNode
 	{
 		friend class TGenericNodeList;
 	public:
@@ -70,7 +70,7 @@ public:
 		TNode* m_pPrev;            // 0x8
 	};
 
-	class TOSHI_EXPORT Iterator
+	class TKERNELINTERFACE_EXPORTS Iterator
 	{
 	public:
 

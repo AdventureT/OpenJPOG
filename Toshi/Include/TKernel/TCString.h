@@ -6,7 +6,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TCString 
+class TKERNELINTERFACE_EXPORTS TCString 
 {
 public:
 

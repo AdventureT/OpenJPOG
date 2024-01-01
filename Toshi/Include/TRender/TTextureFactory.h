@@ -9,7 +9,7 @@ TOSHI_NAMESPACE_BEGIN
 
 class TTextureResource;
 
-class TOSHI_EXPORT TTextureFactory : public TResource
+class TRENDERINTERFACE_EXPORTS TTextureFactory : public TResource
 {
 	DECLARE_DYNAMIC(TTextureFactory)
 

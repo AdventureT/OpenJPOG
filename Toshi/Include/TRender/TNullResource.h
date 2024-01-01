@@ -1,10 +1,11 @@
 #pragma once
 
 #include "TResource.h"
+#include "Defines.h"
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TNullResource : public TResource
+class TRENDERINTERFACE_EXPORTS TNullResource : public TResource
 {
 	DECLARE_DYNAMIC(TNullResource)
 };

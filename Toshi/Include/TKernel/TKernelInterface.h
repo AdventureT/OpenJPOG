@@ -6,7 +6,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TKernelInterface : public TObject
+class TKERNELINTERFACE_EXPORTS TKernelInterface : public TObject
 {
 	DECLARE_DYNAMIC(TKernelInterface);
 public:

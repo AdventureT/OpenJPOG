@@ -24,10 +24,10 @@
 	#define TOSHI_MULTIPLATFORM(FILENAME) STRINGIFY(STRCAT_3(Win/, FILENAME, Win.h))
 #endif
 
-#ifdef TOSHI_USER_ENGINE
-	#define TOSHI_EXPORT      __declspec(dllexport)
+#ifdef TKERNELINTERFACE
+#define TKERNELINTERFACE_EXPORTS      __declspec(dllexport)
 #else
-	#define TOSHI_EXPORT      __declspec(dllimport)
+#define TKERNELINTERFACE_EXPORTS      __declspec(dllimport)
 #endif
 
 #define TOSHI_API         __stdcall

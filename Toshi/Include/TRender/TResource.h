@@ -1,6 +1,7 @@
 #pragma once
 #include "TKernel/TObject.h"
 #include "TKernel/TNodeTree.h"
+#include "Defines.h"
 
 #define MAXNAMELEN 15
 
@@ -8,7 +9,7 @@ TOSHI_NAMESPACE_BEGIN
 
 class TRenderInterface;
 
-class TOSHI_EXPORT TResource : public TObject, public TNodeTree<TResource>::TNode
+class TRENDERINTERFACE_EXPORTS TResource : public TObject, public TNodeTree<TResource>::TNode
 {
 	DECLARE_DYNAMIC(TResource)
 

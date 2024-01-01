@@ -15,7 +15,7 @@ enum TTEXTURERESOURCEFORMAT
 	R4G4B4A4,
 };
 
-class TOSHI_EXPORT TTextureResource : public TResource
+class TRENDERINTERFACE_EXPORTS TTextureResource : public TResource
 {
 	DECLARE_DYNAMIC(TTextureResource)
 

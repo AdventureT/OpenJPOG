@@ -4,7 +4,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT THPTimer
+class TKERNELINTERFACE_EXPORTS THPTimer
 {
 public:
 	THPTimer();

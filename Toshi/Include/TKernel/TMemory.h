@@ -9,7 +9,7 @@ inline static Toshi::TMutex* g_pMutex = TNULL;
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TMemory
+class TKERNELINTERFACE_EXPORTS TMemory
 {
 
 	struct HALMemInfo
@@ -76,6 +76,6 @@ inline static TMemory g_oMemManager;
 
 TOSHI_NAMESPACE_END
 
-TPVOID TOSHI_EXPORT TOSHI_API tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk);
-TPVOID TOSHI_EXPORT TOSHI_API tmemalign(TINT a_iAlign, TINT a_iSize);
-void TOSHI_EXPORT TOSHI_API tfree(TPVOID a_pMem);
+TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk);
+TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmemalign(TINT a_iAlign, TINT a_iSize);
+void TKERNELINTERFACE_EXPORTS TOSHI_API tfree(TPVOID a_pMem);

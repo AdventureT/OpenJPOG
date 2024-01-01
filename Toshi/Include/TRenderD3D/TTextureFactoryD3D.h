@@ -1,11 +1,11 @@
 #pragma once
-
+#include "Defines.h"
 #include "TRender/TResource.h"
 #include "TRender/TTextureResource.h"
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TTextureFactoryHAL : public TTextureFactory
+class TRENDERINTERFACED3D_EXPORTS TTextureFactoryHAL : public TTextureFactory
 {
 	DECLARE_DYNAMIC(TTextureFactoryHAL)
 

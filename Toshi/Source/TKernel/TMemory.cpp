@@ -73,7 +73,7 @@ TBOOL TMemory::Free(TPVOID a_pMem)
 	return TBOOL();
 }
 
-TPVOID TOSHI_EXPORT TOSHI_API tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk)
+TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk)
 {
 #ifdef TOSHI_NOTFINAL
 	return malloc(a_iSize);
@@ -82,7 +82,7 @@ TPVOID TOSHI_EXPORT TOSHI_API tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUn
 #endif
 }
 
-TPVOID TOSHI_EXPORT TOSHI_API tmemalign(TINT a_iAlign, TINT a_iSize)
+TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmemalign(TINT a_iAlign, TINT a_iSize)
 {
 #ifdef TOSHI_NOTFINAL
 	return malloc(a_iSize);
@@ -91,7 +91,7 @@ TPVOID TOSHI_EXPORT TOSHI_API tmemalign(TINT a_iAlign, TINT a_iSize)
 #endif
 }
 
-void TOSHI_EXPORT TOSHI_API tfree(TPVOID a_pMem)
+void TKERNELINTERFACE_EXPORTS TOSHI_API tfree(TPVOID a_pMem)
 {
 #ifdef TOSHI_NOTFINAL
 	free(a_pMem);

@@ -32,7 +32,7 @@ enum TDebug_Flags : TUINT
 	FLAG_UNK3 = BITFIELD(2)
 };
 
-class TOSHI_EXPORT TDebug
+class TKERNELINTERFACE_EXPORTS TDebug
 {
 public:
 
@@ -57,22 +57,22 @@ public:
 
 };
 
-void TOSHI_EXPORT TOSHI_API TDebug_VPrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
+void TKERNELINTERFACE_EXPORTS TOSHI_API TDebug_VPrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
 
-void TOSHI_EXPORT TOSHI_API TDebug_VPrintf(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
+void TKERNELINTERFACE_EXPORTS TOSHI_API TDebug_VPrintf(TUINT a_uiFlags, TPCCHAR a_pcFormat, va_list a_vargs);
 
-void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_Printf(TPCCHAR a_pcFormat, ...);
-void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_Printf(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...);
+void TKERNELINTERFACE_EXPORTS TOSHI_CALLBACKAPI TDebug_Printf(TPCCHAR a_pcFormat, ...);
+void TKERNELINTERFACE_EXPORTS TOSHI_CALLBACKAPI TDebug_Printf(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...);
 
-void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_PrintfDirect(TPCCHAR a_pcFormat, ...);
-void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_PrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...);
+void TKERNELINTERFACE_EXPORTS TOSHI_CALLBACKAPI TDebug_PrintfDirect(TPCCHAR a_pcFormat, ...);
+void TKERNELINTERFACE_EXPORTS TOSHI_CALLBACKAPI TDebug_PrintfDirect(TUINT a_uiFlags, TPCCHAR a_pcFormat, ...);
 
-void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_CPrintf(TINT a_iFlags, TPCCHAR a_pcFormat, ...);
+void TKERNELINTERFACE_EXPORTS TOSHI_CALLBACKAPI TDebug_CPrintf(TINT a_iFlags, TPCCHAR a_pcFormat, ...);
 
-void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...);
+void TKERNELINTERFACE_EXPORTS TOSHI_CALLBACKAPI TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...);
 
-void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_PrintError(TPCCHAR a_pcFormat, ...);
-void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_PrintWarning(TPCCHAR a_pcFormat, ...);
+void TKERNELINTERFACE_EXPORTS TOSHI_CALLBACKAPI TDebug_PrintError(TPCCHAR a_pcFormat, ...);
+void TKERNELINTERFACE_EXPORTS TOSHI_CALLBACKAPI TDebug_PrintWarning(TPCCHAR a_pcFormat, ...);
 
 
 TOSHI_NAMESPACE_END
@@ -96,7 +96,7 @@ enum TDebug_Flags : TUINT
 	FLAG_UNK3 = BITFIELD(2)
 };
 
-class TOSHI_EXPORT TDebug
+class TKERNELINTERFACE_EXPORTS TDebug
 {
 public:
 
@@ -119,7 +119,7 @@ public:
 
 };
 
-void TOSHI_EXPORT TOSHI_CALLBACKAPI TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...);
+void TKERNELINTERFACE_EXPORTS TOSHI_CALLBACKAPI TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pcFormat, ...);
 
 TOSHI_NAMESPACE_END
 

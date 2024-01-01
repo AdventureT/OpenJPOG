@@ -5,7 +5,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TProfiler
+class TKERNELINTERFACE_EXPORTS TProfiler
 {
 public:
 	void Start();

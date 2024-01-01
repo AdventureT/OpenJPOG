@@ -5,7 +5,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TNativeFileSystem : public TFileSystem
+class TKERNELINTERFACE_EXPORTS TNativeFileSystem : public TFileSystem
 {
 public:
 	TNativeFileSystem(TPCCHAR a_pcName);
@@ -19,12 +19,12 @@ private:
 	HANDLE m_hFileSystem; // 0x1C
 };
 
-class TOSHI_EXPORT TNativeFileManager : public TFileManager
+class TKERNELINTERFACE_EXPORTS TNativeFileManager : public TFileManager
 {
 
 };
 
-class TOSHI_EXPORT TNativeFile : public TFile
+class TKERNELINTERFACE_EXPORTS TNativeFile : public TFile
 {
 	friend class TNativeFileSystem;
 public:

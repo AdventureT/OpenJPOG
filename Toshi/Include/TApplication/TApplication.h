@@ -1,10 +1,11 @@
 #pragma once
 #include "TKernel/TKernelInterface.h"
+#include "Defines.h"
 #include <windows.h>
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TApplication
+class TAPPLICATION_EXPORTS TApplication
 {
 
 private:

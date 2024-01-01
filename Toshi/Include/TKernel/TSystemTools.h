@@ -3,7 +3,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TSystem
+class TKERNELINTERFACE_EXPORTS TSystem
 {
 public:
 

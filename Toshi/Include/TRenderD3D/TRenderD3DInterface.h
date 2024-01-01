@@ -1,11 +1,12 @@
 #pragma once
+#include "Defines.h"
 #include "TKernel/TDebug.h"
 #include "TRender/TRenderInterface.h"
 #include <d3d8.h>
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TRenderD3DInterface : public TRenderInterface
+class TRENDERINTERFACED3D_EXPORTS TRenderD3DInterface : public TRenderInterface
 {
 public:
 	static void TOSHI_API TD3DAssert(HRESULT a_hr, TPCCHAR a_pError);

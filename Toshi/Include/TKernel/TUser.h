@@ -6,7 +6,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TOSHI_EXPORT TUser
+class TKERNELINTERFACE_EXPORTS TUser
 {
 	friend class TUserHandler;
 public:
@@ -26,7 +26,7 @@ private:
 	TSHORT m_iUserID;     // 0x6
 };
 
-class TOSHI_EXPORT TUserHandler
+class TKERNELINTERFACE_EXPORTS TUserHandler
 {
 protected:
 	TUserHandler();

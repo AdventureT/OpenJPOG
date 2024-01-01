@@ -11,7 +11,7 @@ TOSHI_NAMESPACE_BEGIN
 
 class TFile;
 
-class TOSHI_EXPORT TFileSystem : public TDList<TFileSystem>::TNode
+class TKERNELINTERFACE_EXPORTS TFileSystem : public TDList<TFileSystem>::TNode
 {
 public:
     TFileSystem(TPCCHAR a_pcName) : TNode()
@@ -53,7 +53,7 @@ private:
     TCString m_sPrefix; // 0xC
 };
 
-class TOSHI_EXPORT TFileManager
+class TKERNELINTERFACE_EXPORTS TFileManager
 {
 public:
     class TSysPathIter
@@ -145,7 +145,7 @@ enum TMODE : TUINT
     TMODE_NOBUFFER = BITFIELD(4)
 };
 
-class TOSHI_EXPORT TFile
+class TKERNELINTERFACE_EXPORTS TFile
 {
 protected:
     TFile(TFileSystem* a_pFileSystem)
