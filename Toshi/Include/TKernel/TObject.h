@@ -2,6 +2,8 @@
 #include "Defines.h"
 #include "TCString.h"
 #include <new>
+
+
 TOSHI_NAMESPACE_BEGIN
 
 // TClassProps definitions

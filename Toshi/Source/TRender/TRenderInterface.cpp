@@ -29,12 +29,12 @@ TBOOL TRenderInterface::Create(TKernelInterface* pKernelInterface)
 	return TTRUE;
 }
 
-class TVertexFactoryResource : public TVertexFactoryFormat, public TResource
-{
-	DECLARE_DYNAMIC(TVertexFactoryResource)
-};
+//class TVertexFactoryResource : public TVertexFactoryFormat, public TResource
+//{
+//	DECLARE_DYNAMIC(TVertexFactoryResource)
+//};
 
-IMPLEMENT_DYNCREATE(TVertexFactoryResource, TResource)
+//IMPLEMENT_DYNCREATE(TVertexFactoryResource, TResource)
 
 TBOOL TRenderInterface::CreateSystemResources()
 {

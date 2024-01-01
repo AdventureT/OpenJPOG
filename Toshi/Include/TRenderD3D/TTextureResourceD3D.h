@@ -1,6 +1,6 @@
 #pragma once
 #include "TRender/TTextureResource.h"
-#include <d3dx8.h>
+#include <d3dx8tex.h>
 
 TOSHI_NAMESPACE_BEGIN
 
