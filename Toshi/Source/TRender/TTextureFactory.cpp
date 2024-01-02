@@ -1,9 +1,31 @@
 #include "TTextureFactory.h"
+#include "TRender/TRenderInterface.h"
 #include "TTextureResource.h"
+
 
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TTextureFactory, TResource)
+
+TTextureResource* TTextureFactory::CreateTextureFromFile(TPCCHAR a_szFileName, TUINT a_eTextureFlags)
+{
+	return TNULL;
+}
+
+TTextureResource* TTextureFactory::CreateTextureFromMemory(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels)
+{
+	return TNULL;
+}
+
+TTextureResource* TTextureFactory::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_bNoMipLevels)
+{
+	return TNULL;
+}
+
+TTextureFactory* TOSHI_API TTextureFactory::CreateHAL(TRenderInterface* a_pRenderer, TPCCHAR a_szName, TResource* a_pResource)
+{
+	return (TTextureFactory*)a_pRenderer->CreateResource(TClass::Find("TTextureFactoryHAL", TNULL), a_szName, a_pResource);
+}
 
 TTextureResource* TTextureFactory::FindTexture(TPCCHAR a_szName)
 {

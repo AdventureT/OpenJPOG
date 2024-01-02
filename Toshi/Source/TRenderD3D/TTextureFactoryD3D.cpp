@@ -1,4 +1,6 @@
 #include "TRenderD3D/TTextureFactoryD3D.h"
+#include "TRender/TRenderInterface.h"
+#include "TRenderD3D/TTextureResourceD3D.h"
 
 TOSHI_NAMESPACE_USING
 
@@ -53,7 +55,7 @@ TTextureResource* TTextureFactoryHAL::CreateTextureFromMemory(TPVOID a_pData, TU
 	return pTexture;
 }
 
-TTextureResource* TTextureFactoryHAL::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, BOOL a_bNoMipLevels)
+TTextureResource* TTextureFactoryHAL::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_bNoMipLevels)
 {
 	static TUINT s_iNumMemTextures = 0;
 	static char s_szName[32];

@@ -9,7 +9,16 @@ project ("OpenJPOG")
 		"TKernelInterface",
 		"TApplication",
 		"TRenderInterface",
+		"TRenderD3DInterface",
+		"d3d8.lib",
+		"d3dx8.lib",
+		"dxguid.lib",
+		"dxgi.lib",
+		"DxErr8.lib",
 		"dsound.lib",
+		"legacy_stdio_definitions.lib",
+		"winmm.lib",
+		"dinput8.lib",
 		"fmodvc.lib",
 		"binkw32.lib"
 	}
@@ -27,6 +36,11 @@ project ("OpenJPOG")
 		"%{IncludeDir.bink}"
 	}
 	
+	externalincludedirs
+	{
+		"%{IncludeDir.dx8}"
+	}
+	
 	defines
 	{
 		"TOSHI_USER_CLIENT"
@@ -35,7 +49,8 @@ project ("OpenJPOG")
 	libdirs
 	{
 		"%{LibDir.fmod}",
-		"%{LibDir.bink}"
+		"%{LibDir.bink}",
+		"%{LibDir.dx8}"
 	}
 	
 	postbuildcommands
@@ -43,6 +58,7 @@ project ("OpenJPOG")
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TKernelInterface/TKernelInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TApplication/TApplication.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TRenderInterface/TRenderInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
+		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TRenderD3DInterface/TRenderD3DInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}Toshi/vendor/fmod/lib/fmod.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}Toshi/vendor/bink/lib/binkw32.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 	}

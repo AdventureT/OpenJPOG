@@ -10,7 +10,7 @@ IMPLEMENT_DYNCREATE(TTextureResourceHAL, TTextureResource)
 TBOOL TTextureResourceHAL::Create(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_eTextureFlags, TUINT a_uiWidth, TUINT a_uiHeight)
 {
 	TDPRINTF("Deprecated! Please use: TTextureResourceHAL::CreateEx()\n");
-	if (!TTextureResource::Create(a_pData, a_uiDataSize, a_uiWidth, 0, 0)) {
+	if (!TTextureResource::Create(a_pData, a_uiDataSize, a_eTextureFlags, 0, 0)) {
 		return TFALSE;
 	}
 

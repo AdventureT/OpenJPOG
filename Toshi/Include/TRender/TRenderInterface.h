@@ -4,6 +4,8 @@
 #include "TKernel/TKernelInterface.h"
 #include "TRenderContext.h"	
 #include "TResource.h"
+#include "TRenderAdapter.h"
+#include "TTextureFactory.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -11,6 +13,7 @@ class TRENDERINTERFACE_EXPORTS TRenderInterface : public TObject
 {
 	DECLARE_DYNAMIC(TRenderInterface)
 
+public:
 	enum FLAG
 	{
 		FLAG_DIRTY = BITFIELD(0),
@@ -54,6 +57,8 @@ public:
 	TRenderInterface();
 
 	virtual TBOOL Create(TKernelInterface* pKernelInterface);
+	virtual TBOOL IsTextureFormatSupported(TTEXTURERESOURCEFORMAT a_eTextureFormat) { return TTRUE; }
+	virtual TBOOL Supports32BitTextures() { return TFALSE; }
 
 protected:
 
@@ -78,6 +83,7 @@ public:
 	}
 
 	TBOOL IsCreated() { return m_bIsCreated; }
+	TNodeList<TRenderAdapter>* GetAdapterList() { return &m_pAdapterList; };
 
 private:
 
@@ -88,6 +94,7 @@ private:
 	TRenderContext* m_pDefaultRenderContext;         // 0x20
 	TKernelInterface* m_pKernel;                     // 0x24
 	TResource* m_aSysResources[SYSRESOURCES_NUMOF];  // 0x28
+	TNodeList<TRenderAdapter> m_pAdapterList;        // 0xFC
 	TINT m_iResourceCount;                           // 0x124
 	TNodeTree<TResource> m_Resources;                // 0x128
 };

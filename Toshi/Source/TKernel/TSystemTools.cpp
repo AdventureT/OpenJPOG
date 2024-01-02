@@ -5,6 +5,23 @@
 
 TOSHI_NAMESPACE_USING
 
+TPCCHAR TOSHI_API TSystem::StringUnicodeToChar(TPCHAR a_CharString, TPCWCHAR a_UnicodeString, TINT a_iLength)
+{
+	TASSERT((a_UnicodeString!=TNULL) && (a_CharString!=TNULL));
+	TINT iUnicodeStringLength = StringLength(a_UnicodeString);
+
+	if (iUnicodeStringLength < a_iLength || a_iLength == -1) {
+		a_iLength = iUnicodeStringLength;
+	}
+
+	for (size_t i = 0; i < a_iLength; i++) {
+		a_CharString[i] = TSTATICCAST(char, a_UnicodeString[i]);
+	}
+
+	a_CharString[a_iLength] = '\0';
+	return a_CharString;
+}
+
 TPCCHAR TOSHI_API TSystem::StringIntToString(TINT a_iInt, TPCHAR a_szString, TINT a_iRadix)
 {
 	if (a_iRadix == 8) {
@@ -30,6 +47,12 @@ TINT TOSHI_API TSystem::StringLength(TPCCHAR a_String)
 	return iLength;
 }
 
+TINT TOSHI_API TSystem::StringLength(TPCWCHAR a_String)
+{
+	TASSERT(a_String != TNULL);
+	return wcslen(a_String);
+}
+
 TINT TOSHI_API TSystem::StringCompareNoCase(TPCCHAR a_String1, TPCCHAR a_String2, TINT a_uiSize)
 {
 	TASSERT((a_String1!=TNULL) && (a_String2!=TNULL));
@@ -49,6 +72,15 @@ TCHAR const* TOSHI_API TSystem::StringCopy(TPCHAR a_DestinationString, TCHAR con
 	}
 	*d = '\0';
 	return a_DestinationString;
+}
+
+TPCWCHAR TOSHI_API TSystem::StringCopy(TPWCHAR a_DestinationString, TPCWCHAR a_SourceString, TINT a_iCount)
+{
+	TASSERT((a_DestinationString != TNULL) && (a_SourceString != TNULL));
+	if (a_iCount != -1) {
+		return wcsncpy(a_DestinationString, a_SourceString, a_iCount);
+	}
+	return wcscpy(a_DestinationString, a_SourceString);
 }
 
 TPVOID TOSHI_API TSystem::MemCopy(TPVOID a_dest, TPCVOID a_src, TUINT a_iSize)

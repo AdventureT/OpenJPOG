@@ -4,20 +4,20 @@
 TOSHI_NAMESPACE_BEGIN
 
 template<class T>
-class TManagedPointer
+class TManagedPtr
 {
 public:
-    TManagedPointer() : m_pObject(TNULL)
+    TManagedPtr() : m_pObject(TNULL)
     {
 
     }
 
-    TManagedPointer(T* a_pObject) : m_pObject(a_pObject)
+    TManagedPtr(T* a_pObject) : m_pObject(a_pObject)
     {
 
     }
 
-    ~TManagedPointer() 
+    ~TManagedPtr() 
     { 
         delete m_pObject; 
     }

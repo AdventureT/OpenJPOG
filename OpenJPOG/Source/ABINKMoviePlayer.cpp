@@ -1,4 +1,8 @@
 #include "ABINKMoviePlayer.h"
+#include "main.h"
+#include "TKernel/TManagedPointer.h"
+#include "TRender/TTextureFactory.h"
+#include "TRenderD3D/TRenderD3DInterface.h"
 
 TOSHI_NAMESPACE_USING
 
@@ -18,14 +22,12 @@ ABINKMoviePlayer::ABINKMoviePlayer()
 
 TBOOL ABINKMoviePlayer::InitializeMoviePlayer()
 {
-    HRESULT hResult = DirectSoundCreate(NULL, &m_pDirectSound, NULL);
-    if (FAILED(hResult)) {
-        m_pDirectSound = NULL;
+    if (!m_bIsBINKInitialized) {
+        InitializeAudioResource();
+        InitializeVideoResource();
+        m_bIsBINKInitialized = TTRUE;
     }
-    else {
-        BinkSoundUseDirectSound(m_pDirectSound);
-    }
-    return TTRUE;
+    return TFALSE;
 }
 
 TBOOL ABINKMoviePlayer::ShutdownMoviePlayer()
@@ -37,6 +39,13 @@ TBOOL ABINKMoviePlayer::ShutdownMoviePlayer()
         SetFrameReady(TFALSE);
     }
     return TFALSE;
+}
+
+TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a_szUnk2, TBOOL a_bUnk3)
+{
+    TManagedPtr<TRenderInterface> renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
+
+    return TBOOL();
 }
 
 TBOOL ABINKMoviePlayer::Update(TFLOAT a_fDeltaTime)
@@ -109,6 +118,50 @@ TBOOL ABINKMoviePlayer::RenderToFrameBuffer(TPBYTE a_pDest, TINT a_iDestWidth, T
     }
     
     return TFALSE;
+}
+
+TBOOL ABINKMoviePlayer::InitializeVideoResource()
+{
+    TManagedPtr<TRenderInterface> renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
+    TTextureFactory* factory = (TTextureFactory*)renderer->GetSystemResource(TRenderInterface::SYSRESOURCE_TEXTUREFACTORY);
+    TINT size;
+    TTEXTURERESOURCEFORMAT textureFormat;
+    TINT textureFormatSize;
+    if (renderer->Supports32BitTextures()) {
+        size = 4;
+        textureFormat = TTEXTURERESOURCEFORMAT::R8G8B8A8;
+        textureFormatSize = 32;
+    }
+    else {
+        size = 2;
+        textureFormat = TTEXTURERESOURCEFORMAT::R5G5B5A1;
+        textureFormatSize = 8;
+    }
+    size *= 0x10000;
+    TPVOID buffer = tmalloc(size, TNULL, -1);
+    TSystem::MemSet(buffer, 0xFF, size);
+    factory->CreateEx(buffer, size, 256, 256, 1, textureFormat, textureFormatSize);
+    return TTRUE;
+}
+
+TBOOL ABINKMoviePlayer::InitializeAudioResource()
+{
+    TManagedPtr<TRenderD3DInterface> renderer = (TRenderD3DInterface*)g_oTheApp.GetRootTask()->GetRenderInterface().m_pObject;
+    HRESULT hResult = DirectSoundCreate(NULL, &m_pDirectSound, NULL);
+
+    if (FAILED(hResult)) {
+        m_pDirectSound = NULL;
+    }
+    else {
+        m_pDirectSound->SetCooperativeLevel(renderer->GetMSWindow()->GetHWND(), 2);
+        BinkSoundUseDirectSound(m_pDirectSound);
+    }
+    return TTRUE;
+}
+
+TBOOL ABINKMoviePlayer::FreeVideoResource()
+{
+    return TTRUE;
 }
 
 void ABINKMoviePlayer::BinkSleep(TINT a_iMicroseconds)

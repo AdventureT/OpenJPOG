@@ -1,19 +1,10 @@
 #pragma once
 
 #include "TKernel/TDebug.h"
+#include "TRender/TResource.h"
 #include "TTextureFactory.h"
 
 TOSHI_NAMESPACE_BEGIN
-
-enum TTEXTURERESOURCEFORMAT
-{
-	UNKNOWN,
-	R8G8B8A8,
-	R8G8B8,
-	R5G5B5A1,
-	DDS,
-	R4G4B4A4,
-};
 
 class TRENDERINTERFACE_EXPORTS TTextureResource : public TResource
 {
@@ -22,7 +13,7 @@ class TRENDERINTERFACE_EXPORTS TTextureResource : public TResource
 	friend class TTextureFactory;
 	friend class TTextureFactoryHAL;
 
-protected:
+public:
 
 	virtual TBOOL Create(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_eTextureFlags, TUINT a_uiWidth, TUINT a_uiHeight) = 0;
 	virtual TBOOL Create(TPCCHAR a_szFileName, TUINT a_eTextureFlags) = 0;

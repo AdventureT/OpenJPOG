@@ -8,11 +8,11 @@ struct Test
 	int m_iTest;
 };
 
-TEST_CASE("Test Managed Pointer", "[TManagedPointer]")
+TEST_CASE("Test Managed Pointer", "[TManagedPtr]")
 {
 	Test* test = new Test;
 	{
-		TManagedPointer<Test> testptr(test);
+		TManagedPtr<Test> testptr(test);
 	}
 
 	// Ensure that the pointer is not 0xCC (freed memory)

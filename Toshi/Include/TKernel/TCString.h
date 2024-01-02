@@ -40,6 +40,7 @@ public:
 	}
 
 	TCString& Concat(TCString const& a_rString, TINT a_iLength = -1);
+	TCString& Concat(TPCCHAR a_String, TINT a_iLength = -1);
 	TINT Compare(TPCCHAR a_pcString, int a_iLength = -1) const;
 
 	void Copy(const TCString& a_rOther, TINT a_iLength = -1);

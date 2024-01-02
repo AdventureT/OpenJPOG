@@ -18,6 +18,8 @@ public:
 
 	virtual TBOOL ShutdownMoviePlayer();
 
+	virtual TBOOL StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a_szUnk2, TBOOL a_bUnk3);
+
 	virtual TBOOL Update(TFLOAT a_fDeltaTime);
 
 	virtual TBOOL RenderToTexture(TTextureResource *a_pTexture);
@@ -25,10 +27,10 @@ public:
 	virtual TBOOL RenderToFrameBuffer();
 	virtual TBOOL RenderToFrameBuffer(TPBYTE a_pDest, TINT a_iSourceHeigth, TINT a_iDestHeigth, TINT a_iDestPitch, TINT a_iDestX, INT a_iDestY, INT a_iSrcX, INT a_iSrcY);
 
-	virtual TBOOL FreeVideoResource()
-	{
-		return TTRUE;
-	}
+	virtual TBOOL InitializeVideoResource();
+	virtual TBOOL InitializeAudioResource();
+
+	virtual TBOOL FreeVideoResource();
 
 	virtual TBOOL FreeAudioResource()
 	{

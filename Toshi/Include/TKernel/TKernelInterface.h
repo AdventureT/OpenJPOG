@@ -20,7 +20,7 @@ public:
 	TScheduler* GetScheduler() const { return m_pScheduler.m_pObject; }
 private:
 	THPTimer m_oSysTimer;                     // 0x8
-	TManagedPointer<TScheduler> m_pScheduler; // 0x30
+	TManagedPtr<TScheduler> m_pScheduler; // 0x30
 	TFLOAT m_fDeltaTime;                      // 0x44
 	TFLOAT m_fAvgFPS;                         // 0x48
 	TBOOL m_bVerbose;                         // 0x4C

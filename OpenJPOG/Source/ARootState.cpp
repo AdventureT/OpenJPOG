@@ -1,0 +1,5 @@
+#include "ARootState.h"
+
+TOSHI_NAMESPACE_USING
+
+IMPLEMENT_DYNCREATE(ARootState, TObject)
