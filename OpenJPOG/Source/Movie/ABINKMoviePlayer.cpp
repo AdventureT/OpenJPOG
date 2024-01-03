@@ -1,7 +1,6 @@
 #include "ABINKMoviePlayer.h"
 #include "main.h"
 #include "TKernel/TManagedPointer.h"
-#include "TRender/TTextureFactory.h"
 #include "TRenderD3D/TRenderD3DInterface.h"
 
 TOSHI_NAMESPACE_USING
@@ -17,6 +16,15 @@ ABINKMoviePlayer::ABINKMoviePlayer()
     m_iFrameBufferWidth = 0;
     m_pFrameBufferBits = TNULL;
     RADSetMemory(RADMEMALLOC, RADMEMFREE);
+    m_pTextures[0] = TNULL;
+    m_pTextures[1] = TNULL;
+    m_pTextures[2] = TNULL;
+    m_pTextures[3] = TNULL;
+    m_pTextures[4] = TNULL;
+    m_pTextures[5] = TNULL;
+    m_pTextures[6] = TNULL;
+    m_pTextures[7] = TNULL;
+    m_iCurrentTextureIndex = 0;
     SetFrameReady(TFALSE);
 }
 
@@ -41,9 +49,72 @@ TBOOL ABINKMoviePlayer::ShutdownMoviePlayer()
     return TFALSE;
 }
 
-TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a_szUnk2, TBOOL a_bUnk3)
+TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a_szUnk2, TBOOL a_bUseLocale)
 {
     TManagedPtr<TRenderInterface> renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
+
+    if (a_szMovieName) {
+        Toshi::TSystem::StringCopy(m_szMovieFileName, a_szMovieName, -1);
+    }
+    else {
+        Toshi::TSystem::MemSet(m_szMovieFileName, 0, sizeof(m_szMovieFileName));
+    }
+
+    if (a_szUnk2) {
+        Toshi::TSystem::StringCopy(m_szMovieName, a_szUnk2, -1);
+    }
+    else {
+        Toshi::TSystem::MemSet(m_szMovieName, 0, sizeof(m_szMovieName));
+    }
+
+    TCHAR buffer3[256];
+    if (a_bUseLocale) {
+        SetLocaleInfoA(buffer3);
+    }
+    else {
+        sprintf(buffer3, "Data\\Movies\\%s.bik", m_szMovieFileName);
+    }
+
+    m_bDrawingFrame = TTRUE;
+    SetFrameReady(TFALSE);
+    m_iFrameCount = 0;
+
+    if (m_bDoAudio) {
+        m_hBink = BinkOpen(buffer3, 0);
+    }
+    else {
+        BinkSetSoundTrack(0, NULL);
+        m_hBink = BinkOpen(buffer3, BINKSNDTRACK);
+    }
+    if (!m_hBink) {
+        return TFALSE;
+    }
+    
+    InitializeMoviePlayer();
+    m_iWidth = m_hBink->Width;
+    m_iHeight = m_hBink->Height;
+
+    TTextureResource* pTexture = GetCurrentTexture();
+    if (!pTexture) {
+        TTextureFactory* pTextureFactory = (TTextureFactory*)renderer->GetSystemResource(TRenderInterface::SYSRESOURCE_TEXTUREFACTORY);
+        TPVOID pData = tmalloc(0x200000, TNULL, -1);
+        TSystem::MemSet(pData, 0xFF, 0x200000);
+        pTexture = pTextureFactory->CreateEx(pData, 0x200000, 1024, 512, 1, TTEXTURERESOURCEFORMAT::R8G8B8A8, 32);
+        if (pTexture) {
+            pTexture->Validate();
+            m_iFrameBufferWidth = 1024;
+            m_iFrameBufferHeight = 512;
+            SetCurrentTexture(pTexture);
+        }
+        tfree(pData);
+    }
+
+    if (!m_bDoAudio) {
+        BinkSetSoundOnOff(m_hBink, 0);
+    }
+    RenderMovie(TTRUE);
+    m_bHasMovieStopped = TFALSE;
+    return TTRUE;
 
     return TBOOL();
 }
@@ -162,6 +233,13 @@ TBOOL ABINKMoviePlayer::InitializeAudioResource()
 TBOOL ABINKMoviePlayer::FreeVideoResource()
 {
     return TTRUE;
+}
+
+void ABINKMoviePlayer::SetLocaleInfoA(TPCHAR a_szBuffer)
+{
+    //Toshi::TSystem::GetCStringPool();
+    //Toshi::TSystem::GetLocale();
+    sprintf(a_szBuffer, "Data\\Movies\\%s.bik", m_szMovieFileName);
 }
 
 void ABINKMoviePlayer::BinkSleep(TINT a_iMicroseconds)

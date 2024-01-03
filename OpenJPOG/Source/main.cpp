@@ -5,8 +5,6 @@ AApplication g_oTheApp;
 
 TBOOL AApplication::OnCreate(TINT argc, TPCHAR* const argv)
 {
-	Toshi::TResource test;
-	test.SetName("ff");
 	m_pInputTask = (ADummyTask*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ADummyTask), TNULL);
 	m_pInputTask->Create();
 	m_pInputTask->Activate(TTRUE);

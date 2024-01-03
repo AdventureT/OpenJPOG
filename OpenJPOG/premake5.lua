@@ -32,6 +32,7 @@ project ("OpenJPOG")
 	includedirs
 	{
 		"%{wks.location}/Toshi/Include",
+		"Source",
 		"%{IncludeDir.fmod}",
 		"%{IncludeDir.bink}"
 	}

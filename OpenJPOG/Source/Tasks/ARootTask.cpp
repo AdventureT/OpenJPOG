@@ -1,5 +1,7 @@
 #include "ARootTask.h"
+#include "Movie/ABINKMoviePlayer.h"
 #include "main.h"
+#include "States/AFrontEndSplashState.h"
 
 TOSHI_NAMESPACE_USING
 
@@ -14,6 +16,14 @@ TBOOL ARootTask::OnCreate()
 {
 	m_pMoviePlayer = new ABINKMoviePlayer();
 	return TTask::OnCreate();
+}
+
+void ARootTask::LoadFrontEndController()
+{
+}
+
+void ARootTask::UnloadFrontEndController()
+{
 }
 
 void ARootTask::AllocateInputSystem()

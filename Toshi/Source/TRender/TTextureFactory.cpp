@@ -17,7 +17,7 @@ TTextureResource* TTextureFactory::CreateTextureFromMemory(TPVOID a_pData, TUINT
 	return TNULL;
 }
 
-TTextureResource* TTextureFactory::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_bNoMipLevels)
+TTextureResource* TTextureFactory::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_uiFormatBits)
 {
 	return TNULL;
 }

@@ -55,7 +55,7 @@ TTextureResource* TTextureFactoryHAL::CreateTextureFromMemory(TPVOID a_pData, TU
 	return pTexture;
 }
 
-TTextureResource* TTextureFactoryHAL::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_bNoMipLevels)
+TTextureResource* TTextureFactoryHAL::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_uiFormatBits)
 {
 	static TUINT s_iNumMemTextures = 0;
 	static char s_szName[32];
@@ -76,7 +76,7 @@ TTextureResource* TTextureFactoryHAL::CreateEx(TPVOID a_pData, TUINT a_uiDataSiz
 		)
 	);
 
-	pTexture->CreateEx(a_pData, a_uiDataSize, a_uiWidth, a_uiHeight, a_uiMipLevels, a_eFormat, a_bNoMipLevels);
+	pTexture->CreateEx(a_pData, a_uiDataSize, a_uiWidth, a_uiHeight, a_uiMipLevels, a_eFormat, a_uiFormatBits);
 	RegisterTexture(s_szName, pTexture);
 
 	return pTexture;

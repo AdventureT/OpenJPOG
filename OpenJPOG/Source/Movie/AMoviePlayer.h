@@ -42,7 +42,7 @@ public:
 		return TFALSE;
 	}
 
-	virtual TBOOL StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a_szUnk2, TBOOL a_bUnk3)
+	virtual TBOOL StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a_szUnk2, TBOOL a_bUseLocale)
 	{
 		return TFALSE;
 	}

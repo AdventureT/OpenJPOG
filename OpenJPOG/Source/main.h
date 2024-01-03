@@ -1,8 +1,8 @@
 #pragma once
 #include "TApplication/TApplication.h"
 #include "TKernel/TMemory.h"
-#include "ADummyTask.h"
-#include "ARootTask.h"
+#include "Tasks/ADummyTask.h"
+#include "Tasks/ARootTask.h"
 
 class AApplication : public Toshi::TApplication
 {
