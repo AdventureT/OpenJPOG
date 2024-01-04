@@ -26,6 +26,8 @@ class TVertexPoolResourceInterface;
 class TRENDERINTERFACE_EXPORTS TVertexFactoryResourceInterface : public TResource
 {
 	DECLARE_DYNAMIC(TVertexFactoryResourceInterface)
+
+	friend TVertexPoolResourceInterface;
 public:
 	TVertexFactoryResourceInterface();
 

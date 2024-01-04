@@ -45,8 +45,24 @@ TBOOL TRenderInterface::CreateSystemResources()
 	TBOOL bRes = TFALSE;
 
 	m_aSysResources[SYSRESOURCE_VFACTORIES] = CreateResource(&TGetClass(TNullResource), "VFactories", TNULL);
-	//m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1] = CreateResource(TFindClass(TVertexFactoryResource, TNULL), "VFSYSSVNDUV1", GetSystemResource(SYSRESOURCE_VFACTORIES));
-	//TVALIDADDRESS(m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1]);
+
+	m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1] = CreateResource(TFindClass(TVertexFactoryResource, TNULL), "VFSYSSVNDUV1", GetSystemResource(SYSRESOURCE_VFACTORIES));
+	TVALIDADDRESS(m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1]);
+	TVertexFactoryFormat vertexFormat;
+	vertexFormat.m_uiNumStreams = 1;
+	vertexFormat.m_aStreamFormats[0].m_uiVertexSize = 24;
+	vertexFormat.m_aStreamFormats[0].m_uiUnk = 0;
+	bRes = static_cast<TVertexFactoryResourceInterface*>(GetSystemResource(SYSRESOURCE_VFSYSSVNDUV1))->Create(&vertexFormat, 11000, 0);
+	TASSERT(TTRUE == bRes);
+
+	m_aSysResources[SYSRESOURCE_VFSKIN] = CreateResource(TFindClass(TVertexFactoryResource, TNULL), "VFSKIN", GetSystemResource(SYSRESOURCE_VFACTORIES));
+	TVALIDADDRESS(m_aSysResources[SYSRESOURCE_VFSKIN]);
+	TVertexFactoryFormat vertexFormat;
+	vertexFormat.m_uiNumStreams = 1;
+	vertexFormat.m_aStreamFormats[0].m_uiVertexSize = 40;
+	vertexFormat.m_aStreamFormats[0].m_uiUnk = 0;
+	bRes = static_cast<TVertexFactoryResourceInterface*>(GetSystemResource(SYSRESOURCE_VFSKIN))->Create(&vertexFormat, 11000, 0);
+	TASSERT(TTRUE == bRes);
 
 	m_aSysResources[SYSRESOURCE_TEXTUREFACTORY] = CreateResource(TFindClass(TTextureFactoryHAL, TNULL), "TextureFactory", TNULL);
 	bRes = m_aSysResources[SYSRESOURCE_TEXTUREFACTORY]->Create();

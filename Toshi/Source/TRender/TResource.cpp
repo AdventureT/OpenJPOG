@@ -21,6 +21,18 @@ TBOOL TResource::Validate()
 	return TTRUE;
 }
 
+void TResource::Invalidate()
+{
+}
+
+void TResource::DestroyResource()
+{
+}
+
+void TResource::OnDestroy()
+{
+}
+
 void TResource::SetParent(TResource* a_pParent)
 {
 	TASSERT((TNULL == a_pParent) || (TTRUE == IsDying()) || (TFALSE == a_pParent->IsDying()));
@@ -49,4 +61,42 @@ void TResource::SetName(TPCCHAR a_strName)
 	}
 	TASSERT(TSystem::StringLength(a_strName)<=MAXNAMELEN);
 	TSystem::StringCopy(m_szName, a_strName, -1);
+}
+
+TBOOL Recurse(TResource::t_RecurseCb a_pCallback, TResource* a_pResource, TBOOL a_bFlag, TPVOID a_pUserData)
+{
+	TResource* pResource = a_pResource;
+
+	while (pResource) {
+		TResource* pNext = pResource->Next();
+
+		if (pNext == a_pResource || pNext == pResource || !a_bFlag) {
+			pNext = TNULL;
+		}
+
+		if (!a_pCallback(pResource, a_pUserData)) {
+			return TFALSE;
+		}
+
+		auto pAttached = pResource->Child();
+		if (pAttached && !Recurse(a_pCallback, pResource, TTRUE, a_pUserData)) {
+			return TFALSE;
+		}
+
+		pResource = pNext;
+	}
+
+	return TTRUE;
+}
+
+void TResource::RecurseSimple(t_RecurseCb a_pfnCallback, TResource* a_pResource, TPVOID a_pUserData)
+{
+	TASSERT(TNULL != GetTree());
+	TASSERT(TNULL != a_pfnCallback);
+	if (a_pResource) {
+		Recurse(a_pfnCallback, a_pResource, TFALSE, a_pUserData);
+	}
+	else {
+		Recurse(a_pfnCallback, Child(), TTRUE, a_pUserData);
+	}
 }

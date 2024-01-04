@@ -22,7 +22,7 @@ public:
 			m_Next = (T*)this;
 			m_Prev = (T*)this;
 			m_Parent = TNULL;
-			m_Attached = TNULL;
+			m_Child = TNULL;
 		}
 
 	public:
@@ -37,14 +37,14 @@ public:
 		T* Next() const { return m_Next; }
 		T* Prev() const { return m_Prev; }
 		TNodeTree<T>* GetTree() const { return m_Tree; }
-		T* Attached() const { return m_Attached; }
+		T* Child() const { return m_Child; }
 
 	protected:
 		TNodeTree<T>* m_Tree;
 		T* m_Next;
 		T* m_Prev;
 		T* m_Parent;
-		T* m_Attached;
+		T* m_Child;
 	};
 
 public:
@@ -74,7 +74,7 @@ public:
 		Remove(*a_pSourceNode, TFALSE);
 
 		// Get the first attached to parent node
-		T* firstAttached = parentNode->Attached();
+		T* firstAttached = parentNode->Child();
 
 		if (firstAttached != TNULL)
 		{
@@ -90,7 +90,7 @@ public:
 		else
 		{
 			// Attach node as the first one
-			parentNode->m_Attached = a_pSourceNode;
+			parentNode->m_Child = a_pSourceNode;
 		}
 
 		a_pSourceNode->m_Tree = this;
@@ -147,7 +147,7 @@ public:
 
 		if (flag)
 		{
-			T* attachedNode = node.Attached();
+			T* attachedNode = node.Child();
 
 			while (attachedNode != TNULL)
 			{
@@ -164,9 +164,9 @@ public:
 		if (nodeParent != TNULL)
 		{
 			// If it's the first attached to the root node, set it to next or just remove
-			if (nodeParent->Attached() == &node)
+			if (nodeParent->Child() == &node)
 			{
-				nodeParent->m_Attached = (node.Next() != &node) ? node.Next() : TNULL;
+				nodeParent->m_Child = (node.Next() != &node) ? node.Next() : TNULL;
 			}
 
 			node.m_Parent = TNULL;
@@ -191,9 +191,9 @@ public:
 		{
 			T* next = (node->Next() != node) ? node->Next() : TNULL;
 
-			if (node->Attached() != TNULL)
+			if (node->Child() != TNULL)
 			{
-				DeleteRecurse(node->Attached());
+				DeleteRecurse(node->Child());
 			}
 
 			if (node->GetTree() == this)
@@ -208,16 +208,16 @@ public:
 				if (nodeParent != TNULL)
 				{
 					// If it's the first attached to the root node, set it to next or just remove
-					if (nodeParent->Attached() == node)
+					if (nodeParent->Child() == node)
 					{
-						nodeParent->m_Attached = (node->Next() != node) ? node->Next() : TNULL;
+						nodeParent->m_Child = (node->Next() != node) ? node->Next() : TNULL;
 					}
 
 					node->m_Parent = TNULL;
 				}
 
 				node->m_Prev->m_Parent = node->m_Next;
-				node->m_Next->m_Attached = node->m_Prev;
+				node->m_Next->m_Child = node->m_Prev;
 				node->m_Next = node;
 				node->m_Prev = node;
 				node->m_Tree = TNULL;
@@ -230,13 +230,13 @@ public:
 
 	void DeleteAll()
 	{
-		T* node = GetRoot()->Attached();
+		T* node = GetRoot()->Child();
 
 		while (node != TNULL)
 		{
 			Remove(node, TFALSE);
 			DeleteRecurse(node);
-			node = GetRoot()->Attached();
+			node = GetRoot()->Child();
 		}
 
 		TASSERT(Count() == 0);
@@ -247,9 +247,9 @@ public:
 		return TSTATICCAST(T*, &m_Root);
 	}
 
-	T* AttachedToRoot()
+	T* ChildOfRoot()
 	{
-		return m_Root.Attached();
+		return m_Root.Child();
 	}
 
 	size_t Count() const

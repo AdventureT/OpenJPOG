@@ -14,6 +14,8 @@ class TRENDERINTERFACE_EXPORTS TRenderInterface : public TObject
 	DECLARE_DYNAMIC(TRenderInterface)
 
 public:
+
+
 	enum FLAG
 	{
 		FLAG_DIRTY = BITFIELD(0),

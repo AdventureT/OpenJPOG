@@ -2,6 +2,19 @@
 
 #include "TMemory.h"
 
+#define DECLARE_FREELIST(class_name) \
+public: \
+static TPVOID TOSHI_API operator new(TUINT s, TPVOID mem) { return mem; } \
+static TPVOID TOSHI_API operator new(TUINT s) { return ms_oFreeList.New(s); } \
+static TPVOID TOSHI_API operator new(TUINT s, TPCHAR mem, TINT unk) { return ms_oFreeList.New(s); } \
+static void TOSHI_API operator delete(void* ptr) { ms_oFreeList.Delete(ptr); } \
+static Toshi::TFreeList& TOSHI_API GetFreeList() {return ms_oFreeList;} \
+\
+private: static Toshi::TFreeList ms_oFreeList;
+
+#define IMPLEMENT_FREELIST(class_name, InitialSize, GrowSize) \
+Toshi::TFreeList class_name::ms_oFreeList = Toshi::TFreeList(sizeof(class_name), InitialSize, GrowSize, TNULL);
+
 TOSHI_NAMESPACE_BEGIN
 
 class TKERNELINTERFACE_EXPORTS TFreeList

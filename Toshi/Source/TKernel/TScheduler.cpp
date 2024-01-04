@@ -61,8 +61,8 @@ void TScheduler::Update()
 		m_fCurrentTimeDelta = 0.0f;
 	}
 
-	DestroyDyingTasks(m_oTaskTree.AttachedToRoot());
-	UpdateActiveTasks(m_oTaskTree.AttachedToRoot());
+	DestroyDyingTasks(m_oTaskTree.ChildOfRoot());
+	UpdateActiveTasks(m_oTaskTree.ChildOfRoot());
 }
 
 void TScheduler::DestroyDyingTasks(TTask* a_pTask)
@@ -107,7 +107,7 @@ void TScheduler::UpdateActiveTasks(TTask* a_pTask)
 
 void TScheduler::DestroyAllTasks()
 {
-	TTask* pAttached = m_oTaskTree.AttachedToRoot();
+	TTask* pAttached = m_oTaskTree.ChildOfRoot();
 	if (pAttached) {
 		DestroyTask(*pAttached);
 		DeleteTaskAtomic(pAttached);

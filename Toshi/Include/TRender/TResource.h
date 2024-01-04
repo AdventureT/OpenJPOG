@@ -13,6 +13,9 @@ class TRENDERINTERFACE_EXPORTS TResource : public TObject, public TNodeTree<TRes
 {
 	DECLARE_DYNAMIC(TResource)
 
+public:
+	using t_RecurseCb = TBOOL(*)(TResource* a_pResource, void* a_pUserData);
+
 	enum FLAGS
 	{
 		FLAGS_VALID = BITFIELD(0),
@@ -35,12 +38,20 @@ public:
 
 	virtual TBOOL Create();
 	virtual TBOOL Validate();
+	virtual void Invalidate();
+	virtual void DestroyResource();
+	virtual void OnDestroy();
 
 	void SetParent(TResource *a_pParent);
 	void SetName(TPCCHAR a_strName);
 
-	TBOOL IsDying() { return HASFLAG(m_Flags & FLAGS_DYING); }
-	TBOOL IsCreated() { return HASFLAG(m_Flags & FLAGS_CREATED); }
+	void RecurseSimple(t_RecurseCb a_pfnCallback, TResource* a_pResource, TPVOID a_pUserData);
+
+	TBOOL IsCreated() const { return m_Flags & FLAGS_CREATED; }
+	TBOOL IsDying() const { return m_Flags & FLAGS_DYING; }
+	TBOOL IsSceneObject() const { return m_Flags & FLAGS_SCENEOBJECT; }
+	TBOOL IsDead() const { return m_Flags & FLAGS_DEAD; }
+	TBOOL IsValid() const { return IsCreated() && m_Flags & FLAGS_VALID; }
 
 	TUINT GetUId() const { return m_uiUId; }
 	TPCCHAR GetName() const { return m_szName; }

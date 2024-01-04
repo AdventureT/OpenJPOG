@@ -65,11 +65,11 @@ TBOOL ARootState::RemoveChild()
 
 ARootState& ARootState::GetCurrent()
 {
-    ARootState i;
-    for (i = *this; i.m_pChild != TNULL; i = *i.m_pChild) {
-        if (i.m_pChild == TNULL) {
-            return i;
+    ARootState* i;
+    for (i = this; i->m_pChild != TNULL; i = i->m_pChild) {
+        if (i->m_pChild == TNULL) {
+            return *i;
         }
     }
-    return i;
+    return *i;
 }

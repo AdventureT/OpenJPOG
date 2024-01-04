@@ -11,6 +11,10 @@ TVertexFactoryResourceInterface::TVertexFactoryResourceInterface()
 	m_uiFlags = 0;
 }
 
+TVertexFactoryResourceInterface::TVertexFactoryResourceInterface()
+{
+}
+
 TBOOL TVertexFactoryResourceInterface::Create(TVertexFactoryFormat* a_pVertexFormat, TUSHORT a_uiMaxStaticVertices, TUINT a_uiFlags)
 {
 	TVALIDADDRESS(a_pVertexFormat);
