@@ -156,7 +156,7 @@ public:
 				Remove(*attachedNode, TFALSE);
 				Insert(node.Parent(), attachedNode);
 
-				attachedNode = node.Attached();
+				attachedNode = node.Child();
 				TWARNING("It seems to be unused and I hope it is. I don't know if it works and what it should do\n");
 			}
 		}

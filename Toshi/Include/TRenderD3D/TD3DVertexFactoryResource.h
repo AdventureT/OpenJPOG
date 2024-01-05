@@ -1,12 +1,13 @@
 #pragma once
 
 #include "TRender/TVertexFactoryResourceInterface.h"
-#include "TD3DVertexPoolResource.h"
-#include "TD3DVertexBlockResource.h"
+#include "TRenderD3D/TD3DVertexPoolResource.h"
+#include "TRenderD3D/TD3DVertexBlockResource.h"
+#include "Defines.h"
 
 TOSHI_NAMESPACE_BEGIN
 
-class TVertexFactoryResource : public TVertexFactoryResourceInterface
+class TRENDERINTERFACED3D_EXPORTS TVertexFactoryResource : public TVertexFactoryResourceInterface
 {
 	DECLARE_DYNAMIC(TVertexFactoryResource)
 

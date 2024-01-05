@@ -32,6 +32,7 @@ public:
 	Toshi::AMoviePlayer* GetMoviePlayer() { return m_pMoviePlayer; }
 
 private:
+	void AllocateRenderInterface();
 	void AllocateInputSystem();
 
 private:

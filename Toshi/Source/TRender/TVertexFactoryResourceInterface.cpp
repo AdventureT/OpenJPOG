@@ -1,4 +1,5 @@
 #include "TVertexFactoryResourceInterface.h"
+#include "TVertexPoolResourceInterface.h"
 
 TOSHI_NAMESPACE_USING
 
@@ -9,10 +10,6 @@ TVertexFactoryResourceInterface::TVertexFactoryResourceInterface()
 	m_uiNumCreatedVertexPools = 0;
 	m_usMaxStaticVertices = 0;
 	m_uiFlags = 0;
-}
-
-TVertexFactoryResourceInterface::TVertexFactoryResourceInterface()
-{
 }
 
 TBOOL TVertexFactoryResourceInterface::Create(TVertexFactoryFormat* a_pVertexFormat, TUSHORT a_uiMaxStaticVertices, TUINT a_uiFlags)

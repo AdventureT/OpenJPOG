@@ -3,13 +3,13 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TVertexPoolResourceInterface : public TResource
+class TRENDERINTERFACE_EXPORTS TVertexPoolResourceInterface : public TResource
 {
 	DECLARE_DYNAMIC(TVertexPoolResourceInterface)
 
 public:
 
-	class LockBuffer
+	class TRENDERINTERFACE_EXPORTS LockBuffer
 	{
 		LockBuffer();
 

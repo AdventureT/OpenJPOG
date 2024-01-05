@@ -15,6 +15,7 @@ TVertexPoolResourceInterface* TVertexFactoryResource::CreatePoolResource(TUSHORT
 	TVALIDADDRESS(pVertexPool);
 
 	pVertexPool->Create(this, a_uiMaxStaticVertices, a_uiFlags);
+	CreatePool(a_uiMaxStaticVertices, a_uiFlags);
 	return pVertexPool;
 }
 

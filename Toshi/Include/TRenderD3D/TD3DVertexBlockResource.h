@@ -3,22 +3,26 @@
 #include "TKernel/TFreeList.h"
 #include "TRender/TVertexFactoryResourceInterface.h"
 #include <d3d8.h>
+#include "Defines.h"
 
 TOSHI_NAMESPACE_BEGIN
 
 class TVertexPoolResource;
 class TVertexFactoryResource;
 
-class TVertexBlockResource : public TResource
+class TRENDERINTERFACED3D_EXPORTS TVertexBlockResource : public TResource
 {
 	DECLARE_DYNAMIC(TVertexBlockResource)
 	DECLARE_FREELIST(TVertexBlockResource)
 
 public:
 
-	struct HALBuffer
+	struct TRENDERINTERFACED3D_EXPORTS HALBuffer
 	{
-		HALBuffer();
+		HALBuffer()
+		{
+
+		}
 
 		TUINT uiNumStreams;
 		TUSHORT uiVertexOffset;

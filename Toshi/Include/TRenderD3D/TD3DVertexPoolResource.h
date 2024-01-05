@@ -1,11 +1,11 @@
 #pragma once
 
 #include "TRender/TVertexPoolResourceInterface.h"
-
+#include "Defines.h"
 
 TOSHI_NAMESPACE_BEGIN
 
-class TVertexPoolResource : public TVertexPoolResourceInterface
+class TRENDERINTERFACED3D_EXPORTS TVertexPoolResource : public TVertexPoolResourceInterface
 {
 	DECLARE_DYNAMIC(TVertexPoolResource)
 

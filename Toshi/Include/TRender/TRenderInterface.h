@@ -84,6 +84,8 @@ public:
 		return pLastRenderContext;
 	}
 
+	void DumpStats();
+
 	TBOOL IsCreated() { return m_bIsCreated; }
 	TNodeList<TRenderAdapter>* GetAdapterList() { return &m_pAdapterList; };
 

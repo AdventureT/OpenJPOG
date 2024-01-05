@@ -3,8 +3,21 @@
 #include "THPTimer.h"
 #include "TManagedPointer.h"
 #include "TScheduler.h"
+#include "TDLL.h"
+#include "TNodeList.h"
 
 TOSHI_NAMESPACE_BEGIN
+
+class TKERNELINTERFACE_EXPORTS TKernelInterfaceDLL : public TDLL, public TNodeList<TKernelInterfaceDLL>::TNode
+{
+public:
+	TKernelInterfaceDLL()
+	{
+
+	}
+
+	virtual ~TKernelInterfaceDLL() = default;
+};
 
 class TKERNELINTERFACE_EXPORTS TKernelInterface : public TObject
 {
@@ -15,15 +28,20 @@ public:
 	TBOOL Update();
 
 	void DumpInfo();
+	TKernelInterfaceDLL* FindInterface(const TCString& a_rszInterface);
+	TKernelInterfaceDLL* LoadInterface(const TCString& a_rszInterface);
+	void UnloadInterface(TKernelInterfaceDLL& a_rInterface);
+	void UnloadInterface(const TCString& a_rszInterface);
 
 	THPTimer* GetSystemTimer() { return &m_oSysTimer; }
 	TScheduler* GetScheduler() const { return m_pScheduler.m_pObject; }
 private:
-	THPTimer m_oSysTimer;                     // 0x8
-	TManagedPtr<TScheduler> m_pScheduler; // 0x30
-	TFLOAT m_fDeltaTime;                      // 0x44
-	TFLOAT m_fAvgFPS;                         // 0x48
-	TBOOL m_bVerbose;                         // 0x4C
+	THPTimer m_oSysTimer;                        // 0x8
+	TManagedPtr<TScheduler> m_pScheduler;        // 0x30
+	TNodeList<TKernelInterfaceDLL> m_Interfaces; // 0x34
+	TFLOAT m_fDeltaTime;                         // 0x44
+	TFLOAT m_fAvgFPS;                            // 0x48
+	TBOOL m_bVerbose;                            // 0x4C
 };
 
 TOSHI_NAMESPACE_END

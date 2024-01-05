@@ -44,6 +44,10 @@ TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbo
 	pAbsSystem->SetPrefix("");
 	pFileManager->SetSystemPath("local");
 
+	if (a_bVerbose) {
+		DumpInfo();
+	}
+
 	m_pScheduler = new TScheduler(this);
 }
 
@@ -136,4 +140,42 @@ skipPlatform:
 	TDPRINTF("Total physical memory: %uKB\n", memStatus.dwTotalPhys >> 16);
 	TDPRINTF("Available physical memory: %uKB\n", memStatus.dwAvailPhys >> 16);
 	TDPRINTF("<\n");
+}
+
+TKernelInterfaceDLL* TKernelInterface::FindInterface(const TCString& a_rszInterface)
+{
+	for (auto i = m_Interfaces.Begin(); i != m_Interfaces.End(); i++) {
+		if (i->GetFilename() == a_rszInterface) {
+			return i;
+		}
+	}
+	return TNULL;
+}
+
+TKernelInterfaceDLL* TKernelInterface::LoadInterface(const TCString& a_rszInterface)
+{
+	TKernelInterfaceDLL* pInterface = FindInterface(a_rszInterface);
+	if (pInterface) {
+		return pInterface;
+	}
+	pInterface = new TKernelInterfaceDLL();
+	if (!pInterface->Load(a_rszInterface)) {
+		delete pInterface;
+	}
+	m_Interfaces.InsertTail(*pInterface);
+	return pInterface;
+}
+
+void TKernelInterface::UnloadInterface(TKernelInterfaceDLL& a_rInterface)
+{
+	a_rInterface.Unload();
+	m_Interfaces.Delete(a_rInterface);
+}
+
+void TKernelInterface::UnloadInterface(const TCString& a_rszInterface)
+{
+	TKernelInterfaceDLL* pInterface = FindInterface(a_rszInterface);
+	if (pInterface) {
+		UnloadInterface(*pInterface);
+	}
 }

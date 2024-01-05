@@ -3,14 +3,14 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-struct TVertexStreamFormat
+struct TRENDERINTERFACE_EXPORTS TVertexStreamFormat
 {
 	TUSHORT m_uiUnk = 0;
 	TUSHORT m_uiVertexSize = 0;
 	TUINT m_Unk = 0;
 };
 
-class TVertexFactoryFormat
+class TRENDERINTERFACE_EXPORTS TVertexFactoryFormat
 {
 public:
 	static constexpr TUINT MAX_NUM_STREAMS = 8;

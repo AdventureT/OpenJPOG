@@ -43,12 +43,12 @@ TBOOL TRenderInterface::CreateSystemResources()
 	}
 
 	TBOOL bRes = TFALSE;
+	TVertexFactoryFormat vertexFormat;
 
 	m_aSysResources[SYSRESOURCE_VFACTORIES] = CreateResource(&TGetClass(TNullResource), "VFactories", TNULL);
 
 	m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1] = CreateResource(TFindClass(TVertexFactoryResource, TNULL), "VFSYSSVNDUV1", GetSystemResource(SYSRESOURCE_VFACTORIES));
 	TVALIDADDRESS(m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1]);
-	TVertexFactoryFormat vertexFormat;
 	vertexFormat.m_uiNumStreams = 1;
 	vertexFormat.m_aStreamFormats[0].m_uiVertexSize = 24;
 	vertexFormat.m_aStreamFormats[0].m_uiUnk = 0;
@@ -57,7 +57,6 @@ TBOOL TRenderInterface::CreateSystemResources()
 
 	m_aSysResources[SYSRESOURCE_VFSKIN] = CreateResource(TFindClass(TVertexFactoryResource, TNULL), "VFSKIN", GetSystemResource(SYSRESOURCE_VFACTORIES));
 	TVALIDADDRESS(m_aSysResources[SYSRESOURCE_VFSKIN]);
-	TVertexFactoryFormat vertexFormat;
 	vertexFormat.m_uiNumStreams = 1;
 	vertexFormat.m_aStreamFormats[0].m_uiVertexSize = 40;
 	vertexFormat.m_aStreamFormats[0].m_uiUnk = 0;
@@ -96,4 +95,8 @@ TResource* TRenderInterface::CreateResource(const TClass* a_pClass, TPCCHAR a_sz
 	pResource->SetName(a_szResName);
 
 	return pResource;
+}
+
+void TRenderInterface::DumpStats()
+{
 }

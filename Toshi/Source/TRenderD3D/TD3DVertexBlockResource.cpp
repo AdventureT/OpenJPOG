@@ -4,13 +4,12 @@
 
 TOSHI_NAMESPACE_USING
 
-IMPLEMENT_DYNAMIC(TVertexBlockResource, TResource)
+IMPLEMENT_DYNCREATE(TVertexBlockResource, TResource)
 IMPLEMENT_FREELIST(TVertexBlockResource, 0, 8)
 
 TBOOL TVertexBlockResource::CanFit(TVertexPoolResource* a_pPoolResource)
 {
-	if (GetFlags() & 1 && a_pPoolResource->GetFlags() & 1)
-	{
+	if (GetFlags() & 1 && a_pPoolResource->GetFlags() & 1) {
 		return m_uiMaxVertices >= a_pPoolResource->GetNumVertices() + m_uiVerticesUsed;
 	}
 

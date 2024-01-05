@@ -323,6 +323,181 @@ protected:
 	TINT m_iCount; // 0x10
 };
 
+template <class T, class Node>
+class T2Iterator
+{
+public:
+
+	T2Iterator()
+	{
+		m_pPtr = TNULL;
+	}
+
+	T2Iterator(Node* pPtr)
+	{
+		m_pPtr = static_cast<T*>(pPtr);
+	}
+
+	T2Iterator(T* pPtr)
+	{
+		m_pPtr = pPtr;
+	}
+
+	/*TBOOL operator==(const T* ptr)
+	{
+		return m_pNode == ptr;
+	}*/
+
+	/*TBOOL operator!=(const T* ptr)
+	{
+		return m_pNode != ptr;
+	}*/
+
+	void operator=(const T2Iterator& other)
+	{
+		m_pPtr = other.m_pPtr;
+	}
+
+	void operator=(T* pPtr)
+	{
+		m_pPtr = pPtr;
+	}
+
+	T* operator->() const
+	{
+		TASSERT(m_pPtr != TNULL);
+		return m_pPtr;
+	}
+
+	operator T* () const
+	{
+		TASSERT(m_pPtr != TNULL);
+		return static_cast<T*>(m_pPtr);
+	}
+
+	T2Iterator operator++(int)
+	{
+		TASSERT(m_pPtr != TNULL);
+		T2Iterator old = m_pPtr;
+		m_pPtr = static_cast<T*>(m_pPtr->Next());
+		return old;
+	}
+
+	T2Iterator operator--(int)
+	{
+		TASSERT(m_pPtr != TNULL);
+		T2Iterator old = m_pPtr;
+		m_pPtr = static_cast<T*>(m_pPtr->Prev());
+		return old;
+	}
+
+	T2Iterator operator++()
+	{
+		TASSERT(m_pPtr != TNULL);
+		m_pPtr = static_cast<T*>(m_pPtr->Next());
+		return T2Iterator{ m_pPtr };
+	}
+
+	T2Iterator operator--()
+	{
+		TASSERT(m_pPtr != TNULL);
+		m_pPtr = static_cast<T*>(m_pPtr->Prev());
+		return T2Iterator{ m_pPtr };
+	}
+
+private:
+	T* m_pPtr;
+};
+
+//class Iterator
+//{
+//public:
+
+//	Iterator()
+//	{
+//		m_pPtr = TNULL;
+//	}
+
+//	Iterator(TNode* a_pNode)
+//	{
+//		m_pPtr = static_cast<T*>(a_pNode);
+//	}
+
+//	Iterator(T* a_pNode)
+//	{
+//		m_pPtr = a_pNode;
+//	}
+
+//	Iterator(const Iterator& a_rIterator)
+//	{
+//		m_pPtr = a_rIterator.m_pPtr;
+//	}
+
+//	~Iterator() = default;
+
+//	TBOOL operator!() { return IsNull(); }
+//	TBOOL operator!=(Iterator& a_rIterator) { return m_pPtr != a_rIterator.m_pPtr; }
+
+//	T& operator*() const
+//	{
+//		TASSERT(m_pPtr != TNULL);
+//		return *m_pPtr;
+//	}
+
+//	Iterator& operator++()
+//	{
+//		TASSERT(m_pPtr != TNULL);
+//		m_pPtr = static_cast<T*>(m_pPtr->Next());
+//		return *this;
+//	}
+
+//	Iterator operator++(int)
+//	{
+//		TASSERT(m_pPtr != TNULL);
+//		Iterator old = m_pPtr;
+//		m_pPtr = static_cast<T*>(m_pPtr->Next());
+//		return old;
+//	}
+
+//	Iterator operator--()
+//	{
+//		TASSERT(m_pPtr != TNULL);
+//		m_pPtr = static_cast<T*>(m_pPtr->Prev());
+//		return *this;
+//	}
+
+//	T* operator->() const
+//	{
+//		return m_pPtr;
+//	}
+
+//	void operator=(const Iterator& a_rIterator)
+//	{
+//		m_pPtr = a_rIterator.m_pPtr;
+//		return *this;
+//	}
+
+//	void operator=(T* pPtr)
+//	{
+//		m_pPtr = pPtr;
+//	}
+
+//	TBOOL operator==(Iterator& a_rIterator) const
+//	{
+//		return m_pPtr == a_rIterator.m_pPtr;
+//	}
+
+//	operator T* () const
+//	{
+//		return static_cast<T*>(m_pPtr);
+//	}
+
+//	TBOOL IsNull() { return m_pPtr == TNULL; }
+
+//private:
+//	T* m_pPtr;
+//}; 
+
 // For the mean time use this until we probably implemented this
 template <class T>
 class TNodeList
@@ -398,95 +573,6 @@ public:
 		TNode* m_Prev;
 	};
 
-	class Iterator
-	{
-	public:
-
-		Iterator()
-		{
-			m_pPtr = TNULL;
-		}
-
-		Iterator(TNode* a_pNode)
-		{
-			m_pPtr = static_cast<T*>(a_pNode);
-		}
-
-		Iterator(T* a_pNode)
-		{
-			m_pPtr = a_pNode;
-		}
-
-		Iterator(const Iterator& a_rIterator)
-		{
-			m_pPtr = a_rIterator.m_pPtr;
-		}
-
-		~Iterator() = default;
-
-		TBOOL operator!() { return IsNull(); }
-		TBOOL operator!=(Iterator& a_rIterator) { return m_pPtr != a_rIterator.m_pPtr; }
-
-		T& operator*() const
-		{
-			TASSERT(m_pPtr != TNULL);
-			return *m_pPtr;
-		}
-
-		Iterator& operator++()
-		{
-			TASSERT(m_pPtr != TNULL);
-			m_pPtr = m_pPtr->Next();
-			return *this;
-		}
-
-		Iterator operator++(int)
-		{
-			TASSERT(m_pPtr != TNULL);
-			Iterator old = m_pPtr;
-			m_pPtr = m_pPtr->Next();
-			return old;
-		}
-
-		Iterator operator--()
-		{
-			TASSERT(m_pPtr != TNULL);
-			m_pPtr = m_pPtr->Prev();
-			return *this;
-		}
-
-		T* operator->() const
-		{
-			return m_pPtr;
-		}
-
-		Iterator& operator=(const Iterator& a_rIterator)
-		{
-			m_pPtr = a_rIterator.m_pPtr;
-			return *this;
-		}
-
-		TBOOL operator==(Iterator& a_rIterator) const
-		{
-			return m_pPtr == a_rIterator.m_pPtr;
-		}
-
-		operator TNode* () const
-		{
-			return m_pPtr;
-		}
-
-		operator T* () const
-		{
-			return m_pPtr;
-		}
-
-		TBOOL IsNull() { return m_pPtr == TNULL; }
-
-	private:
-		T* m_pPtr;
-	};
-
 public:
 	TNodeList()
 	{
@@ -536,24 +622,26 @@ public:
 	void RemoveAll()
 	{
 		while (!IsEmpty())
-			return Remove(*m_Head.Next());
+		{
+			Remove(*m_Head.Next());
+		}
 	}
 
-	TNode* RemoveHead()
+	T* RemoveHead()
 	{
 		if (!IsEmpty())
 		{
-			return Remove(*m_Head.Next());
+			return Remove(*m_Head.Next())->As<T>();
 		}
 
 		return TNULL;
 	}
 
-	TNode* RemoveTail()
+	T* RemoveTail()
 	{
 		if (!IsEmpty())
 		{
-			return Remove(*m_Head.Prev());
+			return Remove(*m_Head.Prev())->As<T>();
 		}
 
 		return TNULL;
@@ -577,29 +665,29 @@ public:
 		}
 	}
 
-	void Delete(TNode& node)
+	void Delete(T& node)
 	{
 		Remove(node);
 
 		delete& node;
 	}
 
-	void InsertHead(TNode& node)
+	void InsertHead(T& node)
 	{
 		InsertAfter(m_Head, node);
 	}
 
-	void InsertTail(TNode& node)
+	void InsertTail(T& node)
 	{
 		InsertBefore(m_Head, node);
 	}
 
 	TBOOL IsEmpty() const
 	{
-		return m_Head.Next() == &m_Head;
+		return m_Head.Next() == End();
 	}
 
-	TBOOL IsValid(const TNode* node) const
+	TBOOL IsValid(const T* node) const
 	{
 		return node != TNULL && node->m_List == this;
 	}
@@ -609,28 +697,28 @@ public:
 		return m_Count;
 	}
 
-	Iterator Begin() const
+	T2Iterator<T, TNode> Begin() const
 	{
 		return m_Head.m_Next;
 	}
 
-	Iterator Head() const
+	T2Iterator<T, TNode> Head() const
 	{
 		return m_Head.m_Next;
 	}
 
-	Iterator Tail() const
+	T2Iterator<T, TNode> Tail() const
 	{
 		return m_Head.m_Prev;
 	}
 
-	Iterator End()
+	T2Iterator<T, TNode> End() const
 	{
 		return &m_Head;
 	}
 
 protected:
-	TNode m_Head;
+	mutable TNode m_Head;
 	size_t m_Count;
 };
 

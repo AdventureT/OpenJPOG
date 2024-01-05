@@ -26,7 +26,7 @@ class TRENDERINTERFACE_EXPORTS TTextureFactory : public TResource
 	DECLARE_DYNAMIC(TTextureFactory)
 
 public:
-	class NameEntry : public TNodeList<NameEntry>::TNode
+	class TRENDERINTERFACE_EXPORTS NameEntry : public TNodeList<NameEntry>::TNode
 	{
 	public:
 		NameEntry(TPCCHAR a_szName, TTextureResource* a_pTexture)

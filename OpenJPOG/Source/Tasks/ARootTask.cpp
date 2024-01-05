@@ -9,6 +9,7 @@ IMPLEMENT_DYNCREATE(ARootTask, TTask);
 
 ARootTask::ARootTask()
 {
+	AllocateRenderInterface();
 	m_pMoviePlayer = TNULL;
 }
 
@@ -24,6 +25,14 @@ void ARootTask::LoadFrontEndController()
 
 void ARootTask::UnloadFrontEndController()
 {
+}
+
+void ARootTask::AllocateRenderInterface()
+{
+	g_oTheApp.GetKernel()->LoadInterface("TRenderD3DInterface");
+	m_pRenderInterface = (TRenderInterface*)TFindClass("TRenderD3DInterface", TNULL)->CreateObject();
+	m_pRenderInterface->Create(g_oTheApp.GetKernel());
+	m_pRenderInterface->DumpStats();
 }
 
 void ARootTask::AllocateInputSystem()
