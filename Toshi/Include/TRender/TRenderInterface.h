@@ -106,6 +106,10 @@ public:
 
 	TResource* CreateResource(const TClass* a_pClass, TPCCHAR a_szResName, TResource* a_pResource);
 
+	const TRenderAdapter::Mode::Device* FindDevice(const DisplayParams* a_pDisplayParams);
+
+	void FlushDyingResources();
+
 	TResource* GetSystemResource(SYSRESOURCES a_SystemResource)
 	{
 		TASSERT(a_SystemResource < TRenderInterface::SYSRESOURCES_NUMOF);
@@ -121,13 +125,24 @@ public:
 	}
 
 	TBOOL IsCreated() { return m_bIsCreated; }
+	TBOOL IsDisplayCreated() { return m_bIsDiplayCreated; }
 	TNodeList<TRenderAdapter>* GetAdapterList() { return &m_pAdapterList; };
+
+	static TRenderInterface* TOSHI_API GetRenderer() { return s_Interface; }
 
 private:
 
+	void DestroyDyingResources(TResource* a_pResource);
+	void DeleteResource(TResource* a_pResource);
+	void DeleteResourceRecurse(TResource* a_pResource);
+	void DeleteResourceAtomic(TResource* a_pResource);
+
 	static TRenderInterface* s_Interface;
+protected:
+
 
 	TBOOL m_bIsCreated;                              // 0x9
+	TBOOL m_bIsDiplayCreated;                        // 0xA
 	TRenderContext* m_pCurrentRenderContext;         // 0x1C
 	TRenderContext* m_pDefaultRenderContext;         // 0x20
 	TKernelInterface* m_pKernel;                     // 0x24
@@ -135,6 +150,7 @@ private:
 	TNodeList<TRenderAdapter> m_pAdapterList;        // 0xFC
 	TINT m_iResourceCount;                           // 0x124
 	TNodeTree<TResource> m_Resources;                // 0x128
+	TBOOL m_bHasDyingResources;                      // 0x12C
 };
 
 TOSHI_NAMESPACE_END

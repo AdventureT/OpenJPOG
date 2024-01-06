@@ -9,6 +9,7 @@
 #include "GUI/AGUISystem.h"
 #include "ARootStateController.h"
 
+
 class ARootTask : public Toshi::TTask
 {
 	DECLARE_DYNAMIC(ARootTask);
@@ -34,6 +35,9 @@ public:
 private:
 	void AllocateRenderInterface();
 	void AllocateInputSystem();
+
+	TBOOL CreateRenderInterface();
+	const Toshi::TRenderAdapter::Mode::Device* CreateDisplayDevice(Toshi::TRenderInterface::DisplayParams& a_rDisplayParams, bool a_bReverseOrder);
 
 private:
 	Toshi::TCString m_szName;
