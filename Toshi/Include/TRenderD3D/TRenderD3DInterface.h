@@ -13,6 +13,9 @@ class TMSWindow;
 
 class TRENDERINTERFACED3D_EXPORTS TRenderD3DInterface : public TRenderInterface
 {
+
+	DECLARE_DYNAMIC(TRenderD3DInterface)
+
 public:
 
 	TRenderD3DInterface();

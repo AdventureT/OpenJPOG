@@ -2,4 +2,4 @@
 
 TOSHI_NAMESPACE_USING
 
-IMPLEMENT_DYNAMIC(TNullResource, TResource)
+IMPLEMENT_DYNCREATE(TNullResource, TResource)

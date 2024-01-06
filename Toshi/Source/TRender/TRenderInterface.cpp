@@ -13,7 +13,9 @@ TRenderInterface::TRenderInterface()
 {
 	m_bIsCreated = TFALSE;
 	m_pDefaultRenderContext = TNULL;
+	m_pCurrentRenderContext = TNULL;
 	m_pKernel = TNULL;
+	m_iResourceCount = 1;
 	TASSERT(s_Interface == TNULL);
 	s_Interface = this;
 	TSystem::MemSet(m_aSysResources, 0, sizeof(m_aSysResources));
@@ -28,13 +30,6 @@ TBOOL TRenderInterface::Create(TKernelInterface* pKernelInterface)
 	m_pKernel = pKernelInterface;
 	return TTRUE;
 }
-
-//class TVertexFactoryResource : public TVertexFactoryFormat, public TResource
-//{
-//	DECLARE_DYNAMIC(TVertexFactoryResource)
-//};
-
-//IMPLEMENT_DYNCREATE(TVertexFactoryResource, TResource)
 
 TBOOL TRenderInterface::CreateSystemResources()
 {

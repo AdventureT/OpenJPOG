@@ -30,7 +30,7 @@ void ARootTask::UnloadFrontEndController()
 void ARootTask::AllocateRenderInterface()
 {
 	g_oTheApp.GetKernel()->LoadInterface("TRenderD3DInterface");
-	m_pRenderInterface = (TRenderInterface*)TFindClass("TRenderD3DInterface", TNULL)->CreateObject();
+	m_pRenderInterface = (TRenderInterface*)TFindClass(TRenderD3DInterface, TNULL)->CreateObject();
 	m_pRenderInterface->Create(g_oTheApp.GetKernel());
 	m_pRenderInterface->DumpStats();
 }

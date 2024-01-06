@@ -6,6 +6,7 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TVertexPoolResource, TVertexPoolResourceInterface)
 
+
 TBOOL TVertexPoolResource::Validate()
 {
 	if (IsValid()) {

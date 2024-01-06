@@ -5,6 +5,8 @@
 
 TOSHI_NAMESPACE_USING
 
+IMPLEMENT_DYNCREATE(TRenderD3DInterface, TRenderInterface)
+
 TRenderD3DInterface::TRenderD3DInterface()
 {
 	m_pD3DInterface = NULL;

@@ -1,7 +1,6 @@
 #include "TWString.h"
 #include "TSystemTools.h"
 #include <string.h>
-#include <TKernel/TMemory.h>
 
 TOSHI_NAMESPACE_USING
 
@@ -25,7 +24,7 @@ TBOOL TWString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 			if (newExcessLen < 0 || newExcessLen > 0xFF) {
 				if (m_iStrLen != 0 && a_bClear) tfree(m_pBuffer);
 
-				m_pBuffer = (TPWCHAR)tmalloc((a_iLength * 2) + 1, TNULL, -1);
+				m_pBuffer = (TPWCHAR)tmalloc((a_iLength + 1) * 2, TNULL, -1);
 				m_iExcessLen = 0;
 				TASSERT(m_pBuffer != TNULL);
 				hasChanged = TTRUE;
@@ -97,7 +96,7 @@ void TWString::Copy(const TWString& a_rOther, TINT a_iLength)
 	if (*this != a_rOther) {
 		if (a_rOther.m_iStrLen < a_iLength || a_iLength == -1) a_iLength = a_rOther.m_iStrLen;
 		AllocBuffer(a_iLength);
-		TSystem::MemCopy(m_pBuffer, a_rOther.m_pBuffer, a_iLength);
+		TSystem::StringCopy(m_pBuffer, a_rOther.m_pBuffer, a_iLength);
 		m_pBuffer[a_iLength] = '\0';
 	}
 }
@@ -108,7 +107,7 @@ void TWString::Copy(TPCWCHAR a_pcString, TINT a_iLength)
 		TINT iLength = a_pcString ? TSystem::StringLength(a_pcString) : 0;
 		if (iLength < a_iLength || a_iLength == -1) a_iLength = iLength;
 		AllocBuffer(a_iLength, TTRUE);
-		TSystem::MemCopy(m_pBuffer, a_pcString, a_iLength);
+		TSystem::StringCopy(m_pBuffer, a_pcString, a_iLength);
 		m_pBuffer[a_iLength] = '\0';
 	}
 }

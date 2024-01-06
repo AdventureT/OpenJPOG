@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "TDebug.h"
 #include "TSystemTools.h"
+#include <TKernel/TMemory.h>
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -140,7 +141,7 @@ private:
 	void FreeBuffer()
 	{
 		if (m_iStrLen != 0) {
-			free(m_pBuffer);
+			tfree(m_pBuffer);
 			m_pBuffer = TNULL;
 		}
 		Reset();
