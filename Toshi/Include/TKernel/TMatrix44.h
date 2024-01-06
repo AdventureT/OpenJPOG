@@ -1,0 +1,11 @@
+#pragma once
+#include "TDebug.h"
+
+TOSHI_NAMESPACE_BEGIN
+
+class TKERNELINTERFACE_EXPORTS TMatrix44
+{
+
+};
+
+TOSHI_NAMESPACE_END

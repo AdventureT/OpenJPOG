@@ -1,0 +1,11 @@
+#pragma once
+#include "Defines.h"
+
+TOSHI_NAMESPACE_BEGIN
+
+class TRENDERINTERFACE_EXPORTS TModel
+{
+
+};
+
+TOSHI_NAMESPACE_END

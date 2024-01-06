@@ -6,6 +6,11 @@
 #include "TResource.h"
 #include "TRenderAdapter.h"
 #include "TTextureFactory.h"
+#include "TViewport.h"
+#include "TKernel/TVector2.h"
+#include "TKernel/TMatrix44.h"
+#include "TRenderCapture.h"
+#include "TModel.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -54,17 +59,48 @@ public:
 		SYSRESOURCES_NUMOF         = 19
 	};
 
+	struct DisplayParams
+	{
+		TUINT32 uiWidth;
+		TUINT32 uiHeight;
+		TUINT32 uiColourDepth;
+		TUINT32 eDepthStencilFormat;
+		TBOOL bWindowed;
+	};
+
 public:
 
 	TRenderInterface();
 
+public:
+	virtual TBOOL CreateDisplay(const DisplayParams& a_rParams) = 0;
+	virtual TBOOL DestroyDisplay() = 0;
+	virtual TBOOL Update(float a_fDeltaTime) = 0;
+	virtual TBOOL BeginScene() = 0;
+	virtual TBOOL EndScene() = 0;
+	virtual TRenderAdapter::Mode::Device* GetCurrentDevice() = 0;
+	virtual DisplayParams* GetCurrentDisplayParams() = 0;
 	virtual TBOOL Create(TKernelInterface* pKernelInterface);
+	virtual TBOOL Destroy();
+	virtual void RenderIndexPrimitive(int param_2, int param_3, int param_4, int param_5, int param_6, int param_7);
+	virtual void DumpStats();
+	virtual void GetScreenOffset(TVector2& a_rVec);
+	virtual void SetScreenOffset(const TVector2& a_rVec);
+	virtual float GetScreenAspectRatio();
+	virtual float GetPixelAspectRatio();
+	virtual TBOOL SetPixelAspectRatio(float a_fPixelAspectRatio);
 	virtual TBOOL IsTextureFormatSupported(TTEXTURERESOURCEFORMAT a_eTextureFormat) { return TTRUE; }
 	virtual TBOOL Supports32BitTextures() { return TFALSE; }
-
-protected:
-
+	virtual TRenderContext* CreateRenderContext() = 0;
+	virtual TRenderCapture* CreateCapture() = 0;
+	virtual void DestroyCapture(TRenderCapture* a_pRenderCapture) = 0;
+	virtual void SetLightDirectionMatrix(const TMatrix44& a_rMatrix);
+	virtual void SetLightColourMatrix(const TMatrix44& a_rMatrix);
+	virtual void ConnectDefaultViewportHandelrs(TViewport& a_pViewport);
+	virtual TModel* CreateModel(TPCCHAR a_szName, TINT a_iUnk1);
 	virtual TBOOL CreateSystemResources();
+	virtual void DestroySystemResources();
+
 
 public:
 
@@ -83,8 +119,6 @@ public:
 		m_pCurrentRenderContext = a_pRenderContext;
 		return pLastRenderContext;
 	}
-
-	void DumpStats();
 
 	TBOOL IsCreated() { return m_bIsCreated; }
 	TNodeList<TRenderAdapter>* GetAdapterList() { return &m_pAdapterList; };

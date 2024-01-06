@@ -16,9 +16,46 @@ TRenderInterface::TRenderInterface()
 	m_pCurrentRenderContext = TNULL;
 	m_pKernel = TNULL;
 	m_iResourceCount = 1;
+	TCString("Creating TRenderInterface\n").Print();
 	TASSERT(s_Interface == TNULL);
 	s_Interface = this;
 	TSystem::MemSet(m_aSysResources, 0, sizeof(m_aSysResources));
+	TCString("Created TRenderInterface\n").Print();
+}
+
+TBOOL TRenderInterface::CreateDisplay(const DisplayParams& a_rParams)
+{
+	return TBOOL();
+}
+
+TBOOL TRenderInterface::DestroyDisplay()
+{
+	return TBOOL();
+}
+
+TBOOL TRenderInterface::Update(float a_fDeltaTime)
+{
+	return TBOOL();
+}
+
+TBOOL TRenderInterface::BeginScene()
+{
+	return TBOOL();
+}
+
+TBOOL TRenderInterface::EndScene()
+{
+	return TBOOL();
+}
+
+TRenderAdapter::Mode::Device* TRenderInterface::GetCurrentDevice()
+{
+	return TNULL;
+}
+
+TRenderInterface::DisplayParams* TRenderInterface::GetCurrentDisplayParams()
+{
+	return nullptr;
 }
 
 
@@ -65,6 +102,10 @@ TBOOL TRenderInterface::CreateSystemResources()
 	return TTRUE;
 }
 
+void TRenderInterface::DestroySystemResources()
+{
+}
+
 TResource* TRenderInterface::CreateResource(const TClass* a_pClass, TPCCHAR a_szResName, TResource* a_pParent)
 {
 	TASSERT(TNULL != a_pClass);
@@ -92,6 +133,69 @@ TResource* TRenderInterface::CreateResource(const TClass* a_pClass, TPCCHAR a_sz
 	return pResource;
 }
 
+TBOOL TRenderInterface::Destroy()
+{
+	return TBOOL();
+}
+
+void TRenderInterface::RenderIndexPrimitive(int param_2, int param_3, int param_4, int param_5, int param_6, int param_7)
+{
+}
+
 void TRenderInterface::DumpStats()
 {
+}
+
+void TRenderInterface::GetScreenOffset(TVector2& a_rVec)
+{
+}
+
+void TRenderInterface::SetScreenOffset(const TVector2& a_rVec)
+{
+}
+
+float TRenderInterface::GetScreenAspectRatio()
+{
+	return 0.0f;
+}
+
+float TRenderInterface::GetPixelAspectRatio()
+{
+	return 0.0f;
+}
+
+TBOOL TRenderInterface::SetPixelAspectRatio(float a_fPixelAspectRatio)
+{
+	return TBOOL();
+}
+
+TRenderContext* TRenderInterface::CreateRenderContext()
+{
+	return nullptr;
+}
+
+TRenderCapture* TRenderInterface::CreateCapture()
+{
+	return nullptr;
+}
+
+void TRenderInterface::DestroyCapture(TRenderCapture* a_pRenderCapture)
+{
+}
+
+void TRenderInterface::SetLightDirectionMatrix(const TMatrix44& a_rMatrix)
+{
+}
+
+void TRenderInterface::SetLightColourMatrix(const TMatrix44& a_rMatrix)
+{
+}
+
+void TRenderInterface::ConnectDefaultViewportHandelrs(TViewport& a_pViewport)
+{
+}
+
+TModel* TRenderInterface::CreateModel(TPCCHAR a_szName, TINT a_iUnk1)
+{
+	return nullptr;
 }

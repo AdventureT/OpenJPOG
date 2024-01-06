@@ -28,6 +28,41 @@ void TOSHI_API TRenderD3DInterface::TD3DAssert(HRESULT a_hr, TPCCHAR a_pError)
 	}
 }
 
+TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams& a_rParams)
+{
+	return TBOOL();
+}
+
+TBOOL TRenderD3DInterface::DestroyDisplay()
+{
+	return TBOOL();
+}
+
+TBOOL TRenderD3DInterface::Update(float a_fDeltaTime)
+{
+	return TBOOL();
+}
+
+TBOOL TRenderD3DInterface::BeginScene()
+{
+	return TBOOL();
+}
+
+TBOOL TRenderD3DInterface::EndScene()
+{
+	return TBOOL();
+}
+
+TRenderAdapter::Mode::Device* TRenderD3DInterface::GetCurrentDevice()
+{
+	return nullptr;
+}
+
+TRenderInterface::DisplayParams* TRenderD3DInterface::GetCurrentDisplayParams()
+{
+	return nullptr;
+}
+
 TBOOL TRenderD3DInterface::Create(TKernelInterface* a_pKernel)
 {
 	TASSERT(TFALSE==IsCreated());
@@ -56,6 +91,48 @@ TBOOL TRenderD3DInterface::Create(TKernelInterface* a_pKernel)
 	TWString(L"Created TRenderD3DInterface\n").Print();
 
 	return TTRUE;
+}
+
+TBOOL TRenderD3DInterface::Destroy()
+{
+	return TBOOL();
+}
+
+void TRenderD3DInterface::RenderIndexPrimitive(int param_2, int param_3, int param_4, int param_5, int param_6, int param_7)
+{
+}
+
+float TRenderD3DInterface::GetPixelAspectRatio()
+{
+	return 0.0f;
+}
+
+TBOOL TRenderD3DInterface::SetPixelAspectRatio(float a_fPixelAspectRatio)
+{
+	return TBOOL();
+}
+
+TRenderContext* TRenderD3DInterface::CreateRenderContext()
+{
+	return nullptr;
+}
+
+TRenderCapture* TRenderD3DInterface::CreateCapture()
+{
+	return nullptr;
+}
+
+void TRenderD3DInterface::DestroyCapture(TRenderCapture* a_pRenderCapture)
+{
+}
+
+void TRenderD3DInterface::ConnectDefaultViewportHandelrs(TViewport& a_pViewport)
+{
+}
+
+TModel* TRenderD3DInterface::CreateModel(TPCCHAR a_szName, TINT a_iUnk1)
+{
+	return nullptr;
 }
 
 TBOOL TRenderD3DInterface::IsTextureFormatSupported(TTEXTURERESOURCEFORMAT a_eTextureFormat)
