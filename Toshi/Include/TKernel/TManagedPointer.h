@@ -1,5 +1,6 @@
 #pragma once
 #include "TDebug.h"
+#include "TSystemTools.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -12,9 +13,9 @@ public:
 
     }
 
-    TManagedPtr(T* a_pObject) : m_pObject(a_pObject)
+    TManagedPtr(T* a_pObject)
     {
-
+        m_pObject = a_pObject;
     }
 
     ~TManagedPtr() 

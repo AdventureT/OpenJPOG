@@ -32,6 +32,11 @@ public:
 	TBOOL RemoveChild();
 	ARootState& GetCurrent();
 
+private:
+
+	void ExplicitDelete();
+
+public:
 	AGUIGameHUD& GetHUDState() { return m_oHUDState; }
 
 private:

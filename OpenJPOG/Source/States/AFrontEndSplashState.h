@@ -8,6 +8,13 @@ class AFrontEndSplashState : public AFrontendState
 
 public:
 
+	AFrontEndSplashState() : AFrontEndSplashState(TTRUE, 0.0f)
+	{
+		
+	}
+
+	AFrontEndSplashState(TBOOL a_bUnk, TFLOAT a_fUnk);
+
 	virtual void OnActivate() override;
 	virtual TBOOL OnUpdate(TFLOAT a_fDeltaTime) override;
 

@@ -10,6 +10,31 @@ ARootStateController::ARootStateController()
 	m_pBaseAppState = TNULL;
 }
 
-void ARootStateController::TransferController(ARootState* a_pState)
+TBOOL ARootStateController::OnCreate()
+{
+	m_pBaseAppState = new ARootState();
+	m_pBaseAppState->OnInsertion();
+	m_pBaseAppState->OnActivate();
+	return TTRUE;
+}
+
+TBOOL ARootStateController::OnUpdate(TFLOAT a_fDeltaTime)
+{
+	if (m_pBaseAppState) {
+
+	}
+	return TTRUE;
+}
+
+void ARootStateController::OnDestroy()
+{
+}
+
+void ARootStateController::TransferControl(ARootState* a_pState)
+{
+	GetBaseAppState()->GetCurrent().TransferControl(a_pState);
+}
+
+void ARootStateController::SetupToolBarHUD()
 {
 }

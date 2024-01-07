@@ -51,7 +51,7 @@ TBOOL ABINKMoviePlayer::ShutdownMoviePlayer()
 
 TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a_szUnk2, TBOOL a_bUseLocale)
 {
-    TManagedPtr<TRenderInterface> renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
+    TRenderInterface* renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
 
     if (a_szMovieName) {
         Toshi::TSystem::StringCopy(m_szMovieFileName, a_szMovieName, -1);
@@ -193,7 +193,7 @@ TBOOL ABINKMoviePlayer::RenderToFrameBuffer(TPBYTE a_pDest, TINT a_iDestWidth, T
 
 TBOOL ABINKMoviePlayer::InitializeVideoResource()
 {
-    TManagedPtr<TRenderInterface> renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
+    TRenderInterface* renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
     TTextureFactory* factory = (TTextureFactory*)renderer->GetSystemResource(TRenderInterface::SYSRESOURCE_TEXTUREFACTORY);
     TINT size;
     TTEXTURERESOURCEFORMAT textureFormat;
@@ -217,7 +217,7 @@ TBOOL ABINKMoviePlayer::InitializeVideoResource()
 
 TBOOL ABINKMoviePlayer::InitializeAudioResource()
 {
-    TManagedPtr<TRenderD3DInterface> renderer = (TRenderD3DInterface*)g_oTheApp.GetRootTask()->GetRenderInterface().m_pObject;
+    TRenderD3DInterface* renderer = (TRenderD3DInterface*)g_oTheApp.GetRootTask()->GetRenderInterface();
     HRESULT hResult = DirectSoundCreate(NULL, &m_pDirectSound, NULL);
 
     if (FAILED(hResult)) {

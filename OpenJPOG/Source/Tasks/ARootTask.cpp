@@ -9,7 +9,15 @@ IMPLEMENT_DYNCREATE(ARootTask, TTask);
 
 ARootTask::ARootTask()
 {
+	m_pGUISystem = TNULL;
+	m_pInputTask = TNULL;
+	m_pRenderInterface = TNULL;
+	m_pRenderer = TNULL;
+	m_pGameStateController = TNULL;
+	m_pVibrationTask = TNULL;
+	m_pMoviePlayer = TNULL;
 	AllocateRenderInterface();
+	AllocateGameStateController();
 	m_pMoviePlayer = TNULL;
 }
 
@@ -19,7 +27,32 @@ TBOOL ARootTask::OnCreate()
 	if (!CreateRenderInterface()) {
 		return TFALSE;
 	}
+	CreateARenderer();
+	CreateGameStateController();
+	GetRootStateController()->TransferControl(new AFrontEndSplashState());
 	return TTask::OnCreate();
+}
+
+void ARootTask::OnDestroy()
+{
+}
+
+void ARootTask::OnChildDied(TClass* a_pClass, TTask* a_pDeletedTask)
+{
+}
+
+void ARootTask::OnActivate()
+{
+	if (GetRootStateController()) {
+		GetRootStateController()->Activate(TTRUE);
+	}
+	if (GetARenderer()) {
+		GetARenderer()->Activate(TTRUE);
+	}
+}
+
+void ARootTask::OnDeactivate()
+{
 }
 
 void ARootTask::LoadFrontEndController()
@@ -30,6 +63,11 @@ void ARootTask::UnloadFrontEndController()
 {
 }
 
+void ARootTask::AllocateARenderer()
+{
+	m_pRenderer = (ARenderer*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ARenderer), g_oTheApp.GetRenderRootTask());
+}
+
 void ARootTask::AllocateRenderInterface()
 {
 	g_oTheApp.GetKernel()->LoadInterface("TRenderD3DInterface");
@@ -38,12 +76,25 @@ void ARootTask::AllocateRenderInterface()
 	m_pRenderInterface->DumpStats();
 }
 
+void ARootTask::AllocateGameStateController()
+{
+	m_pGameStateController = (ARootStateController*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ARootStateController), this);
+}
+
 void ARootTask::AllocateInputSystem()
 {
 	TScheduler* pScheduler = g_oTheApp.GetKernel()->GetScheduler();
 	ADummyTask* pInputTask = g_oTheApp.GetInputRootTask();
 	m_pInputTask = pScheduler->CreateTask(TGetClass(ADummyTask), pInputTask);
 	m_pVibrationTask = (AVibrationManager*)pScheduler->CreateTask(TGetClass(AVibrationManager), pInputTask);
+}
+
+void ARootTask::CreateARenderer()
+{
+	if (m_pRenderer && m_pRenderer->Create()) {
+		return;
+	}
+	m_pRenderer = TNULL;
 }
 
 TBOOL ARootTask::CreateRenderInterface()
@@ -57,6 +108,11 @@ TBOOL ARootTask::CreateRenderInterface()
 	CreateDisplayDevice(displayParams, TFALSE);
 	m_pRenderInterface->CreateDisplay(displayParams);
 	return TTRUE;
+}
+
+void ARootTask::CreateGameStateController()
+{
+	GetRootStateController()->Create();
 }
 
 const TRenderAdapter::Mode::Device* ARootTask::CreateDisplayDevice(TRenderInterface::DisplayParams& a_rDisplayParams, bool a_bReverseOrder)

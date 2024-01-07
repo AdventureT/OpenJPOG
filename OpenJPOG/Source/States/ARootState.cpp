@@ -23,6 +23,21 @@ void ARootState::TransferControlTemporary(ARootState* a_pState)
 
 void ARootState::TransferControl(ARootState* a_pState)
 {
+    if (!a_pState->ParentAllowed(*this)) {
+        m_pParent->TransferControl(a_pState);
+        return;
+    }
+
+    if (!m_pChild) {
+        OnDeactivate();
+    }
+    else {
+        ExplicitDelete();
+    }
+    m_pChild = a_pState;
+    a_pState->m_pParent = this;
+    m_pChild->OnInsertion();
+    m_pChild->OnActivate();
 }
 
 void ARootState::RemoveSelf()
@@ -72,4 +87,20 @@ ARootState& ARootState::GetCurrent()
         }
     }
     return *i;
+}
+
+void ARootState::ExplicitDelete()
+{
+    ARootState* i;
+    for (i = this; i->m_pChild != TNULL; i = i->m_pChild);
+    i->OnDeactivate();
+
+    for (ARootState* j = i; j != m_pParent; j = j->m_pParent) {
+        j->OnRemoval();
+        j->m_pParent = TNULL;
+        j->m_pChild = TNULL;
+        if (j) {
+            delete j;
+        }
+    }
 }

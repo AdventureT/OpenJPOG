@@ -6,6 +6,11 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(AFrontEndSplashState, ARootState)
 
+AFrontEndSplashState::AFrontEndSplashState(TBOOL a_bUnk, TFLOAT a_fUnk)
+{
+
+}
+
 void AFrontEndSplashState::OnActivate()
 {
 	ARootState::OnActivate();

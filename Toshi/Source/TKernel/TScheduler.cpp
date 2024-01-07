@@ -67,6 +67,30 @@ void TScheduler::Update()
 
 void TScheduler::DestroyDyingTasks(TTask* a_pTask)
 {
+	if (a_pTask != TNULL)
+	{
+		TTask* currentTask = a_pTask->Prev();
+
+		while (currentTask != TNULL)
+		{
+			TTask* nextTask = (currentTask->Prev() != a_pTask) ? currentTask->Prev() : TNULL;
+
+			if (!currentTask->IsDying())
+			{
+				if (currentTask->Child() != TNULL)
+				{
+					DestroyDyingTasks(currentTask->Child());
+				}
+			}
+			else
+			{
+				DeleteTask(currentTask);
+			}
+
+			currentTask = nextTask;
+		}
+	}
+	/*
 	if (!a_pTask) return;
 	for (TTask* pTask = a_pTask->Prev(); pTask != TNULL; pTask = (pTask->Prev() != a_pTask) ? a_pTask->Prev() : TNULL) {
 		if (!pTask->IsDying()) {
@@ -77,7 +101,7 @@ void TScheduler::DestroyDyingTasks(TTask* a_pTask)
 		else {
 			DeleteTask(pTask);
 		}
-	}
+	}*/
 }
 
 void TScheduler::DestroyTaskRecurse(TTask* a_pTask)
@@ -93,7 +117,26 @@ void TScheduler::DestroyTaskRecurse(TTask* a_pTask)
 
 void TScheduler::UpdateActiveTasks(TTask* a_pTask)
 {
-	for (TTask* pTask = a_pTask; pTask != TNULL; pTask = (pTask->Next() != a_pTask) ? a_pTask->Next() : TNULL) {
+	TTask* currentTask = a_pTask;
+
+	while (currentTask != TNULL)
+	{
+		TTask* nextTask = (currentTask->Next() != a_pTask) ? currentTask->Next() : TNULL;
+
+		TBOOL recurse = TTRUE;
+		if (a_pTask->IsCreated() && a_pTask->IsActive())
+		{
+			recurse = currentTask->OnUpdate(m_fCurrentTimeDelta);
+		}
+
+		if (currentTask->Child() != TNULL && recurse)
+		{
+			UpdateActiveTasks(currentTask->Child());
+		}
+
+		currentTask = nextTask;
+	}
+	/*for (TTask* pTask = a_pTask; pTask != TNULL; pTask = (pTask->Next() != a_pTask) ? a_pTask->Next() : TNULL) {
 		TBOOL recurse = TTRUE;
 		if (pTask->IsCreated() && pTask->IsActive()) {
 			recurse = pTask->OnUpdate(m_fCurrentTimeDelta);
@@ -102,7 +145,7 @@ void TScheduler::UpdateActiveTasks(TTask* a_pTask)
 		if (pTask->Child() != TNULL && recurse) {
 			UpdateActiveTasks(pTask->Child());
 		}
-	}
+	}*/
 }
 
 void TScheduler::DestroyAllTasks()
