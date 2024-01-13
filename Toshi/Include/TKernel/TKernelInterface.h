@@ -34,10 +34,11 @@ public:
 	void UnloadInterface(const TCString& a_rszInterface);
 
 	THPTimer* GetSystemTimer() { return &m_oSysTimer; }
-	TScheduler* GetScheduler() const { return m_pScheduler.m_pObject; }
+	TScheduler* GetScheduler() const { return m_pScheduler; }
 private:
 	THPTimer m_oSysTimer;                        // 0x8
-	TManagedPtr<TScheduler> m_pScheduler;        // 0x30
+	// TManagedPtr
+	TScheduler* m_pScheduler;                    // 0x30
 	TNodeList<TKernelInterfaceDLL> m_Interfaces; // 0x34
 	TFLOAT m_fDeltaTime;                         // 0x44
 	TFLOAT m_fAvgFPS;                            // 0x48

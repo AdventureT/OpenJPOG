@@ -48,7 +48,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message,
 {
 	TMSWindow* pWindow;
 	if (message == WM_CREATE) {
-		SetWindowLong(hWnd, GWL_USERDATA, lParam);
+		SetWindowLong(hWnd, GWL_USERDATA, *(LONG*)lParam);
 		return 0;
 	}
 	if (message != WM_CLOSE) {
@@ -65,16 +65,16 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message,
 			else if (message != WM_DESTROY) {
 				if (message == WM_SETCURSOR) {
 					SetCursor(NULL);
-					pWindow = (TMSWindow*)GetWindowLongA(hWnd, GWL_USERDATA);
+					pWindow = (TMSWindow*)GetWindowLong(hWnd, GWL_USERDATA);
 					pWindow->GetD3DInterface()->GetD3DDevice()->ShowCursor(TRUE);
 					return 1;
 				}
-				return DefWindowProcA(hWnd, message, wParam, lParam);
+				return DefWindowProc(hWnd, message, wParam, lParam);
 			}
 		}
 		return 0;
 	}
-	pWindow = (TMSWindow*)GetWindowLongA(hWnd, GWL_USERDATA);
+	pWindow = (TMSWindow*)GetWindowLong(hWnd, GWL_USERDATA);
 	pWindow->GetD3DInterface()->Exit();
 	return 0;
 }

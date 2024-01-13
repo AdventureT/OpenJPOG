@@ -1,4 +1,50 @@
 #include "TMemory.h"
+#include <new>
+
+void* __CRTDECL operator new(size_t size)
+{
+	return tmalloc(size, TNULL, -1);
+}
+
+void* __CRTDECL operator new(size_t size, ::std::nothrow_t const&) noexcept
+{
+	return tmalloc(size, TNULL, -1);
+}
+
+void* __CRTDECL operator new[](size_t size)
+{
+	return tmalloc(size, TNULL, -1);
+}
+
+void* __CRTDECL operator new[](size_t size, ::std::nothrow_t const&) noexcept
+{
+	return tmalloc(size, TNULL, -1);
+}
+
+void __CRTDECL operator delete(void* ptr) noexcept
+{
+	tfree(ptr);
+}
+
+void __CRTDECL operator delete(void* ptr, ::std::nothrow_t const&) noexcept
+{
+	tfree(ptr);
+}
+
+void __CRTDECL operator delete[](void* ptr) noexcept
+{
+	tfree(ptr);
+}
+
+void __CRTDECL operator delete[](void* ptr, ::std::nothrow_t const&) noexcept
+{
+	tfree(ptr);
+}
+
+void __CRTDECL operator delete[](void* ptr, size_t _Size) noexcept
+{
+	tfree(ptr);
+}
 
 TOSHI_NAMESPACE_USING
 

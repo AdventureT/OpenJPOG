@@ -10,6 +10,8 @@ class ARenderer : public TTask
 
 public:
 
+	ARenderer();
+
 	virtual TBOOL OnCreate() override;
 	virtual TBOOL OnUpdate(TFLOAT a_fDeltaTime) override;
 

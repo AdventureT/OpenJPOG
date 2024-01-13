@@ -16,6 +16,11 @@ public:
 
 	TScheduler(TKernelInterface* a_pKernel);
 
+	virtual ~TScheduler()
+	{
+		TDPRINTF("Destroying TScheduler.\n");
+	}
+
 	TTask* CreateTask(TClass const& a_rTaskClass, TTask* a_pTask);
 	void Update();
 	void DestroyDyingTasks(TTask *a_pTask);

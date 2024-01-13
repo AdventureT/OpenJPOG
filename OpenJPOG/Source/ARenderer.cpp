@@ -1,23 +1,31 @@
 #include "ARenderer.h"
 #include "main.h"
 
+
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(ARenderer, TTask)
 
+ARenderer::ARenderer()
+{
+	m_pViewport = TNULL;
+	m_fFarClip = 160.0f;
+	m_pcScreenCaptureBuffer = TNULL;
+}
+
 TBOOL ARenderer::OnCreate()
 {
 	TRenderInterface* pRenderer = TRenderInterface::GetRenderer();
-	pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SHSYS);
-	pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SCENE);
-	return TBOOL();
+	//pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SHSYS);
+	//pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SCENE);
+	return TTask::OnCreate();
 }
 
 TBOOL ARenderer::OnUpdate(TFLOAT a_fDeltaTime)
 {
 	UpdateMovie(a_fDeltaTime);
 	g_oTheApp.GetRootTask()->GetRenderInterface()->Update(a_fDeltaTime);
-	return TTRUE;
+	return TTask::OnUpdate(a_fDeltaTime);
 }
 
 void ARenderer::UpdateMovie(TFLOAT a_fDeltaTime)

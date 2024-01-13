@@ -16,6 +16,7 @@ ARootTask::ARootTask()
 	m_pGameStateController = TNULL;
 	m_pVibrationTask = TNULL;
 	m_pMoviePlayer = TNULL;
+	AllocateARenderer();
 	AllocateRenderInterface();
 	AllocateGameStateController();
 	m_pMoviePlayer = TNULL;
