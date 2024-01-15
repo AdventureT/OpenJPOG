@@ -156,7 +156,7 @@ TBOOL TRenderD3DInterface::Update(float a_fDeltaTime)
 		while (FALSE != PeekMessage(&msg, NULL, 0, 0, 1)) {
 			if (TranslateAccelerator(GetMSWindow()->GetHWND(), GetAcceleratorTable(), &msg) == 0) {
 				TranslateMessage(&msg);
-				DispatchMessageA(&msg);
+				DispatchMessage(&msg);
 			}									
 		}
 	}

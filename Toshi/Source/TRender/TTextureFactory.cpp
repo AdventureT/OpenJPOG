@@ -42,6 +42,18 @@ TTextureResource* TTextureFactory::FindTexture(TPCCHAR a_szName)
 	return TNULL;
 }
 
+void TTextureFactory::DeregisterTexture(TTextureResource* a_pTexture)
+{
+	TVALIDADDRESS(a_pTexture);
+
+	TTextureFactory::NameEntry* pList = a_pTexture->m_pNameEntry;
+
+	if (pList) {
+		pList->Remove();
+		delete pList;
+	}
+}
+
 TUINT TTextureFactory::HashName(TPCCHAR a_szName)
 {
 	TUINT iHash = 0;

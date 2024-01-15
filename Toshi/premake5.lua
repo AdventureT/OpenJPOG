@@ -256,3 +256,80 @@ project ("TRenderD3DInterface")
 		defines "TOSHI_FINAL"
 		runtime "Release"
 		optimize "On"
+
+project ("TSysShaderD3D")
+	kind "SharedLib"
+	language "C++"
+	cppdialect "C++20"
+	characterset "ASCII"
+	
+	links
+	{
+		"d3d8.lib",
+		"d3dx8.lib",
+		"dxguid.lib",
+		"dxgi.lib",
+		"DxErr8.lib",
+		"legacy_stdio_definitions.lib",
+		"winmm.lib",
+		"dinput8.lib",
+		"TKernelInterface",
+		"TRenderInterface"
+	}
+
+	includedirs
+	{
+		"Include"
+	}
+	
+	externalincludedirs
+	{
+		"%{IncludeDir.dx8}"
+	}
+
+	libdirs
+	{
+		"%{LibDir.dx8}"
+	}
+
+	defines
+	{
+		"TSYSSHADERD3D",
+		"SAFESEH=0",
+		"_CRT_SECURE_NO_WARNINGS"
+	}
+	
+	linkoptions "/SAFESEH:NO"
+	
+	filter "files:**.c"
+		flags { "NoPCH" }
+
+	filter "system:windows"
+		systemversion "latest"
+		
+		files
+		{
+			"Include/*.h",
+			"Shaders/TSysShader/Include/**.h",
+			"Shaders/TSysShader/Source/**.cpp"
+		}
+
+		defines
+		{
+			"TOSHI_SKU_WINDOWS"
+		}
+
+	filter "configurations:Debug"
+		defines "TOSHI_DEBUG"
+		runtime "Debug"
+		symbols "On"
+
+	filter "configurations:Release"
+		defines "TOSHI_RELEASE"
+		runtime "Release"
+		optimize "On"
+
+	filter "configurations:Final"
+		defines "TOSHI_FINAL"
+		runtime "Release"
+		optimize "On"

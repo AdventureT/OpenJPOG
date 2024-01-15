@@ -191,6 +191,7 @@ TBOOL ABINKMoviePlayer::RenderToFrameBuffer(TPBYTE a_pDest, TINT a_iDestWidth, T
     return TFALSE;
 }
 
+
 TBOOL ABINKMoviePlayer::InitializeVideoResource()
 {
     TRenderInterface* renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
@@ -208,10 +209,12 @@ TBOOL ABINKMoviePlayer::InitializeVideoResource()
         textureFormat = TTEXTURERESOURCEFORMAT::R5G5B5A1;
         textureFormatSize = 8;
     }
-    size *= 0x10000;
+    size *= 256 * 256;
     TPVOID buffer = tmalloc(size, TNULL, -1);
     TSystem::MemSet(buffer, 0xFF, size);
-    factory->CreateEx(buffer, size, 256, 256, 1, textureFormat, textureFormatSize);
+    m_pTextures[2] = factory->CreateEx(buffer, size, 256, 256, 1, textureFormat, textureFormatSize);
+    m_pTextures[2]->SetAddressModeMode(TTextureResource::ADDRESSMODE_UNKNOWN3);
+    
     return TTRUE;
 }
 

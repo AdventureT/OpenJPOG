@@ -15,16 +15,53 @@ class TRENDERINTERFACE_EXPORTS TTextureResource : public TResource
 
 public:
 
+	enum ADDRESSMODE
+	{
+		ADDRESSMODE_UNKNOWN,
+		ADDRESSMODE_UNKNOWN2,
+		ADDRESSMODE_UNKNOWN3,
+	};
+
+	struct LOCKSTATE
+	{
+		TINT Pitch;
+		TPVOID pBits;
+	};
+
+	TTextureResource();
+
+	virtual ~TTextureResource();
+
+	virtual TUINT GetWidth() = 0;
+	virtual TUINT GetHeight() = 0;
+	virtual TBOOL Lock(LOCKSTATE& a_rLockState);
+	virtual void Unlock();
 	virtual TBOOL Create(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_eTextureFlags, TUINT a_uiWidth, TUINT a_uiHeight) = 0;
 	virtual TBOOL Create(TPCCHAR a_szFileName, TUINT a_eTextureFlags) = 0;
 	virtual TBOOL CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_uiMipmapFlags);
 
+	static TTextureResource* TOSHI_API CreateHAL(TRenderInterface* a_pRenderer, TPCCHAR a_szName, TResource* a_pResource);
+
 public:
 
 	TTextureFactory::NameEntry* GetNameEntry() { return m_pNameEntry; }
+	TUINT GetCreateFlags() { return m_CreateFlags; }
+	
+	ADDRESSMODE GetAddressMode()
+	{
+		return m_eAddressMode;
+	}
+
+	ADDRESSMODE SetAddressModeMode(ADDRESSMODE a_eAddressMode)
+	{
+		m_eAddressMode = a_eAddressMode;
+		return m_eAddressMode;
+	}
 
 private:
-	TTextureFactory::NameEntry* m_pNameEntry;
+	ADDRESSMODE m_eAddressMode;               // 0x30
+	TUINT m_CreateFlags;                      // 0x34
+	TTextureFactory::NameEntry* m_pNameEntry; // 0x38
 };
 
 TOSHI_NAMESPACE_END

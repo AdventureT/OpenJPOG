@@ -67,6 +67,8 @@ public:
 
 	TTextureResource* FindTexture(TPCCHAR a_szName);
 
+	void DeregisterTexture(TTextureResource* a_pTexture);
+
 protected:
 
 	TUINT HashName(TPCCHAR a_szName);

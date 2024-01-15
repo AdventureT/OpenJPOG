@@ -6,6 +6,106 @@
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TTextureResourceHAL, TTextureResource)
+IMPLEMENT_FREELIST(TTextureResourceHAL, 0, 8)
+
+TBOOL TTextureResourceHAL::Validate()
+{
+	if (IsValid()) {
+		return TTRUE;
+	}
+	TMemory::DebugPrintHALMemInfo("ENTER TTextureResourceHAL::Validate()");
+
+	auto pRenderer = TSTATICCAST(TRenderD3DInterface*, GetRenderer());
+
+	if (m_iLoadFromMemory) {
+		// Load from memory
+		if (m_pData && m_uiDataSize != 0) {
+			if (HASFLAG(m_eTextureFlags & 0x40) && !CreateFromFormat()) {
+				return TFALSE;
+			}
+			else {
+				TUINT uiLayout = m_eTextureFlags & 0x38;
+
+				if (uiLayout == 8) {
+					CreateFromMemory5551(m_uiWidth, m_uiHeight, 0, m_pData);
+				}
+				else if (uiLayout == 16) {
+					CreateFromMemory4444(m_uiWidth, m_uiHeight, 0, m_pData);
+				}
+				else if (uiLayout == 32) {
+					CreateFromMemory8888(m_uiWidth, m_uiHeight, 0, m_pData);
+				}
+				else {
+					CreateFromMemoryDDS(m_uiWidth, m_uiHeight, -1, m_pData);
+				}
+			}
+		}
+	}
+	else {
+		// Load from file
+		TVALIDADDRESS(GetNameEntry());
+		if (GetNameEntry() && !IsPPM(GetNameEntry()->GetName()))
+		{
+			HRESULT hRes = D3DXCreateTextureFromFileEx(pRenderer->GetD3DDevice(), GetNameEntry()->GetName(),
+				-1, -1, -1, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DFILTER_LINEARMIPNEAREST, 
+				D3DFILTER_LINEARMIPNEAREST, 0, &m_oImageInfo, NULL, &m_pD3DTexture
+			);
+			TRenderD3DInterface::TD3DAssert(hRes, TNULL);
+		}
+	}
+
+	return TResource::Validate();
+}
+
+void TTextureResourceHAL::Invalidate()
+{
+}
+
+TUINT TTextureResourceHAL::GetWidth()
+{
+	Validate();
+	return m_oImageInfo.Width;
+}
+
+TUINT TTextureResourceHAL::GetHeight()
+{
+	Validate();
+	return m_oImageInfo.Height;
+}
+
+TBOOL TTextureResourceHAL::Lock(TTextureResource::LOCKSTATE& a_rLockState)
+{
+	if (!m_pD3DTexture) {
+		return TFALSE;
+	}
+
+	D3DLOCKED_RECT rect;
+
+	HRESULT hRes = m_pD3DTexture->LockRect(0, &rect, NULL, 0);
+	TRenderD3DInterface::TD3DAssert(hRes, "Unable to lock texture!");
+
+	if (hRes == D3D_OK)
+	{
+		a_rLockState.Pitch = rect.Pitch;
+		a_rLockState.pBits = rect.pBits;
+		m_uiLockCount++;
+
+		return TTRUE;
+	}
+	return TFALSE;
+}
+
+void TTextureResourceHAL::Unlock()
+{
+	TASSERT(0!=m_uiLockCount);
+	TASSERT(TNULL!=m_pD3DTexture);
+
+	if (m_uiLockCount != 0 && m_pD3DTexture)
+	{
+		m_pD3DTexture->UnlockRect(0);
+		m_uiLockCount--;
+	}
+}
 
 TBOOL TTextureResourceHAL::Create(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_eTextureFlags, TUINT a_uiWidth, TUINT a_uiHeight)
 {
@@ -256,4 +356,15 @@ TBOOL TTextureResourceHAL::CreateFromMemory4444(TUINT a_uiWidth, TUINT a_uiHeigh
 	}
 
 	return TTRUE;
+}
+
+TBOOL TTextureResourceHAL::IsPPM(TPCCHAR a_pFileName)
+{
+	TINT iLen = TSystem::StringLength(a_pFileName);
+
+	if (iLen >= 4) {
+		return TSystem::StringCompareNoCase(a_pFileName + iLen - 4, ".ppm", -1) == 0;
+	}
+
+	return TFALSE;
 }
