@@ -20,6 +20,9 @@ workspace ("OpenJPOG")
 group "Engine"
 	include "Toshi"
 	include "OpenJPOG"
+
+group "Plugin"
+	include "Toshi/Plugins"
 	
 --group "Third-Party"
 --	include "Toshi/Vendor/libogg"
