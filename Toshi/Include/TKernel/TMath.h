@@ -1,4 +1,4 @@
 #pragma once
 
-#define TMIN(x,y) (((a)<(b))?(a):(b))
-#define TMAX(x,y) (((a)>(b))?(a):(b))
+#define TMIN(a,b) (((a)<(b))?(a):(b))
+#define TMAX(a,b) (((a)>(b))?(a):(b))

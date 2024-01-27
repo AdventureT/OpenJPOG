@@ -19,3 +19,16 @@ void TCStringPool::Remove(TPooledCString& a_rPooledCString)
 	//TASSERT(iter != m_oPooledCStrings.End());
 	m_oPooledCStrings.Pop();
 }
+
+void TPooledCString::Delete()
+{
+	GetFreeList().Delete(this);
+	delete this;
+}
+
+TPooledCString::~TPooledCString()
+{
+	if (m_pStringPool) {
+		m_pStringPool->Remove(*this);
+	}
+}

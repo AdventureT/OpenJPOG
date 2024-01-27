@@ -7,7 +7,7 @@ class TKERNELINTERFACE_EXPORTS TRefCounted
 {
 public:
 
-	TINT DecRefCount(TPVOID)
+	TINT DecRefCount(TPVOID a_pData = TNULL)
 	{
 		return --m_iRefCount;
 	}
@@ -17,7 +17,7 @@ public:
 		return m_iRefCount;
 	}
 
-	TINT IncRefCount(TPVOID)
+	TINT IncRefCount(TPVOID a_pData = TNULL)
 	{
 		return ++m_iRefCount;
 	}

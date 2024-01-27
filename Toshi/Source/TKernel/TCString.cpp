@@ -2,8 +2,9 @@
 #include "TSystemTools.h"
 #include <string.h>
 #include <TKernel/TMemory.h>
+#include "TPCString.h"
 
-TOSHI_NAMESPACE_USING
+TOSHI_NAMESPACE_BEGIN
 
 TBOOL TCString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 {
@@ -149,3 +150,17 @@ void TCString::Truncate(TINT a_iLength)
 		tfree(pBuffer);
 	}
 }
+
+TCString TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS)
+{
+	TCString str(a_pLHS);
+	TASSERT(a_pLHS);
+	return str.Concat(a_rRHS);
+}
+
+TCString TOSHI_API operator+(const TCString& a_rLHS, const TPCString& a_rRHS)
+{
+	return "";
+}
+
+TOSHI_NAMESPACE_END

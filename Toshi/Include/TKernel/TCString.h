@@ -6,9 +6,13 @@
 
 TOSHI_NAMESPACE_BEGIN
 
+class TPCString;
+
 class TKERNELINTERFACE_EXPORTS TCString 
 {
 public:
+	
+	friend TCString TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS);
 
 	TCString()
 	{
@@ -98,6 +102,19 @@ public:
 		return m_pBuffer;
 	}
 
+	TCString operator+(TPCCHAR a_pRHS) const
+	{
+		TCString str(*this);
+		TASSERT(a_pRHS);
+		return str.Concat(a_pRHS);
+	}
+
+	TCString operator+(const TCString& a_rRHS) const
+	{
+		TCString str(*this);
+		return str.Concat(a_rRHS);
+	}
+
 	TCString& operator+=(TPCCHAR a_pcString)
 	{
 		return *this;
@@ -132,7 +149,6 @@ public:
 	TINT Length() const { return m_iStrLen; }
 
 private:
-
 	TBOOL AllocBuffer(TINT a_iLength, TBOOL a_bClear = TTRUE);
 
 	void FreeBuffer()
@@ -160,5 +176,8 @@ private:
 	TINT m_iExcessLen : 8 = 0;  // 0x4
 	TINT m_iStrLen    : 24 = 0; // 0x5
 };
+
+TCString TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS);
+TCString TOSHI_API operator+(const TCString& a_rLHS, const TPCString& a_rRHS);
 
 TOSHI_NAMESPACE_END

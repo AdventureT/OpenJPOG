@@ -1,5 +1,6 @@
 #include "Win/TNativeFileWin.h"
 #include "TMemory.h"
+#include <TKernel/TMath.h>
 
 TOSHI_NAMESPACE_USING
 
@@ -67,16 +68,14 @@ TINT TNativeFile::Read(TPVOID a_pBuffer, TINT a_iSize)
     TINT readedCount = 0;
     TINT startPos = m_iPosition;
     TINT curBufferPos = startPos / BUFFER_SIZE * BUFFER_SIZE;
-    TINT newBufferPos = (startPos + a_iSize) / BUFFER_SIZE * BUFFER_SIZE;
+    TINT newBufferPos = curBufferPos + a_iSize;
     TPVOID curPosBuffer = a_pBuffer;
 
     if (curBufferPos != newBufferPos) {
-        if (curBufferPos == m_iPrevBufferPos)
-        {
+        if (curBufferPos == m_iPrevBufferPos) {
             TINT readCount = m_iLastBufferSize - (startPos - curBufferPos);
 
-            if (readCount > 0)
-            {
+            if (readCount > 0) {
                 memcpy(a_pBuffer, (TPCHAR)m_pBuffer + startPos - curBufferPos, readCount);
 
                 curPosBuffer = (TPCHAR)m_pBuffer + readCount;
@@ -87,31 +86,25 @@ TINT TNativeFile::Read(TPVOID a_pBuffer, TINT a_iSize)
         TINT toReadCount = newBufferPos - m_iPosition;
         curBufferPos = newBufferPos;
 
-        if (toReadCount > 0)
-        {
+        if (toReadCount > 0) {
             TINT readed = ReadUnbuffered(curPosBuffer, toReadCount);
             curPosBuffer = (TPCHAR)curPosBuffer + readed;
             readedCount += readed;
 
-            if (readed != toReadCount)
-            {
+            if (readed != toReadCount) {
                 // end of file?
                 return readedCount;
             }
         }
     }
 
-    if (readedCount != a_iSize && LoadBuffer(curBufferPos))
-    {
+    if (readedCount != a_iSize && LoadBuffer(curBufferPos)) {
         a_iSize -= readedCount;
         TINT bufferLeftSize = m_iPosition - curBufferPos;
         TINT readCount = m_iLastBufferSize - bufferLeftSize;
-        if (readCount < a_iSize) {
-            readCount = a_iSize;
-        }
+        readCount = TMIN(readCount, a_iSize);
 
-        if (readCount > 0)
-        {
+        if (readCount > 0) {
             memcpy(curPosBuffer, (TPCHAR)m_pBuffer + bufferLeftSize, readCount);
             m_iPosition += readCount;
             readedCount += readCount;
@@ -229,7 +222,7 @@ TINT TNativeFile::GetCChar()
         }
     }
 
-    return Read(&result, sizeof(result)) == sizeof(result) ? sizeof(result) : -1;
+    return Read(&result, sizeof(result)) == sizeof(result) ? result : -1;
 }
 
 TINT TNativeFile::GetWChar()
@@ -245,7 +238,7 @@ TINT TNativeFile::GetWChar()
         }
     }
 
-    return Read(&result, sizeof(result)) == sizeof(result) ? sizeof(result) : -1;
+    return Read(&result, sizeof(result)) == sizeof(result) ? result : -1;
 }
 
 TINT TNativeFile::PutCChar(TCHAR a_cChar)

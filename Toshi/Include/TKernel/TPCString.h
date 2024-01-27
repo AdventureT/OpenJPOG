@@ -9,12 +9,72 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TKERNELINTERFACE_EXPORTS TPCString
-{
+class TCStringPool;
 
+class TKERNELINTERFACE_EXPORTS TPooledCString : public TRefCounted
+{
+	DECLARE_FREELIST(TPooledCString)
+
+	friend class TCStringPool;
+	friend class TPCString;
+
+private:
+
+	void Delete();
+
+	~TPooledCString();
+
+private:
+	// 0x0 base (m_iRefCount)
+	TCString m_oString;          // 0x4
+	TCStringPool* m_pStringPool; // 0xC
 };
 
-class TPooledCString;
+class TKERNELINTERFACE_EXPORTS TPCString
+{
+public:
+
+	static inline const TCString ms_sEmpty;
+
+	TPCString()
+	{
+		m_pPCS = TNULL;
+	}
+
+	TPCString(const TPCString& a_rPCS) : TPCString()
+	{
+		if (a_rPCS.m_pPCS) {
+			a_rPCS.m_pPCS->IncRefCount();
+		}
+	}
+
+	~TPCString()
+	{
+		if (m_pPCS) {
+			if (m_pPCS->DecRefCount() == 0) {
+				m_pPCS->Delete();
+			}
+			m_pPCS = TNULL;
+		}
+	}
+
+	operator const TCString* () const
+	{
+		return m_pPCS ? &m_pPCS->m_oString : &ms_sEmpty;
+	}
+
+private:
+
+	TPCString(TPooledCString* a_pPCS)
+	{
+		m_pPCS = a_pPCS;
+		if (a_pPCS) {
+			a_pPCS->IncRefCount();
+		}
+	}
+	
+	TPooledCString* m_pPCS;
+};
 
 class TKERNELINTERFACE_EXPORTS TCStringPool
 {
@@ -26,33 +86,6 @@ protected:
 
 private:
 	TArray<TPooledCString> m_oPooledCStrings;
-};
-
-class TKERNELINTERFACE_EXPORTS TPooledCString : public TRefCounted
-{
-	DECLARE_FREELIST(TPooledCString)
-	
-	friend class TCStringPool;
-
-private:
-
-	void Delete()
-	{
-		GetFreeList().Delete(this);
-		delete this;
-	}
-
-	~TPooledCString()
-	{
-		if (m_pStringPool) {
-			m_pStringPool->Remove(*this);
-		}
-	}
-
-private:
-	// 0x0 base (m_iRefCount)
-	TCString m_oString;          // 0x4
-	TCStringPool* m_pStringPool; // 0xC
 };
 
 TOSHI_NAMESPACE_END

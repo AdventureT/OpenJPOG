@@ -2,6 +2,18 @@
 
 #include "TDebug.h"
 #include "TPCString.h"
+#include "TFile.h"
+#include "TMemory.h"
+#include <new>
+
+#if defined(TLEXERUTF8)
+#define TLEXERGETCHAR m_pFile->GetCChar
+#elif defined(TLEXERUTF16)
+#define TLEXERGETCHAR m_pFile->GetWChar
+#else
+#define TLEXERGETCHAR m_pFile->GetCChar
+#endif
+#define TGETLOOKAHEADSIZE(size) 1 << (((size * 2 - 1) >> 0x17) + 0x81U & 0x1f)
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -35,8 +47,10 @@ class TKERNELINTERFACE_EXPORTS TFileLexer
 
 public:
 
+	TFileLexer();
+	TFileLexer(TFile* a_pFile, TINT a_iTokenLookaheadSize);
 
-	class Token 
+	class TKERNELINTERFACE_EXPORTS Token
 	{
 	public:
 		void assign(const Token& a_rToken);
@@ -131,9 +145,9 @@ public:
 			m_iLine = a_iLine;
 			TASSERT(m_type == TFileLexer::TOKEN_IDENT   ||
 				    m_type == TFileLexer::TOKEN_STRING  ||
-				    m_type == TFileLexer::TOKEN_COMMENT ||
-				    m_type == TFileLexer::TOKEN_FLOAT   || 
-				    m_type == TFileLexer::TOKEN_COMMENT);
+				    m_type == TFileLexer::TOKEN_INTEGER ||
+			        m_type == TFileLexer::TOKEN_FLOAT   || 
+		            m_type == TFileLexer::TOKEN_COMMENT);
 		}
 
 		Token(const TFileLexer::Token& a_rToken)
@@ -161,17 +175,93 @@ public:
 
 	private:
 		TFileLexer::TokenType m_type; // 0x0
-		union {						  // |
-			TPCString m_szValue;	  // |
-			TINT m_iValue;			  //  -> 0x4
-			TUINT m_uiValue;		  // |
-			TFLOAT m_fValue;		  // |
+		union {                       // |
+			TPCString m_szValue;      // |
+			TINT m_iValue;            //  -> 0x4
+			TUINT m_uiValue;          // |
+			TFLOAT m_fValue;          // |
 		};                            // |
 		TINT m_iLine;                 // 0x8        
 	};
 
+	struct LookaheadTokens
+	{
+	public:
+		Token* GetTokens()
+		{
+			return (Token*)(this + 1);
+		}
+
+		// That's crazy but they probably did that too
+		static LookaheadTokens* Allocate(int a_iCount = 1)
+		{
+			LookaheadTokens* ltokens = (LookaheadTokens*)::operator new (sizeof(LookaheadTokens) + sizeof(Token) * a_iCount);
+			ltokens->m_iCount = a_iCount;
+			for (TINT i = 0; i < a_iCount; i++) {
+				new (&ltokens->GetTokens()[i]) Token();
+			}
+			return ltokens;
+		}
+
+		static void Free(Token* a_pHeadToken)
+		{
+			delete FromToken(a_pHeadToken);
+		}
+
+		static LookaheadTokens* FromToken(Token* a_pHeadToken)
+		{
+			return (LookaheadTokens*)((TUINT*)a_pHeadToken - sizeof(LookaheadTokens));
+		}
+
+	public:
+		int m_iCount;
+	};
+
+	TBOOL Expect(TFileLexer::TokenType a_type);
+	TBOOL Expect(TFileLexer::TokenType a_type, TFileLexer::Token& a_rToken);
+
+	TFileLexer::Token GetLastToken();
+	TFileLexer::Token GetNextToken();
+
+	TFileLexer::Token PeekNextToken(TINT a_iDistance);
+
+	void SetCharacterLookaheadSize(TINT a_iCharLookaheadSize);
+	void SetInputStream(TFile* a_pFile);
+
 	static TPCCHAR TOSHI_API tostring(TokenType a_type);
 
+protected:
+	TFileLexer::Token get_next_token();
+	void skipWhiteSpace();
+
+	void advance();
+	void advance(TINT a_dist);
+
+	void fillLookAhead();
+
+	TINT peek();
+	TINT peek(TINT a_dist);
+
+private:
+	TFile* m_pFile;                        // 0x4
+	TBOOL m_bOutputComments;               // 0x8
+	TINT m_iCharLookaheadSize;             // 0xC
+	TINT m_iCharLookaheadMask;             // 0x10
+	TINT* m_piCharLookahead;               // 0x14
+	TINT m_iCharLookaheadBack;             // 0x18
+	TINT m_iCharLookaheadFront;            // 0x1C
+
+	TINT m_iLine;                          // 0x20
+	TINT m_iTokenLookaheadSize;            // 0x24
+	TINT m_iTokenLookaheadMask;            // 0x28
+	TFileLexer::Token m_oToken;            // 0x2C
+	TFileLexer::Token* m_pLookaheadTokens; // 0x38
+	TINT m_iTokenLookaheadBuffered;        // 0x3C
+	TINT m_iTokenLookaheadFront;           // 0x40
+	TINT m_iTokenLookaheadBack;            // 0x44
+
+	TBOOL m_bEOF;                          // 0x6D
+	TArray<TPCString> m_aDefines;          // 0x70;
 };
 
 TOSHI_NAMESPACE_END

@@ -144,6 +144,12 @@ public:
 	};
 
 public:
+
+	TArray() : TArray(10, 0)
+	{
+
+	}
+
 	TArray(TINT a_iGrowSize, TINT a_iSize)
 	{
 		m_iGrowSize = a_iGrowSize;
