@@ -6,7 +6,7 @@
 #include "PPropertyName.h"
 #include "TPCString.h"
 
-class PPROPERTYPARSER_EXPORTS PProperty : Toshi::TQList<PProperty>::TNode
+class PPROPERTYPARSER_EXPORTS PProperty : public Toshi::TQList<PProperty>::TNode
 {
 	DECLARE_FREELIST(PProperty)
 

@@ -6,13 +6,15 @@ project ("PPropertyParser")
 	
 	links
 	{
-		"winmm.lib"
+		"winmm.lib", 
+		"TKernelInterface"
 	}
 
 	includedirs
 	{
 		"Include",
-		"../Include/TKernel"
+		"%{wks.location}/Toshi/Include",
+		"%{wks.location}/Toshi/Include/TKernel"
 	}
 
 	defines

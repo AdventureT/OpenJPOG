@@ -4,92 +4,6 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-template <class T, class Node>
-class T2Iterator
-{
-public:
-
-	T2Iterator()
-	{
-		m_pPtr = TNULL;
-	}
-
-	T2Iterator(Node* pPtr)
-	{
-		m_pPtr = static_cast<T*>(pPtr);
-	}
-
-	T2Iterator(T* pPtr)
-	{
-		m_pPtr = pPtr;
-	}
-
-	/*TBOOL operator==(const T* ptr)
-	{
-		return m_pNode == ptr;
-	}*/
-
-	/*TBOOL operator!=(const T* ptr)
-	{
-		return m_pNode != ptr;
-	}*/
-
-	void operator=(const T2Iterator& other)
-	{
-		m_pPtr = other.m_pPtr;
-	}
-
-	void operator=(T* pPtr)
-	{
-		m_pPtr = pPtr;
-	}
-
-	T* operator->() const
-	{
-		TASSERT(m_pPtr != TNULL);
-		return m_pPtr;
-	}
-
-	operator T* () const
-	{
-		TASSERT(m_pPtr != TNULL);
-		return static_cast<T*>(m_pPtr);
-	}
-
-	T2Iterator operator++(int)
-	{
-		TASSERT(m_pPtr != TNULL);
-		T2Iterator old = m_pPtr;
-		m_pPtr = static_cast<T*>(m_pPtr->Next());
-		return old;
-	}
-
-	T2Iterator operator--(int)
-	{
-		TASSERT(m_pPtr != TNULL);
-		T2Iterator old = m_pPtr;
-		m_pPtr = static_cast<T*>(m_pPtr->Prev());
-		return old;
-	}
-
-	T2Iterator operator++()
-	{
-		TASSERT(m_pPtr != TNULL);
-		m_pPtr = static_cast<T*>(m_pPtr->Next());
-		return T2Iterator{ m_pPtr };
-	}
-
-	T2Iterator operator--()
-	{
-		TASSERT(m_pPtr != TNULL);
-		m_pPtr = static_cast<T*>(m_pPtr->Prev());
-		return T2Iterator{ m_pPtr };
-	}
-
-private:
-	T* m_pPtr;
-};
-
 template <class T>
 class TQList
 {
@@ -97,7 +11,7 @@ public:
 	class TNode
 	{
 	public:
-		friend TQList;
+		friend class TQList;
 
 	public:
 		TNode()
@@ -161,7 +75,90 @@ public:
 		T* m_pPrev;
 	};
 
-	using Iterator = T2Iterator<T, TNode>;
+	class Iterator
+	{
+	public:
+
+		Iterator()
+		{
+			m_pPtr = TNULL;
+		}
+
+		Iterator(TNode* pPtr)
+		{
+			m_pPtr = static_cast<T*>(pPtr);
+		}
+
+		Iterator(T* pPtr)
+		{
+			m_pPtr = pPtr;
+		}
+
+		/*TBOOL operator==(const T* ptr)
+		{
+			return m_pNode == ptr;
+		}*/
+
+		/*TBOOL operator!=(const T* ptr)
+		{
+			return m_pNode != ptr;
+		}*/
+
+		void operator=(const Iterator& other)
+		{
+			m_pPtr = other.m_pPtr;
+		}
+
+		void operator=(T* pPtr)
+		{
+			m_pPtr = pPtr;
+		}
+
+		T* operator->() const
+		{
+			TASSERT(m_pPtr != TNULL);
+			return m_pPtr;
+		}
+
+		operator T* () const
+		{
+			TASSERT(m_pPtr != TNULL);
+			return static_cast<T*>(m_pPtr);
+		}
+
+		Iterator operator++(int)
+		{
+			TASSERT(m_pPtr != TNULL);
+			Iterator old = m_pPtr;
+			m_pPtr = static_cast<T*>(m_pPtr->Next());
+			return old;
+		}
+
+		Iterator operator--(int)
+		{
+			TASSERT(m_pPtr != TNULL);
+			Iterator old = m_pPtr;
+			m_pPtr = static_cast<T*>(m_pPtr->Prev());
+			return old;
+		}
+
+		Iterator operator++()
+		{
+			TASSERT(m_pPtr != TNULL);
+			m_pPtr = static_cast<T*>(m_pPtr->Next());
+			return Iterator{ m_pPtr };
+		}
+
+		Iterator operator--()
+		{
+			TASSERT(m_pPtr != TNULL);
+			m_pPtr = static_cast<T*>(m_pPtr->Prev());
+			return Iterator{ m_pPtr };
+		}
+
+	private:
+		T* m_pPtr;
+	};
 
 public:
 	TQList() = default;
