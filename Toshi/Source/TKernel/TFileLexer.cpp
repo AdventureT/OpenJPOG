@@ -201,8 +201,7 @@ TFileLexer::Token TFileLexer::get_next_token()
 			TINT len = 0;
 			char buffer[WORDBUF_SIZE];
 			for (TINT i = peek(); i != '\n' && i != '\r'; i = peek()) {
-				buffer[len] = i;
-				len++;
+				buffer[len++] = i;
 				advance();
 				TASSERT(len < WORDBUF_SIZE);
 			}
