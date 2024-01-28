@@ -17,10 +17,13 @@
 // https://github.com/deeplearning4j/deeplearning4j/blob/f9c1faaaf968d6f0e5a5add2627908f7a2565f96/libnd4j/include/loops/type_conversions.h#L97
 #define TGETLOOKAHEADSIZE(size) static_cast<TINT>(1 << static_cast<TINT>(logb(static_cast<TFLOAT>(2 * size - 1))));
 
+#define WORDBUF_SIZE 0x800
+
 TOSHI_NAMESPACE_BEGIN
 
 class TKERNELINTERFACE_EXPORTS TFileLexer
 {
+public:
 	enum TokenType
 	{
 		TOKEN_EOF,
@@ -169,7 +172,7 @@ public:
 			if (m_type == TFileLexer::TOKEN_IDENT ||
 				m_type == TFileLexer::TOKEN_STRING ||
 				m_type == TFileLexer::TOKEN_COMMENT) {
-				delete& m_szValue;
+				delete GetString();
 			}
 		}
 

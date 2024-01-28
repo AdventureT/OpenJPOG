@@ -1,5 +1,6 @@
 #include "TSystemTools.h"
 #include "TDebug.h"
+#include "TPCString.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -99,4 +100,12 @@ TPVOID TOSHI_API TSystem::MemSet(TPVOID a_dest, TINT a_iValue, TINT m_iSize)
 	while (m_iSize--)
 		*dest++ = (TCHAR)a_iValue;
 	return a_dest;
+}
+
+TCStringPool* TOSHI_API TSystem::GetCStringPool()
+{
+	if (!ms_poTCStringPool) {
+		ms_poTCStringPool = new TCStringPool();
+	}
+	return ms_poTCStringPool;
 }

@@ -3,6 +3,8 @@
 
 TOSHI_NAMESPACE_BEGIN
 
+class TCStringPool;
+
 class TKERNELINTERFACE_EXPORTS TSystem
 {
 public:
@@ -17,11 +19,13 @@ public:
 	static TPVOID TOSHI_API MemCopy(TPVOID a_dest, TPCVOID a_src, TUINT a_iSize);
 	static TPVOID TOSHI_API MemSet(TPVOID a_dest, TINT a_iValue, TINT m_iSize);
 
+	static TCStringPool* TOSHI_API GetCStringPool();
 	static TPBYTE GetScratchMem() { return ms_aScratchMem; }
 	static TPCWCHAR GetTempWString() { return (TPCWCHAR)ms_aScratchMem; }
 	static TPCHAR GetTempCString() { return (TPCHAR)ms_aScratchMem; }
 private:
 	inline static TBYTE ms_aScratchMem[1024] = {};
+	inline static TCStringPool* ms_poTCStringPool = TNULL;
 };
 
 TOSHI_NAMESPACE_END

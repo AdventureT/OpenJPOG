@@ -198,6 +198,16 @@ TFileLexer::Token TFileLexer::get_next_token()
 	if (m_bOutputComments) {
 		if (peek(0) == '/' && peek(1) == '/') {
 			advance(2);
+			TINT len = 0;
+			char buffer[WORDBUF_SIZE];
+			for (TINT i = peek(); i != '\n' && i != '\r'; i = peek()) {
+				buffer[len] = i;
+				len++;
+				advance();
+				TASSERT(len < WORDBUF_SIZE);
+			}
+			buffer[len] = '\0';
+			return Token(TOKEN_COMMENT, m_iLine, TSystem::GetCStringPool()->Get(buffer));
 		}
 	}
 

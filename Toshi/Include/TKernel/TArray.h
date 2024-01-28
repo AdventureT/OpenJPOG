@@ -219,7 +219,9 @@ public:
 	T* Push(const T& element)
 	{
 		GrowBy(1);
-		return new (&m_pData[m_iNumElements++]) T(element);
+		T* current = &m_pData[m_iNumElements++];
+		memcpy(current, &element, sizeof(T));
+		return current;
 	}
 
 	T& Pop()

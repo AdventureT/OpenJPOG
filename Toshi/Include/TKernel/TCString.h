@@ -60,6 +60,11 @@ public:
 		return a_iIndex <= m_iStrLen && a_iIndex >= 0;
 	}
 
+	TBOOL IsEmpty() const
+	{
+		return (TINT)m_iStrLen == 0;
+	}
+
 	TPCCHAR GetString(TINT a_iIndex = 0) const
 	{
 		return IsIndexValid(a_iIndex) ? m_pBuffer + a_iIndex : TNULL;
@@ -173,8 +178,8 @@ private:
 	inline static TCHAR m_aNull[4] = { 0, 0, 0, 0 };
 
 	TPCHAR m_pBuffer;           // 0x0
-	TINT m_iExcessLen : 8 = 0;  // 0x4
-	TINT m_iStrLen    : 24 = 0; // 0x5
+	TINT m_iStrLen    : 24 = 0; // 0x4
+	TINT m_iExcessLen : 8 = 0;  // 0x5
 };
 
 TCString TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS);

@@ -4,12 +4,20 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_FREELIST(TPooledCString, 0, 8)
 
+TCStringPool::TCStringPool(TINT a_iMaxSize, TINT a_iInitialSize)
+{
+	m_iMaxSize = a_iMaxSize;
+	m_oPooledCStrings = TArray<TPooledCString>(a_iMaxSize, a_iInitialSize);
+}
+
 TPCString TCStringPool::Get(TPCCHAR a_szString)
 {
 	if (!a_szString || TSystem::StringLength(a_szString) == 0) {
 		return TPCString();
 	}
-	return TPCString();
+	TPooledCString* string = new TPooledCString(a_szString, this);
+	m_oPooledCStrings.Push(*string);
+	return TPCString(string);
 }
 
 void TCStringPool::Remove(TPooledCString& a_rPooledCString)
@@ -20,15 +28,26 @@ void TCStringPool::Remove(TPooledCString& a_rPooledCString)
 	m_oPooledCStrings.Pop();
 }
 
+TPooledCString::TPooledCString()
+{
+	m_pCStringPool = TNULL;
+}
+
+TPooledCString::TPooledCString(TPCCHAR a_szString, TCStringPool* a_pStringPool)
+{
+	m_oString = TCString(a_szString);
+	m_pCStringPool = a_pStringPool;
+}
+
 void TPooledCString::Delete()
 {
-	GetFreeList().Delete(this);
 	delete this;
+	GetFreeList().Delete(this);
 }
 
 TPooledCString::~TPooledCString()
 {
-	if (m_pStringPool) {
-		m_pStringPool->Remove(*this);
+	if (m_pCStringPool) {
+		m_pCStringPool->Remove(*this);
 	}
 }
