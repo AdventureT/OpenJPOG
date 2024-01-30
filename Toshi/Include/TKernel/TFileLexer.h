@@ -54,6 +54,11 @@ public:
 
 	TFileLexer();
 	TFileLexer(TFile* a_pFile, TINT a_iTokenLookaheadSize);
+	~TFileLexer()
+	{
+		delete[] m_piCharLookahead;
+		delete[] m_pLookaheadTokens;
+	}
 
 	class TKERNELINTERFACE_EXPORTS Token
 	{
@@ -141,6 +146,7 @@ public:
 		{
 			m_type = a_type;
 			m_iLine = a_iLine;
+			m_iValue = 0;
 			GetString() = a_rString;
 		}
 
@@ -172,7 +178,7 @@ public:
 			if (m_type == TFileLexer::TOKEN_IDENT ||
 				m_type == TFileLexer::TOKEN_STRING ||
 				m_type == TFileLexer::TOKEN_COMMENT) {
-				delete GetString();
+				GetString().~TPCString();
 			}
 		}
 

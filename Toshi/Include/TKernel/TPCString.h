@@ -46,6 +46,7 @@ public:
 	TPCString(const TPCString& a_rPCS) : TPCString()
 	{
 		if (a_rPCS.m_pPCS) {
+			m_pPCS = a_rPCS.m_pPCS;
 			a_rPCS.m_pPCS->IncRefCount();
 		}
 	}
@@ -105,6 +106,18 @@ public:
 	TBOOL operator==(const TPCString& a_rString) const
 	{
 		return GetPtr() == a_rString.GetPtr();
+	}
+
+	TPCString& operator=(const TPCString& a_rString)
+	{
+		if (GetPtr() != a_rString.GetPtr()) {
+			if (GetPtr() && GetPtr()->DecRefCount() == 0) {
+				GetPtr()->Delete();
+			}
+			m_pPCS = a_rString.GetPtr();
+			a_rString.GetPtr()->IncRefCount();
+		}
+		return *this;
 	}
 
 	operator const TCString* () const

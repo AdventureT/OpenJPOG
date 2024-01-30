@@ -5,7 +5,11 @@ TOSHI_NAMESPACE_USING
 
 void TFileLexer::Token::assign(const Token& a_rToken)
 {
-	switch (GetType())
+	this->~Token();
+	m_iValue = 0;
+	m_type = a_rToken.GetType();
+	m_iLine = a_rToken.m_iLine;
+	switch (a_rToken.GetType())
 	{
 	case Toshi::TFileLexer::TOKEN_IDENT:
 	case Toshi::TFileLexer::TOKEN_STRING:
@@ -22,8 +26,6 @@ void TFileLexer::Token::assign(const Token& a_rToken)
 		m_fValue = a_rToken.GetFloat();
 		break;
 	}
-	m_type = a_rToken.GetType();
-	m_iLine = a_rToken.m_iLine;
 }
 
 TCString TFileLexer::Token::tostring() const

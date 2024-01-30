@@ -29,7 +29,7 @@ TFreeList::Node* TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
 	m_iFreeCount += a_iNumber;
 	m_iMaxFreeCount = m_iMaxFreeCount <= m_iFreeCount ? m_iFreeCount : m_iMaxFreeCount;
 
-	Node* pNewNode = (Node*)tmalloc(a_iNumber * a_uiSize + sizeof(Node), TNULL, -1);
+	Node* pNewNode = (Node*)tmalloc(a_uiSize * a_iNumber + sizeof(Node), TNULL, -1);
 
 	pNewNode->m_pNext = m_oRootNode.m_pNext;
 	m_oRootNode.m_pNext = pNewNode;
@@ -37,8 +37,7 @@ TFreeList::Node* TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
 	auto pData = pNewNode + 1;
 	Node* pNext = TNULL;
 
-	for (TINT i = a_iNumber - 1; i != 0; i--)
-	{
+	for (TINT i = a_iNumber - 1; i != 0; i--) {
 		pData->m_pNext = pNext;
 		pNext = pData;
 		

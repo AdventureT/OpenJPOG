@@ -42,7 +42,6 @@ TPooledCString::TPooledCString(TPCCHAR a_szString, TCStringPool* a_pStringPool)
 void TPooledCString::Delete()
 {
 	delete this;
-	GetFreeList().Delete(this);
 }
 
 TPooledCString::~TPooledCString()
