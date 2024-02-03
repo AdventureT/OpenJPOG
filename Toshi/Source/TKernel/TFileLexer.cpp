@@ -197,18 +197,19 @@ TFileLexer::Token TFileLexer::get_next_token()
 		return Token(TOKEN_EOF, m_iLine);
 	}
 
+	static TCHAR s_Buffer[WORDBUF_SIZE];
+
 	if (m_bOutputComments) {
 		if (peek(0) == '/' && peek(1) == '/') {
 			advance(2);
 			TINT len = 0;
-			char buffer[WORDBUF_SIZE];
 			for (TINT i = peek(); i != '\n' && i != '\r'; i = peek()) {
-				buffer[len++] = i;
+				s_Buffer[len++] = i;
 				advance();
 				TASSERT(len < WORDBUF_SIZE);
 			}
-			buffer[len] = '\0';
-			return Token(TOKEN_COMMENT, m_iLine, TSystem::GetCStringPool()->Get(buffer));
+			s_Buffer[len] = '\0';
+			return Token(TOKEN_COMMENT, m_iLine, TSystem::GetCStringPool()->Get(s_Buffer));
 		}
 		if (peek(0) == '/' && peek(1) == '*') {
 			advance(2);
@@ -231,6 +232,59 @@ TFileLexer::Token TFileLexer::get_next_token()
 			buffer[len] = '\0';
 			advance(2);
 			return Token(TOKEN_COMMENT, m_iLine, TSystem::GetCStringPool()->Get(buffer));
+		}
+	}
+
+	if (iswalpha(peek()) || peek() == '_') {
+		TINT len = 0;
+		do
+		{
+			s_Buffer[len++] = peek();
+			advance();
+			TASSERT(len < WORDBUF_SIZE);
+		} while (iswalnum(peek()) || peek() == '_');
+		s_Buffer[len] = '\0';
+		return Token(TOKEN_IDENT, m_iLine, TSystem::GetCStringPool()->Get(s_Buffer));
+	}
+
+	if (iswdigit(peek()) != 0 || peek() != '-') {
+		if (peek() == '.' && iswdigit(peek(1))) {
+			// Do Number handling
+		}
+		else if (peek() == '"') {
+			TINT len = 0;
+			TINT prev = peek();
+			advance();
+			do
+			{
+				if (peek() == '"' && prev != '\\') {
+					advance();
+					s_Buffer[len] = '\0';
+					return Token(TOKEN_STRING, m_iLine, TSystem::GetCStringPool()->Get(s_Buffer));
+				}
+				if (peek() == '\\') {
+					advance();
+					TINT val = peek();
+					if (val == '\n') {
+						m_iLine++;
+					}
+					else if (val == 'n') {
+						val = '\n';
+					}
+					TASSERT(len < WORDBUF_SIZE);
+					s_Buffer[len++] = val;
+					advance();
+					continue;
+				}
+				if (peek() == '\n') {
+					m_iLine++;
+				}
+				TASSERT(len < WORDBUF_SIZE);
+				s_Buffer[len++] = peek();
+				advance();
+			} while (true);
+			s_Buffer[len] = '\0';
+			return Token(TOKEN_IDENT, m_iLine, TSystem::GetCStringPool()->Get(s_Buffer));
 		}
 	}
 
