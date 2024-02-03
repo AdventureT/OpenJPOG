@@ -210,6 +210,28 @@ TFileLexer::Token TFileLexer::get_next_token()
 			buffer[len] = '\0';
 			return Token(TOKEN_COMMENT, m_iLine, TSystem::GetCStringPool()->Get(buffer));
 		}
+		if (peek(0) == '/' && peek(1) == '*') {
+			advance(2);
+			TINT len = 0;
+			char buffer[WORDBUF_SIZE];
+			for (TINT i = peek(0); true; i = peek(0)) {
+				if (i == '*' && peek(1) == '/') {
+					break;
+				}
+				if (i == -1) {
+					break;
+				}
+				if (i == '\n') {
+					m_iLine++;
+				}
+				buffer[len++] = i;
+				advance();
+				TASSERT(len < WORDBUF_SIZE);
+			}
+			buffer[len] = '\0';
+			advance(2);
+			return Token(TOKEN_COMMENT, m_iLine, TSystem::GetCStringPool()->Get(buffer));
+		}
 	}
 
 	return TFileLexer::Token();

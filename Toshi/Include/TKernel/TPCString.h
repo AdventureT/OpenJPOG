@@ -1,7 +1,7 @@
 #pragma once
 #include "TDebug.h"
 #include "TCString.h"
-#include "TFreeList.h"
+//#include "TFreeList.h"
 #include "TRefCounted.h"
 #include "TArray.h"
 
@@ -13,7 +13,7 @@ class TCStringPool;
 
 class TKERNELINTERFACE_EXPORTS TPooledCString : public TRefCounted
 {
-	DECLARE_FREELIST(TPooledCString)
+	//DECLARE_FREELIST(TPooledCString)
 
 	friend class TCStringPool;
 	friend class TPCString;

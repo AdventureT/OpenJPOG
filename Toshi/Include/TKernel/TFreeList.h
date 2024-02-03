@@ -56,8 +56,8 @@ private:
 	TPCHAR m_pcName;        // 0x8
 	TINT m_iCapacity;       // 0xC
 	TUINT m_uiItemSize;     // 0x10
-	Node m_oLastNode;       // 0x14
-	Node m_oRootNode;       // 0x18
+	Node* m_oLastNode;      // 0x14
+	Node* m_oRootNode;      // 0x18
 	TINT m_iGrowSize;       // 0x1C
 };
 
