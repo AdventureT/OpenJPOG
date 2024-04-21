@@ -5,6 +5,7 @@
 #include "TFile.h"
 #include "TMemory.h"
 #include <new>
+#include "TEvent.h"
 
 #if defined(TLEXERUTF8)
 #define TLEXERGETCHAR m_pFile->GetCChar
@@ -31,7 +32,7 @@ public:
 		TOKEN_COLON,
 		TOKEN_COMMA,
 		TOKEN_DOT,
-		TOKEN_UNKNOWN,
+		TOKEN_ASTERISK,
 		TOKEN_DOLLAR,
 		TOKEN_OPENSQR,
 		TOKEN_CLOSESQR,
@@ -48,6 +49,12 @@ public:
 		TOKEN_UINTEGER,
 		TOKEN_FLOAT,
 		TOKEN_COMMENT
+	};
+	
+	struct ParseError
+	{
+		TINT m_iLine;      // 0x0
+		TPCCHAR m_szError; // 0x4
 	};
 
 public:
@@ -228,6 +235,12 @@ public:
 		int m_iCount;
 	};
 
+private:
+	TBOOL ComputePreprocessorAllow();
+public:
+	void Define(TPCCHAR a_szPreprocessor);
+	TBOOL IfDef(TPCCHAR a_szDefine);
+
 	TBOOL Expect(TFileLexer::TokenType a_type);
 	TBOOL Expect(TFileLexer::TokenType a_type, TFileLexer::Token& a_rToken);
 
@@ -238,6 +251,15 @@ public:
 
 	void SetCharacterLookaheadSize(TINT a_iCharLookaheadSize);
 	void SetInputStream(TFile* a_pFile);
+	void SetOutputComments(TBOOL a_bOutputComments)
+	{
+		m_bOutputComments = a_bOutputComments;
+	}
+
+	//TEmitter<TFileLexer, ParseError>* GetParseErrorEmitter()
+	//{
+	//	return &m_oEmitter;
+	//}
 
 	static TPCCHAR TOSHI_API tostring(TokenType a_type);
 
@@ -253,26 +275,37 @@ protected:
 	TINT peek();
 	TINT peek(TINT a_dist);
 
+	void ThrowError(TPCCHAR a_szError)
+	{
+		TERROR("Error occurred in TFileLexer line %d, %s", m_iLine, a_szError);
+		//m_oEmitter.Throw({ m_iLine, a_szError });
+	}
+
 private:
-	TFile* m_pFile;                        // 0x4
-	TBOOL m_bOutputComments;               // 0x8
-	TINT m_iCharLookaheadSize;             // 0xC
-	TINT m_iCharLookaheadMask;             // 0x10
-	TINT* m_piCharLookahead;               // 0x14
-	TINT m_iCharLookaheadBack;             // 0x18
-	TINT m_iCharLookaheadFront;            // 0x1C
+	TFile* m_pFile;                               // 0x4
+	TBOOL m_bOutputComments;                      // 0x8
+	TINT m_iCharLookaheadSize;                    // 0xC
+	TINT m_iCharLookaheadMask;                    // 0x10
+	TINT* m_piCharLookahead;                      // 0x14
+	TINT m_iCharLookaheadBack;                    // 0x18
+	TINT m_iCharLookaheadFront;                   // 0x1C
+										          
+	TINT m_iLine;                                 // 0x20
+	TINT m_iTokenLookaheadSize;                   // 0x24
+	TINT m_iTokenLookaheadMask;                   // 0x28
+	TFileLexer::Token m_oToken;                   // 0x2C
+	TFileLexer::Token* m_pLookaheadTokens;        // 0x38
+	TINT m_iTokenLookaheadBuffered;               // 0x3C
+	TINT m_iTokenLookaheadFront;                  // 0x40
+	TINT m_iTokenLookaheadBack;                   // 0x44
+										          
+	TINT m_iSomeNum;                              // 0x48
+	TBOOL m_bFlags[32];                           // 0x4C
+	TBOOL m_bAllowPreprocessor;                   // 0x6C
+	TBOOL m_bEOF;                                 // 0x6D
+	TArray<TPCString> m_aDefines;                 // 0x70
 
-	TINT m_iLine;                          // 0x20
-	TINT m_iTokenLookaheadSize;            // 0x24
-	TINT m_iTokenLookaheadMask;            // 0x28
-	TFileLexer::Token m_oToken;            // 0x2C
-	TFileLexer::Token* m_pLookaheadTokens; // 0x38
-	TINT m_iTokenLookaheadBuffered;        // 0x3C
-	TINT m_iTokenLookaheadFront;           // 0x40
-	TINT m_iTokenLookaheadBack;            // 0x44
-
-	TBOOL m_bEOF;                          // 0x6D
-	TArray<TPCString> m_aDefines;          // 0x70;
+	//TEmitter<TFileLexer, ParseError> m_oEmitter;  // 0x80
 };
 
 TOSHI_NAMESPACE_END

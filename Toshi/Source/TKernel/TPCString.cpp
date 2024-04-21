@@ -15,6 +15,13 @@ TPCString TCStringPool::Get(TPCCHAR a_szString)
 	if (!a_szString || TSystem::StringLength(a_szString) == 0) {
 		return TPCString();
 	}
+	// I think this should be done with an Iterator and Begin() End()
+	for (TINT i = 0; i < m_oPooledCStrings.GetNumElements(); i++) {
+		if (m_oPooledCStrings[i].m_oString == a_szString) {
+			// Already defined
+			return TPCString(&m_oPooledCStrings[i]);
+		}
+	}
 	TPooledCString* string = new TPooledCString(a_szString, this);
 	m_oPooledCStrings.Push(*string);
 	return TPCString(string);

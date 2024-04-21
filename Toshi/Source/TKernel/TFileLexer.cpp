@@ -57,12 +57,37 @@ TCString TFileLexer::Token::tostring() const
 
 TFileLexer::TFileLexer()
 {
+	m_pFile = TNULL;
+	m_bOutputComments = TFALSE;
+	m_iCharLookaheadSize = 0;
+	m_iCharLookaheadMask = 0;
+	m_piCharLookahead = TNULL;
+	m_iCharLookaheadBack = 0;
+	m_iCharLookaheadFront = 0;
+	m_iLine = 0;
+	m_iTokenLookaheadSize = 1;
+	m_iTokenLookaheadMask = 1;
+	m_pLookaheadTokens = LookaheadTokens::Allocate()->GetTokens();
+	m_iTokenLookaheadBuffered = 0;
+	m_iTokenLookaheadFront = 0;
+	m_iTokenLookaheadBack = 0;
+	m_iSomeNum = 0;
+	m_bAllowPreprocessor = TTRUE;
+	m_bEOF = TFALSE;
+	//m_oEmitter = TEmitter<TFileLexer, ParseError>(this);
+#if defined(TOSHI_SKU_WINDOWS)
+	Define("TOSHI_SKU_WINDOWS");
+#elif defined(TOSHI_SKU_PS2)
+	Define("TOSHI_SKU_PS2");
+#elif defined(TOSHI_SKU_XBOX)
+	Define("TOSHI_SKU_XBOX");
+#endif
 }
 
 TFileLexer::TFileLexer(TFile* a_pFile, TINT a_iTokenLookaheadSize)
 {
 	m_pFile = a_pFile;
-	m_bOutputComments = TTRUE;
+	m_bOutputComments = TFALSE;
 	m_iCharLookaheadSize = 0;
 	m_iCharLookaheadMask = 0;
 	m_piCharLookahead = TNULL;
@@ -80,6 +105,14 @@ TFileLexer::TFileLexer(TFile* a_pFile, TINT a_iTokenLookaheadSize)
 	m_bEOF = TFALSE;
 	TASSERT(a_pFile != TNULL);
 	SetInputStream(a_pFile);
+	//m_oEmitter = TEmitter<TFileLexer, ParseError>(this);
+#if defined(TOSHI_SKU_WINDOWS)
+	Define("TOSHI_SKU_WINDOWS");
+#elif defined(TOSHI_SKU_PS2)
+	Define("TOSHI_SKU_PS2");
+#elif defined(TOSHI_SKU_XBOX)
+	Define("TOSHI_SKU_XBOX");
+#endif
 }
 
 TBOOL TFileLexer::Expect(TFileLexer::TokenType a_type)
@@ -91,6 +124,35 @@ TBOOL TFileLexer::Expect(TFileLexer::TokenType a_type, TFileLexer::Token& a_rTok
 {
 	a_rToken.assign(GetNextToken());
 	return a_type == a_rToken.GetType();
+}
+
+TBOOL TFileLexer::ComputePreprocessorAllow()
+{
+	for (TINT i = 0; i < m_iSomeNum; i++) {
+		bool bFlag;
+
+		if (m_iSomeNum - i < 0)
+			bFlag = m_bFlags[0];
+		else
+			bFlag = m_bFlags[m_iSomeNum - i];
+
+		if (!bFlag)
+			return TFALSE;
+	}
+
+	return TTRUE;
+}
+
+void TFileLexer::Define(TPCCHAR a_szPreprocessor)
+{
+	// I think this should be done with an Iterator and Begin() End()
+	for (TINT i = 0; i < m_aDefines.GetNumElements(); i++) {
+		if (m_aDefines[i].GetCString() == a_szPreprocessor) {
+			// Already defined
+			return;
+		}
+	}
+	m_aDefines.Push(TSystem::GetCStringPool()->Get(a_szPreprocessor));
 }
 
 TFileLexer::Token TFileLexer::GetLastToken()
@@ -109,6 +171,16 @@ TFileLexer::Token TFileLexer::GetNextToken()
 		m_iTokenLookaheadBuffered--;
 	}
 	return Token(m_oToken);
+}
+
+TBOOL TFileLexer::IfDef(TPCCHAR a_szDefine)
+{
+	for (TINT i = 0; i < m_aDefines.GetNumElements(); i++) {
+		if (m_aDefines[i].GetCString() == a_szDefine) {
+			return TTRUE;
+		}
+	}
+	return TFALSE;
 }
 
 TFileLexer::Token TFileLexer::PeekNextToken(TINT a_iDistance)
@@ -145,6 +217,9 @@ void TFileLexer::SetInputStream(TFile* a_pFile)
 {
 	m_pFile = a_pFile;
 	m_iLine = 1;
+	m_iSomeNum = 0;
+	m_bFlags[0] = TTRUE;
+	m_bAllowPreprocessor = ComputePreprocessorAllow();
 	SetCharacterLookaheadSize(3);
 }
 
@@ -235,28 +310,29 @@ TFileLexer::Token TFileLexer::get_next_token()
 		}
 	}
 
-	if (iswalpha(peek()) || peek() == '_') {
+	if (iswalpha(peek()) != 0 || peek() == '_') {
 		TINT len = 0;
 		do
 		{
 			s_Buffer[len++] = peek();
 			advance();
 			TASSERT(len < WORDBUF_SIZE);
-		} while (iswalnum(peek()) || peek() == '_');
+		} while (iswalnum(peek()) != 0 || peek() == '_');
 		s_Buffer[len] = '\0';
 		return Token(TOKEN_IDENT, m_iLine, TSystem::GetCStringPool()->Get(s_Buffer));
 	}
 
-	if (iswdigit(peek()) != 0 || peek() != '-') {
-		if (peek() == '.' && iswdigit(peek(1))) {
-			// Do Number handling
+	if (iswdigit(peek()) == 0 && peek() != '-') {
+		if (peek() == '.' && iswdigit(peek(1)) != 0) {
+			// Handle numerics, do we really need a goto?
+			goto HandleNumerics;
 		}
 		else if (peek() == '"') {
+			// Handle strings
 			TINT len = 0;
 			TINT prev = peek();
 			advance();
-			do
-			{
+			do {
 				if (peek() == '"' && prev != '\\') {
 					advance();
 					s_Buffer[len] = '\0';
@@ -283,16 +359,266 @@ TFileLexer::Token TFileLexer::get_next_token()
 				s_Buffer[len++] = peek();
 				advance();
 			} while (true);
-			s_Buffer[len] = '\0';
-			return Token(TOKEN_IDENT, m_iLine, TSystem::GetCStringPool()->Get(s_Buffer));
+		}
+		// Handle special characters
+		switch (peek()) {
+		case '$':
+			advance();
+			return Token(TOKEN_DOLLAR, m_iLine);
+		case '(':
+			advance();
+			return Token(TOKEN_OPENPAREN, m_iLine);
+		case ')':
+			advance();
+			return Token(TOKEN_CLOSEPAREN, m_iLine);
+		case '*':
+			advance();
+			return Token(TOKEN_ASTERISK, m_iLine);
+		case ',':
+			advance();
+			return Token(TOKEN_COMMA, m_iLine);
+		case '.':
+			advance();
+			return Token(TOKEN_DOT, m_iLine);
+		case ':':
+			advance();
+			return Token(TOKEN_COLON, m_iLine);
+		case ';':
+			advance();
+			return Token(TOKEN_SEMI, m_iLine);
+		case '<':
+			advance();
+			return Token(TOKEN_LESSTHAN, m_iLine);
+		case '=':
+			advance();
+			return Token(TOKEN_EQUAL, m_iLine);
+		case '>':
+			advance();
+			return Token(TOKEN_GREATERTHAN, m_iLine);
+		case '[':
+			advance();
+			return Token(TOKEN_OPENSQR, m_iLine);
+		case ']':
+			advance();
+			return Token(TOKEN_CLOSESQR, m_iLine);
+		case '{':
+			advance();
+			return Token(TOKEN_OPENBRACE, m_iLine);
+		case '}':
+			advance();
+			return Token(TOKEN_CLOSEBRACE, m_iLine);
+		default:
+			ThrowError("Invalid character");
+			return Token();
 		}
 	}
 
-	return TFileLexer::Token();
+HandleNumerics:
+	TINT len = 0;
+	TBOOL isFloat = TFALSE;
+	TBOOL isUnsigned = TFALSE;
+	TBOOL isHex = TFALSE;
+	if (peek() == '.') {
+		isFloat = TTRUE;
+		s_Buffer[len++] = '0';
+	}
+	s_Buffer[len++] = peek();
+	advance();
+	if (peek() == 'x' || peek() == 'X') {
+		// Handle hex digits
+		isHex = TTRUE;
+		advance();
+		while (iswxdigit(peek()) != 0)
+		{
+			s_Buffer[len++] = peek();
+			advance();
+			TASSERT(len < WORDBUF_SIZE);
+		}
+		if (peek() == 'u') {
+			advance();
+			isUnsigned = TTRUE;
+		}
+	}
+	else {
+		while (true) {
+			while (iswdigit(peek()) != 0) {
+				s_Buffer[len++] = peek();
+				advance();
+				TASSERT(len < WORDBUF_SIZE);
+			}
+			if (peek() != '.') {
+				break;
+			}
+			if (isFloat) {
+				ThrowError("Floating point number has multiple decimal places");
+				return Token();
+			}
+			s_Buffer[len++] = peek();
+			advance();
+			TASSERT(len < WORDBUF_SIZE);
+			isFloat = TTRUE;
+		}
+		if (peek() == 'f') {
+			advance();
+			isFloat = TTRUE;
+		}
+		else if (peek() == 'u') {
+			advance();
+			isUnsigned = TTRUE;
+		}
+		else if (peek() == 'e' || peek() == 'E') {
+			s_Buffer[len++] = peek();
+			advance();
+			TASSERT(len < WORDBUF_SIZE);
+			if (peek() != '+' && peek() != '-') {
+				ThrowError("Exponential number not of form e+ or e-");
+				return Token();
+			}
+			do {
+				s_Buffer[len++] = peek();
+				advance();
+				TASSERT(len < WORDBUF_SIZE);
+			} while (iswdigit(peek()) != 0);
+			if (peek() == 'f') {
+				advance();
+			}
+			isFloat = TTRUE;
+		}
+		else if (peek() == '#') {
+			do {
+				s_Buffer[len++] = peek();
+				advance();
+				TASSERT(len < WORDBUF_SIZE);
+			} while (iswalpha(peek()) != 0);
+			isFloat = TTRUE;
+		}
+	}
+
+	s_Buffer[len] = '\0';
+	if (isUnsigned) {
+		TUINT val;
+		if (isHex) {
+			sscanf(s_Buffer, "%x", &val);
+			return Token(m_iLine, val);
+		}
+		sscanf(s_Buffer, "%u", &val);
+		return Token(m_iLine, val);
+	}
+	if (isHex) {
+		TINT val;
+		sscanf(s_Buffer, "%x", &val);
+		return Token(m_iLine, val);
+	}
+	if (isFloat) {
+		TFLOAT val;
+		sscanf(s_Buffer, "%f", &val);
+		return Token(m_iLine, val);
+	}
+
+	// This is basically atoi without hex support
+	TBOOL isNegative = TFALSE;
+	TINT value = 0;
+	TPCCHAR num = s_Buffer;
+	if (num[0] == '-') {
+		isNegative = TTRUE;
+		num++;
+	}
+	while (*num) {
+		value = value * 10 + *num++ - '0';
+	}
+	if (isNegative) {
+		value = -value;
+	}
+
+	return Token(m_iLine, value);
 }
 
 void TFileLexer::skipWhiteSpace()
 {
+	do
+	{
+		bool stop = false;
+		for (TINT cur = peek(); iswspace(cur) != 0 || cur == ~256; cur = peek()) {
+			advance();
+			if (cur == '\n') {
+				m_iLine++;
+				stop = true;
+			}
+			else {
+				stop = false;
+			}
+		}
+		if (!m_bAllowPreprocessor) {
+			for (TINT cur = peek(); cur != '#' || (!stop); cur = peek()) {
+				advance();
+				if (cur == '\n') {
+					m_iLine++;
+					stop = true;
+				}
+				else {
+					stop = false;
+				}
+			}
+		}
+		if (stop && peek() == '#') {
+			TWARNING("TFileLexer::skipWhiteSpace: Preprocessor section not implemented");
+		}
+		if (m_bOutputComments) {
+			return;
+		}
+		if (peek(0) == '/') {
+			if (peek(1) == '*') {
+				advance(2);
+				do
+				{
+					if (peek(0) == '*' && peek(1) == '/') {
+						advance(2);
+						break;
+					}
+					if (peek(0) == -1) {
+						ThrowError("Unterminated block comment /* ... */");
+						return;
+					}
+					if (peek() == '\n') {
+						m_iLine++;
+					}
+					advance();
+				} while (true);
+			}
+			return;
+		}
+		if (peek(1) != '/') {
+			if (peek(0) == '/') {
+				if (peek(1) == '*') {
+					advance(2);
+					do
+					{
+						if (peek(0) == '*' && peek(1) == '/') {
+							advance(2);
+							break;
+						}
+						if (peek(0) == -1) {
+							ThrowError("Unterminated block comment /* ... */");
+							return;
+						}
+						if (peek() == '\n') {
+							m_iLine++;
+						}
+						advance();
+					} while (true);
+				}
+			}
+			return;
+		}
+		advance(1);
+		advance();
+		while (peek(0) != -1) {
+			if (peek() == '\n') {
+				break;
+			}
+			advance();
+		}
+	} while (true);
 }
 
 void TFileLexer::advance()
