@@ -1,6 +1,6 @@
 #pragma once
 #include "Defines.h"
-#include "TKernelInterface.h"
+#include "TKernel/TKernelInterface.h"
 
 TOSHI_NAMESPACE_BEGIN
 
