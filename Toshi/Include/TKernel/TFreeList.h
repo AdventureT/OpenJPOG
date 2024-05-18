@@ -2,6 +2,10 @@
 
 #include "TMemory.h"
 
+// There is some kind of critical issue with free lists which causes memory being uninitialised, so we disable it for now
+#define DECLARE_FREELIST(class_name)
+#define IMPLEMENT_FREELIST(class_name, InitialSize, GrowSize)
+#if 0
 #define DECLARE_FREELIST(class_name) \
 public: \
 static TPVOID TOSHI_API operator new(TUINT s, TPVOID mem) { return mem; } \
@@ -14,7 +18,7 @@ private: static Toshi::TFreeList ms_oFreeList;
 
 #define IMPLEMENT_FREELIST(class_name, InitialSize, GrowSize) \
 Toshi::TFreeList class_name::ms_oFreeList = Toshi::TFreeList(sizeof(class_name), InitialSize, GrowSize, TNULL);
-
+#endif
 TOSHI_NAMESPACE_BEGIN
 
 class TKERNELINTERFACE_EXPORTS TFreeList

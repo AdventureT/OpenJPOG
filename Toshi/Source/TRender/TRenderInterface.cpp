@@ -120,7 +120,7 @@ void TRenderInterface::DestroySystemResources()
 }
 
 TResource* TRenderInterface::CreateResource(const TClass* a_pClass, TPCCHAR a_szResName, TResource* a_pParent)
-{
+{	
 	TASSERT(TNULL != a_pClass);
 	TASSERT(a_pClass->IsA(TGetClass(TResource)));
 

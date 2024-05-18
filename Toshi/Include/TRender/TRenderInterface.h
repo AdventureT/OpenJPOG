@@ -103,7 +103,6 @@ public:
 
 
 public:
-
 	TResource* CreateResource(const TClass* a_pClass, TPCCHAR a_szResName, TResource* a_pResource);
 
 	const TRenderAdapter::Mode::Device* FindDevice(const DisplayParams* a_pDisplayParams);

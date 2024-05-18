@@ -6,7 +6,7 @@
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TTextureResourceHAL, TTextureResource)
-IMPLEMENT_FREELIST(TTextureResourceHAL, 0, 8)
+//IMPLEMENT_FREELIST(TTextureResourceHAL, 0, 8)
 
 TBOOL TTextureResourceHAL::Validate()
 {
@@ -20,8 +20,10 @@ TBOOL TTextureResourceHAL::Validate()
 	if (m_iLoadFromMemory) {
 		// Load from memory
 		if (m_pData && m_uiDataSize != 0) {
-			if (HASFLAG(m_eTextureFlags & 0x40) && !CreateFromFormat()) {
-				return TFALSE;
+			if (HASFLAG(m_eTextureFlags & 0x40)) {
+				if (!CreateFromFormat()) {
+					return TFALSE;
+				}
 			}
 			else {
 				TUINT uiLayout = m_eTextureFlags & 0x38;
@@ -36,7 +38,22 @@ TBOOL TTextureResourceHAL::Validate()
 					CreateFromMemory8888(m_uiWidth, m_uiHeight, 0, m_pData);
 				}
 				else {
-					CreateFromMemoryDDS(m_uiWidth, m_uiHeight, -1, m_pData);
+					HRESULT hRes = D3DXCreateTextureFromFileInMemoryEx(pRenderer->GetD3DDevice(),
+						m_pData,
+						m_uiDataSize,
+						-1,
+						-1,
+						-1,
+						0,
+						D3DFMT_UNKNOWN,
+						D3DPOOL_MANAGED,
+						D3DX_FILTER_BOX,
+						D3DX_FILTER_BOX,
+						0,
+						&m_oImageInfo,
+						NULL,
+						&m_pD3DTexture);
+					TRenderD3DInterface::TD3DAssert(hRes, TNULL);
 				}
 			}
 		}

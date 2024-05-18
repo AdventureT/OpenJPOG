@@ -62,16 +62,16 @@ public:
 	/**
 	* Inserts node as a child of another node.
 	*
-	* @param parentNode Pointer to the parent node.
-	* @param a_pSourceNode Pointer to the node you want to insert.
+	* @param parentNode Reference to the parent node.
+	* @param a_rSourceNode Reference to the node you want to insert.
 	*/
-	void Insert(T* parentNode, T* a_pSourceNode)
+	void Insert(T* parentNode, T* a_rSourceNode)
 	{
 		// Toshi::TNodeTree<Toshi::TResource>::Insert - 00691aa0
-		TASSERT(a_pSourceNode->IsLinked() == TFALSE);
+		TASSERT(a_rSourceNode->IsLinked() == TFALSE);
 
 		// Remove the source node from the tree
-		Remove(*a_pSourceNode, TFALSE);
+		Remove(*a_rSourceNode, TFALSE);
 
 		// Get the first attached to parent node
 		T* firstAttached = parentNode->Child();
@@ -81,27 +81,27 @@ public:
 			// Attach node to other attached nodes
 			T* lastAttached = firstAttached->Prev();
 
-			lastAttached->m_Next = a_pSourceNode;
-			firstAttached->m_Prev = a_pSourceNode;
+			lastAttached->m_Next = a_rSourceNode;
+			firstAttached->m_Prev = a_rSourceNode;
 
-			a_pSourceNode->m_Next = firstAttached;
-			a_pSourceNode->m_Prev = lastAttached;
+			a_rSourceNode->m_Next = firstAttached;
+			a_rSourceNode->m_Prev = lastAttached;
 		}
 		else
 		{
 			// Attach node as the first one
-			parentNode->m_Child = a_pSourceNode;
+			parentNode->m_Child = a_rSourceNode;
 		}
 
-		a_pSourceNode->m_Tree = this;
-		a_pSourceNode->m_Parent = parentNode;
+		a_rSourceNode->m_Tree = this;
+		a_rSourceNode->m_Parent = parentNode;
 		m_Count++;
 	}
 
 	/**
 	* Inserts node to the default tree.
 	*
-	* @param a_pSourceNode Pointer to the node you want to insert.
+	* @param a_rSourceNode Pointer to the node you want to insert.
 	*/
 	void InsertAtRoot(T* sourceNode)
 	{
@@ -109,7 +109,7 @@ public:
 	}
 
 	/**
-	 * Tries to remove a_pSourceNode from the tree and inserts it to the parentNode or to the root
+	 * Tries to remove a_rSourceNode from the tree and inserts it to the parentNode or to the root
 	 */
 	void ReInsert(T* parentNode, T* sourceNode)
 	{
@@ -132,24 +132,20 @@ public:
 		// Toshi::TNodeTree<Toshi::TResource>::Remove - 00691e70
 		TNodeTree<T>* nodeRoot = node.GetTree();
 		T* nodeParent = node.Parent();
-
-		if (nodeRoot != TNULL)
-		{
+		
+		if (nodeRoot) {
 			// Check if the node belongs to the current tree
-			if (nodeRoot != this)
-			{
+			if (nodeRoot != this) {
 				TASSERT(!"A node is being removed from a different tree from it's current tree.");
 				return &node;
 			}
-
 			m_Count--;
 		}
 
-		if (flag)
-		{
+		if (flag) {
 			T* attachedNode = node.Child();
 
-			while (attachedNode != TNULL)
+			while (attachedNode)
 			{
 				TNodeTree<T>* nodeRoot = node.GetTree();
 

@@ -53,7 +53,7 @@ class TKERNELINTERFACE_EXPORTS TMemory
 public:
 
 	static TBOOL TOSHI_API Initialise();
-	static void TOSHI_API DebugPrintHALMemInfo(TCHAR const*) {};
+	static void TOSHI_API DebugPrintHALMemInfo(TCHAR const* a_pPrint) { };
 	static TMemory& TOSHI_API GetMemMangager();
 	static MemBlock* TOSHI_API GetGlobalBlock();
 	static MemNode* TOSHI_API GetMemNodeFromAddress(TPVOID a_pAddr);
