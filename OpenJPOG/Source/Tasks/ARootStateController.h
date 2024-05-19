@@ -9,7 +9,7 @@ static inline ARootStateController* s_pCurrentStateController = TNULL;
 
 class ARootStateController : public Toshi::TTask
 {
-	DECLARE_DYNAMIC(ARootTask);
+	DECLARE_DYNAMIC(ARootStateController);
 
 public:
 	ARootStateController();

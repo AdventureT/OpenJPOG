@@ -9,7 +9,7 @@
 #include "GUI/AGUISystem.h"
 #include "ARootStateController.h"
 #include "ARenderer.h"
-
+#include "Tasks/AFrontEndController.h"
 
 class ARootTask : public Toshi::TTask
 {
@@ -52,8 +52,11 @@ private:
 
 	const Toshi::TRenderAdapter::Mode::Device* CreateDisplayDevice(Toshi::TRenderInterface::DisplayParams& a_rDisplayParams, bool a_bReverseOrder);
 
+	void LoadMaterialLibrary(TINT a_iIndex);
+
 private:
 	Toshi::TCString m_szName;
+	AFrontEndController* m_pFrontEndController;   // 0x28
 	AGUISystem* m_pGUISystem;                     // 0x34
 	Toshi::TTask* m_pInputTask;                   // 0x38
 	Toshi::TRenderInterface* m_pRenderInterface;  // 0xD0

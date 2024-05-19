@@ -4,6 +4,14 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(ARootState, TObject)
 
+ARootState::ARootState()
+{
+    m_pParent = TNULL;
+    m_pChild = TNULL;
+    m_bAllowExit = TTRUE;
+    m_bHasControl = TFALSE;
+}
+
 void ARootState::OnActivate()
 {
 }
@@ -32,7 +40,7 @@ void ARootState::TransferControl(ARootState* a_pState)
         OnDeactivate();
     }
     else {
-        ExplicitDelete();
+        m_pChild->ExplicitDelete();
     }
     m_pChild = a_pState;
     a_pState->m_pParent = this;
@@ -42,6 +50,15 @@ void ARootState::TransferControl(ARootState* a_pState)
 
 void ARootState::RemoveSelf()
 {
+    ExplicitDelete();
+    if (m_pParent) {
+        m_pParent->m_pChild = TNULL;
+        if (!m_bHasControl) {
+            m_pParent->OnActivate();
+            return;
+        }
+        TWARNING("Not implemented: AGUIGameHUD::OnActivate(&this->m_pParent->m_oGameHUD);");
+    }
 }
 
 ARootState* ARootState::ReturnToState(const TClass& a_rStateClass)
@@ -75,32 +92,41 @@ TBOOL ARootState::AddChild(ARootState& a_rState)
 
 TBOOL ARootState::RemoveChild()
 {
-    return TBOOL();
+    if (m_pChild) {
+        m_pChild = TNULL;
+        ExplicitDelete();
+        if (!m_bHasControl) {
+            OnActivate();
+        }
+        else {
+            TWARNING("Not implemented: AGUIGameHUD::OnActivate(&this->m_oGameHUD);");
+        }
+        return TTRUE;
+    }
+    return TFALSE;
 }
 
 ARootState& ARootState::GetCurrent()
 {
-    ARootState* i;
-    for (i = this; i->m_pChild != TNULL; i = i->m_pChild) {
-        if (i->m_pChild == TNULL) {
-            return *i;
-        }
-    }
-    return *i;
+    ARootState* current;
+    for (current = this; current->m_pChild != TNULL; current = current->m_pChild);
+    return *current;
 }
 
 void ARootState::ExplicitDelete()
 {
-    ARootState* i;
-    for (i = this; i->m_pChild != TNULL; i = i->m_pChild);
-    i->OnDeactivate();
+    ARootState* parent = m_pParent;
 
-    for (ARootState* j = i; j != m_pParent; j = j->m_pParent) {
+    ARootState* current;
+    for (current = this; current->m_pChild != TNULL; current = current->m_pChild);
+    current->OnDeactivate();
+
+    ARootState* j;
+    while (j = current, j != parent) {
+        current = j->m_pParent;
         j->OnRemoval();
         j->m_pParent = TNULL;
         j->m_pChild = TNULL;
-        if (j) {
-            delete j;
-        }
+        delete j;
     }
 }

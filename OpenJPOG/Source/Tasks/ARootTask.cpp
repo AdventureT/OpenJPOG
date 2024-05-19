@@ -58,6 +58,11 @@ void ARootTask::OnDeactivate()
 
 void ARootTask::LoadFrontEndController()
 {
+	m_pFrontEndController = (AFrontEndController*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(AFrontEndController), this);
+	m_pFrontEndController->Create();
+	LoadMaterialLibrary(1);
+	LoadMaterialLibrary(25);
+	g_oTheApp.GetKernel()->GetSystemTimer()->Reset();
 }
 
 void ARootTask::UnloadFrontEndController()
@@ -182,4 +187,8 @@ const TRenderAdapter::Mode::Device* ARootTask::CreateDisplayDevice(TRenderInterf
 
 	return pDevice;
 
+}
+
+void ARootTask::LoadMaterialLibrary(TINT a_iIndex)
+{
 }

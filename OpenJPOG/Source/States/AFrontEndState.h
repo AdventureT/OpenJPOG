@@ -15,4 +15,3 @@ public:
 protected:
 	static inline int sm_iFERefCount = 0;
 };
-

@@ -9,6 +9,8 @@ class ARootState : public Toshi::TObject
 
 public:
 
+	ARootState();
+
 	virtual ~ARootState() = default;
 	//virtual void ProcessControllerLoss();
 	//virtual void ProcessLostInput();
@@ -42,6 +44,7 @@ public:
 private:
 	ARootState* m_pParent;   // 0x4
 	ARootState* m_pChild;    // 0x8
+	TBOOL m_bAllowExit;      // 0xC
 	TBOOL m_bHasControl;     // 0xE
 	AGUIGameHUD m_oHUDState; // 0x10
 };
