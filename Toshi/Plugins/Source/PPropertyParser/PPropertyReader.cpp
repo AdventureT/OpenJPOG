@@ -35,6 +35,7 @@ TBOOL PPropertyReader::Open(const Toshi::TCString& a_rFileName, Toshi::TFile* a_
 	m_pFile = a_pFile;
 	m_pLexer = new Toshi::TFileLexerUTF8(m_pFile, 2);
 	m_pLexer->SetOutputComments(m_bLoadComments);
+	return TTRUE;
 }
 
 TBOOL PPropertyReader::Open(const Toshi::TCString& a_rFileName)
