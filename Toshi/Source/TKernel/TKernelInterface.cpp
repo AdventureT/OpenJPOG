@@ -29,7 +29,9 @@ TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbo
 	}
 	s_pKernel = this;
 
-	if (m_bVerbose) TDPRINTF("Creating TKernelInterface\n");
+	if (m_bVerbose) {
+		TDPRINTF("Creating TKernelInterface\n");
+	}
 
 	TCHAR pPath[260];
 	TPCHAR pBuffer = _getcwd(pPath, sizeof(pPath));

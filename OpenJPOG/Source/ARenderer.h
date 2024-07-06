@@ -22,6 +22,15 @@ public:
 	TPCHAR GetScreenCaptureBuffer() { return m_pcScreenCaptureBuffer; }
 	TViewport* GetViewport() { return m_pViewport; }
 
+public:
+	static const TFLOAT ms_fMainZMax;
+	static const TFLOAT ms_fMainZMin;
+	static const TFLOAT ms_fSkyZMax;
+	static const TFLOAT ms_fSkyZMin;
+
+	static const TMatrix44 ms_mLightCol;
+	static const TMatrix44 ms_mLightDir;
+
 private:
 	TFLOAT m_fLastRenderTime;       // 0x24
 	TFLOAT m_fCurRenderTime;        // 0x28
