@@ -5,7 +5,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TTERAININTERFACE_EXPORTS TTerrainSection
+class TTERRAININTERFACE_EXPORTS TTerrainSection
 {
 
 public:

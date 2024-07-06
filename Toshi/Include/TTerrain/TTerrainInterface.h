@@ -3,8 +3,20 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TTERAININTERFACE_EXPORTS TTerrainInterface
+class TTERRAININTERFACE_EXPORTS TTerrainInterface
 {
+public:
+	enum TERRAINLOD
+	{
+		TERRAINLOD_HIGH,
+		TERRAINLOD_MEDIUM,
+		TERRAINLOD_LOW
+	};
+
+	static void TOSHI_API SetLODDetail(TERRAINLOD a_eLODDetail);
+
+	static TFLOAT sm_fLowLevelDist;
+private:
 
 };
 
