@@ -1,7 +1,6 @@
 #include "ARenderer.h"
 #include "main.h"
 
-
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(ARenderer, TTask)
