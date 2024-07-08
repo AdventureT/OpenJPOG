@@ -359,7 +359,7 @@ public:
 			return (TGenericPriList::TNode*)m_pPtr;
 		}
 
-		Iterator& operator++(int)
+		Iterator operator++(int)
 		{
 			TASSERT(m_pPtr != TNULL);
 			Iterator old = m_pPtr;
@@ -469,7 +469,7 @@ public:
 			return m_pPtr;
 		}
 
-		Iterator& operator++(int)
+		Iterator operator++(int)
 		{
 			TASSERT(m_pPtr != TNULL);
 			Iterator old = m_pPtr;

@@ -1,7 +1,11 @@
 #pragma once
-#include "TKernel/TKernelInterface.h"
 #include "Defines.h"
+
+#include <TKernel/TKernelInterface.h>
+
+#ifdef TOSHI_SKU_WINDOWS
 #include <windows.h>
+#endif
 
 TOSHI_NAMESPACE_BEGIN
 
