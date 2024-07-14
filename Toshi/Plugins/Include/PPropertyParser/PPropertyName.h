@@ -5,7 +5,7 @@
 class PPROPERTYPARSER_EXPORTS PPropertyName
 {
 public:
-	const TPCString &GetName() const
+	const Toshi::TPCString &GetName() const
 	{
 		return m_oName;
 	}
