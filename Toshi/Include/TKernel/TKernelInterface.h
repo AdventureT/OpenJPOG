@@ -1,4 +1,5 @@
 #pragma once
+#include "Defines.h"
 #include "TObject.h"
 #include "THPTimer.h"
 #include "TManagedPointer.h"
