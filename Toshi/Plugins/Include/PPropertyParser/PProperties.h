@@ -2,7 +2,7 @@
 #include "Defines.h"
 #include "TKernel/TObject.h"
 #include "TKernel/TFreeList.h"
-#include "TQList.h"
+#include "TKernel/TQList.h"
 #include "PPropertyValue.h"
 #include "PPropertyName.h"
 #include "TPCString.h"
