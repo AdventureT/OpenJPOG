@@ -10,6 +10,7 @@ project ("OpenJPOG")
 		"TApplication",
 		"TRenderInterface",
 		"TRenderD3DInterface",
+		"PPropertyParser",
 		"d3d8.lib",
 		"d3dx8.lib",
 		"dxguid.lib",
@@ -32,6 +33,7 @@ project ("OpenJPOG")
 	includedirs
 	{
 		"%{wks.location}/Toshi/Include",
+		"%{wks.location}/Toshi/Plugins/Include",
 		"Source",
 		"%{IncludeDir.fmod}",
 		"%{IncludeDir.bink}"
@@ -60,6 +62,7 @@ project ("OpenJPOG")
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TApplication/TApplication.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TRenderInterface/TRenderInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TRenderD3DInterface/TRenderD3DInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
+		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/PPropertyParser/PPropertyParser.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}Toshi/vendor/fmod/lib/fmod.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}Toshi/vendor/bink/lib/binkw32.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 	}
