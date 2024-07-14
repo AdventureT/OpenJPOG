@@ -1,7 +1,7 @@
 #pragma once
 #include "Defines.h"
 #include "TKernel/TObject.h"
-#include "TFreeList.h"
+#include "TKernel/TFreeList.h"
 #include "TQList.h"
 #include "PPropertyValue.h"
 #include "PPropertyName.h"
