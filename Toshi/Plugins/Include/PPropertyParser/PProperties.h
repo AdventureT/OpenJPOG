@@ -5,7 +5,7 @@
 #include "TKernel/TQList.h"
 #include "PPropertyValue.h"
 #include "PPropertyName.h"
-#include "TPCString.h"
+#include "TKernel/TPCString.h"
 
 class PPROPERTYPARSER_EXPORTS PProperties : Toshi::TObject
 {
