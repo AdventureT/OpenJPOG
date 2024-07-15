@@ -1,6 +1,6 @@
 #pragma once
 #include "Defines.h"
-#include "TPCString.h"
+#include "TKernel/TPCString.h"
 
 class PPROPERTYPARSER_EXPORTS PPropertyName
 {
