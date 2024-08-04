@@ -1,10 +1,10 @@
 #pragma once
-#include "TObject.h"
-#include "TFile.h"
-#include "TFileLexerUTF8.h"
+#include "TKernel/TObject.h"
+#include "TKernel/TFile.h"
+#include "TKernel/TFileLexerUTF8.h"
 #include "PProperties.h"
 
-class PPropertyReader : public Toshi::TObject
+class PPROPERTYPARSER_EXPORTS PPropertyReader : public Toshi::TObject
 {
 public:
 	PPropertyReader();
