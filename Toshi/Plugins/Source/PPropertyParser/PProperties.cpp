@@ -9,5 +9,5 @@ const PProperties::PProperty *PProperties::FindProperty(const Toshi::TPCString &
 {
 	for (auto it = a_oProperties; it != m_oPropsQueue.End(); it++) {
 	}
-	return nullptr;
+	return TNULL;
 }

@@ -22,6 +22,6 @@ private:
 	static const TINT sm_iPort = -1;
 
 	TINT m_iAutoSaveState;           // 0x1C
-	PProperty *m_pCurProps; // 0x24
+	PProperties *m_pCurProps; // 0x24
 };
 
