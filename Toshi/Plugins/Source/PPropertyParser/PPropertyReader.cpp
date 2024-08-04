@@ -41,11 +41,26 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 			m_pLexer->GetNextToken();
 			return TTRUE;
 		}
-		if (type == Toshi::TFileLexer::TOKEN_EOF) {
+		if (type == Toshi::TFileLexer::TOKEN_EOF && m_oPropertyBlocks.GetNumElements() != 0) {
 			PProperties propBlock = m_oPropertyBlocks.Pop();
 			Error(Toshi::TCString().Format("Unexpected end of file in middle of property block (started at line %d)"));
-			m_oPropertyBlocks.Pop();
+			if (m_oPropertyBlocks.GetNumElements() > 0) {
+				m_oPropertyBlocks.Pop();
+			}
 			return TFALSE;
+		}
+		if (type != Toshi::TFileLexer::TOKEN_IDENT  &&
+			type != Toshi::TFileLexer::TOKEN_STRING &&
+			type != Toshi::TFileLexer::TOKEN_COMMENT) {
+			return TTRUE;
+		}
+		while (type == Toshi::TFileLexer::TOKEN_COMMENT) {
+			m_pLexer->GetNextToken();
+			if (type == Toshi::TFileLexer::TOKEN_IDENT  ||
+				type == Toshi::TFileLexer::TOKEN_STRING ||
+				type == Toshi::TFileLexer::TOKEN_COMMENT) {
+
+			}
 		}
 		break;
 	} while (true);
