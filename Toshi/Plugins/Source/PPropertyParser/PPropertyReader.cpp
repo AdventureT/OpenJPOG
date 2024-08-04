@@ -35,7 +35,7 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 		Toshi::TFileLexer::Token token = m_pLexer->PeekNextToken(0);
 		Toshi::TFileLexer::TokenType type = token.GetType();
 		if (type == Toshi::TFileLexer::TOKEN_CLOSEBRACE) {
-			if (m_oPropertyBlocks.GetNumElements() < 1) {
+			if (m_oPropertyBlocks.GetNumElements() > 0) {
 				m_oPropertyBlocks.Pop();
 			}
 			m_pLexer->GetNextToken();
