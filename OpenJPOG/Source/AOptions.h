@@ -7,8 +7,11 @@ class AOptions
 public:
 	enum Result
 	{
-
+		RESULT_ERROR_OPEN = 3
 	};
+
+	Result LoadOptions();
+	Result LoadOptions(TINT a_int, TINT a_int2, const Toshi::TCString &a_szOptionsDir, const Toshi::TCString &a_szOptionsName);
 
 	TINT GetAutoSaveState() const
 	{

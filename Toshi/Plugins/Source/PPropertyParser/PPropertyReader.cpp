@@ -28,6 +28,41 @@ void PPropertyReader::Error(const Toshi::TCString& a_sMsg)
 	}
 }
 
+TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
+{
+	TASSERT(m_pLexer != TNULL);
+	do {
+		Toshi::TFileLexer::Token token = m_pLexer->PeekNextToken(0);
+		Toshi::TFileLexer::TokenType type = token.GetType();
+		if (type == Toshi::TFileLexer::TOKEN_CLOSEBRACE) {
+			if (m_oPropertyBlocks.GetNumElements() < 1) {
+				m_oPropertyBlocks.Pop();
+			}
+			m_pLexer->GetNextToken();
+			return TTRUE;
+		}
+		if (type == Toshi::TFileLexer::TOKEN_EOF) {
+			PProperties propBlock = m_oPropertyBlocks.Pop();
+			Error(Toshi::TCString().Format("Unexpected end of file in middle of property block (started at line %d)"));
+			m_oPropertyBlocks.Pop();
+			return TFALSE;
+		}
+		break;
+	} while (true);
+	return TFALSE;
+}
+
+PProperties *PPropertyReader::LoadPropertyBlock()
+{
+	TASSERT(m_pLexer != TNULL);
+	Toshi::TFileLexer::Token token = m_pLexer->PeekNextToken(0);
+	if (token.GetType() == Toshi::TFileLexer::TOKEN_EOF) {
+		return TNULL;
+	}
+	PProperties *propertyBlock = new PProperties();
+	return LoadProperty(propertyBlock) ? propertyBlock : TNULL;
+}
+
 TBOOL PPropertyReader::Open(const Toshi::TCString& a_rFileName, Toshi::TFile* a_pFile)
 {
 	m_szFileName = a_rFileName;
