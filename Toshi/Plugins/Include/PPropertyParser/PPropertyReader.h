@@ -15,6 +15,7 @@ public:
 
 	TBOOL LoadProperty(PProperties *a_pProperty);
 	PProperties *LoadPropertyBlock();
+	TBOOL LoadPropertyName(Toshi::TPCString &a_rName, Toshi::TPCString &a_rSubName);
 
 	virtual ~PPropertyReader() { Close(); }
 	virtual TBOOL Open(const Toshi::TCString& a_rFileName, Toshi::TFile* a_pFile);

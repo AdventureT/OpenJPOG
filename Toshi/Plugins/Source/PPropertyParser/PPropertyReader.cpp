@@ -54,14 +54,17 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 			type != Toshi::TFileLexer::TOKEN_COMMENT) {
 			return TTRUE;
 		}
-		while (type == Toshi::TFileLexer::TOKEN_COMMENT) {
+		Toshi::TFileLexer::Token comment = token;
+		while (comment.GetType() == Toshi::TFileLexer::TOKEN_COMMENT) {
 			m_pLexer->GetNextToken();
-			if (type == Toshi::TFileLexer::TOKEN_IDENT  ||
-				type == Toshi::TFileLexer::TOKEN_STRING ||
-				type == Toshi::TFileLexer::TOKEN_COMMENT) {
-
-			}
+			comment.assign(m_pLexer->PeekNextToken(0));
 		}
+		Toshi::TPCString name;
+		Toshi::TPCString subName;
+		if (!LoadPropertyName(name, subName)) {
+			return TFALSE;
+		}
+		// Implement rest...
 		break;
 	} while (true);
 	return TFALSE;
@@ -76,6 +79,20 @@ PProperties *PPropertyReader::LoadPropertyBlock()
 	}
 	PProperties *propertyBlock = new PProperties();
 	return LoadProperty(propertyBlock) ? propertyBlock : TNULL;
+}
+
+TBOOL PPropertyReader::LoadPropertyName(Toshi::TPCString &a_rName, Toshi::TPCString &a_rSubName)
+{
+	TASSERT(m_pLexer != TNULL);
+	Toshi::TFileLexer::Token nextToken = m_pLexer->GetNextToken();
+	Toshi::TFileLexer::Token curToken = m_pLexer->PeekNextToken(0);
+	if (nextToken.GetType() != Toshi::TFileLexer::TOKEN_IDENT &&
+		nextToken.GetType() != Toshi::TFileLexer::TOKEN_STRING) {
+		Error("Expecting property name to be identifer");
+		return TFALSE;
+	}
+	// Implement rest...
+	return TTRUE;
 }
 
 TBOOL PPropertyReader::Open(const Toshi::TCString& a_rFileName, Toshi::TFile* a_pFile)
