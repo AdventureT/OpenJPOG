@@ -170,6 +170,7 @@ public:
 	TCStringPool(TINT a_iMaxSize, TINT a_iInitialSize);
 
 	TPCString Get(TPCCHAR a_szString);
+	TPCString Get(TINT a_iInt);
 protected:
 	void Remove(TPooledCString& a_rPooledCString);
 

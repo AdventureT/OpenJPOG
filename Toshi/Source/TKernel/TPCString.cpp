@@ -27,6 +27,11 @@ TPCString TCStringPool::Get(TPCCHAR a_szString)
 	return TPCString(string);
 }
 
+TPCString TCStringPool::Get(TINT a_iInt)
+{
+	return Get(TCString().Format("%d", a_iInt));
+}
+
 void TCStringPool::Remove(TPooledCString& a_rPooledCString)
 {
 	TASSERT(a_rPooledCString.GetRefCount() == 0);

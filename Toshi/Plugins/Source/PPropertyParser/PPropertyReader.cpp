@@ -91,7 +91,27 @@ TBOOL PPropertyReader::LoadPropertyName(Toshi::TPCString &a_rName, Toshi::TPCStr
 		Error("Expecting property name to be identifer");
 		return TFALSE;
 	}
-	// Implement rest...
+	a_rName = nextToken.GetString();
+	if (curToken.GetType() == Toshi::TFileLexer::TOKEN_OPENSQR) {
+		m_pLexer->GetNextToken();
+		Toshi::TFileLexer::Token tokenSubName = m_pLexer->GetNextToken();
+		Toshi::TFileLexer::Token tokenCloseSqr;
+		if (!m_pLexer->Expect(Toshi::TFileLexer::TOKEN_CLOSESQR, tokenCloseSqr)) {
+			Error("Expected close bracket after property sub-name");
+			return TFALSE;
+		}
+		if (tokenSubName.GetType() == Toshi::TFileLexer::TOKEN_IDENT ||
+			tokenSubName.GetType() == Toshi::TFileLexer::TOKEN_STRING) {
+			a_rSubName = tokenSubName.GetString();
+		}
+		else {
+			if (tokenSubName.GetType() != Toshi::TFileLexer::TOKEN_INTEGER) {
+				Error("Expecting property subname to be identifier or integer");
+				return TFALSE;
+			}
+			a_rSubName = Toshi::TSystem::GetCStringPool()->Get(tokenSubName.GetInteger());
+		}
+	}
 	return TTRUE;
 }
 
