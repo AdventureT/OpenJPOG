@@ -3,9 +3,9 @@
 #include "TMemory.h"
 
 // There is some kind of critical issue with free lists which causes memory being uninitialised, so we disable it for now
-#define DECLARE_FREELIST(class_name)
-#define IMPLEMENT_FREELIST(class_name, InitialSize, GrowSize)
-#if 0
+//#define DECLARE_FREELIST(class_name)
+//#define IMPLEMENT_FREELIST(class_name, InitialSize, GrowSize)
+#if 1
 #define DECLARE_FREELIST(class_name) \
 public: \
 static TPVOID TOSHI_API operator new(TUINT s, TPVOID mem) { return mem; } \
@@ -60,8 +60,8 @@ private:
 	TPCHAR m_pcName;        // 0x8
 	TINT m_iCapacity;       // 0xC
 	TUINT m_uiItemSize;     // 0x10
-	Node* m_oLastNode;      // 0x14
-	Node* m_oRootNode;      // 0x18
+	Node m_oLastNode;       // 0x14
+	Node m_oRootNode;       // 0x18
 	TINT m_iGrowSize;       // 0x1C
 };
 

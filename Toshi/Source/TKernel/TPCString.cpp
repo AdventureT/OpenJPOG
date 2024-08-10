@@ -2,7 +2,7 @@
 
 TOSHI_NAMESPACE_USING
 
-//IMPLEMENT_FREELIST(TPooledCString, 0, 8)
+IMPLEMENT_FREELIST(TPooledCString, 0, 8)
 
 TCStringPool::TCStringPool(TINT a_iMaxSize, TINT a_iInitialSize)
 {

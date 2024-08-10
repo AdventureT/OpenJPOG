@@ -9,8 +9,8 @@ TFreeList::TFreeList(TUINT a_uiItemSize, TINT a_iInitialSize, TINT a_iGrowSize, 
 	m_pcName = a_pcName;
 	m_iCapacity = 0;
 	m_uiItemSize = a_uiItemSize;
-	m_oLastNode = TNULL;
-	m_oRootNode = TNULL;
+	//m_oLastNode = TNULL;
+	//m_oRootNode = TNULL;
 	TASSERT(m_iGrowSize >= 0);
 	TASSERT(a_iInitialSize >= 0);
 	SetGrowSize(a_iGrowSize);
@@ -19,8 +19,8 @@ TFreeList::TFreeList(TUINT a_uiItemSize, TINT a_iInitialSize, TINT a_iGrowSize, 
 
 TFreeList::~TFreeList()
 {
-	for (Node* pNode = m_oRootNode->m_pNext; pNode != TNULL; pNode = m_oRootNode->m_pNext) {
-		m_oRootNode->m_pNext = pNode->m_pNext;
+	for (Node* pNode = m_oRootNode.m_pNext; pNode != TNULL; pNode = m_oRootNode.m_pNext) {
+		m_oRootNode.m_pNext = pNode->m_pNext;
 		delete[] pNode;
 	}
 }
@@ -34,8 +34,8 @@ TFreeList::Node* TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
 	const int len = a_uiSize * a_iNumber + sizeof(Node);
 	Node* pNewNode = (Node*)tmalloc(len, TNULL, -1);
 
-	pNewNode->m_pNext = m_oRootNode->m_pNext;
-	m_oRootNode->m_pNext = pNewNode;
+	pNewNode->m_pNext = m_oRootNode.m_pNext;
+	m_oRootNode.m_pNext = pNewNode;
 
 	Node* pData = pNewNode + 1;
 	Node* pNext = TNULL;
@@ -47,7 +47,7 @@ TFreeList::Node* TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
 		pData = (Node*)(((TUINT*)pData) + a_uiSize);
 	}
 
-	m_oLastNode->m_pNext = pNext;
+	m_oLastNode.m_pNext = pNext;
 	return pData;
 }
 
@@ -57,11 +57,11 @@ TPVOID TFreeList::New(TUINT a_uiSize)
 		return operator new (a_uiSize);
 	}
 
-	Node* pLastNode = m_oLastNode->m_pNext;
+	Node* pLastNode = m_oLastNode.m_pNext;
 
 	if (pLastNode != TNULL) {
 		m_iFreeCount--;
-		m_oLastNode->m_pNext = pLastNode->m_pNext;
+		m_oLastNode.m_pNext = pLastNode->m_pNext;
 		return pLastNode;
 	}
 
@@ -74,12 +74,12 @@ void TFreeList::Delete(TPVOID a_pData)
 {
 	Node* pNode = (Node*)a_pData;
 
-	if (m_oLastNode->m_pNext != TNULL) {
-		pNode->m_pNext = m_oLastNode->m_pNext;
-		m_oLastNode->m_pNext = pNode;
+	if (m_oLastNode.m_pNext != TNULL) {
+		pNode->m_pNext = m_oLastNode.m_pNext;
+		m_oLastNode.m_pNext = pNode;
 	}
 	else {
-		m_oLastNode->m_pNext = pNode;
+		m_oLastNode.m_pNext = pNode;
 		pNode->m_pNext = TNULL;
 	}
 
@@ -91,8 +91,8 @@ void TFreeList::SetCapacity(TINT a_iCapacity)
 {
 	if (a_iCapacity <= m_iCapacity) return;
 	Node* pNode = Allocate(a_iCapacity - m_iCapacity, m_uiItemSize);
-	pNode->m_pNext = m_oLastNode->m_pNext;
-	m_oLastNode->m_pNext = pNode;
+	pNode->m_pNext = m_oLastNode.m_pNext;
+	m_oLastNode.m_pNext = pNode;
 }
 
 void TFreeList::SetGrowSize(TINT a_iGrowSize)

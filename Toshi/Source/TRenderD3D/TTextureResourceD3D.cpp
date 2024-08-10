@@ -6,7 +6,7 @@
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TTextureResourceHAL, TTextureResource)
-//IMPLEMENT_FREELIST(TTextureResourceHAL, 0, 8)
+IMPLEMENT_FREELIST(TTextureResourceHAL, 0, 8)
 
 TBOOL TTextureResourceHAL::Validate()
 {

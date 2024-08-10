@@ -9,7 +9,7 @@ TOSHI_NAMESPACE_BEGIN
 class TRENDERINTERFACED3D_EXPORTS TTextureResourceHAL : public TTextureResource
 {
 	DECLARE_DYNAMIC(TTextureResourceHAL)
-	//DECLARE_FREELIST(TTextureResourceHAL)
+	DECLARE_FREELIST(TTextureResourceHAL)
 
 	enum MIPMAPFLAGS
 	{
