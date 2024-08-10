@@ -125,7 +125,7 @@ TCString& TOSHI_CALLBACKAPI TCString::Format(TPCCHAR a_pcFormat, ...)
 	return *this;
 }
 
-TINT TCString::Find(char a_cFind, TINT a_iIndex) const
+TINT TCString::Find(TCHAR a_cFind, TINT a_iIndex) const
 {
 	if (!IsIndexValid(a_iIndex)) return -1;
 	TPCCHAR foundAt = strchr(GetString() + a_iIndex, a_cFind);
@@ -149,6 +149,39 @@ void TCString::Truncate(TINT a_iLength)
 	if (ret && len != 0) {
 		tfree(pBuffer);
 	}
+}
+
+TINT TCString::FindReverse(TCHAR a_cFind, TINT a_iIndex /*= -1*/) const
+{
+	if (a_iIndex == -1)
+		a_iIndex = m_iStrLen;
+	else if (!IsIndexValid(a_iIndex))
+		return -1;
+	
+	if (a_iIndex < 0)
+		return -1;
+
+	TINT iBytesLeft = a_iIndex;
+	const TCHAR* pchString = GetString(0);
+
+	// Look for the character by checking 5 bytes sequences
+	for (; iBytesLeft > 5; iBytesLeft -= 5)
+	{
+		if ( pchString[iBytesLeft - 0] == a_cFind ) return iBytesLeft - 0;
+		if ( pchString[iBytesLeft - 1] == a_cFind ) return iBytesLeft - 1;
+		if ( pchString[iBytesLeft - 2] == a_cFind ) return iBytesLeft - 2;
+		if ( pchString[iBytesLeft - 3] == a_cFind ) return iBytesLeft - 3;
+		if ( pchString[iBytesLeft - 4] == a_cFind ) return iBytesLeft - 4;
+	}
+
+	// Check the left bytes
+	for (; iBytesLeft > 0; iBytesLeft--)
+	{
+		if ( pchString[iBytesLeft] == a_cFind )
+			return iBytesLeft;
+	}
+
+	return -1;
 }
 
 TCString TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS)

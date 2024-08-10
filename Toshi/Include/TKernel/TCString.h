@@ -51,7 +51,8 @@ public:
 	void Copy(TPCCHAR a_pcString, TINT a_iLength = -1);
 
 	TCString& TOSHI_CALLBACKAPI Format(TPCCHAR a_pcFormat, ...);
-	TINT Find(char a_cFind, TINT a_iIndex = 0) const;
+	TINT Find(TCHAR a_cFind, TINT a_iIndex = 0) const;
+	TINT FindReverse(TCHAR a_cFind, TINT a_iIndex = -1) const;
 
 	void Truncate(TINT a_iLength);
 
@@ -122,6 +123,7 @@ public:
 
 	TCString& operator+=(TPCCHAR a_pcString)
 	{
+		Concat(a_pcString);
 		return *this;
 	}
 

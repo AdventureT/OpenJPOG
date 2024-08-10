@@ -175,10 +175,16 @@ public:
     virtual TINT VCPrintf(TCHAR const *a_pFormat, va_list a_args) = 0;
     virtual TINT VWPrintf(TWCHAR const *a_pFormat, va_list a_args) = 0;
 
-    static TFile* Create(const TCString& a_sName, TUINT a_uiMode);
-    static void Destroy(TFile* a_pFile);
-    static void PrintFileAccess(TBOOL a_bFileAccess) {}
+    static TFile* TOSHI_API Create(const TCString& a_sName, TUINT a_uiMode);
+    static void TOSHI_API Destroy(TFile* a_pFile);
+    static void TOSHI_API PrintFileAccess(TBOOL a_bFileAccess) { }
+
     static TCString TOSHI_API ConcatPath(TCString const& a_rPath1, TCString const& a_rPath2);
+
+    // Note: 'const TCString&' and 'TCString const&' are the same thing
+    // but the first one is the common way of writing it. however, ghidra
+    // swaps the order to be like in the second option
+    static TCString TOSHI_API SimplifyPath(const TCString& a_rPath);
 
     void Destroy();
     TFileSystem* GetFileSystem() const { return m_pFileSystem; }
