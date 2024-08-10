@@ -64,6 +64,11 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 		if (!LoadPropertyName(name, subName)) {
 			return TFALSE;
 		}
+		PPropertyName propertyName = PPropertyName(name, subName);
+		Toshi::TFileLexer::Token nextToken = m_pLexer->GetNextToken();
+		if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_OPENBRACE) {
+			PProperties *prop = m_oPropertyBlocks.Push(new PProperties());
+		}
 		// Implement rest...
 		break;
 	} while (true);

@@ -18,6 +18,13 @@ public:
 
 	public:
 
+		PProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment)
+		{
+			m_oName = PPropertyName(a_rName);
+			m_oValue = PPropertyValue(a_rValue);
+			m_pComment = TNULL;
+		}
+
 		void SetLine(TINT a_iLine) { m_iLine = a_iLine; }
 
 		TINT GetLine() const { return m_iLine; }
@@ -30,7 +37,7 @@ public:
 		PPropertyName m_oName;       // 0x8
 		PPropertyValue m_oValue;     // 0x10
 		TINT m_iLine;                // 0x18
-		Toshi::TPCString m_sComment; // 0x1C
+		Toshi::TPCString *m_pComment; // 0x1C
 	};
 
 	PProperties()
@@ -44,6 +51,8 @@ public:
 		m_pParentProps = a_pParentProps;
 		m_iPropCount = 0;
 	}
+
+	void PutProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
 
 	const PProperty *FindProperty(const Toshi::TPCString &a_szProperty, Toshi::TQList<PProperty>::Iterator &a_oProperties);
 

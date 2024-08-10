@@ -11,3 +11,9 @@ const PProperties::PProperty *PProperties::FindProperty(const Toshi::TPCString &
 	}
 	return TNULL;
 }
+
+void PProperties::PutProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment)
+{
+	m_oPropsQueue.Push(new PProperty(a_rName, a_rValue, a_rComment));
+	m_iPropCount++;
+}
