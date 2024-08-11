@@ -44,7 +44,7 @@ TFreeList::Node* TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
 		pData->m_pNext = pNext;
 		pNext = pData;
 		
-		pData = (Node*)(((TUINT*)pData) + a_uiSize);
+		pData = (Node*)((TBYTE*)pData + a_uiSize);
 	}
 
 	m_oLastNode.m_pNext = pNext;
