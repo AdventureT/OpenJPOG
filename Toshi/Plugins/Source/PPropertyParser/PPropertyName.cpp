@@ -14,9 +14,9 @@ void PPropertyName::Split(const Toshi::TPCString &a_rString)
         return;
     }
     m_oName = Toshi::TSystem::GetCStringPool()->Get(a_rString->Mid(0, indexOpenSQR));
-    TINT result = a_rString->Find(']');
-    if (result == -1) {
+    TINT indexCloseSQR = a_rString->Find(']');
+    if (indexCloseSQR == -1) {
         return;
     }
-    m_oSubName = Toshi::TSystem::GetCStringPool()->Get(a_rString->Mid(indexOpenSQR + 1, (a_rString->Find(']') - indexOpenSQR) - 1));
+    m_oSubName = Toshi::TSystem::GetCStringPool()->Get(a_rString->Mid(indexOpenSQR + 1, (indexCloseSQR - indexOpenSQR) - 1));
 }
