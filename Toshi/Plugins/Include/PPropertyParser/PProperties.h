@@ -28,7 +28,7 @@ public:
 			m_sComment = a_rComment;
 		}
 
-		void SetComment(const TPCString &a_rComment)
+		void SetComment(const Toshi::TPCString &a_rComment)
 		{
 			m_sComment = a_rComment;
 		}
