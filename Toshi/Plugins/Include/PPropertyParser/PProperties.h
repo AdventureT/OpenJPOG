@@ -15,21 +15,48 @@ public:
 	class PPROPERTYPARSER_EXPORTS PProperty : public Toshi::TQList<PProperty>::TNode
 	{
 		DECLARE_FREELIST(PProperty)
-
+		  
 	public:
-
-		PProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment)
+		PProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue)
 		{
 			m_oName = PPropertyName(a_rName);
 			m_oValue = PPropertyValue(a_rValue);
-			m_pComment = TNULL;
+		}
+		PProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment)
+			: PProperty(a_rName, a_rValue)
+		{
+			m_sComment = a_rComment;
 		}
 
-		void SetLine(TINT a_iLine) { m_iLine = a_iLine; }
+		void SetComment(const TPCString &a_rComment)
+		{
+			m_sComment = a_rComment;
+		}
+		void SetLine(TINT a_iLine) 
+		{ 
+			m_iLine = a_iLine; 
+		}
+		void SetValue(const PPropertyValue &a_rValue)
+		{
+			m_oValue = a_rValue;
+		}
 
-		TINT GetLine() const { return m_iLine; }
-		const PPropertyName &GetName() const { return m_oName; }
-		const PPropertyValue &GetValue() const { return m_oValue; }
+		Toshi::TPCString GetComment() const 
+		{ 
+			return m_sComment; 
+		}
+		TINT GetLine() const 
+		{ 
+			return m_iLine; 
+		}
+		const PPropertyName &GetName() const 
+		{ 
+			return m_oName; 
+		}
+		const PPropertyValue &GetValue() const 
+		{ 
+			return m_oValue; 
+		}
 
 	private:
 		// 0x0 m_pNext
@@ -37,7 +64,7 @@ public:
 		PPropertyName m_oName;       // 0x8
 		PPropertyValue m_oValue;     // 0x10
 		TINT m_iLine;                // 0x18
-		Toshi::TPCString *m_pComment; // 0x1C
+		Toshi::TPCString m_sComment; // 0x1C
 	};
 
 	PProperties()

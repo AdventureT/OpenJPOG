@@ -184,6 +184,27 @@ TINT TCString::FindReverse(TCHAR a_cFind, TINT a_iIndex /*= -1*/) const
 	return -1;
 }
 
+TCString TCString::Mid(TINT a_iFirst, TINT a_iCount) const
+{
+	if (a_iFirst < 0) {
+		a_iFirst = 0;
+	}
+	else if (Length() <= a_iFirst) {
+		// Can't return string bigger that the original
+		return TCString();
+	}
+
+	if (a_iCount < 0 || Length() < a_iFirst + a_iCount) {
+		a_iCount = Length() - a_iFirst;
+	}
+
+	TCString strResult(a_iCount);
+	TSystem::MemCopy((TPVOID)(TPCCHAR)strResult, GetString(a_iFirst), a_iCount);
+	strResult[a_iCount] = '\0';
+
+	return strResult;
+}
+
 TCString TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS)
 {
 	TCString str(a_pLHS);

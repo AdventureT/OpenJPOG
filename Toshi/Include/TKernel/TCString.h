@@ -54,6 +54,8 @@ public:
 	TINT Find(TCHAR a_cFind, TINT a_iIndex = 0) const;
 	TINT FindReverse(TCHAR a_cFind, TINT a_iIndex = -1) const;
 
+	TCString Mid(TINT a_iFirst, TINT a_iCount) const;
+
 	void Truncate(TINT a_iLength);
 
 	TBOOL IsIndexValid(TINT a_iIndex = 0) const
