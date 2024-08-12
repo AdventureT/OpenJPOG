@@ -10,17 +10,28 @@ TPCCHAR TOSHI_API TSystem::StringUnicodeToChar(TPCHAR a_CharString, TPCWCHAR a_U
 {
 	TASSERT((a_UnicodeString!=TNULL) && (a_CharString!=TNULL));
 	TINT iUnicodeStringLength = StringLength(a_UnicodeString);
-
 	if (iUnicodeStringLength < a_iLength || a_iLength == -1) {
 		a_iLength = iUnicodeStringLength;
 	}
-
 	for (size_t i = 0; i < a_iLength; i++) {
-		a_CharString[i] = TSTATICCAST(char, a_UnicodeString[i]);
+		a_CharString[i] = TSTATICCAST(TCHAR, a_UnicodeString[i]);
 	}
-
 	a_CharString[a_iLength] = '\0';
 	return a_CharString;
+}
+
+TPCWCHAR TOSHI_API TSystem::StringCharToUnicode(TPWCHAR a_UnicodeString, TPCCHAR a_CharString, TINT a_iLength)
+{
+	TASSERT((a_UnicodeString != TNULL) && (a_CharString != TNULL));
+	TINT iCharStringLength = StringLength(a_CharString);
+	if (iCharStringLength < a_iLength || a_iLength == -1) {
+		a_iLength = iCharStringLength;
+	}
+	for (TINT i = 0; i < a_iLength; i++) {
+		a_UnicodeString[i] = TSTATICCAST(TWCHAR, a_CharString[i]);
+	}
+	a_UnicodeString[a_iLength] = L'\0';
+	return a_UnicodeString;
 }
 
 TPCCHAR TOSHI_API TSystem::StringIntToString(TINT a_iInt, TPCHAR a_szString, TINT a_iRadix)

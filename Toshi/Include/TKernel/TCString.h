@@ -7,12 +7,13 @@
 TOSHI_NAMESPACE_BEGIN
 
 class TPCString;
+class TWString;
 
 class TKERNELINTERFACE_EXPORTS TCString 
 {
 public:
 	
-	friend TCString TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS);
+	friend TCString TKERNELINTERFACE_EXPORTS TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS);
 
 	TCString()
 	{
@@ -27,6 +28,12 @@ public:
 	}
 
 	TCString(const TCString &a_rOther)
+	{
+		Reset();
+		Copy(a_rOther);
+	}
+
+	TCString(const TWString &a_rOther)
 	{
 		Reset();
 		Copy(a_rOther);
@@ -48,6 +55,7 @@ public:
 	TINT Compare(TPCCHAR a_pcString, int a_iLength = -1) const;
 
 	void Copy(const TCString& a_rOther, TINT a_iLength = -1);
+	void Copy(const TWString &a_rOther, TINT a_iLength = -1);
 	void Copy(TPCCHAR a_pcString, TINT a_iLength = -1);
 
 	TCString& TOSHI_CALLBACKAPI Format(TPCCHAR a_pcFormat, ...);
@@ -186,7 +194,7 @@ private:
 	TINT m_iExcessLen : 8 = 0;  // 0x5
 };
 
-TCString TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS);
-TCString TOSHI_API operator+(const TCString& a_rLHS, const TPCString& a_rRHS);
+TCString TKERNELINTERFACE_EXPORTS TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS);
+TCString TKERNELINTERFACE_EXPORTS TOSHI_API operator+(const TCString& a_rLHS, const TPCString& a_rRHS);
 
 TOSHI_NAMESPACE_END

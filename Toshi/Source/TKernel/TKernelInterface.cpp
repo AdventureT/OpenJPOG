@@ -25,7 +25,6 @@ TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbo
 		static TUser s_oUser = TUser("Toshi");
 		s_pKernel = TNULL;
 		s_oUser.Register();
-		// FUN_1003213a WTF is that???
 	}
 	s_pKernel = this;
 

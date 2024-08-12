@@ -2,6 +2,7 @@
 #include "TSystemTools.h"
 #include <string.h>
 #include <TKernel/TMemory.h>
+#include "TWString.h"
 #include "TPCString.h"
 
 TOSHI_NAMESPACE_BEGIN
@@ -101,6 +102,14 @@ void TCString::Copy(const TCString& a_rOther, TINT a_iLength)
 		TSystem::MemCopy(m_pBuffer, a_rOther.m_pBuffer, a_iLength);
 		m_pBuffer[a_iLength] = '\0';
 	}
+}
+
+void TCString::Copy(const TWString &a_rOther, TINT a_iLength)
+{
+	if (a_rOther.Length() < a_iLength || a_iLength == -1) a_iLength = a_rOther.Length();
+	AllocBuffer(a_iLength);
+	TSystem::StringUnicodeToChar(m_pBuffer, a_rOther, a_iLength);
+	m_pBuffer[a_iLength] = '\0';
 }
 
 void TCString::Copy(TPCCHAR a_pcString, TINT a_iLength)

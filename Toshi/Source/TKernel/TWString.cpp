@@ -112,6 +112,17 @@ void TWString::Copy(TPCWCHAR a_pcString, TINT a_iLength)
 	}
 }
 
+void TWString::Copy(TPCCHAR a_pcString, TINT a_iLength)
+{
+	TINT iLength = a_pcString ? TSystem::StringLength(a_pcString) : 0;
+	if (iLength < a_iLength || a_iLength == -1) {
+		a_iLength = iLength;
+	}
+	AllocBuffer(a_iLength, TTRUE);
+	TSystem::StringCharToUnicode(m_pBuffer, a_pcString, a_iLength);
+	m_pBuffer[a_iLength] = L'\0';
+}
+
 TWString& TOSHI_CALLBACKAPI TWString::Format(TPCWCHAR a_pcFormat, ...)
 {
 	TWCHAR buffer[0x400];

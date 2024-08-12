@@ -8,8 +8,8 @@ class TCStringPool;
 class TKERNELINTERFACE_EXPORTS TSystem
 {
 public:
-
 	static TPCCHAR TOSHI_API StringUnicodeToChar(TPCHAR a_CharString, TPCWCHAR a_UnicodeString, TINT a_iLength);
+	static TPCWCHAR TOSHI_API StringCharToUnicode(TPWCHAR a_UnicodeString, TPCCHAR a_CharString, TINT a_iLength);
 	static TPCCHAR TOSHI_API StringIntToString(TINT a_iInt, TPCHAR a_szString, TINT a_iRadix);
 	static TINT TOSHI_API StringLength(TPCCHAR a_String);
 	static TINT TOSHI_API StringLength(TPCWCHAR a_String);

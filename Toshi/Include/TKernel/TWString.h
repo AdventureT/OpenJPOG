@@ -36,6 +36,12 @@ public:
 		Copy(a_pcString);
 	}
 
+	TWString(TPCCHAR a_pcString)
+	{
+		Reset();
+		Copy(a_pcString);
+	}
+
 	~TWString()
 	{
 		FreeBuffer();
@@ -47,6 +53,7 @@ public:
 
 	void Copy(const TWString& a_rOther, TINT a_iLength = -1);
 	void Copy(TPCWCHAR a_pcString, TINT a_iLength = -1);
+	void Copy(TPCCHAR a_pcString, TINT a_iLength = -1);
 
 	TWString& TOSHI_CALLBACKAPI Format(TPCWCHAR a_pcFormat, ...);
 	TINT Find(TWCHAR a_cFind, TINT a_iIndex = 0) const;

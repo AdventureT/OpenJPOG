@@ -1,9 +1,16 @@
 #include "PPropertyParser/PPropertyName.h"
+#include <TKernel/TWString.h>
+
+TOSHI_NAMESPACE_USING
 
 Toshi::TPCString PPropertyName::GetString() const
 {
     // Implement
-    return Toshi::TPCString();
+    TWString string(m_oName->GetString());
+    if (!m_oSubName->IsEmpty()) {
+        string += TWString("[" + m_oSubName + "]");
+    }
+    return Toshi::TSystem::GetCStringPool()->Get(TCString(string));
 }
 
 // Example: a_rString = Name[SubName]
