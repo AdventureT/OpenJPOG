@@ -42,6 +42,13 @@ public:
     Toshi::TObject *GetTObject() const;
     const Toshi::TPCString &GetTPCString() const;
     Toshi::TPCString &GetTPCString();
+    PProperties *GetProperties()
+    {
+        if (m_type != TYPE_PROPS) {
+            return TNULL;
+        }
+        return m_valueProps;
+    }
     static TPCCHAR TOSHI_API ToString(const Toshi::TClass *a_pClass)
     {
         if (a_pClass != TYPE_UNDEF) {
@@ -55,13 +62,6 @@ protected:
     {
         TASSERT(TYPE_PROPS == m_type);
         return *(Toshi::TManagedPtr<PProperties> *)m_valueProps;
-    }
-    PProperties *GetProperties()
-    {
-        if (m_type != TYPE_PROPS) {
-            return TNULL;
-        }
-        return m_valueProps;
     }
     Toshi::TManagedPtr<PPropertyValueArray> &GetPropArrayMP()
     {
