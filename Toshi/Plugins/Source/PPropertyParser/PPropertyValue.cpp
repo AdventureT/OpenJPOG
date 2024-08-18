@@ -119,6 +119,20 @@ TBOOL PPropertyValue::CanBeType(const TClass *a_type) const
     return TBOOL();
 }
 
+TINT PPropertyValue::GetInteger() const
+{
+    if (m_type == TYPE_INT) {
+        return m_valueInt;
+    }
+    if (m_type != TYPE_UINT32) {
+        if (m_type != TYPE_FLOAT) {
+            return 0;
+        }
+        return m_valueFloat;
+    }
+    return m_valueInt;
+}
+
 TUINT PPropertyValue::GetUINT32() const
 {
     if (m_type == TYPE_INT) {
@@ -144,7 +158,24 @@ TFLOAT PPropertyValue::GetFloat() const
         }
         return m_valueFloat;
     }
-    return TMAX(m_valueFloat, 0);
+    return TMAX(m_valueFloat, 0.0f);
+}
+
+TBOOL PPropertyValue::GetBoolean() const
+{
+    if (m_type == TYPE_INT) {
+        return m_valueInt != 0;
+    }
+    if (m_type == TYPE_UINT32) {
+        return m_valueUInt != 0;
+    }
+    if (m_type == TYPE_FLOAT) {
+        return m_valueFloat != 0.0f;
+    }
+    if (m_type != TYPE_BOOL) {
+        return TFALSE;
+    }
+    return m_valueBool;
 }
 
 Toshi::TObject *PPropertyValue::GetTObject() const
@@ -188,9 +219,9 @@ Toshi::TPCString &PPropertyValue::GetTPCString()
     return m_PCString;
 }
 
-TBOOL PPropertyValueArray::CanBeTypeArray(const TClass *a_type, TINT a_iIndex) const
+TBOOL PPropertyValueArray::CanBeTypeArray(const TClass *a_type, TINT a_iCount) const
 {
-    if (a_iIndex != -1 && m_oValues.GetNumAllocElements()) {
+    if (a_iCount != -1 && m_oValues.GetNumAllocElements() != a_iCount) {
         return TFALSE;
     }
     for (TINT i = 0; i < m_oValues.GetNumAllocElements(); i++) {
@@ -289,4 +320,49 @@ TBOOL PPropertyValueArray::GetTVector2(Toshi::TVector2 &a_rVec2) const
         fValue = m_oValues[1].GetFloat();
     }
     a_rVec2(1) = fValue;
+    return TTRUE;
+}
+
+TBOOL PPropertyValueArray::GetTVector3(Toshi::TVector3 &a_rVec3) const
+{
+    if (!CanBeTypeArray(PPropertyValue::TYPE_FLOAT, 3)) {
+        return TFALSE;
+    }
+    const TClass *type = m_oValues[0].GetType();
+    TFLOAT fValue = 0.0f;
+    if (type == PPropertyValue::TYPE_INT) {
+        fValue = m_oValues[0].GetInteger();
+    }
+    if (type == PPropertyValue::TYPE_UINT32) {
+        fValue = m_oValues[0].GetUINT32();
+    }
+    if (type == PPropertyValue::TYPE_FLOAT) {
+        fValue = m_oValues[0].GetFloat();
+    }
+    a_rVec3(0) = fValue;
+    type = m_oValues[1].GetType();
+    fValue = 0.0f;
+    if (type == PPropertyValue::TYPE_INT) {
+        fValue = m_oValues[1].GetInteger();
+    }
+    if (type == PPropertyValue::TYPE_UINT32) {
+        fValue = m_oValues[1].GetUINT32();
+    }
+    if (type == PPropertyValue::TYPE_FLOAT) {
+        fValue = m_oValues[1].GetFloat();
+    }
+    a_rVec3(1) = fValue;
+    type = m_oValues[2].GetType();
+    fValue = 0.0f;
+    if (type == PPropertyValue::TYPE_INT) {
+        fValue = m_oValues[2].GetInteger();
+    }
+    if (type == PPropertyValue::TYPE_UINT32) {
+        fValue = m_oValues[2].GetUINT32();
+    }
+    if (type == PPropertyValue::TYPE_FLOAT) {
+        fValue = m_oValues[2].GetFloat();
+    }
+    a_rVec3(2) = fValue;
+    return TTRUE;
 }

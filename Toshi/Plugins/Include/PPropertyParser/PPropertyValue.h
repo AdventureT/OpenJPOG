@@ -5,8 +5,10 @@
 #include "TKernel/TManagedPointer.h"
 #include "TKernel/TQuaternion.h"
 #include "TKernel/TVector2.h"
+#include "TKernel/TVector3.h"
 
 class PProperties;
+class PPropertyValueArray;
 
 class PPROPERTYPARSER_EXPORTS PPropertyValue
 {
@@ -33,12 +35,10 @@ public:
         ChangeType(TYPE_INT);
         m_valueInt = a_valueInt;
     }
-    TINT GetInteger() const
-    {
-        return m_valueInt;
-    }
+    TINT GetInteger() const;
     TUINT GetUINT32() const;
     TFLOAT GetFloat() const;
+    TBOOL GetBoolean() const;
     Toshi::TObject *GetTObject() const;
     const Toshi::TPCString &GetTPCString() const;
     Toshi::TPCString &GetTPCString();
@@ -54,7 +54,19 @@ protected:
     Toshi::TManagedPtr<PProperties> &GetPropertiesMP()
     {
         TASSERT(TYPE_PROPS == m_type);
+        return *(Toshi::TManagedPtr<PProperties> *)m_valueProps;
+    }
+    PProperties *GetProperties()
+    {
+        if (m_type != TYPE_PROPS) {
+            return TNULL;
+        }
         return m_valueProps;
+    }
+    Toshi::TManagedPtr<PPropertyValueArray> &GetPropArrayMP()
+    {
+        TASSERT(TYPE_ARRAY == m_type);
+        return *(Toshi::TManagedPtr<PPropertyValueArray> *)m_valueArray;
     }
 
 public:
@@ -81,22 +93,26 @@ private:
     const Toshi::TClass *m_type; // 0x0
     union
     {
-        Toshi::TManagedPtr<PProperties> m_valueProps;
+        PProperties *m_valueProps;
+        PPropertyValueArray *m_valueArray;
         Toshi::TPCString m_PCString;
         Toshi::TObject *m_pObject;
         TINT m_valueInt;
         TUINT m_valueUInt;
         TFLOAT m_valueFloat;
+        BOOL m_valueBool;
     }; // 0x4
 };
 
 class PPROPERTYPARSER_EXPORTS PPropertyValueArray
 {
 public:
+
     TBOOL CanBeTypeArray(const Toshi::TClass *a_type, TINT a_iIndex) const;
 
     TBOOL GetTQuaternion(Toshi::TQuaternion &a_rQuat) const;
     TBOOL GetTVector2(Toshi::TVector2 &a_rVec2) const;
+    TBOOL GetTVector3(Toshi::TVector3 &a_rVec3) const;
 
     void Delete()
     {
