@@ -54,10 +54,12 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 			type != Toshi::TFileLexer::TOKEN_COMMENT) {
 			return TTRUE;
 		}
-		Toshi::TFileLexer::Token comment = token;
-		while (comment.GetType() == Toshi::TFileLexer::TOKEN_COMMENT) {
+		Toshi::TFileLexer::Token commentToken = token;
+		Toshi::TPCString comment;
+		while (commentToken.GetType() == Toshi::TFileLexer::TOKEN_COMMENT) {
+			comment = commentToken.GetString();
 			m_pLexer->GetNextToken();
-			comment.assign(m_pLexer->PeekNextToken(0));
+			commentToken.assign(m_pLexer->PeekNextToken(0));
 		}
 		Toshi::TPCString name;
 		Toshi::TPCString subName;
@@ -68,6 +70,7 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 		Toshi::TFileLexer::Token nextToken = m_pLexer->GetNextToken();
 		if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_OPENBRACE) {
 			PProperties *prop = m_oPropertyBlocks.Push(new PProperties());
+			prop->PutProperty(propertyName, PPropertyValue(prop), comment);
 		}
 		// Implement rest...
 		break;
