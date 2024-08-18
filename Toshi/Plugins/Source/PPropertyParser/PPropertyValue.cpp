@@ -69,8 +69,27 @@ const TClass *PPropertyValue::TYPE_TPWSTRING = &TGetClass(PWString);
 const TClass *PPropertyValue::TYPE_UINT32    = &TGetClass(PPUINT32);
 const TClass *PPropertyValue::TYPE_UNDEF     = TNULL;
 
+PPropertyValue::PPropertyValue()
+{
+    m_type = TYPE_UNDEF;
+}
+
+PPropertyValue::PPropertyValue(const Toshi::TPCString &a_rPCString)
+{
+    m_type = TYPE_TPCSTRING;
+    GetTPCString() = a_rPCString;
+}
+
 PPropertyValue::PPropertyValue(PProperties *props)
 {
+    m_type = TYPE_PROPS;
+    GetPropertiesMP() = props;
+}
+
+PPropertyValue::PPropertyValue(const PPropertyValue &a_rOther)
+{
+    m_type = TYPE_UNDEF;
+    Assign(a_rOther);
 }
 
 PPropertyValue::~PPropertyValue()
@@ -79,7 +98,12 @@ PPropertyValue::~PPropertyValue()
 
 void PPropertyValue::Assign(const PPropertyValue &a_rValue)
 {
-    
+    ChangeType(a_rValue.m_type);
+    if (m_type == TYPE_TPCSTRING) {
+        GetTPCString().~TPCString();
+        a_rValue.GetTPCString().~TPCString();
+        return;
+    }
 }
 
 TBOOL PPropertyValue::ChangeType(const TClass *a_pType)
@@ -101,4 +125,32 @@ Toshi::TObject *PPropertyValue::GetTObject() const
         return m_pObject;
     }
     return TNULL;
+}
+
+const Toshi::TPCString &PPropertyValue::GetTPCString() const
+{
+    static TBYTE s_firstTime = 0;
+    static TPCString s_pEmptyString;
+    if ((s_firstTime & 1) == 0) {
+        s_firstTime |= 1;
+        s_pEmptyString = TPCString();
+    }
+    if (m_type != TYPE_TPCSTRING) {
+        return s_pEmptyString;
+    }
+    return m_PCString;
+}
+
+Toshi::TPCString &PPropertyValue::GetTPCString()
+{
+    static TBYTE s_firstTime = 0;
+    static TPCString s_pEmptyString;
+    if ((s_firstTime & 1) == 0) {
+        s_firstTime |= 1;
+        s_pEmptyString = TPCString();
+    }
+    if (m_type != TYPE_TPCSTRING) {
+        return s_pEmptyString;
+    }
+    return m_PCString;
 }

@@ -9,11 +9,10 @@ class PProperties;
 class PPROPERTYPARSER_EXPORTS PPropertyValue
 {
 public:
-    PPropertyValue()
-    {
-        m_type = TYPE_UNDEF;
-    }
+    PPropertyValue();
+    PPropertyValue(const Toshi::TPCString &a_rPCString);
     PPropertyValue(PProperties *props);
+    PPropertyValue(const PPropertyValue &a_rOther);
     ~PPropertyValue();
 
 protected:
@@ -35,6 +34,8 @@ public:
         return m_valueInt;
     }
     Toshi::TObject *GetTObject() const;
+    const Toshi::TPCString &GetTPCString() const;
+    Toshi::TPCString &GetTPCString();
     static TPCCHAR TOSHI_API ToString(const Toshi::TClass *a_pClass)
     {
         if (a_pClass != TYPE_UNDEF) {
@@ -48,6 +49,13 @@ protected:
     {
         TASSERT(TYPE_PROPS == m_type);
         return m_valueProps;
+    }
+
+public:
+    PPropertyValue &operator=(const PPropertyValue &a_rValue)
+    {
+        Assign(a_rValue);
+        return *this;
     }
 
 public:
@@ -68,6 +76,7 @@ private:
     union
     {
         Toshi::TManagedPtr<PProperties> m_valueProps;
+        Toshi::TPCString m_PCString;
         Toshi::TObject *m_pObject;
         TINT m_valueInt;
     }; // 0x4
