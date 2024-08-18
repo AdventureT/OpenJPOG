@@ -114,6 +114,39 @@ TBOOL PPropertyValue::ChangeType(const TClass *a_pType)
     return TBOOL();
 }
 
+TBOOL PPropertyValue::CanBeType(const TClass *a_type) const
+{
+    return TBOOL();
+}
+
+TUINT PPropertyValue::GetUINT32() const
+{
+    if (m_type == TYPE_INT) {
+        return m_valueInt;
+    }
+    if (m_type != TYPE_UINT32) {
+        if (m_type != TYPE_FLOAT) {
+            return 0;
+        }
+        return m_valueFloat;
+    }
+    return m_valueUInt;
+}
+
+TFLOAT PPropertyValue::GetFloat() const
+{
+    if (m_type == TYPE_INT) {
+        return m_valueInt;
+    }
+    if (m_type != TYPE_UINT32) {
+        if (m_type != TYPE_FLOAT) {
+            return 0.0f;
+        }
+        return m_valueFloat;
+    }
+    return TMAX(m_valueFloat, 0);
+}
+
 Toshi::TObject *PPropertyValue::GetTObject() const
 {
     TASSERT(m_type != TYPE_INT && m_type != TYPE_UINT32 &&
@@ -153,4 +186,107 @@ Toshi::TPCString &PPropertyValue::GetTPCString()
         return s_pEmptyString;
     }
     return m_PCString;
+}
+
+TBOOL PPropertyValueArray::CanBeTypeArray(const TClass *a_type, TINT a_iIndex) const
+{
+    if (a_iIndex != -1 && m_oValues.GetNumAllocElements()) {
+        return TFALSE;
+    }
+    for (TINT i = 0; i < m_oValues.GetNumAllocElements(); i++) {
+        if (!m_oValues[i].CanBeType(a_type)) {
+            return TFALSE;
+        }
+    }
+    return TTRUE;
+}
+
+TBOOL PPropertyValueArray::GetTQuaternion(TQuaternion &a_rQuat) const
+{
+    if (!CanBeTypeArray(PPropertyValue::TYPE_FLOAT, 4)) {
+        return TFALSE;
+    }
+    const TClass *type = m_oValues[0].GetType();
+    TFLOAT fValue = 0.0f;
+    if (type == PPropertyValue::TYPE_INT) {
+        fValue = m_oValues[0].GetInteger();
+    }
+    if (type == PPropertyValue::TYPE_UINT32) {
+        fValue = m_oValues[0].GetUINT32();
+    }
+    if (type == PPropertyValue::TYPE_FLOAT) {
+        fValue = m_oValues[0].GetFloat();
+    }
+    //a_rQuat[0] = fValue;
+    type = m_oValues[1].GetType();
+    fValue = 0.0f;
+    if (type == PPropertyValue::TYPE_INT) {
+        fValue = m_oValues[1].GetInteger();
+    }
+    if (type == PPropertyValue::TYPE_UINT32) {
+        fValue = m_oValues[1].GetUINT32();
+    }
+    if (type == PPropertyValue::TYPE_FLOAT) {
+        fValue = m_oValues[1].GetFloat();
+    }
+    //a_rQuat[1] = fValue;
+    type = m_oValues[2].GetType();
+    fValue = 0.0f;
+    if (type == PPropertyValue::TYPE_INT) {
+        fValue = m_oValues[2].GetInteger();
+    }
+    if (type == PPropertyValue::TYPE_UINT32) {
+        fValue = m_oValues[2].GetUINT32();
+    }
+    if (type == PPropertyValue::TYPE_FLOAT) {
+        fValue = m_oValues[2].GetFloat();
+    }
+    //a_rQuat[2] = fValue;
+    type = m_oValues[3].GetType();
+    fValue = 0.0f;
+    if (type == PPropertyValue::TYPE_INT) {
+        fValue = m_oValues[3].GetInteger();
+    }
+    else if (type == PPropertyValue::TYPE_UINT32) {
+        fValue = m_oValues[3].GetUINT32();
+    }
+    else if (type == PPropertyValue::TYPE_FLOAT) {
+        fValue = m_oValues[3].GetFloat();
+    }
+    else {
+        fValue = 0.0f;
+    }
+    //a_rQuat[3] = fValue;
+    return TTRUE;
+}
+
+TBOOL PPropertyValueArray::GetTVector2(Toshi::TVector2 &a_rVec2) const
+{
+    if (!CanBeTypeArray(PPropertyValue::TYPE_FLOAT, 2)) {
+        return TFALSE;
+    }
+    const TClass *type = m_oValues[0].GetType();
+    TFLOAT fValue = 0.0f;
+    if (type == PPropertyValue::TYPE_INT) {
+        fValue = m_oValues[0].GetInteger();
+    }
+    if (type == PPropertyValue::TYPE_UINT32) {
+        fValue = m_oValues[0].GetUINT32();
+    }
+    if (type == PPropertyValue::TYPE_FLOAT) {
+        fValue = m_oValues[0].GetFloat();
+    }
+    a_rVec2(0) = fValue;
+    type = m_oValues[1].GetType();
+    fValue = 0.0f;
+    if (type == PPropertyValue::TYPE_INT) {
+        fValue = m_oValues[1].GetInteger();
+    }
+    if (type == PPropertyValue::TYPE_UINT32) {
+        fValue = m_oValues[1].GetUINT32();
+    }
+    if (type == PPropertyValue::TYPE_FLOAT) {
+        fValue = m_oValues[1].GetFloat();
+    }
+    a_rVec2(1) = fValue;
 }

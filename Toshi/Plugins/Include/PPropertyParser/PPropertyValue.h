@@ -3,6 +3,8 @@
 #include "TKernel/TObject.h"
 #include "TKernel/TPCString.h"
 #include "TKernel/TManagedPointer.h"
+#include "TKernel/TQuaternion.h"
+#include "TKernel/TVector2.h"
 
 class PProperties;
 
@@ -20,6 +22,8 @@ protected:
     TBOOL ChangeType(const Toshi::TClass *a_pType);
 
 public:
+    TBOOL CanBeType(const Toshi::TClass *a_type) const;
+
     const Toshi::TClass *GetType() const
     {
         return m_type;
@@ -33,6 +37,8 @@ public:
     {
         return m_valueInt;
     }
+    TUINT GetUINT32() const;
+    TFLOAT GetFloat() const;
     Toshi::TObject *GetTObject() const;
     const Toshi::TPCString &GetTPCString() const;
     Toshi::TPCString &GetTPCString();
@@ -79,5 +85,23 @@ private:
         Toshi::TPCString m_PCString;
         Toshi::TObject *m_pObject;
         TINT m_valueInt;
+        TUINT m_valueUInt;
+        TFLOAT m_valueFloat;
     }; // 0x4
+};
+
+class PPROPERTYPARSER_EXPORTS PPropertyValueArray
+{
+public:
+    TBOOL CanBeTypeArray(const Toshi::TClass *a_type, TINT a_iIndex) const;
+
+    TBOOL GetTQuaternion(Toshi::TQuaternion &a_rQuat) const;
+    TBOOL GetTVector2(Toshi::TVector2 &a_rVec2) const;
+
+    void Delete()
+    {
+        delete this;
+    }
+private:
+    Toshi::TArray<PPropertyValue> m_oValues; // 0x0
 };

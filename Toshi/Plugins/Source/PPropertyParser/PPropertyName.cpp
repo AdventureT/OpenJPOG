@@ -5,7 +5,6 @@ TOSHI_NAMESPACE_USING
 
 Toshi::TPCString PPropertyName::GetString() const
 {
-    // Implement
     TWString string(m_oName->GetString());
     if (!m_oSubName->IsEmpty()) {
         string += TWString("[" + m_oSubName + "]");

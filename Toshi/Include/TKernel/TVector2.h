@@ -35,6 +35,16 @@ public:
 		m_fY = a_pfVec[1];
 	}
 
+	const TFLOAT &operator()(TUINT a_iIndex) const
+	{
+		return (&m_fX)[a_iIndex];
+	}
+
+	TFLOAT &operator()(TUINT a_iIndex)
+	{
+		return (&m_fX)[a_iIndex];
+	}
+
 	static const TVector2 VEC_ZERO;
 	static const TVector2 VEC_POSX;
 	static const TVector2 VEC_POSY;
