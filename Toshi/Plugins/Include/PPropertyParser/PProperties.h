@@ -10,6 +10,7 @@
 class PPROPERTYPARSER_EXPORTS PProperties : Toshi::TObject
 {
 	DECLARE_DYNAMIC(PProperties)
+	DECLARE_FREELIST(PProperties)
 
 public:
 	class PPROPERTYPARSER_EXPORTS PProperty : public Toshi::TQList<PProperty>::TNode
@@ -79,11 +80,58 @@ public:
 		m_iPropCount = 0;
 	}
 
+	Toshi::TQList<PProperty>::Iterator Begin() const
+	{
+		return m_oPropSet.Begin();
+	}
+	TBOOL IsEmpty() const
+	{
+		return m_oPropSet.IsEmpty();
+	}
+
+	TINT GetPropertyCount() const
+	{
+		return m_iPropCount;
+	}
+	Toshi::TQList<PProperty> &GetPropertySet()
+	{
+		return m_oPropSet;
+	}
+	const Toshi::TQList<PProperty> &GetPropertySet() const
+	{
+		return m_oPropSet;
+	}
+
+	const PPropertyValue *GetProperty(const PPropertyName &a_rPropertyName) const;
+	const PPropertyValue *GetProperty(const Toshi::TPCString &a_rPropertyName, TINT a_iIndex) const;
+	const PPropertyValue *GetProperty(const Toshi::TPCString &a_rPropertyName, const Toshi::TPCString &a_rPropertySubname) const;
+	const PPropertyValue *GetProperty(const Toshi::TPCString &a_rPropertyName) const;
+
+	const PPropertyValue *GetRequiredProperty(const Toshi::TPCString &a_rPropertyName, const Toshi::TClass *a_pClass) const;
+	const PPropertyValue *GetRequiredProperty(const Toshi::TPCString &a_rPropertyName, const Toshi::TPCString &a_rPropertySubname, const Toshi::TClass *a_pClass) const;
+	const PPropertyValue *GetRequiredProperty(const Toshi::TPCString &a_rPropertyName, TINT a_iIndex, const Toshi::TClass *a_pClass) const;
+
+	const PPropertyValue *GetOptionalProperty(const Toshi::TPCString &a_rPropertyName, const Toshi::TClass *a_pClass) const;
+	const PPropertyValue *GetOptionalProperty(const Toshi::TPCString &a_rPropertyName, const Toshi::TPCString &a_rPropertySubname, const Toshi::TClass *a_pClass) const;
+	const PPropertyValue *GetOptionalProperty(const Toshi::TPCString &a_rPropertyName, TINT a_iIndex, const Toshi::TClass *a_pClass) const;
+
+	void PutProperty(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
 	void PutProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
+	void PutProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue);
+	void PutProperty(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
+	void PutProperty(const Toshi::TPCString &a_rName, const PPropertyValue &a_rValue);
+	void PutProperty(const Toshi::TPCString &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
+
+	void PutPropertyUnique(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
+	void PutPropertyUnique(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
+	void PutPropertyUnique(const PPropertyName &a_rName, const PPropertyValue &a_rValue);
+	void PutPropertyUnique(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
+	void PutPropertyUnique(const Toshi::TPCString &a_rName, const PPropertyValue &a_rValue);
+	void PutPropertyUnique(const Toshi::TPCString &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
 
 	const PProperty *FindProperty(const Toshi::TPCString &a_szProperty, Toshi::TQList<PProperty>::Iterator &a_oProperties);
 
-	PProperties *m_pParentProps;          // 0x8
-	Toshi::TQList<PProperty> m_oPropsQueue; // 0xC
-	TINT m_iPropCount;                    //0x14
+	PProperties *m_pParentProps;            // 0x8
+	Toshi::TQList<PProperty> m_oPropSet;    // 0xC
+	TINT m_iPropCount;                      //0x14
 };

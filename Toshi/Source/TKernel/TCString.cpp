@@ -162,13 +162,16 @@ void TCString::Truncate(TINT a_iLength)
 
 TINT TCString::FindReverse(TCHAR a_cFind, TINT a_iIndex /*= -1*/) const
 {
-	if (a_iIndex == -1)
+	if (a_iIndex == -1) {
 		a_iIndex = m_iStrLen;
-	else if (!IsIndexValid(a_iIndex))
+	}
+	else if (!IsIndexValid(a_iIndex)) {
 		return -1;
+	}
 	
-	if (a_iIndex < 0)
+	if (a_iIndex < 0) {
 		return -1;
+	}
 
 	TINT iBytesLeft = a_iIndex;
 	const TCHAR* pchString = GetString(0);
@@ -223,7 +226,7 @@ TCString TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS)
 
 TCString TOSHI_API operator+(const TCString& a_rLHS, const TPCString& a_rRHS)
 {
-	return "";
+	return TCString(a_rLHS) += a_rRHS.GetCString();
 }
 
 TOSHI_NAMESPACE_END

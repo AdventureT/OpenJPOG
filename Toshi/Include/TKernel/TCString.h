@@ -125,7 +125,7 @@ public:
 		return str.Concat(a_pRHS);
 	}
 
-	TCString operator+(const TCString& a_rRHS) const
+	TCString operator+(const TCString &a_rRHS) const
 	{
 		TCString str(*this);
 		return str.Concat(a_rRHS);
@@ -137,7 +137,7 @@ public:
 		return *this;
 	}
 
-	TCString& operator+=(TCString const& a_rString)
+	TCString& operator+=(const TCString &a_rString)
 	{
 		Concat(a_rString);
 		return *this;
