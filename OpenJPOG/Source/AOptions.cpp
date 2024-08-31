@@ -16,9 +16,17 @@ AOptions::Result AOptions::LoadOptions(TINT a_int, TINT a_int2, const Toshi::TCS
     Toshi::TCString filepath = Toshi::TCString().Format("%s/%s.ini", a_szOptionsDir.GetString(), a_szOptionsName.GetString());
     TBOOL res = reader.Open(filepath);
     if (!res) {
-        return RESULT_ERROR_OPEN;
+        return RESULT_ERROR;
     }
-    PProperties props = new PProperties();
-    
-    return Result();
+    PProperties *props = new PProperties();
+    res = reader.LoadPropertyBlock(*props);
+    if (!res) {
+        return RESULT_ERROR;
+    }
+    if (m_pUnkProps) {
+        delete m_pUnkProps;
+    }
+    m_pUnkProps = props;
+    m_pCurProps = props;
+    return RESULT_OK;
 }

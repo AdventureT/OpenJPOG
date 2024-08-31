@@ -102,7 +102,47 @@ void PPropertyValue::Assign(const PPropertyValue &a_rValue)
     if (m_type == TYPE_TPCSTRING) {
         GetTPCString().~TPCString();
         a_rValue.GetTPCString().~TPCString();
-        return;
+    }
+    else if (m_type == TYPE_INT) {
+        m_valueInt = a_rValue.GetInteger();
+    }
+    else if (m_type == TYPE_UINT32) {
+        m_valueUInt = a_rValue.GetUINT32();
+    }
+    else if (m_type == TYPE_FLOAT) {
+        m_valueFloat = a_rValue.GetFloat();
+    }
+    else if (m_type == TYPE_BOOL) {
+        m_valueBool = a_rValue.GetBoolean();
+    }
+    else if (m_type == TYPE_PROPS) {
+        TManagedPtr<PProperties> props = GetPropertiesMP();
+        PProperties *otherProps = a_rValue.m_type == TYPE_PROPS ? a_rValue.m_valueProps : TNULL;
+        if (props != otherProps) {
+            if (props) {
+                delete props;
+            }
+            props = otherProps;
+            if (otherProps) {
+               //otherProps->m_iPropCount++;
+            }
+        }
+    }
+    else if (m_type == TYPE_PROPNAME) {
+        m_valueName = new PPropertyName(a_rValue.GetPropertyName());
+    }
+    else if (m_type == TYPE_ARRAY) {
+        TManagedPtr<PPropertyValueArray> arr = GetPropArrayMP();
+        PPropertyValueArray *otherArr = a_rValue.GetArray();
+        if (arr != otherArr) {
+            if (arr) {
+                arr->Delete();
+            }
+            arr = otherArr;
+            if (otherArr) {
+                otherArr->m_iReferenceCount++;
+            }
+        }
     }
 }
 
@@ -217,6 +257,38 @@ Toshi::TPCString &PPropertyValue::GetTPCString()
         return s_pEmptyString;
     }
     return m_PCString;
+}
+
+void PPropertyValue::SetPropertyName(const PPropertyName &a_rName)
+{
+    ChangeType(TYPE_PROPNAME);
+    m_valueName = new PPropertyName(a_rName);
+}
+
+const PPropertyName &PPropertyValue::GetPropertyName() const
+{
+    TASSERT(m_type == TYPE_PROPNAME);
+    return *m_valueName;
+}
+
+PPropertyValueArray::PPropertyValueArray()
+{
+    m_iReferenceCount = 0;
+}
+
+PPropertyValueArray::PPropertyValueArray(TINT a_iCount)
+{
+    m_iReferenceCount = 0;
+    m_oValues = TArray<PPropertyValue>(a_iCount, a_iCount);
+}
+
+PPropertyValueArray::PPropertyValueArray(PPropertyValue *a_pValues, TINT a_iCount)
+{
+    m_iReferenceCount = 0;
+    m_oValues = TArray<PPropertyValue>(a_iCount, 0);
+    for (int i = 0; i < a_iCount; i++) {
+        m_oValues.Push(a_pValues[i]);
+    }
 }
 
 TBOOL PPropertyValueArray::CanBeTypeArray(const TClass *a_type, TINT a_iCount) const

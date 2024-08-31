@@ -33,7 +33,7 @@ void PProperties::PutProperty(const PPropertyName &a_rName, const PPropertyValue
 	m_iPropCount++;
 }
 
-void PProperties::PutProperty(const TPCString &a_rName, const TPCString &a_rSubName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment)
+void PProperties::PutProperty(const TPCString &a_rName, const TPCString &a_rSubName, const PPropertyValue &a_rValue)
 {
 	PutProperty(PPropertyName(a_rName, a_rSubName), a_rValue);
 }
@@ -59,14 +59,7 @@ void PProperties::PutPropertyUnique(const Toshi::TPCString &a_rName, const PProp
 	m_iPropCount++;
 }
 
-void PProperties::PutPropertyUnique(const Toshi::TPCString &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment)
-{
-	for (auto it = Begin(); it != m_oPropSet.End(); it++) {
-		//TODO
-	}
-}
-
-void PProperties::PutPropertyUnique(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment)
+void PProperties::PutPropertyUnique(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue)
 {
 	PutPropertyUnique(PPropertyName(a_rName, a_rSubName), a_rValue);
 }
@@ -74,6 +67,11 @@ void PProperties::PutPropertyUnique(const Toshi::TPCString &a_rName, const Toshi
 void PProperties::PutPropertyUnique(const PPropertyName &a_rName, const PPropertyValue &a_rValue)
 {
 	PutPropertyUnique(PPropertyName(a_rName), a_rValue);
+}
+
+void PProperties::PutPropertyUnique(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment)
+{
+	//PutPropertyUnique(PPropertyName(a_rName), a_rValue);
 }
 
 void PProperties::PutPropertyUnique(const Toshi::TPCString &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment)

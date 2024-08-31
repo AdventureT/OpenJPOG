@@ -118,14 +118,14 @@ public:
 	void PutProperty(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
 	void PutProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
 	void PutProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue);
-	void PutProperty(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
+	void PutProperty(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue);
 	void PutProperty(const Toshi::TPCString &a_rName, const PPropertyValue &a_rValue);
 	void PutProperty(const Toshi::TPCString &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
 
 	void PutPropertyUnique(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
 	void PutPropertyUnique(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
 	void PutPropertyUnique(const PPropertyName &a_rName, const PPropertyValue &a_rValue);
-	void PutPropertyUnique(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
+	void PutPropertyUnique(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName, const PPropertyValue &a_rValue);
 	void PutPropertyUnique(const Toshi::TPCString &a_rName, const PPropertyValue &a_rValue);
 	void PutPropertyUnique(const Toshi::TPCString &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment);
 

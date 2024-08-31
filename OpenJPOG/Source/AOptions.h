@@ -7,7 +7,8 @@ class AOptions
 public:
 	enum Result
 	{
-		RESULT_ERROR_OPEN = 3
+		RESULT_OK = 0,
+		RESULT_ERROR = 3
 	};
 
 	Result LoadOptions();
@@ -24,7 +25,8 @@ private:
 	static const TINT sm_iSlot = -1;
 	static const TINT sm_iPort = -1;
 
-	TINT m_iAutoSaveState;           // 0x1C
+	TINT m_iAutoSaveState;    // 0x1C
+	PProperties *m_pUnkProps; // 0x20
 	PProperties *m_pCurProps; // 0x24
 };
 

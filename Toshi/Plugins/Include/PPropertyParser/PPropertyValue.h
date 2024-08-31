@@ -8,6 +8,7 @@
 #include "TKernel/TVector3.h"
 
 class PProperties;
+class PPropertyName;
 class PPropertyValueArray;
 
 class PPROPERTYPARSER_EXPORTS PPropertyValue
@@ -48,6 +49,13 @@ public:
             return TNULL;
         }
         return m_valueProps;
+    }
+    void SetPropertyName(const PPropertyName &a_rName);
+    const PPropertyName &GetPropertyName() const;
+    PPropertyValueArray *GetArray() const
+    {
+        TASSERT(m_type == TYPE_ARRAY);
+        return m_valueArray;
     }
     static TPCCHAR TOSHI_API ToString(const Toshi::TClass *a_pClass)
     {
@@ -94,6 +102,7 @@ private:
     union
     {
         PProperties *m_valueProps;
+        PPropertyName *m_valueName;
         PPropertyValueArray *m_valueArray;
         Toshi::TPCString m_PCString;
         Toshi::TObject *m_pObject;
@@ -108,6 +117,10 @@ class PPROPERTYPARSER_EXPORTS PPropertyValueArray
 {
 public:
 
+    PPropertyValueArray();
+    PPropertyValueArray(TINT a_iCount);
+    PPropertyValueArray(PPropertyValue *a_pValues, TINT a_iCount);
+
     TBOOL CanBeTypeArray(const Toshi::TClass *a_type, TINT a_iIndex) const;
 
     TBOOL GetTQuaternion(Toshi::TQuaternion &a_rQuat) const;
@@ -118,6 +131,7 @@ public:
     {
         delete this;
     }
-private:
-    Toshi::TArray<PPropertyValue> m_oValues; // 0x0
+public:
+    TINT m_iReferenceCount;                  // 0x0
+    Toshi::TArray<PPropertyValue> m_oValues; // 0x4
 };

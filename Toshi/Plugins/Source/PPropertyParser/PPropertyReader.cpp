@@ -78,6 +78,16 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 	return TFALSE;
 }
 
+TBOOL PPropertyReader::LoadPropertyBlock(PProperties &a_rProperty)
+{
+	TASSERT(m_pLexer != TNULL);
+	Toshi::TFileLexer::Token token = m_pLexer->PeekNextToken(0);
+	if (token.GetType() == Toshi::TFileLexer::TOKEN_EOF) {
+		return TFALSE;
+	}
+	return LoadProperty(&a_rProperty);
+}
+
 PProperties *PPropertyReader::LoadPropertyBlock()
 {
 	TASSERT(m_pLexer != TNULL);

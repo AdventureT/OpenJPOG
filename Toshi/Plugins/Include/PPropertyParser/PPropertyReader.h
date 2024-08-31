@@ -14,6 +14,7 @@ public:
 	void Error(const Toshi::TCString& a_sMsg);
 
 	TBOOL LoadProperty(PProperties *a_pProperty);
+	TBOOL LoadPropertyBlock(PProperties &a_rProperty);
 	PProperties *LoadPropertyBlock();
 	TBOOL LoadPropertyName(Toshi::TPCString &a_rName, Toshi::TPCString &a_rSubName);
 
