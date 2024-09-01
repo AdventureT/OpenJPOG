@@ -10,6 +10,7 @@
 #include "ARootStateController.h"
 #include "ARenderer.h"
 #include "Tasks/AFrontEndController.h"
+#include "AOptions.h"
 
 class ARootTask : public Toshi::TTask
 {
@@ -28,17 +29,38 @@ public:
 	void LoadFrontEndController();
 	void UnloadFrontEndController();
 
+	static void DeserialiseOptions();
+
 	void SetName(TPCHAR a_szName)
 	{
 		m_szName = a_szName;
 	}
 
+	AOptions *GetOptions()
+	{
+		return m_pOptions;
+	}
 	//Toshi::TManagedPtr<Toshi::TRenderInterface>!!!
-	Toshi::TRenderInterface* GetRenderInterface() { return m_pRenderInterface; }
-	AGUISystem* GetGUISystem() { return m_pGUISystem; }
-	Toshi::AMoviePlayer* GetMoviePlayer() { return m_pMoviePlayer; }
-	ARootStateController* GetRootStateController() const { return m_pGameStateController; }
-	Toshi::ARenderer* GetARenderer() { return m_pRenderer; }
+	Toshi::TRenderInterface* GetRenderInterface() 
+	{
+		return m_pRenderInterface;
+	}
+	AGUISystem* GetGUISystem() 
+	{
+		return m_pGUISystem;
+	}
+	Toshi::AMoviePlayer* GetMoviePlayer() 
+	{
+		return m_pMoviePlayer;
+	}
+	ARootStateController* GetRootStateController() const 
+	{
+		return m_pGameStateController;
+	}
+	Toshi::ARenderer* GetARenderer() 
+	{
+		return m_pRenderer;
+	}
 
 private:
 	void AllocateARenderer();
@@ -56,6 +78,7 @@ private:
 
 private:
 	Toshi::TCString m_szName;
+	AOptions *m_pOptions;                         // 0x24
 	AFrontEndController* m_pFrontEndController;   // 0x28
 	AGUISystem* m_pGUISystem;                     // 0x34
 	Toshi::TTask* m_pInputTask;                   // 0x38

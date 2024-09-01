@@ -17,10 +17,10 @@
 		} \
 	}
 
-#define TDPRINTF(format, ...) TDebug_Printf(format, __VA_ARGS__)
-#define TWARNING(format, ...) TDebug_PrintWarning(format, __VA_ARGS__)
-#define TERROR(format, ...)   TDebug_PrintError(format, __VA_ARGS__)
-#define TVALIDADDRESS(expression) TASSERT(TDebug::IsValidAddress(expression))
+#define TDPRINTF(format, ...) Toshi::TDebug_Printf(format, __VA_ARGS__)
+#define TWARNING(format, ...) Toshi::TDebug_PrintWarning(format, __VA_ARGS__)
+#define TERROR(format, ...)   Toshi::TDebug_PrintError(format, __VA_ARGS__)
+#define TVALIDADDRESS(expression) TASSERT(Toshi::TDebug::IsValidAddress(expression))
 
 TOSHI_NAMESPACE_BEGIN
 

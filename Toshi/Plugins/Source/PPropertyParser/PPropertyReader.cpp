@@ -22,7 +22,7 @@ void PPropertyReader::Close()
 
 void PPropertyReader::Error(const Toshi::TCString& a_sMsg)
 {
-	TDPRINTF("%s : error: %s\n", m_szFileName, a_sMsg);
+	TDPRINTF("%s : error: %s\n", m_szFileName.GetString(), a_sMsg.GetString());
 	if (m_bAssertOnError) {
 		TASSERT(!"PPropertyReader::Error()");
 	}
@@ -159,5 +159,5 @@ TBOOL PPropertyReader::Open(const Toshi::TCString& a_rFileName)
 
 void PPropertyReader::Warning(const Toshi::TCString& a_sMsg)
 {
-	TDPRINTF("%s : warning: %s\n", m_szFileName, a_sMsg);
+	TDPRINTF("%s : warning: %s\n", m_szFileName.GetString(), a_sMsg.GetString());
 }

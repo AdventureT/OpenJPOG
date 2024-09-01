@@ -9,6 +9,7 @@ IMPLEMENT_DYNCREATE(ARootTask, TTask);
 
 ARootTask::ARootTask()
 {
+	m_pOptions = TNULL;
 	m_pGUISystem = TNULL;
 	m_pInputTask = TNULL;
 	m_pRenderInterface = TNULL;
@@ -16,6 +17,7 @@ ARootTask::ARootTask()
 	m_pGameStateController = TNULL;
 	m_pVibrationTask = TNULL;
 	m_pMoviePlayer = TNULL;
+	m_pOptions = new AOptions();
 	AllocateARenderer();
 	AllocateRenderInterface();
 	AllocateGameStateController();
@@ -28,6 +30,8 @@ TBOOL ARootTask::OnCreate()
 	if (!CreateRenderInterface()) {
 		return TFALSE;
 	}
+	m_pOptions->LoadOptions();
+	DeserialiseOptions();
 	CreateARenderer();
 	CreateGameStateController();
 	GetRootStateController()->TransferControl(new AFrontEndSplashState());
@@ -119,6 +123,23 @@ TBOOL ARootTask::CreateRenderInterface()
 void ARootTask::CreateGameStateController()
 {
 	GetRootStateController()->Create();
+}
+
+void ARootTask::DeserialiseOptions()
+{
+	TRenderInterface *renderer = g_oTheApp.GetRootTask()->m_pRenderInterface;
+	renderer->GetCurrentDisplayParams();
+	AOptions *options = g_oTheApp.GetRootTask()->GetOptions();
+	AOptionsLogic logic;
+	TINT screenWidth;
+	TINT screenHeight;
+	TINT screenDepth;
+	if (options->GetOption("ScreenWidth", screenWidth) &&
+		options->GetOption("ScreenHeight", screenHeight) &&
+		options->GetOption("ScreenDepth", screenDepth)) {
+		AOptionsLogic::AScreenRes screenRes;
+		logic.GetOption(AOptionsLogic::OPTION_SCREENRES, screenRes);
+	}
 }
 
 const TRenderAdapter::Mode::Device* ARootTask::CreateDisplayDevice(TRenderInterface::DisplayParams& a_rDisplayParams, bool a_bReverseOrder)

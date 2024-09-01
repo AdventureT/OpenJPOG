@@ -1,8 +1,33 @@
 #include "AOptions.h"
 #include "PPropertyParser/PPropertyReader.h"
 
+TOSHI_NAMESPACE_USING
+
 TPCCHAR AOptions::sm_szOptionsDir = TNULL;
 TPCCHAR AOptions::sm_szOptionsName = "Options";
+AOptions *AOptions::ms_pSingleton = TNULL;
+
+AOptions::AOptions()
+{
+    m_iAutoSaveState = 1;
+    ms_pSingleton = this;
+    PProperties *props = new PProperties();
+    m_pUnkProps = props;
+    m_pCurProps = props;
+}
+
+TBOOL AOptions::GetOption(TPCCHAR a_szProp, TINT &a_iValue)
+{
+    const PPropertyValue *value = m_pCurProps->GetProperty(TSystem::GetCStringPool()->Get(a_szProp));
+    if (!value) {
+        return TFALSE;
+    }
+    if (!value->CanBeType(PPropertyValue::TYPE_INT)) {
+        return TFALSE;
+    }
+    a_iValue = value->GetInteger();
+    return TTRUE;
+}
 
 AOptions::Result AOptions::LoadOptions()
 {
@@ -29,4 +54,38 @@ AOptions::Result AOptions::LoadOptions(TINT a_int, TINT a_int2, const Toshi::TCS
     m_pUnkProps = props;
     m_pCurProps = props;
     return RESULT_OK;
+}
+
+AOptionsLogic::AScreenRes AOptionsLogic::m_oScreenRes = AOptionsLogic::AScreenRes(640, 480, 32, 0);
+
+AOptionsLogic::AOptionsLogic()
+{
+
+}
+
+TBOOL AOptionsLogic::GetOption(OPTION a_eOption, AScreenRes &a_rScreenRes)
+{
+    AOptionSetting setting;
+    setting.m_eOption = a_eOption;
+    OptionGet(setting);
+    a_rScreenRes = *(AScreenRes *)(&setting + 1);
+    return setting.m_bFetched;
+}
+
+TBOOL AOptionsLogic::SetOption(OPTION a_eOption, AScreenRes &a_rScreenRes)
+{
+    return TBOOL();
+}
+
+void AOptionsLogic::OptionGet(AOptionSetting &a_rSetting)
+{
+    // GetShaders
+    AScreenRes *screenRes = (AScreenRes *)(&a_rSetting + 1);
+    switch (a_rSetting.m_eOption) {
+    case OPTION_SCREENRES:
+        screenRes = &m_oScreenRes;
+        break;
+    default:
+        break;
+    }
 }
