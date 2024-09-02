@@ -13,6 +13,8 @@ public:
 
 	void Error(const Toshi::TCString& a_sMsg);
 
+	TBOOL GetValue(PPropertyValue &a_rValue);
+
 	TBOOL LoadProperty(PProperties *a_pProperty);
 	TBOOL LoadPropertyBlock(PProperties &a_rProperty);
 	PProperties *LoadPropertyBlock();

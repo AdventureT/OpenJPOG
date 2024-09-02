@@ -28,6 +28,11 @@ void PPropertyReader::Error(const Toshi::TCString& a_sMsg)
 	}
 }
 
+TBOOL PPropertyReader::GetValue(PPropertyValue &a_rValue)
+{
+	return TBOOL();
+}
+
 TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 {
 	TASSERT(m_pLexer != TNULL);
@@ -68,9 +73,30 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 		}
 		PPropertyName propertyName = PPropertyName(name, subName);
 		Toshi::TFileLexer::Token nextToken = m_pLexer->GetNextToken();
+		PProperties *prop;
 		if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_OPENBRACE) {
-			PProperties *prop = m_oPropertyBlocks.Push(new PProperties());
+			prop = m_oPropertyBlocks.Push(new PProperties());
 			prop->PutProperty(propertyName, PPropertyValue(prop), comment);
+			if (!LoadProperty(prop)) {
+				return TFALSE;
+			}
+		}
+		else if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_DOT) {
+
+		}
+		else if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_SEMI) {
+
+		}
+		else {
+			if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_EQUAL) {
+				Error(Toshi::TCString().Format("Unexpected operator after property '%s'", propertyName.GetString().GetCString().GetString()));
+				return TFALSE;
+			}
+			PPropertyValue value;
+			if (!GetValue(value)) {
+				return TFALSE;
+			}
+
 		}
 		// Implement rest...
 		break;
