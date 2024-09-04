@@ -161,11 +161,11 @@ public:
 		{
 			m_type = a_type;
 			m_iLine = a_iLine;
-			TASSERT(m_type == TFileLexer::TOKEN_IDENT   ||
-				    m_type == TFileLexer::TOKEN_STRING  ||
-				    m_type == TFileLexer::TOKEN_INTEGER ||
-			        m_type == TFileLexer::TOKEN_FLOAT   || 
-		            m_type == TFileLexer::TOKEN_COMMENT);
+			TASSERT(m_type != TFileLexer::TOKEN_IDENT   ||
+				    m_type != TFileLexer::TOKEN_STRING  ||
+				    m_type != TFileLexer::TOKEN_INTEGER ||
+			        m_type != TFileLexer::TOKEN_FLOAT   || 
+		            m_type != TFileLexer::TOKEN_COMMENT);
 		}
 
 		Token(const TFileLexer::Token& a_rToken)

@@ -188,12 +188,13 @@ TFileLexer::Token TFileLexer::PeekNextToken(TINT a_iDistance)
 	TASSERT(a_iDistance < m_iTokenLookaheadSize);
 	TASSERT(((m_iTokenLookaheadFront + m_iTokenLookaheadBuffered) & m_iTokenLookaheadMask) == m_iTokenLookaheadBack);
 
-	for (; m_iTokenLookaheadBuffered <= a_iDistance; m_iTokenLookaheadBuffered++) {
+	do {
 		m_pLookaheadTokens[m_iTokenLookaheadBack].assign(get_next_token());
-		m_iTokenLookaheadBack += (m_iTokenLookaheadBack + 1) & m_iTokenLookaheadMask;
-	}
+		m_iTokenLookaheadBack = m_iTokenLookaheadBack + 1 & m_iTokenLookaheadMask;
+		m_iTokenLookaheadBuffered++;
+	} while (m_iTokenLookaheadBuffered <= a_iDistance);
 
-	m_oToken.assign(m_pLookaheadTokens[(m_iTokenLookaheadFront + a_iDistance) & m_iTokenLookaheadMask]);
+	m_oToken.assign(m_pLookaheadTokens[a_iDistance + m_iTokenLookaheadFront & m_iTokenLookaheadMask]);
 	return Token(m_oToken);
 }
 

@@ -30,7 +30,103 @@ void PPropertyReader::Error(const Toshi::TCString& a_sMsg)
 
 TBOOL PPropertyReader::GetValue(PPropertyValue &a_rValue)
 {
-	return TBOOL();
+	TASSERT(m_pLexer != TNULL);
+	Toshi::TFileLexer::Token token = m_pLexer->PeekNextToken(0);
+	// Value is an array
+	if (token.GetType() == Toshi::TFileLexer::TOKEN_OPENBRACE) {
+		PPropertyValueArray *values = new PPropertyValueArray(3);
+		m_pLexer->GetNextToken();
+		Toshi::TFileLexer::Token token2;
+		PPropertyValue *val;
+		do {
+			if (m_pLexer->PeekNextToken(0).GetType() == Toshi::TFileLexer::TOKEN_CLOSEBRACE) {
+				m_pLexer->GetNextToken();
+				break;
+			}
+			values->m_oValues.Push(PPropertyValue());
+			if (!GetValue(values->m_oValues[values->m_oValues.GetNumElements()])) {
+				return TFALSE;
+			}
+		} while (token2 = m_pLexer->GetNextToken(), token2.GetType() == Toshi::TFileLexer::TOKEN_COMMA);
+		if (token2.GetType() != Toshi::TFileLexer::TOKEN_CLOSEBRACE) {
+			Error("Expected a comma or close brace inside a list");
+			return TFALSE;
+		}
+		a_rValue = values;
+	}
+	// Value is a localised string
+	else if (token.GetType() == Toshi::TFileLexer::TOKEN_DOLLAR) {
+		m_pLexer->GetNextToken();
+		token = m_pLexer->GetNextToken();
+		if (token.GetType() == Toshi::TFileLexer::TOKEN_IDENT) {
+			// TODO: Implement TLocale to get localised string
+			//a_rValue = PPropertyValue(TLString)
+		}
+		else {
+			if (token.GetType() != Toshi::TFileLexer::TOKEN_INTEGER) {
+				Error("Expected identifier after '$' for localised string name");
+			}
+			// TODO: Implement TLocale to get localised string from int
+			//a_rValue = PPropertyValue(TLString)
+		}
+	}
+	else {
+		Toshi::TFileLexer::TokenType type = m_pLexer->PeekNextToken(1).GetType();
+		// Value is a propertyname
+		if (type == Toshi::TFileLexer::TOKEN_OPENSQR) {
+			Toshi::TPCString name;
+			Toshi::TPCString subname;
+			LoadPropertyName(name, subname);
+			a_rValue = PPropertyValue(PPropertyName(name, subname));
+		}
+		else {
+			m_pLexer->GetNextToken();
+			a_rValue = Token2Value(token);
+			if (!a_rValue.IsDefined()) {
+				Error("Expected a value");
+				return TFALSE;
+			}
+		}
+	}
+	return TTRUE;
+}
+
+PPropertyValue PPropertyReader::Token2Value(const Toshi::TFileLexer::Token &a_rToken)
+{
+	static TINT s_boolFlags = 0;
+	static Toshi::TPCString s_true;
+	static Toshi::TPCString s_false;
+	// PENDING: true and false is unicode
+	if ((s_boolFlags & 1) == 0) {
+		s_boolFlags |= 1;
+		s_true = Toshi::TSystem::GetCStringPool()->Get("true");
+	}
+	if ((s_boolFlags & 2) == 0) {
+		s_boolFlags |= 2;
+		s_false = Toshi::TSystem::GetCStringPool()->Get("false");
+	}
+	if (a_rToken.GetType() == Toshi::TFileLexer::TOKEN_INTEGER) {
+		return PPropertyValue(a_rToken.GetInteger());
+	}
+	if (a_rToken.GetType() == Toshi::TFileLexer::TOKEN_UINTEGER) {
+		return PPropertyValue(a_rToken.GetUInteger());
+	}
+	if (a_rToken.GetType() == Toshi::TFileLexer::TOKEN_FLOAT) {
+		return PPropertyValue(a_rToken.GetFloat());
+	}
+	if (a_rToken.GetType() == Toshi::TFileLexer::TOKEN_STRING) {
+		return PPropertyValue(a_rToken.GetString());
+	}
+	if (a_rToken.GetType() != Toshi::TFileLexer::TOKEN_IDENT) {
+		return PPropertyValue();
+	}
+	if (a_rToken.GetString() == s_true) {
+		return PPropertyValue(true);
+	}
+	if (a_rToken.GetString() == s_false) {
+		return PPropertyValue(false);
+	}
+	return PPropertyValue(a_rToken.GetString());
 }
 
 TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
@@ -82,13 +178,19 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 			}
 		}
 		else if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_DOT) {
-
+			const PPropertyValue *val = a_pProperty->GetProperty(propertyName);
+			if (!val) {
+				a_pProperty->PutProperty(propertyName, PPropertyValue(new PProperties()));
+			}
+			else {
+				a_pProperty = val->GetProperties();
+			}
 		}
 		else if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_SEMI) {
-
+			a_pProperty->PutProperty(propertyName, PPropertyValue());
 		}
 		else {
-			if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_EQUAL) {
+			if (nextToken.GetType() != Toshi::TFileLexer::TOKEN_EQUAL) {
 				Error(Toshi::TCString().Format("Unexpected operator after property '%s'", propertyName.GetString().GetCString().GetString()));
 				return TFALSE;
 			}
@@ -96,10 +198,12 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 			if (!GetValue(value)) {
 				return TFALSE;
 			}
-
+			a_pProperty->PutProperty(propertyName, value, comment);
+			if (!m_pLexer->Expect(Toshi::TFileLexer::TOKEN_SEMI)) {
+				Error(Toshi::TCString().Format("Expected semicolon at end of property assignment"));
+				return TFALSE;
+			}
 		}
-		// Implement rest...
-		break;
 	} while (true);
 	return TFALSE;
 }

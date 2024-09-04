@@ -15,7 +15,11 @@ class PPROPERTYPARSER_EXPORTS PPropertyValue
 {
 public:
     PPropertyValue();
+    PPropertyValue(TINT a_int);
+    PPropertyValue(TUINT a_uint);
+    PPropertyValue(TFLOAT a_float);
     PPropertyValue(const Toshi::TPCString &a_rPCString);
+    PPropertyValue(const PPropertyName &a_rPropname);
     PPropertyValue(PProperties *props);
     PPropertyValue(const PPropertyValue &a_rOther);
     ~PPropertyValue();
@@ -52,6 +56,11 @@ public:
     }
     void SetPropertyName(const PPropertyName &a_rName);
     const PPropertyName &GetPropertyName() const;
+    PProperties *GetProperties() const
+    {
+        return m_type == TYPE_PROPS ? m_valueProps : TNULL;
+    }
+    void SetArray(PPropertyValueArray *a_pArray);
     PPropertyValueArray *GetArray() const
     {
         TASSERT(m_type == TYPE_ARRAY);
@@ -63,6 +72,11 @@ public:
             return a_pClass->GetName();
         }
         return _TS8(TNULL);
+    }
+
+    TBOOL IsDefined() const
+    {
+        return m_type != TYPE_UNDEF;
     }
 
 protected:
@@ -81,6 +95,12 @@ public:
     PPropertyValue &operator=(const PPropertyValue &a_rValue)
     {
         Assign(a_rValue);
+        return *this;
+    }
+
+    PPropertyValue &operator=(PPropertyValueArray *a_pValue)
+    {
+        SetArray(a_pValue);
         return *this;
     }
 

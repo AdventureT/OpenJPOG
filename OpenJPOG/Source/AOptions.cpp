@@ -39,7 +39,7 @@ AOptions::Result AOptions::LoadOptions(TINT a_int, TINT a_int2, const Toshi::TCS
 {
     PPropertyReader reader = PPropertyReader();
     Toshi::TCString filepath = Toshi::TCString().Format("%s/%s.ini", a_szOptionsDir.GetString(), a_szOptionsName.GetString());
-    TBOOL res = reader.Open(filepath);
+    TBOOL res = reader.Open("Options.ini");
     if (!res) {
         return RESULT_ERROR;
     }

@@ -74,10 +74,35 @@ PPropertyValue::PPropertyValue()
     m_type = TYPE_UNDEF;
 }
 
+PPropertyValue::PPropertyValue(TINT a_int)
+{
+    m_type = TYPE_INT;
+    m_valueInt = a_int;
+}
+
+PPropertyValue::PPropertyValue(TUINT a_uint)
+{
+    m_type = TYPE_UINT32;
+    m_valueUInt = a_uint;
+}
+
+PPropertyValue::PPropertyValue(TFLOAT a_float)
+{
+    m_type = TYPE_FLOAT;
+    m_valueFloat = a_float;
+}
+
 PPropertyValue::PPropertyValue(const Toshi::TPCString &a_rPCString)
 {
     m_type = TYPE_TPCSTRING;
+    m_valueInt = 0;
     GetTPCString() = a_rPCString;
+}
+
+PPropertyValue::PPropertyValue(const PPropertyName &a_rPropname)
+{
+    m_type = TYPE_PROPNAME;
+    m_valueName = new PPropertyName(a_rPropname);
 }
 
 PPropertyValue::PPropertyValue(PProperties *props)
@@ -100,8 +125,7 @@ void PPropertyValue::Assign(const PPropertyValue &a_rValue)
 {
     ChangeType(a_rValue.m_type);
     if (m_type == TYPE_TPCSTRING) {
-        GetTPCString().~TPCString();
-        a_rValue.GetTPCString().~TPCString();
+        GetTPCString() = a_rValue.GetTPCString();
     }
     else if (m_type == TYPE_INT) {
         m_valueInt = a_rValue.GetInteger();
@@ -151,7 +175,9 @@ TBOOL PPropertyValue::ChangeType(const TClass *a_pType)
     if (m_type == a_pType) {
         return TFALSE;
     }
-    return TBOOL();
+    // TODO implement all types
+    m_type = a_pType;
+    return TTRUE;
 }
 
 TBOOL PPropertyValue::CanBeType(const TClass *a_type) const
@@ -269,6 +295,12 @@ const PPropertyName &PPropertyValue::GetPropertyName() const
 {
     TASSERT(m_type == TYPE_PROPNAME);
     return *m_valueName;
+}
+
+void PPropertyValue::SetArray(PPropertyValueArray *a_pArray)
+{
+    ChangeType(TYPE_ARRAY);
+    GetPropArrayMP() = a_pArray;
 }
 
 PPropertyValueArray::PPropertyValueArray()
