@@ -175,6 +175,12 @@ TBOOL PPropertyValue::ChangeType(const TClass *a_pType)
     if (m_type == a_pType) {
         return TFALSE;
     }
+    if (m_type == TYPE_TPCSTRING) {
+        GetTPCString().~TPCString();
+    }
+    if (a_pType == TYPE_TPCSTRING) {
+        m_valueInt = 0;
+    }
     // TODO implement all types
     m_type = a_pType;
     return TTRUE;
