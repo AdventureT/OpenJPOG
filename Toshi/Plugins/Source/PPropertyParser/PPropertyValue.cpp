@@ -3,70 +3,74 @@
 
 TOSHI_NAMESPACE_USING
 
-class PArray : TObject
-{
-    DECLARE_DYNAMIC(PArray);
-};
-IMPLEMENT_DYNCREATE(PArray, TObject);
+namespace ValueType {
 
-class PBool : TObject
+class INT : TObject
 {
-    DECLARE_DYNAMIC(PBool);
+    DECLARE_DYNAMIC(INT);
 };
-IMPLEMENT_DYNCREATE(PBool, TObject);
+IMPLEMENT_DYNCREATE(INT, TObject);
 
-class PFloat : TObject
+class UINT32 : TObject
 {
-    DECLARE_DYNAMIC(PFloat);
+    DECLARE_DYNAMIC(UINT32);
 };
-IMPLEMENT_DYNCREATE(PFloat, TObject);
+IMPLEMENT_DYNCREATE(UINT32, TObject);
 
-class PInt : TObject
+class FLOAT : TObject
 {
-    DECLARE_DYNAMIC(PInt);
+    DECLARE_DYNAMIC(FLOAT);
 };
-IMPLEMENT_DYNCREATE(PInt, TObject);
+IMPLEMENT_DYNCREATE(FLOAT, TObject);
 
-class PPropName : TObject
+class BOOL : TObject
 {
-    DECLARE_DYNAMIC(PPropName);
+    DECLARE_DYNAMIC(BOOL);
 };
-IMPLEMENT_DYNCREATE(PPropName, TObject);
+IMPLEMENT_DYNCREATE(BOOL, TObject);
 
-class PLString : TObject
+class TPCString : TObject
 {
-    DECLARE_DYNAMIC(PLString);
+    DECLARE_DYNAMIC(TPCString);
 };
-IMPLEMENT_DYNCREATE(PLString, TObject);
+IMPLEMENT_DYNCREATE(TPCString, TObject);
 
-class PCString : TObject
+class TPWString : TObject
 {
-    DECLARE_DYNAMIC(PCString);
+    DECLARE_DYNAMIC(TPWString);
 };
-IMPLEMENT_DYNCREATE(PCString, TObject);
+IMPLEMENT_DYNCREATE(TPWString, TObject);
 
-class PWString : TObject
+class TLString : TObject
 {
-    DECLARE_DYNAMIC(PWString);
+    DECLARE_DYNAMIC(TLString);
 };
-IMPLEMENT_DYNCREATE(PWString, TObject);
+IMPLEMENT_DYNCREATE(TLString, TObject);
 
-class PPUINT32 : TObject
+class PPropertyName : TObject
 {
-    DECLARE_DYNAMIC(PPUINT32);
+    DECLARE_DYNAMIC(PPropertyName);
 };
-IMPLEMENT_DYNCREATE(PPUINT32, TObject);
+IMPLEMENT_DYNCREATE(PPropertyName, TObject);
 
-const TClass *PPropertyValue::TYPE_ARRAY     = &TGetClass(PArray);
-const TClass *PPropertyValue::TYPE_BOOL      = &TGetClass(PBool);
-const TClass *PPropertyValue::TYPE_FLOAT     = &TGetClass(PFloat);
-const TClass *PPropertyValue::TYPE_INT       = &TGetClass(PInt);
-const TClass *PPropertyValue::TYPE_PROPNAME  = &TGetClass(PPropName);
+class PPropertyValueArray : TObject
+{
+    DECLARE_DYNAMIC(PPropertyValueArray);
+};
+IMPLEMENT_DYNCREATE(PPropertyValueArray, TObject);
+
+}
+
+const TClass *PPropertyValue::TYPE_INT       = &TGetClass(ValueType::INT);
+const TClass *PPropertyValue::TYPE_UINT32    = &TGetClass(ValueType::UINT32);
+const TClass *PPropertyValue::TYPE_FLOAT     = &TGetClass(ValueType::FLOAT);
+const TClass *PPropertyValue::TYPE_BOOL      = &TGetClass(ValueType::BOOL);
+const TClass *PPropertyValue::TYPE_TPCSTRING = &TGetClass(ValueType::TPCString);
+const TClass *PPropertyValue::TYPE_TPWSTRING = &TGetClass(ValueType::TPWString);
+const TClass *PPropertyValue::TYPE_TLSTRING  = &TGetClass(ValueType::TLString);
+const TClass *PPropertyValue::TYPE_PROPNAME  = &TGetClass(ValueType::PPropertyName);
+const TClass *PPropertyValue::TYPE_ARRAY     = &TGetClass(ValueType::PPropertyValueArray);
 const TClass *PPropertyValue::TYPE_PROPS     = &TGetClass(PProperties);
-const TClass *PPropertyValue::TYPE_TLSTRING  = &TGetClass(PLString);
-const TClass *PPropertyValue::TYPE_TPCSTRING = &TGetClass(PCString);
-const TClass *PPropertyValue::TYPE_TPWSTRING = &TGetClass(PWString);
-const TClass *PPropertyValue::TYPE_UINT32    = &TGetClass(PPUINT32);
 const TClass *PPropertyValue::TYPE_UNDEF     = TNULL;
 
 PPropertyValue::PPropertyValue()
@@ -108,6 +112,7 @@ PPropertyValue::PPropertyValue(const PPropertyName &a_rPropname)
 PPropertyValue::PPropertyValue(PProperties *props)
 {
     m_type = TYPE_PROPS;
+    m_valueProps = TNULL;
     GetPropertiesMP() = props;
 }
 
@@ -178,8 +183,26 @@ TBOOL PPropertyValue::ChangeType(const TClass *a_pType)
     if (m_type == TYPE_TPCSTRING) {
         GetTPCString().~TPCString();
     }
+    else if (m_type == TYPE_PROPS) {
+        GetPropertiesMP().~TManagedPtr();
+    }
+    else if (m_type == TYPE_ARRAY) {
+        GetPropArrayMP().~TManagedPtr();
+    }
+    else if (m_type == TYPE_PROPNAME) {
+        delete m_valueName;
+    }
     if (a_pType == TYPE_TPCSTRING) {
         m_valueInt = 0;
+    }
+    else if (a_pType == TYPE_PROPS) {
+        m_valueProps = TNULL;
+    }
+    else if (a_pType == TYPE_ARRAY) {
+        m_valueArray = TNULL;
+    }
+    else if (a_pType == TYPE_PROPNAME) {
+        m_valueName = TNULL;
     }
     // TODO implement all types
     m_type = a_pType;

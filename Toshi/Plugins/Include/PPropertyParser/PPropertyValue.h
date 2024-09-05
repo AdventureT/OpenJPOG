@@ -83,12 +83,14 @@ protected:
     Toshi::TManagedPtr<PProperties> &GetPropertiesMP()
     {
         TASSERT(TYPE_PROPS == m_type);
-        return *(Toshi::TManagedPtr<PProperties> *)m_valueProps;
+        Toshi::TManagedPtr<PProperties> value(m_valueProps);
+        return value;
     }
     Toshi::TManagedPtr<PPropertyValueArray> &GetPropArrayMP()
     {
         TASSERT(TYPE_ARRAY == m_type);
-        return *(Toshi::TManagedPtr<PPropertyValueArray> *)m_valueArray;
+        Toshi::TManagedPtr<PPropertyValueArray> value(m_valueArray);
+        return value;
     }
 
 public:
@@ -105,16 +107,16 @@ public:
     }
 
 public:
-    static const Toshi::TClass *TYPE_ARRAY;
-    static const Toshi::TClass *TYPE_BOOL;
-    static const Toshi::TClass *TYPE_FLOAT;
     static const Toshi::TClass *TYPE_INT;
-    static const Toshi::TClass *TYPE_PROPNAME;
-    static const Toshi::TClass *TYPE_PROPS;
-    static const Toshi::TClass *TYPE_TLSTRING;
+    static const Toshi::TClass *TYPE_UINT32;
+    static const Toshi::TClass *TYPE_FLOAT;
+    static const Toshi::TClass *TYPE_BOOL;
     static const Toshi::TClass *TYPE_TPCSTRING;
     static const Toshi::TClass *TYPE_TPWSTRING;
-    static const Toshi::TClass *TYPE_UINT32;
+    static const Toshi::TClass *TYPE_TLSTRING;
+    static const Toshi::TClass *TYPE_PROPNAME;
+    static const Toshi::TClass *TYPE_ARRAY;
+    static const Toshi::TClass *TYPE_PROPS;
     static const Toshi::TClass *TYPE_UNDEF;
 
 private:
