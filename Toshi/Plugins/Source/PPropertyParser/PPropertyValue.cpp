@@ -3,74 +3,16 @@
 
 TOSHI_NAMESPACE_USING
 
-namespace ValueType {
-
-class INT : TObject
-{
-    DECLARE_DYNAMIC(INT);
-};
-IMPLEMENT_DYNCREATE(INT, TObject);
-
-class UINT32 : TObject
-{
-    DECLARE_DYNAMIC(UINT32);
-};
-IMPLEMENT_DYNCREATE(UINT32, TObject);
-
-class FLOAT : TObject
-{
-    DECLARE_DYNAMIC(FLOAT);
-};
-IMPLEMENT_DYNCREATE(FLOAT, TObject);
-
-class BOOL : TObject
-{
-    DECLARE_DYNAMIC(BOOL);
-};
-IMPLEMENT_DYNCREATE(BOOL, TObject);
-
-class TPCString : TObject
-{
-    DECLARE_DYNAMIC(TPCString);
-};
-IMPLEMENT_DYNCREATE(TPCString, TObject);
-
-class TPWString : TObject
-{
-    DECLARE_DYNAMIC(TPWString);
-};
-IMPLEMENT_DYNCREATE(TPWString, TObject);
-
-class TLString : TObject
-{
-    DECLARE_DYNAMIC(TLString);
-};
-IMPLEMENT_DYNCREATE(TLString, TObject);
-
-class PPropertyName : TObject
-{
-    DECLARE_DYNAMIC(PPropertyName);
-};
-IMPLEMENT_DYNCREATE(PPropertyName, TObject);
-
-class PPropertyValueArray : TObject
-{
-    DECLARE_DYNAMIC(PPropertyValueArray);
-};
-IMPLEMENT_DYNCREATE(PPropertyValueArray, TObject);
-
-}
-
-const TClass *PPropertyValue::TYPE_INT       = &TGetClass(ValueType::INT);
-const TClass *PPropertyValue::TYPE_UINT32    = &TGetClass(ValueType::UINT32);
-const TClass *PPropertyValue::TYPE_FLOAT     = &TGetClass(ValueType::FLOAT);
-const TClass *PPropertyValue::TYPE_BOOL      = &TGetClass(ValueType::BOOL);
-const TClass *PPropertyValue::TYPE_TPCSTRING = &TGetClass(ValueType::TPCString);
-const TClass *PPropertyValue::TYPE_TPWSTRING = &TGetClass(ValueType::TPWString);
-const TClass *PPropertyValue::TYPE_TLSTRING  = &TGetClass(ValueType::TLString);
-const TClass *PPropertyValue::TYPE_PROPNAME  = &TGetClass(ValueType::PPropertyName);
-const TClass *PPropertyValue::TYPE_ARRAY     = &TGetClass(ValueType::PPropertyValueArray);
-const TClass *PPropertyValue::TYPE_PROPS     = &TGetClass(PProperties);
+const TClass *PPropertyValue::TYPE_INT       = new Toshi::TClass("INT", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
+const TClass *PPropertyValue::TYPE_UINT32    = new Toshi::TClass("UINT32", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
+const TClass *PPropertyValue::TYPE_FLOAT     = new Toshi::TClass("FLOAT", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
+const TClass *PPropertyValue::TYPE_BOOL      = new Toshi::TClass("BOOL", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
+const TClass *PPropertyValue::TYPE_TPCSTRING = new Toshi::TClass("TPCString", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
+const TClass *PPropertyValue::TYPE_TPWSTRING = new Toshi::TClass("TPWString", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
+const TClass *PPropertyValue::TYPE_TLSTRING  = new Toshi::TClass("TLString", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
+const TClass *PPropertyValue::TYPE_PROPNAME  = new Toshi::TClass("PPropertyName", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
+const TClass *PPropertyValue::TYPE_ARRAY     = new Toshi::TClass("PPropertyValueArray", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
+const TClass *PPropertyValue::TYPE_PROPS     = new Toshi::TClass("PProperties", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
 const TClass *PPropertyValue::TYPE_UNDEF     = TNULL;
 
 PPropertyValue::PPropertyValue()
