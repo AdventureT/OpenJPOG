@@ -133,5 +133,5 @@ public:
 
 	PProperties *m_pParentProps;            // 0x8
 	Toshi::TQList<PProperty> m_oPropSet;    // 0xC
-	TINT m_iPropCount;                      //0x14
+	TINT m_iPropCount;                      // 0x14
 };

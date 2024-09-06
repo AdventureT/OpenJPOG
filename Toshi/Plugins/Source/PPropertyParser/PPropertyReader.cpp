@@ -36,19 +36,18 @@ TBOOL PPropertyReader::GetValue(PPropertyValue &a_rValue)
 	if (token.GetType() == Toshi::TFileLexer::TOKEN_OPENBRACE) {
 		PPropertyValueArray *values = new PPropertyValueArray(3);
 		m_pLexer->GetNextToken();
-		Toshi::TFileLexer::Token token2;
-		PPropertyValue *val;
 		do {
 			if (m_pLexer->PeekNextToken(0).GetType() == Toshi::TFileLexer::TOKEN_CLOSEBRACE) {
 				m_pLexer->GetNextToken();
-				break;
+				a_rValue = values;
+				return TTRUE;
 			}
 			values->m_oValues.Push(PPropertyValue());
-			if (!GetValue(values->m_oValues[values->m_oValues.GetNumElements()])) {
+			if (!GetValue(values->m_oValues[values->m_oValues.GetNumElements()-1])) {
 				return TFALSE;
 			}
-		} while (token2 = m_pLexer->GetNextToken(), token2.GetType() == Toshi::TFileLexer::TOKEN_COMMA);
-		if (token2.GetType() != Toshi::TFileLexer::TOKEN_CLOSEBRACE) {
+		} while (token = m_pLexer->GetNextToken(), token.GetType() == Toshi::TFileLexer::TOKEN_COMMA);
+		if (token.GetType() != Toshi::TFileLexer::TOKEN_CLOSEBRACE) {
 			Error("Expected a comma or close brace inside a list");
 			return TFALSE;
 		}
@@ -136,17 +135,17 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 		Toshi::TFileLexer::Token token = m_pLexer->PeekNextToken(0);
 		Toshi::TFileLexer::TokenType type = token.GetType();
 		if (type == Toshi::TFileLexer::TOKEN_CLOSEBRACE) {
-			if (m_oPropertyBlocks.GetNumElements() > 0) {
-				m_oPropertyBlocks.Pop();
+			if (m_oPropertyBlock.GetNumElements() > 0) {
+				m_oPropertyBlock.Pop();
 			}
 			m_pLexer->GetNextToken();
 			return TTRUE;
 		}
-		if (type == Toshi::TFileLexer::TOKEN_EOF && m_oPropertyBlocks.GetNumElements() != 0) {
-			PProperties propBlock = m_oPropertyBlocks.Pop();
+		if (type == Toshi::TFileLexer::TOKEN_EOF && m_oPropertyBlock.GetNumElements() != 0) {
+			PProperties propBlock = m_oPropertyBlock.End().Get();
 			Error(Toshi::TCString().Format("Unexpected end of file in middle of property block (started at line %d)"));
-			if (m_oPropertyBlocks.GetNumElements() > 0) {
-				m_oPropertyBlocks.Pop();
+			if (m_oPropertyBlock.GetNumElements() > 0) {
+				m_oPropertyBlock.Pop();
 			}
 			return TFALSE;
 		}
@@ -171,7 +170,7 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 		Toshi::TFileLexer::Token nextToken = m_pLexer->GetNextToken();
 		PProperties *prop;
 		if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_OPENBRACE) {
-			prop = m_oPropertyBlocks.Push(new PProperties());
+			prop = m_oPropertyBlock.Push(new PProperties());
 			prop->PutProperty(propertyName, PPropertyValue(prop), comment);
 			if (!LoadProperty(prop)) {
 				return TFALSE;
@@ -211,18 +210,17 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 TBOOL PPropertyReader::LoadPropertyBlock(PProperties &a_rProperty)
 {
 	TASSERT(m_pLexer != TNULL);
-	Toshi::TFileLexer::Token token = m_pLexer->PeekNextToken(0);
-	if (token.GetType() == Toshi::TFileLexer::TOKEN_EOF) {
+	if (m_pLexer->PeekNextToken(0).GetType() == Toshi::TFileLexer::TOKEN_EOF) {
 		return TFALSE;
 	}
+	m_oPropertyBlock.Clear();
 	return LoadProperty(&a_rProperty);
 }
 
 PProperties *PPropertyReader::LoadPropertyBlock()
 {
 	TASSERT(m_pLexer != TNULL);
-	Toshi::TFileLexer::Token token = m_pLexer->PeekNextToken(0);
-	if (token.GetType() == Toshi::TFileLexer::TOKEN_EOF) {
+	if (m_pLexer->PeekNextToken(0).GetType() == Toshi::TFileLexer::TOKEN_EOF) {
 		return TNULL;
 	}
 	PProperties *propertyBlock = new PProperties();

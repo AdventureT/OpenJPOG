@@ -80,17 +80,19 @@ public:
     }
 
 protected:
-    Toshi::TManagedPtr<PProperties> &GetPropertiesMP()
+    // Toshi::TManagedPtr<PProperties>
+    PProperties *GetPropertiesMP()
     {
         TASSERT(TYPE_PROPS == m_type);
-        Toshi::TManagedPtr<PProperties> value(m_valueProps);
-        return value;
+        //Toshi::TManagedPtr<PProperties> value(m_valueProps);
+        return m_valueProps;
     }
-    Toshi::TManagedPtr<PPropertyValueArray> &GetPropArrayMP()
+    // Toshi::TManagedPtr<PPropertyValueArray>
+    PPropertyValueArray *GetPropArrayMP()
     {
         TASSERT(TYPE_ARRAY == m_type);
-        Toshi::TManagedPtr<PPropertyValueArray> value(m_valueArray);
-        return value;
+        //Toshi::TManagedPtr<PPropertyValueArray> value(m_valueArray);
+        return m_valueArray;
     }
 
 public:

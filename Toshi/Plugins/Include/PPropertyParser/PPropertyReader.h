@@ -33,5 +33,5 @@ private:
 	Toshi::TFileLexerUTF8 *m_pLexer;              // 0x10
 	TBOOL m_bLoadComments;                        // 0x24
 	TBOOL m_bAssertOnError;                       // 0x25
-	Toshi::TArray<PProperties> m_oPropertyBlocks; // 0x28
+	Toshi::TArray<PProperties> m_oPropertyBlock; // 0x28
 };

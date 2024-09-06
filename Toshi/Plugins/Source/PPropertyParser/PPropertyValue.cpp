@@ -55,7 +55,7 @@ PPropertyValue::PPropertyValue(PProperties *props)
 {
     m_type = TYPE_PROPS;
     m_valueProps = TNULL;
-    GetPropertiesMP() = props;
+    m_valueProps = props;
 }
 
 PPropertyValue::PPropertyValue(const PPropertyValue &a_rOther)
@@ -66,6 +66,12 @@ PPropertyValue::PPropertyValue(const PPropertyValue &a_rOther)
 
 PPropertyValue::~PPropertyValue()
 {
+    if (m_type == TYPE_TPCSTRING) {
+        GetTPCString().~TPCString();
+    }
+    else if (m_type == TYPE_PROPS) {
+        delete GetPropertiesMP();
+    }
 }
 
 void PPropertyValue::Assign(const PPropertyValue &a_rValue)
@@ -87,7 +93,7 @@ void PPropertyValue::Assign(const PPropertyValue &a_rValue)
         m_valueBool = a_rValue.GetBoolean();
     }
     else if (m_type == TYPE_PROPS) {
-        TManagedPtr<PProperties> props = GetPropertiesMP();
+        PProperties *props = GetPropertiesMP();
         PProperties *otherProps = a_rValue.m_type == TYPE_PROPS ? a_rValue.m_valueProps : TNULL;
         if (props != otherProps) {
             if (props) {
@@ -103,7 +109,7 @@ void PPropertyValue::Assign(const PPropertyValue &a_rValue)
         m_valueName = new PPropertyName(a_rValue.GetPropertyName());
     }
     else if (m_type == TYPE_ARRAY) {
-        TManagedPtr<PPropertyValueArray> arr = GetPropArrayMP();
+        PPropertyValueArray *arr = GetPropArrayMP();
         PPropertyValueArray *otherArr = a_rValue.GetArray();
         if (arr != otherArr) {
             if (arr) {
@@ -126,10 +132,10 @@ TBOOL PPropertyValue::ChangeType(const TClass *a_pType)
         GetTPCString().~TPCString();
     }
     else if (m_type == TYPE_PROPS) {
-        GetPropertiesMP().~TManagedPtr();
+        delete GetPropertiesMP();
     }
     else if (m_type == TYPE_ARRAY) {
-        GetPropArrayMP().~TManagedPtr();
+        delete GetPropArrayMP();
     }
     else if (m_type == TYPE_PROPNAME) {
         delete m_valueName;
@@ -271,7 +277,7 @@ const PPropertyName &PPropertyValue::GetPropertyName() const
 void PPropertyValue::SetArray(PPropertyValueArray *a_pArray)
 {
     ChangeType(TYPE_ARRAY);
-    GetPropArrayMP() = a_pArray;
+    m_valueArray = a_pArray;
 }
 
 PPropertyValueArray::PPropertyValueArray()
