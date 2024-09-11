@@ -1,4 +1,4 @@
-"Name","Location","Function Signature","Function Size"
+"Name","Location","FunctionSignature","FunctionSize"
 "TNativeFileSystem","10006200","undefined TNativeFileSystem(TNativeFileSystem * this\, char * param_1)","109"
 "~TNativeFileSystem","10006270","void ~TNativeFileSystem(TNativeFileSystem * this)","94"
 "CreateFile","100062d0","TFile * CreateFile(TNativeFileSystem * this\, TCString * param_1\, uint param_2)","104"
