@@ -2,6 +2,8 @@
 # Common math functions
 #
 #fmod
+100320ae
+#log
 100320b4
 #pow
 100320ba
