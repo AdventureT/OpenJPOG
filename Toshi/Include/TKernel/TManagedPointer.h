@@ -13,9 +13,9 @@ public:
 
     }
 
-    TManagedPtr(T* a_pObject)
+    TManagedPtr(T &a_pObject)
     {
-        m_pObject = a_pObject;
+        m_pObject = &a_pObject;
     }
 
     ~TManagedPtr() 
@@ -23,9 +23,9 @@ public:
         delete m_pObject; 
     }
 
-    T* operator=(T* a_pObject)
+    T* operator=(T &a_pObject)
     {
-        m_pObject = a_pObject;
+        m_pObject = &a_pObject;
         return m_pObject;
     }
 

@@ -91,7 +91,7 @@ protected:
     PPropertyValueArray *GetPropArrayMP()
     {
         TASSERT(TYPE_ARRAY == m_type);
-        //Toshi::TManagedPtr<PPropertyValueArray> value(m_valueArray);
+        //Toshi::TManagedPtr<PPropertyValueArray> &value(*m_valueArray);
         return m_valueArray;
     }
 

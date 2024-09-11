@@ -11,7 +11,8 @@ public:
 
 	void Close();
 
-	void Error(const Toshi::TCString& a_sMsg);
+	void Error(const Toshi::TCString &a_sMsg);
+	void Error(const Toshi::TFileLexer::Token &a_rToken, const Toshi::TCString &a_sMsg);
 
 	TBOOL GetValue(PPropertyValue &a_rValue);
 	PPropertyValue Token2Value(const Toshi::TFileLexer::Token &a_rToken);

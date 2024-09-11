@@ -28,6 +28,14 @@ void PPropertyReader::Error(const Toshi::TCString& a_sMsg)
 	}
 }
 
+void PPropertyReader::Error(const Toshi::TFileLexer::Token &a_rToken, const Toshi::TCString &a_sMsg)
+{
+	TDPRINTF("%s(%d) : error: %s\n", m_szFileName.GetString(), a_rToken.GetLine(), a_sMsg.GetString());
+	if (m_bAssertOnError) {
+		TASSERT(!"PPropertyReader::Error()");
+	}
+}
+
 TBOOL PPropertyReader::GetValue(PPropertyValue &a_rValue)
 {
 	TASSERT(m_pLexer != TNULL);
@@ -42,8 +50,7 @@ TBOOL PPropertyReader::GetValue(PPropertyValue &a_rValue)
 				a_rValue = values;
 				return TTRUE;
 			}
-			values->m_oValues.Push(PPropertyValue());
-			if (!GetValue(values->m_oValues[values->m_oValues.GetNumElements()-1])) {
+			if (!GetValue(*values->m_oValues.Push(PPropertyValue()))) {
 				return TFALSE;
 			}
 		} while (token = m_pLexer->GetNextToken(), token.GetType() == Toshi::TFileLexer::TOKEN_COMMA);
@@ -82,7 +89,7 @@ TBOOL PPropertyReader::GetValue(PPropertyValue &a_rValue)
 			m_pLexer->GetNextToken();
 			a_rValue = Token2Value(token);
 			if (!a_rValue.IsDefined()) {
-				Error("Expected a value");
+				Error(token, "Expected a value");
 				return TFALSE;
 			}
 		}
@@ -142,7 +149,7 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 			return TTRUE;
 		}
 		if (type == Toshi::TFileLexer::TOKEN_EOF && m_oPropertyBlock.GetNumElements() != 0) {
-			PProperties propBlock = m_oPropertyBlock.End().Get();
+			//PProperties::PProperty &prop = m_oPropertyBlock.End().Get();
 			Error(Toshi::TCString().Format("Unexpected end of file in middle of property block (started at line %d)"));
 			if (m_oPropertyBlock.GetNumElements() > 0) {
 				m_oPropertyBlock.Pop();
@@ -168,10 +175,10 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 		}
 		PPropertyName propertyName = PPropertyName(name, subName);
 		Toshi::TFileLexer::Token nextToken = m_pLexer->GetNextToken();
-		PProperties *prop;
 		if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_OPENBRACE) {
-			prop = m_oPropertyBlock.Push(new PProperties());
-			prop->PutProperty(propertyName, PPropertyValue(prop), comment);
+			m_oPropertyBlock.Push(a_pProperty);
+			PProperties *prop = new PProperties(a_pProperty);
+			a_pProperty->PutProperty(propertyName, PPropertyValue(prop), comment);
 			if (!LoadProperty(prop)) {
 				return TFALSE;
 			}
@@ -179,18 +186,18 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 		else if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_DOT) {
 			const PPropertyValue *val = a_pProperty->GetProperty(propertyName);
 			if (!val) {
-				a_pProperty->PutProperty(propertyName, PPropertyValue(new PProperties()));
+				a_pProperty->PutProperty(propertyName, PPropertyValue(new PProperties(a_pProperty)), comment);
 			}
 			else {
 				a_pProperty = val->GetProperties();
 			}
 		}
 		else if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_SEMI) {
-			a_pProperty->PutProperty(propertyName, PPropertyValue());
+			a_pProperty->PutProperty(propertyName, PPropertyValue(), comment);
 		}
 		else {
 			if (nextToken.GetType() != Toshi::TFileLexer::TOKEN_EQUAL) {
-				Error(Toshi::TCString().Format("Unexpected operator after property '%s'", propertyName.GetString().GetCString().GetString()));
+				Error(Toshi::TCString().Format("Unexpected operator after property '%s'", propertyName.GetString()->GetString()));
 				return TFALSE;
 			}
 			PPropertyValue value;
@@ -198,13 +205,14 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 				return TFALSE;
 			}
 			a_pProperty->PutProperty(propertyName, value, comment);
-			if (!m_pLexer->Expect(Toshi::TFileLexer::TOKEN_SEMI)) {
-				Error(Toshi::TCString().Format("Expected semicolon at end of property assignment"));
+			Toshi::TFileLexer::Token semi;
+			if (!m_pLexer->Expect(Toshi::TFileLexer::TOKEN_SEMI, semi)) {
+				Error(semi, Toshi::TCString().Format("Expected semicolon at end of property assignment"));
 				return TFALSE;
 			}
 		}
 	} while (true);
-	return TFALSE;
+	return TTRUE;
 }
 
 TBOOL PPropertyReader::LoadPropertyBlock(PProperties &a_rProperty)

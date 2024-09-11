@@ -1,0 +1,19 @@
+projects
+{
+    "TKernelInterface"
+    {
+        "functions"     "Tools/ProgressCalculation/TKernelInterface/functions.csv"
+        "ignore"        "Tools/ProgressCalculation/TKernelInterface/ignorelist.txt"
+        "svgtemplate"   "Tools/ProgressCalculation/TKernelInterface/template.svg"
+
+        "files"
+        {
+            "extension" ".cpp"
+            "extension" ".hpp"
+            "extension" ".c"
+            "extension" ".h"
+            "directory" "Toshi/Include/TKernel"
+            "directory" "Toshi/Source/TKernel"
+        }
+    }
+}

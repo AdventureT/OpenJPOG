@@ -15,6 +15,7 @@ public:
 	
 	friend TCString TKERNELINTERFACE_EXPORTS TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS);
 
+	// $TKernelInterface: FUNCTION 1000a5a0 COMPLETED
 	TCString()
 	{
 		Reset();
