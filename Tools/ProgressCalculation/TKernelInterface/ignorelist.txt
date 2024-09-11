@@ -1,0 +1,15 @@
+#
+# Common math functions
+#
+#fmod
+100320b4
+#pow
+100320ba
+#exp
+100320c0
+#atan
+100320c6
+#acos
+100320cc
+#asin
+100320d2
