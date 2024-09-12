@@ -1,4 +1,4 @@
-"Name","Location","Function Signature","Function Size"
+"Name","Location","FunctionSignature","FunctionSize"
 "PProperties","10001090","undefined PProperties(PProperties * this)","41"
 "PProperties","100010c0","undefined PProperties(PProperties * this\, PProperties * param_1)","54"
 "~PProperties","10001100","void ~PProperties(PProperties * this)","284"
