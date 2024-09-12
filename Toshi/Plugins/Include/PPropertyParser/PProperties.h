@@ -68,12 +68,13 @@ public:
 		Toshi::TPCString m_sComment; // 0x1C
 	};
 
+	// $PPropertyParser: FUNCTION 10001090
 	PProperties()
 	{
 		m_pParentProps = TNULL;
 		m_iPropCount = 0;
 	}
-
+	// $PPropertyParser: FUNCTION 100010c0
 	PProperties(PProperties *a_pParentProps)
 	{
 		m_pParentProps = a_pParentProps;
