@@ -16,4 +16,20 @@ projects
             "directory" "Toshi/Source/TKernel"
         }
     }
+	"PPropertyParser"
+    {
+        "functions"     "Tools/ProgressCalculation/PPropertyParser/functions.csv"
+        "ignore"        "Tools/ProgressCalculation/PPropertyParser/ignorelist.txt"
+        "svgtemplate"   "Tools/ProgressCalculation/PPropertyParser/template.svg"
+
+        "files"
+        {
+            "extension" ".cpp"
+            "extension" ".hpp"
+            "extension" ".c"
+            "extension" ".h"
+            "directory" "Toshi/Plugins/Include/PPropertyParser"
+            "directory" "Toshi/Plugins/Source/PPropertyParser"
+        }
+    }
 }
