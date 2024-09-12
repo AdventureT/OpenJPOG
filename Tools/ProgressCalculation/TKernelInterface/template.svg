@@ -3,6 +3,9 @@
 
     <g clip-path="url(#clip0_170_45)">
         <rect width="1280" height="640" fill="url(#pattern0_170_45)" />
+        <text fill="white" x="50%" y="70"
+                style="font-family: monospace;font-size: 36px;"
+                dominant-baseline="middle" text-anchor="middle">{PROJECT}</text>
         <rect x="400" y="460" width="{BAR:480}" height="26" fill="#E56E00" />
         <rect x="398" y="458" width="484" height="29.9419" rx="6" fill="white" fill-opacity="0.2" stroke="white" stroke-width="4" />
         <g filter="url(#filter0_d_170_45)">
