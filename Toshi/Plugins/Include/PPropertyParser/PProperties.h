@@ -18,42 +18,54 @@ public:
 		DECLARE_FREELIST(PProperty)
 		  
 	public:
+		// $PPropertyParser: FUNCTION 10001e30 COMPLETED
 		PProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue)
 		{
 			m_oName = PPropertyName(a_rName);
 			m_oValue = PPropertyValue(a_rValue);
 		}
+		// $PPropertyParser: FUNCTION 10001e70 COMPLETED
 		PProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment)
 			: PProperty(a_rName, a_rValue)
 		{
 			m_sComment = a_rComment;
 		}
+		// $PPropertyParser: FUNCTION 10002910 COMPLETED
+		~PProperty()
+		{
 
+		}
+		// $PPropertyParser: FUNCTION 100029b0 COMPLETED
 		void SetComment(const Toshi::TPCString &a_rComment)
 		{
 			m_sComment = a_rComment;
 		}
+		// $PPropertyParser: FUNCTION 10002a20 COMPLETED
 		void SetLine(TINT a_iLine) 
 		{ 
 			m_iLine = a_iLine; 
 		}
+		// $PPropertyParser: FUNCTION 10002a30 COMPLETED
 		void SetValue(const PPropertyValue &a_rValue)
 		{
 			m_oValue = a_rValue;
 		}
-
+		// $PPropertyParser: FUNCTION 100029f0 COMPLETED
 		Toshi::TPCString GetComment() const 
 		{ 
 			return m_sComment; 
 		}
+		// $PPropertyParser: FUNCTION 10002a10 COMPLETED
 		TINT GetLine() const 
 		{ 
 			return m_iLine; 
 		}
+		// $PPropertyParser: FUNCTION 10002a60 COMPLETED
 		const PPropertyName &GetName() const 
 		{ 
 			return m_oName; 
 		}
+		// $PPropertyParser: FUNCTION 10002a50 COMPLETED
 		const PPropertyValue &GetValue() const 
 		{ 
 			return m_oValue; 

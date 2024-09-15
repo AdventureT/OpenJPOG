@@ -22,35 +22,35 @@ public:
 		AllocBuffer(0);
 	}
 
-        // $TKernelInterface: FUNCTION 1000a5d0 COMPLETED
+    // $TKernelInterface: FUNCTION 1000a5d0 COMPLETED
 	TCString(TINT a_iLength)
 	{
 		Reset();
 		AllocBuffer(a_iLength);
 	}
 
-        // $TKernelInterface: FUNCTION 1000b9f0 COMPLETED
+    // $TKernelInterface: FUNCTION 1000b9f0 COMPLETED
 	TCString(const TCString &a_rOther)
 	{
 		Reset();
 		Copy(a_rOther);
 	}
 
-        // $TKernelInterface: FUNCTION 1000b9c0 COMPLETED
+    // $TKernelInterface: FUNCTION 1000b9c0 COMPLETED
 	TCString(const TWString &a_rOther)
 	{
 		Reset();
 		Copy(a_rOther);
 	}
 
-        // $TKernelInterface: FUNCTION 1000ba50 COMPLETED
+    // $TKernelInterface: FUNCTION 1000ba50 COMPLETED
 	TCString(TPCCHAR a_pcString)
 	{
 		Reset();
 		Copy(a_pcString);
 	}
 
-        // $TKernelInterface: FUNCTION 1000b9b0 COMPLETED
+    // $TKernelInterface: FUNCTION 1000b9b0 COMPLETED
 	~TCString()
 	{
 		FreeBuffer();
