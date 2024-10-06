@@ -93,29 +93,35 @@ public:
 		m_iPropCount = 0;
 	}
 
+	// $PPropertyParser: FUNCTION 10002b50
 	Toshi::TQList<PProperty>::Iterator Begin() const
 	{
 		return m_oPropSet.Begin();
 	}
+	// $PPropertyParser: FUNCTION 10002b10
 	TBOOL IsEmpty() const
 	{
 		return m_oPropSet.IsEmpty();
 	}
-
+	// $PPropertyParser: FUNCTION 10002b20
 	TINT GetPropertyCount() const
 	{
 		return m_iPropCount;
 	}
+	// $PPropertyParser: FUNCTION 10002af0
 	Toshi::TQList<PProperty> &GetPropertySet()
 	{
 		return m_oPropSet;
 	}
+	// $PPropertyParser: FUNCTION 10002b00
 	const Toshi::TQList<PProperty> &GetPropertySet() const
 	{
 		return m_oPropSet;
 	}
 
+	// $PPropertyParser: FUNCTION 10001560
 	const PPropertyValue *GetProperty(const PPropertyName &a_rPropertyName) const;
+	// $PPropertyParser: FUNCTION 10001610
 	const PPropertyValue *GetProperty(const Toshi::TPCString &a_rPropertyName, TINT a_iIndex) const;
 	const PPropertyValue *GetProperty(const Toshi::TPCString &a_rPropertyName, const Toshi::TPCString &a_rPropertySubname) const;
 	const PPropertyValue *GetProperty(const Toshi::TPCString &a_rPropertyName) const;
