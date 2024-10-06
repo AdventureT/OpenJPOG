@@ -202,39 +202,6 @@ public:
 		TINT m_iLine;                 // 0x8        
 	};
 
-	struct LookaheadTokens
-	{
-	public:
-		Token* GetTokens()
-		{
-			return (Token*)(this + 1);
-		}
-
-		// That's crazy but they probably did that too
-		static LookaheadTokens* Allocate(int a_iCount = 1)
-		{
-			LookaheadTokens* ltokens = (LookaheadTokens*)::operator new (sizeof(LookaheadTokens) + sizeof(Token) * a_iCount);
-			ltokens->m_iCount = a_iCount;
-			for (TINT i = 0; i < a_iCount; i++) {
-				new (&ltokens->GetTokens()[i]) Token();
-			}
-			return ltokens;
-		}
-
-		static void Free(Token* a_pHeadToken)
-		{
-			delete FromToken(a_pHeadToken);
-		}
-
-		static LookaheadTokens* FromToken(Token* a_pHeadToken)
-		{
-			return (LookaheadTokens*)((TUINT*)a_pHeadToken - sizeof(LookaheadTokens));
-		}
-
-	public:
-		int m_iCount;
-	};
-
 private:
 	TBOOL ComputePreprocessorAllow();
 public:

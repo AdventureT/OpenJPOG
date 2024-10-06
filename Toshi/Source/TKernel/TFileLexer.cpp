@@ -67,7 +67,7 @@ TFileLexer::TFileLexer()
 	m_iLine = 0;
 	m_iTokenLookaheadSize = 1;
 	m_iTokenLookaheadMask = 1;
-	m_pLookaheadTokens = LookaheadTokens::Allocate()->GetTokens();
+	m_pLookaheadTokens = new Token();
 	m_iTokenLookaheadBuffered = 0;
 	m_iTokenLookaheadFront = 0;
 	m_iTokenLookaheadBack = 0;
@@ -96,7 +96,7 @@ TFileLexer::TFileLexer(TFile* a_pFile, TINT a_iTokenLookaheadSize)
 	m_iLine = 0;
 	m_iTokenLookaheadSize = 1;
 	m_iTokenLookaheadMask = 1;
-	m_pLookaheadTokens = LookaheadTokens::Allocate(a_iTokenLookaheadSize)->GetTokens();
+	m_pLookaheadTokens = new Token[a_iTokenLookaheadSize];
 	m_iTokenLookaheadBuffered = 0;
 	m_iTokenLookaheadFront = 0;
 	m_iTokenLookaheadBack = 0;
