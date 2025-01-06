@@ -20,7 +20,6 @@ class TRENDERINTERFACE_EXPORTS TRenderInterface : public TObject
 
 public:
 
-
 	enum FLAG
 	{
 		FLAG_DIRTY = BITFIELD(0),

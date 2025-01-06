@@ -102,7 +102,7 @@ public:
 	{
 		return TFALSE;
 	}
-
+	// $JPOG: FUNCTION 006d73d0
 	virtual TBOOL Render_BackBufferBlit()
 	{
 		return TFALSE;

@@ -29,6 +29,12 @@ public:
 
 	void SetDebugSlowTime(TBOOL a_bEnable) { m_fDebugSlowTime = a_bEnable ? 0.01f : 1.0f; }
 
+	// $TKernelInterface: FUNCTION 1002d690
+	TKernelInterface* GetKernelInterface()
+	{
+		return m_pKernel;
+	}
+
 private:
 	void DestroyTaskRecurse(TTask *a_pTask);
 	void UpdateActiveTasks(TTask *a_pTask);
