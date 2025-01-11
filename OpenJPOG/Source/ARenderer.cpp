@@ -31,10 +31,10 @@ TBOOL ARenderer::OnCreate()
 TBOOL ARenderer::OnUpdate(TFLOAT a_fDeltaTime)
 {
 	UpdateMovie(a_fDeltaTime);
-	TKernelInterface *kernel = GetScheduler()->GetKernelInterface();
-	if (!kernel) {
-		return false;
-	}
+	//TKernelInterface *kernel = GetScheduler()->GetKernelInterface();
+	//if (!kernel) {
+	//	return false;
+	//}
 	MoviePlayerState state = RenderMovie(a_fDeltaTime);
 	if (state != MOVIEPLAYERSTATE_RUNNING) {
 		// Render things

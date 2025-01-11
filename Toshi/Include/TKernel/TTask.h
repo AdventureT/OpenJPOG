@@ -5,7 +5,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TScheduler;
+//class TScheduler;
 
 class TKERNELINTERFACE_EXPORTS TTask : public TObject, public TNodeTree<TTask>::TNode
 {
@@ -22,9 +22,11 @@ class TKERNELINTERFACE_EXPORTS TTask : public TObject, public TNodeTree<TTask>::
 
 public:
 
+	// $TKernelInterface: FUNCTION 1002e7a0 INCOMPLETE
 	TTask()
 	{
 		m_Flags = 0;
+		m_pScheduler = TNULL;
 	}
 
 	virtual TBOOL Create();

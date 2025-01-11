@@ -19,6 +19,7 @@ public:
 	virtual ~TScheduler()
 	{
 		TDPRINTF("Destroying TScheduler.\n");
+		DestroyAllTasks();
 	}
 
 	TTask* CreateTask(TClass const& a_rTaskClass, TTask* a_pTask);

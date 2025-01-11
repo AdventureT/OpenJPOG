@@ -5,15 +5,30 @@ AApplication g_oTheApp;
 
 TBOOL AApplication::OnCreate(TINT argc, TPCHAR* const argv)
 {
-	m_pInputTask = (ADummyTask*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ADummyTask), TNULL);
-	m_pInputTask->Create();
-	m_pInputTask->Activate(TTRUE);
-	m_pInputTask->SetName((TPCHAR)"InputTask");
+	m_pRenderTask = (ADummyTask*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ADummyTask), TNULL);
+	m_pRenderTask->Create();
+	m_pRenderTask->Activate(TTRUE);
+	m_pRenderTask->SetName((TPCHAR)"RenderTask");
+
+	m_pUpdate3Task = (ADummyTask*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ADummyTask), TNULL);
+	m_pUpdate3Task->Create();
+	m_pUpdate3Task->Activate(TTRUE);
+	m_pUpdate3Task->SetName((TPCHAR)"Update3");
 
 	m_pUpdate2Task = (ADummyTask*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ADummyTask), TNULL);
 	m_pUpdate2Task->Create();
 	m_pUpdate2Task->Activate(TTRUE);
 	m_pUpdate2Task->SetName((TPCHAR)"Update2");
+
+	m_pUpdate1Task = (ADummyTask*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ADummyTask), TNULL);
+	m_pUpdate1Task->Create();
+	m_pUpdate1Task->Activate(TTRUE);
+	m_pUpdate1Task->SetName((TPCHAR)"Update1");
+
+	m_pInputTask = (ADummyTask*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ADummyTask), TNULL);
+	m_pInputTask->Create();
+	m_pInputTask->Activate(TTRUE);
+	m_pInputTask->SetName((TPCHAR)"InputTask");
 
 	m_pRootTask = (ARootTask*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ARootTask), m_pUpdate2Task);
 	if (m_pRootTask) {

@@ -40,10 +40,12 @@ TBOOL ARootTask::OnCreate()
 
 void ARootTask::OnDestroy()
 {
+	TTask::OnDestroy();
 }
 
 void ARootTask::OnChildDied(TClass* a_pClass, TTask* a_pDeletedTask)
 {
+	TTask::OnChildDied(a_pClass, a_pDeletedTask);
 }
 
 void ARootTask::OnActivate()
@@ -54,10 +56,18 @@ void ARootTask::OnActivate()
 	if (GetARenderer()) {
 		GetARenderer()->Activate(TTRUE);
 	}
+	TTask::OnActivate();
 }
 
 void ARootTask::OnDeactivate()
 {
+	if (GetRootStateController()) {
+		GetRootStateController()->Activate(TFALSE);
+	}
+	if (GetARenderer()) {
+		GetARenderer()->Activate(TFALSE);
+	}
+	TTask::OnDeactivate();
 }
 
 void ARootTask::LoadFrontEndController()

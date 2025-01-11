@@ -32,5 +32,5 @@ TBOOL AFrontEndSplashState::OnUpdate(TFLOAT a_fDeltaTime)
 		}
 	}
 
-	return TBOOL();
+	return ARootState::OnUpdate(a_fDeltaTime);
 }

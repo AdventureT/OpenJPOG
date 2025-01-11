@@ -2,6 +2,7 @@
 #include "TKernel/TTask.h"
 #include "TRender/TViewport.h"
 #include "TKernel/TMatrix44.h"
+#include "TRender/TRenderCapture.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -19,7 +20,9 @@ class ARenderer : public TTask
 	{
 		CAPTURESTATE_CREATE,
 		CAPTURESTATE_POLL,
-		CAPTURESTATE_FINISHED
+		CAPTURESTATE_FINISHED,
+		CAPTURESTATE_READY,
+		CAPTURESTATE_FAILED
 	};
 
 public:

@@ -161,7 +161,7 @@ void TScheduler::DestroyTask(TTask& a_rTask)
 {
 	if (!a_rTask.IsDying()) {
 		a_rTask.m_Flags |= TTask::State_Dying;
-		DestroyTaskRecurse(&a_rTask);
+		DestroyTaskRecurse(a_rTask.Child());
 	}
 }
 

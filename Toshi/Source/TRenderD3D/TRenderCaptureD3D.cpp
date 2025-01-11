@@ -40,7 +40,10 @@ TBOOL TRenderCaptureD3D::Request()
 		rect.right = pMode->GetWidth();
 		rect.bottom = pMode->GetHeight();
 	}
+	m_pBuffer = new TCHAR[m_iHeight * m_iWidth * 4];
+	TSystem::MemSet(m_pBuffer, -1, m_iHeight * m_iWidth * 4);
 	TWARNING("Implement TRenderCaptureD3D::Request!");
+	return false;
 }
 
 TBOOL TRenderCaptureD3D::Wait()
