@@ -124,6 +124,8 @@ public:
 
 	TBOOL IsCreated() { return m_bIsCreated; }
 	TBOOL IsDisplayCreated() { return m_bIsDiplayCreated; }
+	// $TRenderInterface: FUNCTION 1000f230
+	TBOOL IsInScene() { return m_bInScene; }
 	TNodeList<TRenderAdapter>* GetAdapterList() { return &m_pAdapterList; };
 
 	static TRenderInterface* TOSHI_API GetRenderer() { return s_Interface; }
@@ -138,7 +140,7 @@ private:
 	static TRenderInterface* s_Interface;
 protected:
 
-
+	TBOOL m_bInScene;                                // 0x8
 	TBOOL m_bIsCreated;                              // 0x9
 	TBOOL m_bIsDiplayCreated;                        // 0xA
 	TRenderContext* m_pCurrentRenderContext;         // 0x1C
@@ -147,7 +149,8 @@ protected:
 	TResource* m_aSysResources[SYSRESOURCES_NUMOF];  // 0x28
 	TNodeList<TRenderAdapter> m_pAdapterList;        // 0xFC
 	TINT m_iResourceCount;                           // 0x124
-	TNodeTree<TResource> m_Resources;                // 0x128
+	TNodeTree<TResource> m_Resources;                // 0x128???
+	TINT m_iSceneCount;                              // 0x128
 	TBOOL m_bHasDyingResources;                      // 0x12C
 };
 

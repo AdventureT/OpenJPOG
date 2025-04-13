@@ -1,0 +1,9 @@
+#include "TGUIDeserialisable.h"
+
+TOSHI_NAMESPACE_BEGIN
+
+IMPLEMENT_DYNAMIC(TGUIDeserialisable, TObject);
+
+
+
+TOSHI_NAMESPACE_END

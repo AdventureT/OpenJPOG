@@ -35,7 +35,7 @@ public:
 	// $JPOG: 0046e4a0 FUNCTION
 	Toshi::TLString GetHintMessage()
 	{
-		return *m_LSHintMessage.m_pObject;
+		return m_LSHintMessage;
 	}
 	// $JPOG: 0046e520 FUNCTION
 	HUDComponents GetHUD()
@@ -54,8 +54,8 @@ public:
 	}
 
 private:
-	Toshi::TManagedPtr<Toshi::TLString> m_LSHintMessage; // 0x4
-	HUDComponents m_eHUDComponents;                      // 0x8
-	Toshi::TCString m_szBKGMatLib;                       // 0x2C
+	Toshi::TLString m_LSHintMessage; // 0x4
+	HUDComponents m_eHUDComponents;  // 0x8
+	Toshi::TCString m_szBKGMatLib;   // 0x2C
 };
 

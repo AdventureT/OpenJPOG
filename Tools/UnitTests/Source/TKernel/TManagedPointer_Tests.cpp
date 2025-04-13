@@ -8,15 +8,13 @@ struct Test
 	int m_iTest;
 };
 
-/* Disable this unittest until we fixed it (compiler error)
 TEST_CASE("Test Managed Pointer", "[TManagedPtr]")
 {
-	Test* test = new Test;
-	{
-		TManagedPtr<Test> testptr(test);
-	}
-
-	// Ensure that the pointer is not 0xCC (freed memory)
-	REQUIRE(TDebug::IsValidAddress(test));
+	TManagedPtr<Test> testptr(new Test{1});
+	REQUIRE(testptr->m_iTest == 1);
+	REQUIRE(testptr.GetRefCount() == 1);
+	TManagedPtr<Test> testptr2 = testptr;
+	REQUIRE(testptr->m_iTest == 1);
+	REQUIRE(testptr.GetRefCount() == 2);
+	REQUIRE(testptr2.GetRefCount() == 1);
 }
-*/

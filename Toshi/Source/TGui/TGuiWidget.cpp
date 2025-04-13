@@ -1,0 +1,9 @@
+#include "TGUIWidget.h"
+
+TOSHI_NAMESPACE_BEGIN
+
+IMPLEMENT_DYNAMIC(TGUIWidget, TGUIDeserialisable);
+
+
+
+TOSHI_NAMESPACE_END

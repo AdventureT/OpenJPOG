@@ -39,6 +39,11 @@ void TOSHI_API TRenderD3DInterface::TD3DAssert(HRESULT a_hr, TPCCHAR a_pError)
 	}
 }
 
+TRenderD3DInterface::~TRenderD3DInterface()
+{
+	Destroy();
+}
+
 TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams& a_rParams)
 {
 	TASSERT(TTRUE == IsCreated());
@@ -52,100 +57,107 @@ TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams& 
 	m_oDisplayParams = a_rParams;
 	TASSERT(m_pCurrentDevice != TNULL);
 
-	if (m_pCurrentDevice) {
-
-		TRenderInterface::DisplayParams* pDisplayParams = GetCurrentDisplayParams();
-
-		RECT clientRect;
-		GetClientRect(GetDesktopWindow(), &clientRect);
-
-		if (2000 < clientRect.right) {
-			clientRect.right /= 2;
-		}
-
-		TUINT32 uiWindowPosX = 0;
-		TUINT32 uiWindowPosY = 0;
-
-		if (pDisplayParams->bWindowed) {
-			TRenderAdapter::Mode* pMode = GetCurrentDevice()->GetMode();
-			uiWindowPosX = (clientRect.right - pMode->GetWidth()) / 2;
-			uiWindowPosY = (clientRect.bottom - pMode->GetHeight()) / 2;
-		}
-
-		TSystem::MemSet(&m_oPresentParams, 0, sizeof(m_oPresentParams));
-		m_oPresentParams.Windowed = pDisplayParams->bWindowed;
-		m_oPresentParams.BackBufferCount = 1;
-		m_oPresentParams.MultiSampleType = D3DMULTISAMPLE_NONE;
-		m_oPresentParams.SwapEffect = D3DSWAPEFFECT_DISCARD;
-		m_oPresentParams.EnableAutoDepthStencil = TRUE;
-		m_oPresentParams.hDeviceWindow = GetMSWindow()->GetHWND();
-		m_oPresentParams.AutoDepthStencilFormat = TD3DAdapter::Mode::Device::DEPTHSTENCILFORMATS[pDisplayParams->eDepthStencilFormat];
-		m_oPresentParams.BackBufferWidth = pDisplayParams->uiWidth;
-		m_oPresentParams.BackBufferHeight = pDisplayParams->uiHeight;
-
-		auto pDevice = TSTATICCAST(TD3DAdapter::Mode::Device*, GetCurrentDevice());
-		auto pMode = TSTATICCAST(TD3DAdapter::Mode*, pDevice->GetMode());
-		auto pAdapter = TSTATICCAST(TD3DAdapter*, pMode->GetAdapter());
-		auto uiAdapterIndex = pAdapter->GetAdapterIndex();
-
-		if (pDisplayParams->bWindowed) {
-			m_oPresentParams.BackBufferFormat = pMode->GetD3DDisplayMode().Format;
-		}
-		else {
-			m_oPresentParams.BackBufferFormat = pMode->GetBackBufferFormat(pDisplayParams->uiColourDepth);
-		}
-
-		HRESULT hRes = GetD3DInterface()->CreateDevice(
-			uiAdapterIndex,
-			TD3DAdapter::Mode::Device::DEVICETYPES[pDevice->GetDeviceIndex()],
-			GetMSWindow()->GetHWND(),
-			pDevice->GetD3DDeviceFlags(),
-			&m_oPresentParams,
-			&m_pD3DDevice
-		);
-
-		if (FAILED(hRes)) {
-			TD3DAssert(hRes, "Failed to create D3D Device!");
-			return TFALSE;
-		}
-
-		SetDefaultRenderStates();
-
-		if (pDisplayParams->bWindowed) {
-			GetMSWindow()->SetWindowed();
-		}
-		else {
-			GetMSWindow()->SetFullscreen();
-		}
-
-		GetMSWindow()->Position(uiWindowPosX, uiWindowPosY, pDisplayParams->uiWidth, pDisplayParams->uiHeight);
-		GetMSWindow()->Enable();
-
-		IDirect3DSurface8* pSurface;
-		GetD3DDevice()->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &pSurface);
-		pSurface->GetDesc(&m_oSurfaceDesk);
-		pSurface->Release();
-		GetD3DDevice()->ShowCursor(TRUE);
-
-		TUINT invalidTextureData[64];
-		for (int i = 0; i < 32; i++) {
-			invalidTextureData[i] = 0xff0fff0f;
-		}
-		
-		TTextureFactoryHAL* factory = (TTextureFactoryHAL*)GetSystemResource(SYSRESOURCE_TEXTUREFACTORY);
-		m_pInvalidTexture = factory->CreateTextureFromMemory(invalidTextureData, sizeof(invalidTextureData), 17, 8, 8);
-		TVALIDADDRESS(m_pInvalidTexture);
-
-		EnableColourCorrection(TTRUE);
-		m_bIsDiplayCreated = TTRUE;
+	if (!m_pCurrentDevice) {
+		return TFALSE;
 	}
 
-	return TBOOL();
+	TRenderInterface::DisplayParams* pDisplayParams = GetCurrentDisplayParams();
+
+	RECT clientRect;
+	GetClientRect(GetDesktopWindow(), &clientRect);
+
+	if (2000 < clientRect.right) {
+		clientRect.right /= 2;
+	}
+
+	TUINT32 uiWindowPosX = 0;
+	TUINT32 uiWindowPosY = 0;
+
+	if (pDisplayParams->bWindowed) {
+		TRenderAdapter::Mode* pMode = GetCurrentDevice()->GetMode();
+		uiWindowPosX = (clientRect.right - pMode->GetWidth()) / 2;
+		uiWindowPosY = (clientRect.bottom - pMode->GetHeight()) / 2;
+	}
+
+	TSystem::MemSet(&m_oPresentParams, 0, sizeof(m_oPresentParams));
+	m_oPresentParams.Windowed = pDisplayParams->bWindowed;
+	m_oPresentParams.BackBufferCount = 1;
+	m_oPresentParams.MultiSampleType = D3DMULTISAMPLE_NONE;
+	m_oPresentParams.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	m_oPresentParams.EnableAutoDepthStencil = TRUE;
+	m_oPresentParams.hDeviceWindow = GetMSWindow()->GetHWND();
+	m_oPresentParams.AutoDepthStencilFormat = TD3DAdapter::Mode::Device::DEPTHSTENCILFORMATS[pDisplayParams->eDepthStencilFormat];
+	m_oPresentParams.BackBufferWidth = pDisplayParams->uiWidth;
+	m_oPresentParams.BackBufferHeight = pDisplayParams->uiHeight;
+
+	auto pDevice = TSTATICCAST(TD3DAdapter::Mode::Device*, GetCurrentDevice());
+	auto pMode = TSTATICCAST(TD3DAdapter::Mode*, pDevice->GetMode());
+	auto pAdapter = TSTATICCAST(TD3DAdapter*, pMode->GetAdapter());
+	auto uiAdapterIndex = pAdapter->GetAdapterIndex();
+
+	if (pDisplayParams->bWindowed) {
+		m_oPresentParams.BackBufferFormat = pMode->GetD3DDisplayMode().Format;
+	}
+	else {
+		m_oPresentParams.BackBufferFormat = pMode->GetBackBufferFormat(pDisplayParams->uiColourDepth);
+	}
+
+	HRESULT hRes = GetD3DInterface()->CreateDevice(
+		uiAdapterIndex,
+		TD3DAdapter::Mode::Device::DEVICETYPES[pDevice->GetDeviceIndex()],
+		GetMSWindow()->GetHWND(),
+		pDevice->GetD3DDeviceFlags(),
+		&m_oPresentParams,
+		&m_pD3DDevice
+	);
+
+	if (FAILED(hRes)) {
+		TD3DAssert(hRes, "Failed to create D3D Device!");
+		return TFALSE;
+	}
+
+	SetDefaultRenderStates();
+
+	if (pDisplayParams->bWindowed) {
+		GetMSWindow()->SetWindowed();
+	}
+	else {
+		GetMSWindow()->SetFullscreen();
+	}
+
+	GetMSWindow()->Position(uiWindowPosX, uiWindowPosY, pDisplayParams->uiWidth, pDisplayParams->uiHeight);
+	GetMSWindow()->Enable();
+
+	IDirect3DSurface8* pSurface;
+	GetD3DDevice()->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &pSurface);
+	pSurface->GetDesc(&m_oSurfaceDesk);
+	pSurface->Release();
+	GetD3DDevice()->ShowCursor(TRUE);
+
+	TUINT invalidTextureData[64];
+	for (int i = 0; i < 32; i++) {
+		invalidTextureData[i] = 0xff0fff0f;
+	}
+		
+	TTextureFactoryHAL* factory = (TTextureFactoryHAL*)GetSystemResource(SYSRESOURCE_TEXTUREFACTORY);
+	m_pInvalidTexture = factory->CreateTextureFromMemory(invalidTextureData, sizeof(invalidTextureData), 17, 8, 8);
+	TVALIDADDRESS(m_pInvalidTexture);
+
+	EnableColourCorrection(TTRUE);
+	m_bIsDiplayCreated = TTRUE;
+	return TTRUE;
 }
 
 TBOOL TRenderD3DInterface::DestroyDisplay()
 {
-	return TBOOL();
+	// Member deletetion 0x4f
+	if (!IsDisplayCreated()) {
+		return TTRUE;
+	}
+	if (m_pD3DDevice) {
+		TD3DRELEASE(m_pD3DDevice);
+	}
+	return TRenderInterface::DestroyDisplay();
 }
 
 TBOOL TRenderD3DInterface::Update(float a_fDeltaTime)
@@ -168,12 +180,65 @@ TBOOL TRenderD3DInterface::Update(float a_fDeltaTime)
 
 TBOOL TRenderD3DInterface::BeginScene()
 {
-	return TBOOL();
+	TASSERT(TTRUE==IsDisplayCreated());
+	TASSERT(TFALSE==IsInScene());
+	if (TRenderInterface::BeginScene()) {
+		if (FAILED(m_pD3DDevice->BeginScene())) {
+			return TFALSE;
+		}
+		RECT windowRect;
+		GetWindowRect(GetMSWindow()->GetHWND(), &windowRect);
+		D3DVIEWPORT8 viewport = {
+			.X = 0,
+			.Y = 0,
+			.Width = DWORD(windowRect.right - windowRect.left),
+			.Height = DWORD(windowRect.bottom - windowRect.top),
+			.MinZ = 0.0f,
+			.MaxZ = 1.0f,
+		};
+		m_pD3DDevice->SetViewport(&viewport);
+		//UpdateColourSettings();
+		m_bInScene = TTRUE;
+		//m_BeginSceneEmitter.Throw(0);
+	}
+	return TTRUE;
 }
 
 TBOOL TRenderD3DInterface::EndScene()
 {
-	return TBOOL();
+	TASSERT(TTRUE==IsDisplayCreated());
+	TASSERT(TFALSE==IsInScene());
+	static TBOOL s_bDeviceLost = TFALSE;
+	if (IsInScene()) {
+		if (FAILED(m_pD3DDevice->EndScene())) {
+			return TFALSE;
+		}
+		if (m_pD3DDevice->Present(NULL, NULL, NULL, NULL) == D3DERR_DEVICELOST) {
+			HRESULT hCooperativeLevel = m_pD3DDevice->TestCooperativeLevel();
+			if (hCooperativeLevel != 0) {
+				if (hCooperativeLevel == D3DERR_DEVICELOST) {
+					if (!s_bDeviceLost) {
+						s_bDeviceLost = TTRUE;
+						TDPRINTF("D3D Device lost!");
+					}
+				}
+				else if (hCooperativeLevel == D3DERR_DEVICENOTRESET) {
+					HRESULT hRes = m_pD3DDevice->Reset(&m_oPresentParams);
+					TD3DAssert(hRes, "D3D Reset FAILED!!!");
+					if (hRes == S_OK) {
+						SetDefaultRenderStates();
+						TDPRINTF("D3D Device reset successfully!");
+					}
+				}
+			}
+		}
+		else {
+			s_bDeviceLost = TFALSE;
+		}
+		m_bInScene = TFALSE;
+	}
+	TRenderInterface::EndScene();
+	return TTRUE;
 }
 
 TRenderAdapter::Mode::Device* TRenderD3DInterface::GetCurrentDevice()
@@ -218,7 +283,21 @@ TBOOL TRenderD3DInterface::Create(TKernelInterface* a_pKernel)
 
 TBOOL TRenderD3DInterface::Destroy()
 {
-	return TBOOL();
+	if (!IsCreated()) {
+		return TTRUE;
+	}
+	TWString(L"Destroying TRenderD3DInterface\n").Print();
+	FlushDyingResources();
+	//DestroyShaders
+	FlushDyingResources();
+	DestroySystemResources();
+	//UnloadShaders
+	DestroyDisplay();
+	GetMSWindow()->Destroy();
+	DestroyAcceleratorTable();
+	TD3DRELEASE(m_pD3DDevice);
+	TWString(L"Destroyed TRenderD3DInterface\n").Print();
+	return TRenderInterface::Destroy();
 }
 
 void TRenderD3DInterface::RenderIndexPrimitive(int param_2, int param_3, int param_4, int param_5, int param_6, int param_7)

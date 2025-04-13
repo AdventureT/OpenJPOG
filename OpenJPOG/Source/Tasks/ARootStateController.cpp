@@ -21,7 +21,7 @@ TBOOL ARootStateController::OnCreate()
 TBOOL ARootStateController::OnUpdate(TFLOAT a_fDeltaTime)
 {
 	if (m_pBaseAppState) {
-		ARootState currentState = m_pBaseAppState->GetCurrent();
+		ARootState& currentState = m_pBaseAppState->GetCurrent();
 		currentState.OnUpdate(a_fDeltaTime);
 	}
 	return TTRUE;

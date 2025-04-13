@@ -41,7 +41,7 @@ public:
 		return m_pOptions;
 	}
 	//Toshi::TManagedPtr<Toshi::TRenderInterface>!!!
-	Toshi::TRenderInterface* GetRenderInterface() 
+	Toshi::TManagedPtr<Toshi::TRenderInterface> GetRenderInterface()
 	{
 		return m_pRenderInterface;
 	}
@@ -66,6 +66,7 @@ private:
 	void AllocateARenderer();
 	void AllocateRenderInterface();
 	void AllocateGameStateController();
+	void AllocateGUISystem();
 	void AllocateInputSystem();
 
 	void CreateARenderer();

@@ -41,7 +41,7 @@ private:
 public:
 	AGUIGameHUD& GetHUDState() { return m_oHUDState; }
 
-private:
+protected:
 	ARootState* m_pParent;   // 0x4
 	ARootState* m_pChild;    // 0x8
 	TBOOL m_bAllowExit;      // 0xC

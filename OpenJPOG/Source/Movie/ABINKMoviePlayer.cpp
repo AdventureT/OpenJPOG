@@ -97,8 +97,8 @@ TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a
     TTextureResource* pTexture = GetCurrentTexture();
     if (!pTexture) {
         TTextureFactory* pTextureFactory = (TTextureFactory*)renderer->GetSystemResource(TRenderInterface::SYSRESOURCE_TEXTUREFACTORY);
-        TPVOID pData = tmalloc(0x200000, TNULL, -1);
-        TSystem::MemSet(pData, 0xFF, 0x200000);
+        TPCHAR pData = new char[0x200000];
+        TSystem::MemSet(pData, 0xFF, sizeof(pData));
         pTexture = pTextureFactory->CreateEx(pData, 0x200000, 1024, 512, 1, TTEXTURERESOURCEFORMAT::R8G8B8A8, 32);
         if (pTexture) {
             pTexture->Validate();
@@ -106,7 +106,7 @@ TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a
             m_iFrameBufferHeight = 512;
             SetCurrentTexture(pTexture);
         }
-        tfree(pData);
+        delete[] pData;
     }
 
     if (!m_bDoAudio) {
@@ -115,8 +115,6 @@ TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a
     RenderMovie(TTRUE);
     m_bHasMovieStopped = TFALSE;
     return TTRUE;
-
-    return TBOOL();
 }
 
 TBOOL ABINKMoviePlayer::Update(TFLOAT a_fDeltaTime)
@@ -220,14 +218,15 @@ TBOOL ABINKMoviePlayer::InitializeVideoResource()
 
 TBOOL ABINKMoviePlayer::InitializeAudioResource()
 {
-    TRenderD3DInterface* renderer = (TRenderD3DInterface*)g_oTheApp.GetRootTask()->GetRenderInterface();
+    TManagedPtr<TRenderInterface> renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
+    TRenderD3DInterface *d3drenderer = (TRenderD3DInterface *)renderer.operator Toshi::TRenderInterface *();
     HRESULT hResult = DirectSoundCreate(NULL, &m_pDirectSound, NULL);
 
     if (FAILED(hResult)) {
         m_pDirectSound = NULL;
     }
     else {
-        m_pDirectSound->SetCooperativeLevel(renderer->GetMSWindow()->GetHWND(), 2);
+        m_pDirectSound->SetCooperativeLevel(d3drenderer->GetMSWindow()->GetHWND(), 2);
         BinkSoundUseDirectSound(m_pDirectSound);
     }
     return TTRUE;

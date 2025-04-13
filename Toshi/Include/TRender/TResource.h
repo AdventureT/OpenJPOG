@@ -28,14 +28,9 @@ public:
 
 public:
 	
-	TResource()
-	{
-		m_pRenderer = TNULL;
-		*m_szName = 0;
-		m_Flags = 0;
-		m_uiUId = 0;
-	}
-
+	TResource();
+	
+	virtual ~TResource();
 	virtual TBOOL Create();
 	virtual TBOOL Validate();
 	virtual void Invalidate();

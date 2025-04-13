@@ -34,7 +34,9 @@ TBOOL TRenderInterface::CreateDisplay(const DisplayParams& a_rParams)
 
 TBOOL TRenderInterface::DestroyDisplay()
 {
-	return TBOOL();
+	TASSERT(TTRUE==IsCreated());
+	m_bIsDiplayCreated = TFALSE;
+	return TTRUE;
 }
 
 TBOOL TRenderInterface::Update(float a_fDeltaTime)
@@ -45,12 +47,17 @@ TBOOL TRenderInterface::Update(float a_fDeltaTime)
 
 TBOOL TRenderInterface::BeginScene()
 {
-	return TBOOL();
+	TASSERT(TTRUE==IsCreated());
+	TASSERT(TTRUE==IsDisplayCreated());
+	m_iSceneCount++;
+	return TTRUE;
 }
 
 TBOOL TRenderInterface::EndScene()
 {
-	return TBOOL();
+	TASSERT(TTRUE==IsCreated());
+	TASSERT(TTRUE==IsDisplayCreated());
+	return TTRUE;
 }
 
 TRenderAdapter::Mode::Device* TRenderInterface::GetCurrentDevice()
@@ -83,9 +90,7 @@ TBOOL TRenderInterface::Create(TKernelInterface* pKernelInterface)
 
 TBOOL TRenderInterface::CreateSystemResources()
 {
-	{
-		TCString("  Adding base resources\n").Print();
-	}
+	TCString("  Adding base resources\n").Print();
 
 	TBOOL bRes = TFALSE;
 	TVertexFactoryFormat vertexFormat;

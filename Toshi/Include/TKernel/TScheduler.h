@@ -9,6 +9,8 @@ TOSHI_NAMESPACE_BEGIN
 
 class TKernelInterface;
 
+#define ApplicationCreateTask(taskclass, parenttask)  (taskclass*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(taskclass), parenttask)
+
 class TKERNELINTERFACE_EXPORTS TScheduler : public TObject
 {
 	DECLARE_DYNAMIC(TScheduler);

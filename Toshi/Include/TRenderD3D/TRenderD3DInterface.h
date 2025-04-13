@@ -11,6 +11,15 @@ TOSHI_NAMESPACE_BEGIN
 
 class TMSWindow;
 
+#define TD3DRELEASE(d3d)                                \
+  if (d3d) {                                            \
+    d3d->Release();                                     \
+  }                                                     \
+  else {                                                \
+	TASSERT(!"Release called on NULL interface ptr\n"); \
+  }                                                     \
+  d3d = NULL
+
 class TRENDERINTERFACED3D_EXPORTS TRenderD3DInterface : public TRenderInterface
 {
 
@@ -22,6 +31,7 @@ public:
 
 	static void TOSHI_API TD3DAssert(HRESULT a_hr, TPCCHAR a_pError);
 
+	virtual ~TRenderD3DInterface() override;
 	virtual TBOOL CreateDisplay(const TRenderInterface::DisplayParams& a_rParams) override;
 	virtual TBOOL DestroyDisplay() override;
 	virtual TBOOL Update(float a_fDeltaTime) override;

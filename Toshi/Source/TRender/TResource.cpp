@@ -5,6 +5,28 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TResource, TObject)
 
+static TINT s_iResourceCount = 0;
+static TINT s_iResourcesCreated = 0;
+
+TResource::TResource()
+{
+	m_Flags = 0;
+	m_uiUId = 0;
+	m_pRenderer = TNULL;
+	*m_szName = 0;
+	s_iResourceCount++;
+	if (s_iResourcesCreated < s_iResourceCount) {
+		s_iResourcesCreated = s_iResourceCount;
+	}
+}
+
+TResource::~TResource()
+{
+	TASSERT(0 == (m_Flags & FLAGS_DEAD));
+	m_Flags |= FLAGS_DEAD;
+	s_iResourceCount--;
+}
+
 TBOOL TResource::Create()
 {
 	TASSERT(TFALSE == IsCreated());

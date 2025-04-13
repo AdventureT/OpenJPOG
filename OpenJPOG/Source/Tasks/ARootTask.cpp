@@ -18,8 +18,9 @@ ARootTask::ARootTask()
 	m_pVibrationTask = TNULL;
 	m_pMoviePlayer = TNULL;
 	m_pOptions = new AOptions();
-	AllocateARenderer();
 	AllocateRenderInterface();
+	AllocateGUISystem();
+	AllocateARenderer();
 	AllocateGameStateController();
 	m_pMoviePlayer = TNULL;
 }
@@ -85,7 +86,7 @@ void ARootTask::UnloadFrontEndController()
 
 void ARootTask::AllocateARenderer()
 {
-	m_pRenderer = (ARenderer*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ARenderer), g_oTheApp.GetRenderRootTask());
+	m_pRenderer = ApplicationCreateTask(ARenderer, g_oTheApp.GetRenderRootTask());
 }
 
 void ARootTask::AllocateRenderInterface()
@@ -98,15 +99,18 @@ void ARootTask::AllocateRenderInterface()
 
 void ARootTask::AllocateGameStateController()
 {
-	m_pGameStateController = (ARootStateController*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ARootStateController), this);
+	m_pGameStateController = ApplicationCreateTask(ARootStateController, this);
+}
+
+void ARootTask::AllocateGUISystem()
+{
+	m_pGUISystem = ApplicationCreateTask(AGUISystem, g_oTheApp.GetUpdate3RootTask());
 }
 
 void ARootTask::AllocateInputSystem()
 {
-	TScheduler* pScheduler = g_oTheApp.GetKernel()->GetScheduler();
-	ADummyTask* pInputTask = g_oTheApp.GetInputRootTask();
-	m_pInputTask = pScheduler->CreateTask(TGetClass(ADummyTask), pInputTask);
-	m_pVibrationTask = (AVibrationManager*)pScheduler->CreateTask(TGetClass(AVibrationManager), pInputTask);
+	m_pInputTask = ApplicationCreateTask(ADummyTask, g_oTheApp.GetInputRootTask());
+	m_pVibrationTask = ApplicationCreateTask(AVibrationManager, g_oTheApp.GetInputRootTask());
 }
 
 void ARootTask::CreateARenderer()

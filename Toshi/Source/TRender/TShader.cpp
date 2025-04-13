@@ -1,0 +1,7 @@
+#include "TShader.h"
+
+TOSHI_NAMESPACE_BEGIN
+
+IMPLEMENT_DYNAMIC(TMaterial, TResource)
+
+TOSHI_NAMESPACE_END
