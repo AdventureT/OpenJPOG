@@ -249,16 +249,14 @@ void ABINKMoviePlayer::BinkSleep(TINT a_iMicroseconds)
 	static U64 s_iFrequency        = 1000;
 	static S32 s_bFrequencyAquired = 0;
 
-	if (!s_bFrequencyAquired)
-	{
+	if (!s_bFrequencyAquired) {
 		s_bFrequencyAquired = 1;
 		QueryPerformanceFrequency((LARGE_INTEGER *)&s_iFrequency);
 	}
 
 	s_iTotalSleep += a_iMicroseconds;
 
-	if ((s_iTotalSleep - s_iSleepForward) > 1000)
-	{
+	if ((s_iTotalSleep - s_iSleepForward) > 1000) {
 		U64 start, end;
 		s_iTotalSleep -= s_iSleepForward;
 

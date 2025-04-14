@@ -9,13 +9,16 @@ TPile TGUIMemory::ms_oMemoryPile   = TPile(0x8000, 0x100000, 0);
 void *TOSHI_API TGUINew(TUINT a_uiSize)
 {
 	if (TGUIMemory::ms_bAllocUsePile) {
+		TGUIMemory::ms_oMemoryPile.RawAlloc(a_uiSize, 4);
 	}
 	return tmalloc(a_uiSize, TNULL, -1);
 }
 
-void *TOSHI_API TGUIDelete(void *a_pMemory)
+void TOSHI_API TGUIDelete(void *a_pMemory)
 {
-	return TNULL;
+	if (!TGUIMemory::ms_oMemoryPile.RawIsInside(a_pMemory)) {
+		tfree(a_pMemory);
+	}
 }
 
 void TOSHI_API TGUISetUseMemoryPile(TBOOL a_bEnable)
