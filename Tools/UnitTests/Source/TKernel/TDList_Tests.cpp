@@ -10,8 +10,10 @@ struct Test : TDList<Test>::TNode
 
 struct Test2 : TPriList<Test>::TNode
 {
-	Test2() : m_iTest(0) {}
-	Test2(int a_iTest) : m_iTest(a_iTest) {}
+	Test2()
+		: m_iTest(0) {}
+	Test2(int a_iTest)
+		: m_iTest(a_iTest) {}
 
 	int m_iTest;
 };
@@ -20,22 +22,22 @@ struct Test2 : TPriList<Test>::TNode
 TEST_CASE("List", "[TDList]")
 {
 	TDList<Test> list;
-	Test *t = new Test{};
+	Test*		 t = new Test{};
 	list.InsertHead(t);
 	REQUIRE(!list.IsEmpty());
 	TDList<int>::TNode* node = list.Begin();
-	Test *t2 = list.Head();
+	Test*				t2	 = list.Head();
 	REQUIRE(t2 == t);
 }
 
 TEST_CASE("Priority List", "[TDList]")
 {
 	TPriList<Test2> list;
-	Test2 t;
+	Test2			t;
 	list.InsertHead(&t);
 	REQUIRE(!list.IsEmpty());
 	REQUIRE(list.Head() == &t);
-	Test2 t2{1};
+	Test2 t2{ 1 };
 	list.InsertHead(&t2);
 	REQUIRE(!list.IsEmpty());
 	REQUIRE(list.Head() == &t2);

@@ -8,11 +8,11 @@
 #include "TEvent.h"
 
 #if defined(TLEXERUTF8)
-#define TLEXERGETCHAR m_pFile->GetCChar
+#  define TLEXERGETCHAR m_pFile->GetCChar
 #elif defined(TLEXERUTF16)
-#define TLEXERGETCHAR m_pFile->GetWChar
+#  define TLEXERGETCHAR m_pFile->GetWChar
 #else
-#define TLEXERGETCHAR m_pFile->GetCChar
+#  define TLEXERGETCHAR m_pFile->GetCChar
 #endif
 // This only works with WIN32! Basically floorpow2
 // https://github.com/deeplearning4j/deeplearning4j/blob/f9c1faaaf968d6f0e5a5add2627908f7a2565f96/libnd4j/include/loops/type_conversions.h#L97
@@ -50,17 +50,16 @@ public:
 		TOKEN_FLOAT,
 		TOKEN_COMMENT
 	};
-	
+
 	struct ParseError
 	{
-		TINT m_iLine;      // 0x0
+		TINT    m_iLine;   // 0x0
 		TPCCHAR m_szError; // 0x4
 	};
 
 public:
-
 	TFileLexer();
-	TFileLexer(TFile* a_pFile, TINT a_iTokenLookaheadSize);
+	TFileLexer(TFile *a_pFile, TINT a_iTokenLookaheadSize);
 	~TFileLexer()
 	{
 		delete[] m_piCharLookahead;
@@ -70,7 +69,7 @@ public:
 	class TKERNELINTERFACE_EXPORTS Token
 	{
 	public:
-		void assign(const Token& a_rToken);
+		void assign(const Token &a_rToken);
 
 		TFLOAT GetFloat() const
 		{
@@ -89,19 +88,19 @@ public:
 			return m_iLine;
 		}
 
-		const TPCString& GetString() const
+		const TPCString &GetString() const
 		{
-			TASSERT(m_type == TFileLexer::TOKEN_IDENT  ||
-				    m_type == TFileLexer::TOKEN_STRING ||
-				    m_type == TFileLexer::TOKEN_COMMENT);
+			TASSERT(m_type == TFileLexer::TOKEN_IDENT ||
+			        m_type == TFileLexer::TOKEN_STRING ||
+			        m_type == TFileLexer::TOKEN_COMMENT);
 			return m_szValue;
 		}
 
-		TPCString& GetString()
+		TPCString &GetString()
 		{
-			TASSERT(m_type == TFileLexer::TOKEN_IDENT  ||
-				    m_type == TFileLexer::TOKEN_STRING ||
-				    m_type == TFileLexer::TOKEN_COMMENT);
+			TASSERT(m_type == TFileLexer::TOKEN_IDENT ||
+			        m_type == TFileLexer::TOKEN_STRING ||
+			        m_type == TFileLexer::TOKEN_COMMENT);
 			return m_szValue;
 		}
 
@@ -116,7 +115,7 @@ public:
 			return m_uiValue;
 		}
 
-		Token& operator=(const Token& a_rToken)
+		Token &operator=(const Token &a_rToken)
 		{
 			assign(a_rToken);
 			return *this;
@@ -124,51 +123,51 @@ public:
 
 		Token(TINT a_iLine, TUINT a_uiValue)
 		{
-			m_type = TOKEN_UINTEGER;
-			m_iLine = a_iLine;
+			m_type    = TOKEN_UINTEGER;
+			m_iLine   = a_iLine;
 			m_uiValue = a_uiValue;
 		}
 
 		Token(TINT a_iLine, TFLOAT a_fValue)
 		{
-			m_type = TOKEN_FLOAT;
-			m_iLine = a_iLine;
+			m_type   = TOKEN_FLOAT;
+			m_iLine  = a_iLine;
 			m_fValue = a_fValue;
 		}
 
 		Token(TINT a_iLine, TINT a_iValue)
 		{
-			m_type = TOKEN_INTEGER;
-			m_iLine = a_iLine;
+			m_type   = TOKEN_INTEGER;
+			m_iLine  = a_iLine;
 			m_iValue = a_iValue;
 		}
 
 		Token(TINT a_iLine)
 		{
-			m_type = TOKEN_EOF;
+			m_type  = TOKEN_EOF;
 			m_iLine = a_iLine;
 		}
 
-		Token(TFileLexer::TokenType a_type, TINT a_iLine, const TPCString& a_rString)
+		Token(TFileLexer::TokenType a_type, TINT a_iLine, const TPCString &a_rString)
 		{
-			m_type = a_type;
-			m_iLine = a_iLine;
-			m_iValue = 0;
+			m_type      = a_type;
+			m_iLine     = a_iLine;
+			m_iValue    = 0;
 			GetString() = a_rString;
 		}
 
 		Token(TFileLexer::TokenType a_type, TINT a_iLine)
 		{
-			m_type = a_type;
+			m_type  = a_type;
 			m_iLine = a_iLine;
-			TASSERT(m_type != TFileLexer::TOKEN_IDENT   ||
-				    m_type != TFileLexer::TOKEN_STRING  ||
-				    m_type != TFileLexer::TOKEN_INTEGER ||
-			        m_type != TFileLexer::TOKEN_FLOAT   || 
-		            m_type != TFileLexer::TOKEN_COMMENT);
+			TASSERT(m_type != TFileLexer::TOKEN_IDENT ||
+			        m_type != TFileLexer::TOKEN_STRING ||
+			        m_type != TFileLexer::TOKEN_INTEGER ||
+			        m_type != TFileLexer::TOKEN_FLOAT ||
+			        m_type != TFileLexer::TOKEN_COMMENT);
 		}
 
-		Token(const TFileLexer::Token& a_rToken)
+		Token(const TFileLexer::Token &a_rToken)
 		{
 			m_type = TOKEN_EOF;
 			assign(a_rToken);
@@ -176,15 +175,15 @@ public:
 
 		Token()
 		{
-			m_type = TOKEN_EOF;
+			m_type  = TOKEN_EOF;
 			m_iLine = 0;
 		}
 
 		~Token()
 		{
 			if (m_type == TFileLexer::TOKEN_IDENT ||
-				m_type == TFileLexer::TOKEN_STRING ||
-				m_type == TFileLexer::TOKEN_COMMENT) {
+			    m_type == TFileLexer::TOKEN_STRING ||
+			    m_type == TFileLexer::TOKEN_COMMENT) {
 				GetString().~TPCString();
 			}
 		}
@@ -193,23 +192,25 @@ public:
 
 	private:
 		TFileLexer::TokenType m_type; // 0x0
-		union {                       // |
-			TPCString m_szValue;      // |
-			TINT m_iValue;            //  -> 0x4
-			TUINT m_uiValue;          // |
-			TFLOAT m_fValue;          // |
-		};                            // |
-		TINT m_iLine;                 // 0x8        
+		union
+		{                        // |
+			TPCString m_szValue; // |
+			TINT      m_iValue;  //  -> 0x4
+			TUINT     m_uiValue; // |
+			TFLOAT    m_fValue;  // |
+		};                       // |
+		TINT m_iLine;            // 0x8
 	};
 
 private:
 	TBOOL ComputePreprocessorAllow();
+
 public:
-	void Define(TPCCHAR a_szPreprocessor);
+	void  Define(TPCCHAR a_szPreprocessor);
 	TBOOL IfDef(TPCCHAR a_szDefine);
 
 	TBOOL Expect(TFileLexer::TokenType a_type);
-	TBOOL Expect(TFileLexer::TokenType a_type, TFileLexer::Token& a_rToken);
+	TBOOL Expect(TFileLexer::TokenType a_type, TFileLexer::Token &a_rToken);
 
 	TFileLexer::Token GetLastToken();
 	TFileLexer::Token GetNextToken();
@@ -217,7 +218,7 @@ public:
 	TFileLexer::Token PeekNextToken(TINT a_iDistance);
 
 	void SetCharacterLookaheadSize(TINT a_iCharLookaheadSize);
-	void SetInputStream(TFile* a_pFile);
+	void SetInputStream(TFile *a_pFile);
 	void SetOutputComments(TBOOL a_bOutputComments)
 	{
 		m_bOutputComments = a_bOutputComments;
@@ -232,7 +233,7 @@ public:
 
 protected:
 	TFileLexer::Token get_next_token();
-	void skipWhiteSpace();
+	void              skipWhiteSpace();
 
 	void advance();
 	void advance(TINT a_dist);
@@ -249,28 +250,28 @@ protected:
 	}
 
 private:
-	TFile* m_pFile;                               // 0x4
-	TBOOL m_bOutputComments;                      // 0x8
-	TINT m_iCharLookaheadSize;                    // 0xC
-	TINT m_iCharLookaheadMask;                    // 0x10
-	TINT* m_piCharLookahead;                      // 0x14
-	TINT m_iCharLookaheadBack;                    // 0x18
-	TINT m_iCharLookaheadFront;                   // 0x1C
-										          
-	TINT m_iLine;                                 // 0x20
-	TINT m_iTokenLookaheadSize;                   // 0x24
-	TINT m_iTokenLookaheadMask;                   // 0x28
-	TFileLexer::Token m_oToken;                   // 0x2C
-	TFileLexer::Token* m_pLookaheadTokens;        // 0x38
-	TINT m_iTokenLookaheadBuffered;               // 0x3C
-	TINT m_iTokenLookaheadFront;                  // 0x40
-	TINT m_iTokenLookaheadBack;                   // 0x44
-										          
-	TINT m_iSomeNum;                              // 0x48
-	TBOOL m_bFlags[32];                           // 0x4C
-	TBOOL m_bAllowPreprocessor;                   // 0x6C
-	TBOOL m_bEOF;                                 // 0x6D
-	TArray<TPCString> m_aDefines;                 // 0x70
+	TFile *m_pFile;               // 0x4
+	TBOOL  m_bOutputComments;     // 0x8
+	TINT   m_iCharLookaheadSize;  // 0xC
+	TINT   m_iCharLookaheadMask;  // 0x10
+	TINT  *m_piCharLookahead;     // 0x14
+	TINT   m_iCharLookaheadBack;  // 0x18
+	TINT   m_iCharLookaheadFront; // 0x1C
+
+	TINT               m_iLine;                   // 0x20
+	TINT               m_iTokenLookaheadSize;     // 0x24
+	TINT               m_iTokenLookaheadMask;     // 0x28
+	TFileLexer::Token  m_oToken;                  // 0x2C
+	TFileLexer::Token *m_pLookaheadTokens;        // 0x38
+	TINT               m_iTokenLookaheadBuffered; // 0x3C
+	TINT               m_iTokenLookaheadFront;    // 0x40
+	TINT               m_iTokenLookaheadBack;     // 0x44
+
+	TINT              m_iSomeNum;           // 0x48
+	TBOOL             m_bFlags[32];         // 0x4C
+	TBOOL             m_bAllowPreprocessor; // 0x6C
+	TBOOL             m_bEOF;               // 0x6D
+	TArray<TPCString> m_aDefines;           // 0x70
 
 	//TEmitter<TFileLexer, ParseError> m_oEmitter;  // 0x80
 };

@@ -26,11 +26,11 @@ public:
 	static TFLOAT sm_fLev1MountLODDist;
 	static TFLOAT sm_fMountainBounds;
 	static TFLOAT sm_fWaterHeight;
+
 private:
-	static TUINT s_ui32TStamp;
+	static TUINT              s_ui32TStamp;
 	static TTerrainInterface *ms_pTerrainInterface;
-	static TERRAINLOD sm_eLOD;
+	static TERRAINLOD         sm_eLOD;
 };
 
 TOSHI_NAMESPACE_END
-

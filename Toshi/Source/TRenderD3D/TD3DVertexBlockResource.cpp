@@ -7,7 +7,7 @@ TOSHI_NAMESPACE_USING
 IMPLEMENT_DYNCREATE(TVertexBlockResource, TResource)
 IMPLEMENT_FREELIST(TVertexBlockResource, 0, 8)
 
-TBOOL TVertexBlockResource::CanFit(TVertexPoolResource* a_pPoolResource)
+TBOOL TVertexBlockResource::CanFit(TVertexPoolResource *a_pPoolResource)
 {
 	if (GetFlags() & 1 && a_pPoolResource->GetFlags() & 1) {
 		return m_uiMaxVertices >= a_pPoolResource->GetNumVertices() + m_uiVerticesUsed;
@@ -16,7 +16,7 @@ TBOOL TVertexBlockResource::CanFit(TVertexPoolResource* a_pPoolResource)
 	return TFALSE;
 }
 
-TBOOL TVertexBlockResource::AttachPool(TVertexPoolResource* a_pPool)
+TBOOL TVertexBlockResource::AttachPool(TVertexPoolResource *a_pPool)
 {
 	TVALIDADDRESS(a_pPool);
 
@@ -30,12 +30,12 @@ TBOOL TVertexBlockResource::AttachPool(TVertexPoolResource* a_pPool)
 	return TTRUE;
 }
 
-TBOOL TVertexBlockResource::Create(TVertexFactoryResource* a_pFactory, TUSHORT a_uiMaxVertices, TUINT a_uiFlags)
+TBOOL TVertexBlockResource::Create(TVertexFactoryResource *a_pFactory, TUSHORT a_uiMaxVertices, TUINT a_uiFlags)
 {
 	TASSERT(TFALSE == IsCreated());
 	TVALIDADDRESS(a_pFactory);
-	m_pFactory = a_pFactory;
+	m_pFactory      = a_pFactory;
 	m_uiMaxVertices = a_uiMaxVertices;
-	m_uiFlags = a_uiFlags;
+	m_uiFlags       = a_uiFlags;
 	return TResource::Create();
 }

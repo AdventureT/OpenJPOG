@@ -5,7 +5,7 @@
 
 #define TMEMORY_ROUNDUP 4
 
-inline static Toshi::TMutex* g_pMutex = TNULL;
+inline static Toshi::TMutex *g_pMutex = TNULL;
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -32,7 +32,6 @@ class TKERNELINTERFACE_EXPORTS TMemory
 
 	class MemNode
 	{
-
 	};
 
 
@@ -45,31 +44,31 @@ class TKERNELINTERFACE_EXPORTS TMemory
 	class MemBlock
 	{
 	public:
-		MemBlockSlot* m_pMemBlockSlot; // 0x0
-		                               // 0x4
+		MemBlockSlot *m_pMemBlockSlot; // 0x0
+									   // 0x4
 		TPVOID m_pMemory;              // 0x8
-		TUINT m_uiMemorySize;          // 0xC
+		TUINT  m_uiMemorySize;         // 0xC
 	};
+
 public:
+	static TBOOL TOSHI_API     Initialise();
+	static void TOSHI_API      DebugPrintHALMemInfo(TCHAR const *a_pPrint){};
+	static TMemory &TOSHI_API  GetMemMangager();
+	static MemBlock *TOSHI_API GetGlobalBlock();
+	static MemNode *TOSHI_API  GetMemNodeFromAddress(TPVOID a_pAddr);
+	static void TOSHI_API      ExtendNodeSize(MemNode *a_pMemNode, TUINT a_iuSize);
 
-	static TBOOL TOSHI_API Initialise();
-	static void TOSHI_API DebugPrintHALMemInfo(TCHAR const* a_pPrint) { };
-	static TMemory& TOSHI_API GetMemMangager();
-	static MemBlock* TOSHI_API GetGlobalBlock();
-	static MemNode* TOSHI_API GetMemNodeFromAddress(TPVOID a_pAddr);
-	static void TOSHI_API ExtendNodeSize(MemNode* a_pMemNode, TUINT a_iuSize);
-
-	TPVOID Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock* a_pMemBlock, TPCHAR a_pBuffer ,TINT a_iUnk3);
-	TBOOL Free(TPVOID a_pMem);
+	TPVOID Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock *a_pMemBlock, TPCHAR a_pBuffer, TINT a_iUnk3);
+	TBOOL  Free(TPVOID a_pMem);
 
 protected:
 	static TUINT TOSHI_API GetFreePhysicalMemory() { return 0x8000000; }
 
 private:
 	inline static TBOOL m_bInitialised = TFALSE;
-	
 
-	MemBlock* m_pMemBlock; // 0x224
+
+	MemBlock *m_pMemBlock; // 0x224
 };
 
 inline static TMemory g_oMemManager;
@@ -78,4 +77,4 @@ TOSHI_NAMESPACE_END
 
 TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk);
 TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmemalign(TINT a_iAlign, TINT a_iSize);
-void TKERNELINTERFACE_EXPORTS TOSHI_API tfree(TPVOID a_pMem);
+void TKERNELINTERFACE_EXPORTS TOSHI_API   tfree(TPVOID a_pMem);

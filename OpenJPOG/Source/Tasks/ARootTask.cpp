@@ -9,15 +9,15 @@ IMPLEMENT_DYNCREATE(ARootTask, TTask);
 
 ARootTask::ARootTask()
 {
-	m_pOptions = TNULL;
-	m_pGUISystem = TNULL;
-	m_pInputTask = TNULL;
-	m_pRenderInterface = TNULL;
-	m_pRenderer = TNULL;
+	m_pOptions             = TNULL;
+	m_pGUISystem           = TNULL;
+	m_pInputTask           = TNULL;
+	m_pRenderInterface     = TNULL;
+	m_pRenderer            = TNULL;
 	m_pGameStateController = TNULL;
-	m_pVibrationTask = TNULL;
-	m_pMoviePlayer = TNULL;
-	m_pOptions = new AOptions();
+	m_pVibrationTask       = TNULL;
+	m_pMoviePlayer         = TNULL;
+	m_pOptions             = new AOptions();
 	AllocateRenderInterface();
 	AllocateGUISystem();
 	AllocateARenderer();
@@ -44,7 +44,7 @@ void ARootTask::OnDestroy()
 	TTask::OnDestroy();
 }
 
-void ARootTask::OnChildDied(TClass* a_pClass, TTask* a_pDeletedTask)
+void ARootTask::OnChildDied(TClass *a_pClass, TTask *a_pDeletedTask)
 {
 	TTask::OnChildDied(a_pClass, a_pDeletedTask);
 }
@@ -73,7 +73,7 @@ void ARootTask::OnDeactivate()
 
 void ARootTask::LoadFrontEndController()
 {
-	m_pFrontEndController = (AFrontEndController*)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(AFrontEndController), this);
+	m_pFrontEndController = (AFrontEndController *)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(AFrontEndController), this);
 	m_pFrontEndController->Create();
 	LoadMaterialLibrary(1);
 	LoadMaterialLibrary(25);
@@ -92,7 +92,7 @@ void ARootTask::AllocateARenderer()
 void ARootTask::AllocateRenderInterface()
 {
 	g_oTheApp.GetKernel()->LoadInterface("TRenderD3DInterface");
-	m_pRenderInterface = (TRenderInterface*)TFindClass(TRenderD3DInterface, TNULL)->CreateObject();
+	m_pRenderInterface = (TRenderInterface *)TFindClass(TRenderD3DInterface, TNULL)->CreateObject();
 	m_pRenderInterface->Create(g_oTheApp.GetKernel());
 	m_pRenderInterface->DumpStats();
 }
@@ -109,7 +109,7 @@ void ARootTask::AllocateGUISystem()
 
 void ARootTask::AllocateInputSystem()
 {
-	m_pInputTask = ApplicationCreateTask(ADummyTask, g_oTheApp.GetInputRootTask());
+	m_pInputTask     = ApplicationCreateTask(ADummyTask, g_oTheApp.GetInputRootTask());
 	m_pVibrationTask = ApplicationCreateTask(AVibrationManager, g_oTheApp.GetInputRootTask());
 }
 
@@ -124,10 +124,10 @@ void ARootTask::CreateARenderer()
 TBOOL ARootTask::CreateRenderInterface()
 {
 	TRenderInterface::DisplayParams displayParams;
-	displayParams.uiWidth = 640;
-	displayParams.uiHeight = 480;
-	displayParams.bWindowed = TTRUE;
-	displayParams.uiColourDepth = 32;
+	displayParams.uiWidth             = 640;
+	displayParams.uiHeight            = 480;
+	displayParams.bWindowed           = TTRUE;
+	displayParams.uiColourDepth       = 32;
 	displayParams.eDepthStencilFormat = 0;
 	CreateDisplayDevice(displayParams, TFALSE);
 	m_pRenderInterface->CreateDisplay(displayParams);
@@ -143,48 +143,48 @@ void ARootTask::DeserialiseOptions()
 {
 	TRenderInterface *renderer = g_oTheApp.GetRootTask()->m_pRenderInterface;
 	renderer->GetCurrentDisplayParams();
-	AOptions *options = g_oTheApp.GetRootTask()->GetOptions();
+	AOptions     *options = g_oTheApp.GetRootTask()->GetOptions();
 	AOptionsLogic logic;
-	TINT screenWidth;
-	TINT screenHeight;
-	TINT screenDepth;
+	TINT          screenWidth;
+	TINT          screenHeight;
+	TINT          screenDepth;
 	if (options->GetOption("ScreenWidth", screenWidth) &&
-		options->GetOption("ScreenHeight", screenHeight) &&
-		options->GetOption("ScreenDepth", screenDepth)) {
+	    options->GetOption("ScreenHeight", screenHeight) &&
+	    options->GetOption("ScreenDepth", screenDepth)) {
 		AOptionsLogic::AScreenRes screenRes;
 		logic.GetOption(AOptionsLogic::OPTION_SCREENRES, screenRes);
 	}
 }
 
-const TRenderAdapter::Mode::Device* ARootTask::CreateDisplayDevice(TRenderInterface::DisplayParams& a_rDisplayParams, bool a_bReverseOrder)
+const TRenderAdapter::Mode::Device *ARootTask::CreateDisplayDevice(TRenderInterface::DisplayParams &a_rDisplayParams, bool a_bReverseOrder)
 {
-	TRenderInterface* pRenderer = TRenderInterface::GetRenderer();
-	const TRenderAdapter::Mode::Device* pDevice = TNULL;
+	TRenderInterface                   *pRenderer = TRenderInterface::GetRenderer();
+	const TRenderAdapter::Mode::Device *pDevice   = TNULL;
 
 	if (a_bReverseOrder)
 	{
 		a_rDisplayParams.eDepthStencilFormat = 4;
-		pDevice = pRenderer->FindDevice(&a_rDisplayParams);
+		pDevice                              = pRenderer->FindDevice(&a_rDisplayParams);
 
 		if (!pDevice)
 		{
 			a_rDisplayParams.eDepthStencilFormat = 2;
-			pDevice = pRenderer->FindDevice(&a_rDisplayParams);
+			pDevice                              = pRenderer->FindDevice(&a_rDisplayParams);
 
 			if (!pDevice)
 			{
 				a_rDisplayParams.eDepthStencilFormat = 3;
-				pDevice = pRenderer->FindDevice(&a_rDisplayParams);
+				pDevice                              = pRenderer->FindDevice(&a_rDisplayParams);
 
 				if (!pDevice)
 				{
 					a_rDisplayParams.eDepthStencilFormat = 0;
-					pDevice = pRenderer->FindDevice(&a_rDisplayParams);
+					pDevice                              = pRenderer->FindDevice(&a_rDisplayParams);
 
 					if (!pDevice)
 					{
 						a_rDisplayParams.eDepthStencilFormat = 1;
-						pDevice = pRenderer->FindDevice(&a_rDisplayParams);
+						pDevice                              = pRenderer->FindDevice(&a_rDisplayParams);
 					}
 				}
 			}
@@ -192,28 +192,28 @@ const TRenderAdapter::Mode::Device* ARootTask::CreateDisplayDevice(TRenderInterf
 	}
 	else
 	{
-		pDevice = pRenderer->FindDevice(&a_rDisplayParams);
+		pDevice                              = pRenderer->FindDevice(&a_rDisplayParams);
 		a_rDisplayParams.eDepthStencilFormat = 0;
 
 		if (!pDevice)
 		{
 			a_rDisplayParams.eDepthStencilFormat = 1;
-			pDevice = pRenderer->FindDevice(&a_rDisplayParams);
+			pDevice                              = pRenderer->FindDevice(&a_rDisplayParams);
 
 			if (!pRenderer->FindDevice(&a_rDisplayParams))
 			{
 				a_rDisplayParams.eDepthStencilFormat = 2;
-				pDevice = pRenderer->FindDevice(&a_rDisplayParams);
+				pDevice                              = pRenderer->FindDevice(&a_rDisplayParams);
 
 				if (!pRenderer->FindDevice(&a_rDisplayParams))
 				{
 					a_rDisplayParams.eDepthStencilFormat = 4;
-					pDevice = pRenderer->FindDevice(&a_rDisplayParams);
+					pDevice                              = pRenderer->FindDevice(&a_rDisplayParams);
 
 					if (!pRenderer->FindDevice(&a_rDisplayParams))
 					{
 						a_rDisplayParams.eDepthStencilFormat = 3;
-						pDevice = pRenderer->FindDevice(&a_rDisplayParams);
+						pDevice                              = pRenderer->FindDevice(&a_rDisplayParams);
 					}
 				}
 			}
@@ -221,7 +221,6 @@ const TRenderAdapter::Mode::Device* ARootTask::CreateDisplayDevice(TRenderInterf
 	}
 
 	return pDevice;
-
 }
 
 void ARootTask::LoadMaterialLibrary(TINT a_iIndex)

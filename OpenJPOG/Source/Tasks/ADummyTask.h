@@ -5,8 +5,9 @@
 class ADummyTask : public Toshi::TTask
 {
 	DECLARE_DYNAMIC(ADummyTask);
+
 public:
-	ADummyTask() = default;
+	ADummyTask()          = default;
 	virtual ~ADummyTask() = default;
 
 	// Shouldn't a_szName be TPCCHAR? [7/8/2024 InfiniteC0re]

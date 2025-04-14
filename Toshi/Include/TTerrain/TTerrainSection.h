@@ -9,11 +9,10 @@ class TTERRAININTERFACE_EXPORTS TTerrainSection
 {
 
 public:
-
-	#define CLIPFLAG_GRASS 0x100
-	#define CLIPFLAG_DIRTY 0x200
-	#define CLIPFLAG_UNK 0x400
-	#define USERBITSFLAGMASK -(0x400)
+#define CLIPFLAG_GRASS   0x100
+#define CLIPFLAG_DIRTY   0x200
+#define CLIPFLAG_UNK     0x400
+#define USERBITSFLAGMASK -(0x400)
 
 	void ComputeBounds();
 
@@ -50,13 +49,13 @@ private:
 	void SetSystemFlags(TUINT a_ui32ClipFlags);
 
 private:
-	TTerrainSection* m_pNextSection; // 0x14
-	TUINT m_ui32ClipFlags;           // 0x1C
-	TUINT m_uiTimeStamp;             // 0x20
-	TCHAR m_cBoundX;                 // 0x30
-	TCHAR m_cBoundY;                 // 0x31
-	TCHAR m_cPosX;                   // 0x32
-	TCHAR m_cPosY;                   // 0x33
+	TTerrainSection *m_pNextSection;  // 0x14
+	TUINT            m_ui32ClipFlags; // 0x1C
+	TUINT            m_uiTimeStamp;   // 0x20
+	TCHAR            m_cBoundX;       // 0x30
+	TCHAR            m_cBoundY;       // 0x31
+	TCHAR            m_cPosX;         // 0x32
+	TCHAR            m_cPosY;         // 0x33
 };
 
 TOSHI_NAMESPACE_END

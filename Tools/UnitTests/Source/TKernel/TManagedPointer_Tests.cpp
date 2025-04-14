@@ -3,18 +3,24 @@
 
 TOSHI_NAMESPACE_USING
 
-struct Test
+struct ManagedPtrTest : public TRefCounted
 {
-	int m_iTest;
+	int m_iTest = 1;
 };
 
 TEST_CASE("Test Managed Pointer", "[TManagedPtr]")
 {
-	TManagedPtr<Test> testptr(new Test{1});
+	ManagedPtrTest *pTest = new ManagedPtrTest;
+	pTest->m_iTest = 1;
+
+	TManagedPtr<ManagedPtrTest> testptr(pTest);
 	REQUIRE(testptr->m_iTest == 1);
 	REQUIRE(testptr.GetRefCount() == 1);
-	TManagedPtr<Test> testptr2 = testptr;
+	
+	TManagedPtr<ManagedPtrTest> testptr2 = testptr;
 	REQUIRE(testptr->m_iTest == 1);
 	REQUIRE(testptr.GetRefCount() == 2);
+
+	testptr = TNULL;
 	REQUIRE(testptr2.GetRefCount() == 1);
 }

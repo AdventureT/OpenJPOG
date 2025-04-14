@@ -3,91 +3,111 @@
 #include "TRefCounted.h"
 #include "TSystemTools.h"
 
+#include <type_traits>
+
 TOSHI_NAMESPACE_BEGIN
 
-template<class T>
-class TManagedPtr : public TRefCounted
+template <class T>
+class TManagedPtr
 {
 public:
-    TManagedPtr() : m_pObject(TNULL)
-    {
+	static_assert(std::is_base_of<TRefCounted, T>::value);
 
-    }
+	TManagedPtr()
+		: m_pObject(TNULL)
+	{
+	}
 
-    TManagedPtr(T* a_pObject)
-    {
-        if (m_pObject) {
-            m_pObject = a_pObject;
-            if (m_pObject) {
-                IncRefCount();
-            }
-        }
-    }
+	TManagedPtr(T *a_pObject)
+		: m_pObject( a_pObject )
+	{
+		if (m_pObject) {
+			m_pObject = a_pObject;
+			m_pObject->TRefCounted::IncRefCount();
+		}
+	}
 
-    TManagedPtr(TManagedPtr& a_source)
-    {
-        if (m_pObject != a_source.m_pObject) {
-            if (m_pObject && DecRefCount() == 0) {
-                delete m_pObject;
-            }
-            m_pObject = a_source.m_pObject;
-            if (a_source.m_pObject) {
-                a_source.IncRefCount();
-            }
-        }
-    }
+	// copy constructor
+	TManagedPtr(const TManagedPtr &a_source)
+	{
+		m_pObject = a_source.m_pObject;
 
-    ~TManagedPtr()
-    {
-        if (m_pObject) {
-            if (DecRefCount() == 0) {
-                delete m_pObject;
-            }
-            m_pObject = TNULL;
-        }
-    }
+		if (m_pObject) {
+			m_pObject->TRefCounted::IncRefCount();
+		}
+	}
 
-    TManagedPtr& operator=(T* a_pObject)
-    {
-        if (m_pObject) {
-            m_pObject = a_pObject;
-            if (m_pObject) {
-                IncRefCount();
-            }
-        }
-        return *this;
-    }
+	// move constructor
+	TManagedPtr(TManagedPtr &&a_source)
+	{
+		m_pObject          = a_source.m_pObject;
+		a_source.m_pObject = TNULL;
+	}
 
-    TManagedPtr& operator=(TManagedPtr& a_source)
-    {
-        if (m_pObject != a_source.m_pObject) {
-            if (m_pObject && DecRefCount() == 0) {
-                delete m_pObject;
-            }
-            m_pObject = a_source.m_pObject;
-            if (a_source.m_pObject) {
-                a_source.IncRefCount();
-            }
-        }
-        return *this;
-    }
+	~TManagedPtr()
+	{
+		if (m_pObject && m_pObject->TRefCounted::DecRefCount() == 0) {
+			delete m_pObject;
+		}
+	}
 
-    T& operator*() const
-    {
-        TASSERT(m_pObject != TNULL); return *m_pObject; 
-    }
+	TManagedPtr &operator=(T *a_pObject)
+	{
+		if (m_pObject != a_pObject) {
+			Create(a_pObject);
+		}
 
-    operator T* () const
-    {
-        TASSERT(m_pObject!=TNULL); return m_pObject; 
-    }
+		return *this;
+	}
 
-    T* operator->() const
-    { 
-        TASSERT(m_pObject != TNULL); return m_pObject;
-    }
+	TManagedPtr &operator=(const TManagedPtr &a_source)
+	{
+		if (m_pObject != a_source.m_pObject) {
+			Create(a_source.m_pObject);
+		}
+
+		return *this;
+	}
+
+	T &operator*() const
+	{
+		TASSERT(m_pObject != TNULL);
+		return *m_pObject;
+	}
+
+	operator T *() const
+	{
+		TASSERT(m_pObject != TNULL);
+		return m_pObject;
+	}
+
+	T *operator->() const
+	{
+		TASSERT(m_pObject != TNULL);
+		return m_pObject;
+	}
+
+	TINT GetRefCount() const
+	{
+		return m_pObject ? m_pObject->TRefCounted::GetRefCount() : 0;
+	}
+
 private:
-    T* m_pObject;
+	void Create(T *a_pObject)
+	{
+		if (m_pObject && m_pObject->TRefCounted::DecRefCount() == 0) {
+			delete m_pObject;
+		}
+
+		m_pObject = a_pObject;
+		
+		if (m_pObject) {
+			m_pObject->TRefCounted::IncRefCount();
+		}
+	}
+
+private:
+	T *m_pObject;
 };
 
 TOSHI_NAMESPACE_END

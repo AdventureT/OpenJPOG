@@ -13,8 +13,8 @@ public:
 	static TPile ms_oMemoryPile;
 };
 
-void* TOSHI_API TGUINew(TUINT a_uiSize);
-void* TOSHI_API TGUIDelete(void* a_pMemory);
-void TOSHI_API TGUISetUseMemoryPile(TBOOL a_bEnable);
+void *TOSHI_API TGUINew(TUINT a_uiSize);
+void *TOSHI_API TGUIDelete(void *a_pMemory);
+void TOSHI_API  TGUISetUseMemoryPile(TBOOL a_bEnable);
 
 TOSHI_NAMESPACE_END

@@ -8,18 +8,16 @@ TOSHI_NAMESPACE_BEGIN
 class TKERNELINTERFACE_EXPORTS TVector4
 {
 public:
-
-	void Set(const TVector3& a_rVec3)
+	void Set(const TVector3 &a_rVec3)
 	{
-
 	}
 
-	TFLOAT const& operator()(TUINT a_iIndex) const
+	TFLOAT const &operator()(TUINT a_iIndex) const
 	{
 		return (&m_fX)[a_iIndex];
 	}
 
-	TFLOAT& operator()(TUINT a_iIndex)
+	TFLOAT &operator()(TUINT a_iIndex)
 	{
 		return (&m_fX)[a_iIndex];
 	}

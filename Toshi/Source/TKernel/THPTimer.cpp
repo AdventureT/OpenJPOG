@@ -16,7 +16,7 @@ void THPTimer::Reset()
 	QueryPerformanceCounter(&m_iCurrentTime);
 	QueryPerformanceFrequency(&m_iFrequency);
 	m_iOldTime = m_iCurrentTime;
-	m_fDelta = 0;
+	m_fDelta   = 0;
 }
 
 void THPTimer::Update()
@@ -25,8 +25,8 @@ void THPTimer::Update()
 	QueryPerformanceCounter(&m_iCurrentTime);
 
 	TCFLOAT ratio = 1.0f / m_iFrequency.QuadPart;
-	m_fDelta = (m_iCurrentTime.QuadPart - m_iOldTime.QuadPart) * ratio;
-	m_fCurrent = m_iCurrentTime.QuadPart * ratio;
+	m_fDelta      = (m_iCurrentTime.QuadPart - m_iOldTime.QuadPart) * ratio;
+	m_fCurrent    = m_iCurrentTime.QuadPart * ratio;
 }
 
 TUINT THPTimer::GetRaw32()

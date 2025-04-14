@@ -6,20 +6,18 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TTextureFactoryHAL, TTextureFactory)
 
-TTextureResource* TTextureFactoryHAL::CreateTextureFromFile(TPCCHAR a_szFileName, TUINT a_eTextureFlags)
+TTextureResource *TTextureFactoryHAL::CreateTextureFromFile(TPCCHAR a_szFileName, TUINT a_eTextureFlags)
 {
-	TTextureResource* pTexture = FindTexture(a_szFileName);
+	TTextureResource *pTexture = FindTexture(a_szFileName);
 
 	if (pTexture) return pTexture;
 
 	pTexture = TSTATICCAST(
-		TTextureResource*,
+		TTextureResource *,
 		GetRenderer()->CreateResource(
 			TClass::Find("TTextureResourceHAL", TNULL),
 			TNULL,
-			this
-		)
-	);
+			this));
 
 	pTexture->Create(a_szFileName, a_eTextureFlags);
 	RegisterTexture(a_szFileName, pTexture);
@@ -28,10 +26,10 @@ TTextureResource* TTextureFactoryHAL::CreateTextureFromFile(TPCCHAR a_szFileName
 	return pTexture;
 }
 
-TTextureResource* TTextureFactoryHAL::CreateTextureFromMemory(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels)
+TTextureResource *TTextureFactoryHAL::CreateTextureFromMemory(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels)
 {
 	static TUINT s_iNumMemTextures = 0;
-	static char s_szName[32];
+	static char  s_szName[32];
 
 	s_szName[0] = 'm';
 	s_szName[1] = 't';
@@ -40,14 +38,12 @@ TTextureResource* TTextureFactoryHAL::CreateTextureFromMemory(TPVOID a_pData, TU
 	s_szName[4] = ':';
 
 	TSystem::StringIntToString(++s_iNumMemTextures, &s_szName[5], 16);
-	TTextureResource* pTexture = TSTATICCAST(
-		TTextureResource*,
+	TTextureResource *pTexture = TSTATICCAST(
+		TTextureResource *,
 		GetRenderer()->CreateResource(
 			TClass::Find("TTextureResourceHAL", TNULL),
 			TNULL,
-			this
-		)
-	);
+			this));
 
 	pTexture->Create(a_pData, a_uiDataSize, a_uiWidth, a_uiHeight, a_uiMipLevels);
 	RegisterTexture(s_szName, pTexture);
@@ -55,10 +51,10 @@ TTextureResource* TTextureFactoryHAL::CreateTextureFromMemory(TPVOID a_pData, TU
 	return pTexture;
 }
 
-TTextureResource* TTextureFactoryHAL::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_uiFormatBits)
+TTextureResource *TTextureFactoryHAL::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_uiFormatBits)
 {
 	static TUINT s_iNumMemTextures = 0;
-	static char s_szName[32];
+	static char  s_szName[32];
 
 	s_szName[0] = 'm';
 	s_szName[1] = 't';
@@ -67,14 +63,12 @@ TTextureResource* TTextureFactoryHAL::CreateEx(TPVOID a_pData, TUINT a_uiDataSiz
 	s_szName[4] = ':';
 
 	TSystem::StringIntToString(++s_iNumMemTextures, &s_szName[5], 16);
-	TTextureResource* pTexture = TSTATICCAST(
-		TTextureResource*,
+	TTextureResource *pTexture = TSTATICCAST(
+		TTextureResource *,
 		GetRenderer()->CreateResource(
 			TClass::Find("TTextureResourceHAL", TNULL),
 			TNULL,
-			this
-		)
-	);
+			this));
 
 	pTexture->CreateEx(a_pData, a_uiDataSize, a_uiWidth, a_uiHeight, a_uiMipLevels, a_eFormat, a_uiFormatBits);
 	RegisterTexture(s_szName, pTexture);

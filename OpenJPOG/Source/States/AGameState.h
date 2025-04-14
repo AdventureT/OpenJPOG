@@ -6,4 +6,3 @@ class AGameState : public ARootState
 {
 	DECLARE_DYNAMIC(AGameState)
 };
-

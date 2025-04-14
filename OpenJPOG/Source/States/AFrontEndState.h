@@ -8,9 +8,9 @@ class AFrontendState : public ARootState
 
 public:
 	virtual ~AFrontendState() = default;
-	virtual void OnInsertion() override;
-	virtual void OnRemoval() override;
-	virtual TBOOL ParentAllowed(ARootState& a_rParent) override;
+	virtual void  OnInsertion() override;
+	virtual void  OnRemoval() override;
+	virtual TBOOL ParentAllowed(ARootState &a_rParent) override;
 
 protected:
 	static inline int sm_iFERefCount = 0;

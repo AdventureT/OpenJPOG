@@ -34,8 +34,8 @@ class TRENDERINTERFACED3D_EXPORTS TRenderCaptureD3D : public TRenderCapture
 private:
 	TPVOID m_pBuffer; // 0x4
 	FORMAT m_eFormat; // 0x8
-	TINT m_iWidth;    // 0xC
-	TINT m_iHeight;   // 0x10
+	TINT   m_iWidth;  // 0xC
+	TINT   m_iHeight; // 0x10
 };
 
 TOSHI_NAMESPACE_END

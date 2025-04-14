@@ -11,12 +11,12 @@ class AMoviePlayer
 public:
 	AMoviePlayer()
 	{
-		m_bIsStopped = TTRUE;
+		m_bIsStopped     = TTRUE;
 		m_bIsInitialized = TFALSE;
-		m_bIsFrameReady = TFALSE;
-		m_bIsFullscreen = TTRUE;
-		m_bIsPaused = TFALSE;
-		m_bRenderMovie = TTRUE;
+		m_bIsFrameReady  = TFALSE;
+		m_bIsFullscreen  = TTRUE;
+		m_bIsPaused      = TFALSE;
+		m_bRenderMovie   = TTRUE;
 	}
 
 	virtual ~AMoviePlayer() = default;
@@ -129,7 +129,6 @@ public:
 	}
 
 private:
-
 	virtual TBOOL GetTextureUVs(TVector2 &a_rvUV1, TVector2 &a_rvUV2)
 	{
 		return TFALSE;
@@ -145,13 +144,13 @@ private:
 		return TFALSE;
 	}
 
-	virtual TTextureResource* GetTexture()
+	virtual TTextureResource *GetTexture()
 	{
 		return TNULL;
 	}
 
 protected:
-	                        // 0x0 vftable
+	// 0x0 vftable
 	TBOOL m_bIsStopped;     // 0x4
 	TBOOL m_bIsInitialized; // 0x5
 	TBOOL m_bIsFrameReady;  // 0x7

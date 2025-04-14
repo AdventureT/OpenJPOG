@@ -2,9 +2,9 @@
 
 PPropertyReader::PPropertyReader()
 {
-	m_pFile = TNULL;
-	m_pLexer = TNULL;
-	m_bLoadComments = TFALSE;
+	m_pFile          = TNULL;
+	m_pLexer         = TNULL;
+	m_bLoadComments  = TFALSE;
 	m_bAssertOnError = TTRUE;
 }
 
@@ -20,7 +20,7 @@ void PPropertyReader::Close()
 	}
 }
 
-void PPropertyReader::Error(const Toshi::TCString& a_sMsg)
+void PPropertyReader::Error(const Toshi::TCString &a_sMsg)
 {
 	TDPRINTF("%s : error: %s\n", m_szFileName.GetString(), a_sMsg.GetString());
 	if (m_bAssertOnError) {
@@ -99,7 +99,7 @@ TBOOL PPropertyReader::GetValue(PPropertyValue &a_rValue)
 
 PPropertyValue PPropertyReader::Token2Value(const Toshi::TFileLexer::Token &a_rToken)
 {
-	static TINT s_boolFlags = 0;
+	static TINT             s_boolFlags = 0;
 	static Toshi::TPCString s_true;
 	static Toshi::TPCString s_false;
 	// PENDING: true and false is unicode
@@ -139,8 +139,8 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 {
 	TASSERT(m_pLexer != TNULL);
 	do {
-		Toshi::TFileLexer::Token token = m_pLexer->PeekNextToken(0);
-		Toshi::TFileLexer::TokenType type = token.GetType();
+		Toshi::TFileLexer::Token     token = m_pLexer->PeekNextToken(0);
+		Toshi::TFileLexer::TokenType type  = token.GetType();
 		if (type == Toshi::TFileLexer::TOKEN_CLOSEBRACE) {
 			if (m_oPropertyBlock.GetNumElements() > 0) {
 				m_oPropertyBlock.Pop();
@@ -156,13 +156,13 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 			}
 			return TFALSE;
 		}
-		if (type != Toshi::TFileLexer::TOKEN_IDENT  &&
-			type != Toshi::TFileLexer::TOKEN_STRING &&
-			type != Toshi::TFileLexer::TOKEN_COMMENT) {
+		if (type != Toshi::TFileLexer::TOKEN_IDENT &&
+		    type != Toshi::TFileLexer::TOKEN_STRING &&
+		    type != Toshi::TFileLexer::TOKEN_COMMENT) {
 			return TTRUE;
 		}
 		Toshi::TFileLexer::Token commentToken = token;
-		Toshi::TPCString comment;
+		Toshi::TPCString         comment;
 		while (commentToken.GetType() == Toshi::TFileLexer::TOKEN_COMMENT) {
 			comment = commentToken.GetString();
 			m_pLexer->GetNextToken();
@@ -173,8 +173,8 @@ TBOOL PPropertyReader::LoadProperty(PProperties *a_pProperty)
 		if (!LoadPropertyName(name, subName)) {
 			return TFALSE;
 		}
-		PPropertyName propertyName = PPropertyName(name, subName);
-		Toshi::TFileLexer::Token nextToken = m_pLexer->GetNextToken();
+		PPropertyName            propertyName = PPropertyName(name, subName);
+		Toshi::TFileLexer::Token nextToken    = m_pLexer->GetNextToken();
 		if (nextToken.GetType() == Toshi::TFileLexer::TOKEN_OPENBRACE) {
 			m_oPropertyBlock.Push(a_pProperty);
 			PProperties *prop = new PProperties(a_pProperty);
@@ -239,9 +239,9 @@ TBOOL PPropertyReader::LoadPropertyName(Toshi::TPCString &a_rName, Toshi::TPCStr
 {
 	TASSERT(m_pLexer != TNULL);
 	Toshi::TFileLexer::Token nextToken = m_pLexer->GetNextToken();
-	Toshi::TFileLexer::Token curToken = m_pLexer->PeekNextToken(0);
+	Toshi::TFileLexer::Token curToken  = m_pLexer->PeekNextToken(0);
 	if (nextToken.GetType() != Toshi::TFileLexer::TOKEN_IDENT &&
-		nextToken.GetType() != Toshi::TFileLexer::TOKEN_STRING) {
+	    nextToken.GetType() != Toshi::TFileLexer::TOKEN_STRING) {
 		Error("Expecting property name to be identifer");
 		return TFALSE;
 	}
@@ -255,7 +255,7 @@ TBOOL PPropertyReader::LoadPropertyName(Toshi::TPCString &a_rName, Toshi::TPCStr
 			return TFALSE;
 		}
 		if (tokenSubName.GetType() == Toshi::TFileLexer::TOKEN_IDENT ||
-			tokenSubName.GetType() == Toshi::TFileLexer::TOKEN_STRING) {
+		    tokenSubName.GetType() == Toshi::TFileLexer::TOKEN_STRING) {
 			a_rSubName = tokenSubName.GetString();
 		}
 		else {
@@ -269,17 +269,17 @@ TBOOL PPropertyReader::LoadPropertyName(Toshi::TPCString &a_rName, Toshi::TPCStr
 	return TTRUE;
 }
 
-TBOOL PPropertyReader::Open(const Toshi::TCString& a_rFileName, Toshi::TFile* a_pFile)
+TBOOL PPropertyReader::Open(const Toshi::TCString &a_rFileName, Toshi::TFile *a_pFile)
 {
 	m_szFileName = a_rFileName;
 	Close();
-	m_pFile = a_pFile;
+	m_pFile  = a_pFile;
 	m_pLexer = new Toshi::TFileLexerUTF8(m_pFile, 2);
 	m_pLexer->SetOutputComments(m_bLoadComments);
 	return TTRUE;
 }
 
-TBOOL PPropertyReader::Open(const Toshi::TCString& a_rFileName)
+TBOOL PPropertyReader::Open(const Toshi::TCString &a_rFileName)
 {
 	m_szFileName = a_rFileName;
 	Close();
@@ -293,7 +293,7 @@ TBOOL PPropertyReader::Open(const Toshi::TCString& a_rFileName)
 	return TTRUE;
 }
 
-void PPropertyReader::Warning(const Toshi::TCString& a_sMsg)
+void PPropertyReader::Warning(const Toshi::TCString &a_sMsg)
 {
 	TDPRINTF("%s : warning: %s\n", m_szFileName.GetString(), a_sMsg.GetString());
 }

@@ -10,7 +10,7 @@ class TRenderInterface;
 class TRENDERINTERFACE_EXPORTS TRenderContext
 {
 private:
-	TRenderInterface* m_pRenderInterface; // 0x4
+	TRenderInterface *m_pRenderInterface; // 0x4
 };
 
 TOSHI_NAMESPACE_END

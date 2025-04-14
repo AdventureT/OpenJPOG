@@ -1,13 +1,15 @@
 #pragma once
 #include "TDebug.h"
-#include TOSHI_MULTIPLATFORM(TThread)
+
+#ifdef TOSHI_SKU_WINDOWS
+#  include "Win/TThreadWin.h"
+#endif // TOSHI_SKU_WINDOWS
 
 TOSHI_NAMESPACE_BEGIN
 
 class TKERNELINTERFACE_EXPORTS TMutexLock
 {
 public:
-
 	TMutexLock()
 	{
 		m_pMutex = TNULL;
@@ -27,7 +29,7 @@ public:
 	void Destroy();
 
 private:
-	TMutex* m_pMutex; // 0x0
+	TMutex *m_pMutex; // 0x0
 };
 
 TOSHI_NAMESPACE_END

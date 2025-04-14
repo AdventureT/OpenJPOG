@@ -5,5 +5,4 @@ TOSHI_NAMESPACE_USING
 
 TEST_CASE("Create", "[TApplication]")
 {
-	
 }

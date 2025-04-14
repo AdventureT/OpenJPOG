@@ -8,16 +8,16 @@ class TGenericEmitter;
 class TKERNELINTERFACE_EXPORTS TGenericListener : public TPriList<TGenericListener>::TNode
 {
 public:
-	using t_Callback = TBOOL(*)(void* a_pCaller, void* a_pOwner, void* a_pData);
+	using t_Callback = TBOOL (*)(void *a_pCaller, void *a_pOwner, void *a_pData);
 	friend class TGenericEmitter;
 
 public:
 	TGenericListener()
 	{
-		m_pCaller = TNULL;
+		m_pCaller   = TNULL;
 		m_pCallback = TNULL;
 	}
-	TGenericListener(TGenericEmitter* a_pEmitter, void* a_pCaller, t_Callback a_pCallback, int a_iPriority)
+	TGenericListener(TGenericEmitter *a_pEmitter, void *a_pCaller, t_Callback a_pCallback, int a_iPriority)
 	{
 		Connect(a_pEmitter, a_pCaller, a_pCallback, a_iPriority);
 	}
@@ -26,18 +26,17 @@ public:
 		Disconnect();
 	}
 
-	void Connect(TGenericEmitter* a_pEmitter, void* a_pCaller, t_Callback a_pCallback, int a_iPriority);
+	void Connect(TGenericEmitter *a_pEmitter, void *a_pCaller, t_Callback a_pCallback, int a_iPriority);
 	void Disconnect();
 
 private:
-	void* m_pCaller;
+	void      *m_pCaller;
 	t_Callback m_pCallback;
 };
 
 class TKERNELINTERFACE_EXPORTS TGenericEmitter
 {
 public:
-
 	friend class TGenericListener;
 
 	TGenericEmitter()
@@ -45,7 +44,7 @@ public:
 		Create(TNULL);
 	}
 
-	TGenericEmitter(void* a_pOwner)
+	TGenericEmitter(void *a_pOwner)
 	{
 		Create(a_pOwner);
 	}
@@ -55,14 +54,14 @@ public:
 		Destroy();
 	}
 
-	void Throw(void* a_pData)
+	void Throw(void *a_pData)
 	{
 		for (auto it = m_Listeners.Begin(); it != m_Listeners.End(); it++) {
 			it->m_pCallback(it->m_pCaller, m_pOwner, a_pData);
 		}
 	}
 
-	void Create(void* a_pOwner)
+	void Create(void *a_pOwner)
 	{
 		m_pOwner = a_pOwner;
 	}
@@ -78,7 +77,7 @@ public:
 
 private:
 	TPriList<TGenericListener> m_Listeners;
-	void* m_pOwner;
+	void                      *m_pOwner;
 };
 
 template <typename Owner, typename Data = Owner>
@@ -86,12 +85,13 @@ class TEmitter : public TGenericEmitter
 {
 public:
 	TEmitter() = default;
-	TEmitter(Owner* owner) : TGenericEmitter(owner) {}
+	TEmitter(Owner *owner)
+		: TGenericEmitter(owner) {}
 
-	void Throw(Data* pData) { TGenericEmitter::Throw(pData); }
-	void Throw(Data&& data) { TGenericEmitter::Throw(&data); }
+	void Throw(Data *pData) { TGenericEmitter::Throw(pData); }
+	void Throw(Data &&data) { TGenericEmitter::Throw(&data); }
 
-	void Create(Owner* owner) { TGenericEmitter::Create(owner); }
+	void Create(Owner *owner) { TGenericEmitter::Create(owner); }
 	void Destroy() { TGenericEmitter::Destroy(); }
 };
 
@@ -99,17 +99,16 @@ template <typename Owner, typename Data, typename Caller>
 class TListener : public TGenericListener
 {
 public:
-	using t_CallerCallback = TBOOL(*)(Caller* a_pCaller, Owner* a_pOwner, Data* a_pData);
+	using t_CallerCallback = TBOOL (*)(Caller *a_pCaller, Owner *a_pOwner, Data *a_pData);
 
 public:
-	void Connect(TGenericEmitter& a_rEmitter, Caller* a_pCaller, t_CallerCallback a_pCallback, int a_iPriority)
+	void Connect(TGenericEmitter &a_rEmitter, Caller *a_pCaller, t_CallerCallback a_pCallback, int a_iPriority)
 	{
 		TGenericListener::Connect(
 			a_rEmitter,
 			a_pCaller,
 			(t_Callback)a_pCallback,
-			a_iPriority
-		);
+			a_iPriority);
 	}
 };
 

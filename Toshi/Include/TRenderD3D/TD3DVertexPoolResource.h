@@ -13,11 +13,11 @@ class TRENDERINTERFACED3D_EXPORTS TVertexPoolResource : public TVertexPoolResour
 
 protected:
 	virtual TBOOL Validate() override;
-	virtual void Invalidate() override;
-	virtual void OnDestroy() override;
-	virtual TBOOL Lock(LockBuffer* a_pLockBuffer) override;
-	virtual void Unlock(TUSHORT a_uiNewNumVertices) override;
-	virtual TBOOL Create(TVertexFactoryResourceInterface* a_pFactory, TUINT a_uiMaxVertices, TUINT a_uiFlags) override;
+	virtual void  Invalidate() override;
+	virtual void  OnDestroy() override;
+	virtual TBOOL Lock(LockBuffer *a_pLockBuffer) override;
+	virtual void  Unlock(TUSHORT a_uiNewNumVertices) override;
+	virtual TBOOL Create(TVertexFactoryResourceInterface *a_pFactory, TUINT a_uiMaxVertices, TUINT a_uiFlags) override;
 };
 
 TOSHI_NAMESPACE_END

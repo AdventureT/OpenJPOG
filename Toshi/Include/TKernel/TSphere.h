@@ -7,7 +7,7 @@ class TKERNELINTERFACE_EXPORTS TSphere
 {
 private:
 	TVector3 m_Origin;
-	TFLOAT m_fRadius;
+	TFLOAT   m_fRadius;
 };
 
 TOSHI_NAMESPACE_END

@@ -1,7 +1,6 @@
 project ("OpenJPOG")
+	kind "ConsoleApp"
 	language "C++"
-	cppdialect "C++20"
-	characterset "ASCII"
 	staticruntime "on"
 
 	links
@@ -33,9 +32,9 @@ project ("OpenJPOG")
 
 	includedirs
 	{
+		"Source",
 		"%{wks.location}/Toshi/Include",
 		"%{wks.location}/Toshi/Plugins/Include",
-		"Source",
 		"%{IncludeDir.fmod}",
 		"%{IncludeDir.bink}"
 	}
@@ -68,29 +67,3 @@ project ("OpenJPOG")
 		"{COPY} \"%{wks.location}Toshi/vendor/fmod/lib/fmod.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}Toshi/vendor/bink/lib/binkw32.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-		defines
-		{
-			"TOSHI_SKU_WINDOWS"
-		}
-
-	filter "configurations:Debug"
-		kind "ConsoleApp"
-		runtime "Debug"
-		defines "TOSHI_DEBUG"
-		symbols "On"
-
-	filter "configurations:Release"
-		kind "ConsoleApp"
-		runtime "Release"
-		defines "TOSHI_RELEASE"
-		optimize "On"
-
-	filter "configurations:Final"
-		kind "ConsoleApp"
-		runtime "Release"
-		defines "TOSHI_FINAL"
-		optimize "On"

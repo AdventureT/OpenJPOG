@@ -7,10 +7,8 @@ TOSHI_NAMESPACE_BEGIN
 class TKERNELINTERFACE_EXPORTS TVector2
 {
 public:
-
 	TVector2()
 	{
-		
 	}
 
 	TVector2(TFLOAT a_fX, TFLOAT a_fY)
@@ -50,6 +48,7 @@ public:
 	static const TVector2 VEC_POSY;
 	static const TVector2 VEC_NEGX;
 	static const TVector2 VEC_NEGY;
+
 private:
 	TFLOAT m_fX; // 0x0
 	TFLOAT m_fY; // 0x4

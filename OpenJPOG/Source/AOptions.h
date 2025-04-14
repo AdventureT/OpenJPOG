@@ -13,7 +13,7 @@ public:
 	struct AOptionSetting
 	{
 		OPTION m_eOption;
-		TBOOL m_bFetched;
+		TBOOL  m_bFetched;
 	};
 
 	struct AScreenRes
@@ -23,12 +23,13 @@ public:
 		TINT m_iScreenDepth;
 		TINT m_iScreenUnk;
 	};
+
 public:
 	AOptionsLogic();
 
 	TBOOL GetOption(OPTION a_eOption, AScreenRes &a_rScreenRes);
 	TBOOL SetOption(OPTION a_eOption, AScreenRes &a_rScreenRes);
-	void OptionGet(AOptionSetting &a_rSetting);
+	void  OptionGet(AOptionSetting &a_rSetting);
 
 private:
 	static AScreenRes m_oScreenRes;
@@ -41,7 +42,7 @@ public:
 
 	enum Result
 	{
-		RESULT_OK = 0,
+		RESULT_OK    = 0,
 		RESULT_ERROR = 3
 	};
 
@@ -56,15 +57,14 @@ public:
 	}
 
 private:
-	static TPCCHAR sm_szOptionsName;
-	static TPCCHAR sm_szOptionsDir;
+	static TPCCHAR    sm_szOptionsName;
+	static TPCCHAR    sm_szOptionsDir;
 	static const TINT sm_iSlot = -1;
 	static const TINT sm_iPort = -1;
 
 	static AOptions *ms_pSingleton;
 
-	TINT m_iAutoSaveState;    // 0x1C
-	PProperties *m_pUnkProps; // 0x20
-	PProperties *m_pCurProps; // 0x24
+	TINT         m_iAutoSaveState; // 0x1C
+	PProperties *m_pUnkProps;      // 0x20
+	PProperties *m_pCurProps;      // 0x24
 };
-

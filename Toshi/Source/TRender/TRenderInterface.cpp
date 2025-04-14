@@ -7,16 +7,16 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TRenderInterface, TObject)
 
-TRenderInterface* TRenderInterface::s_Interface = TNULL;
+TRenderInterface *TRenderInterface::s_Interface = TNULL;
 
 TRenderInterface::TRenderInterface()
 {
-	m_bIsCreated = TFALSE;
-	m_bIsDiplayCreated = TFALSE;
+	m_bIsCreated            = TFALSE;
+	m_bIsDiplayCreated      = TFALSE;
 	m_pDefaultRenderContext = TNULL;
 	m_pCurrentRenderContext = TNULL;
-	m_pKernel = TNULL;
-	m_iResourceCount = 1;
+	m_pKernel               = TNULL;
+	m_iResourceCount        = 1;
 	TCString("Creating TRenderInterface\n").Print();
 	TASSERT(s_Interface == TNULL);
 	s_Interface = this;
@@ -24,7 +24,7 @@ TRenderInterface::TRenderInterface()
 	TCString("Created TRenderInterface\n").Print();
 }
 
-TBOOL TRenderInterface::CreateDisplay(const DisplayParams& a_rParams)
+TBOOL TRenderInterface::CreateDisplay(const DisplayParams &a_rParams)
 {
 	TASSERT(TTRUE == IsCreated());
 	TASSERT(TFALSE == IsDisplayCreated());
@@ -34,7 +34,7 @@ TBOOL TRenderInterface::CreateDisplay(const DisplayParams& a_rParams)
 
 TBOOL TRenderInterface::DestroyDisplay()
 {
-	TASSERT(TTRUE==IsCreated());
+	TASSERT(TTRUE == IsCreated());
 	m_bIsDiplayCreated = TFALSE;
 	return TTRUE;
 }
@@ -47,36 +47,36 @@ TBOOL TRenderInterface::Update(float a_fDeltaTime)
 
 TBOOL TRenderInterface::BeginScene()
 {
-	TASSERT(TTRUE==IsCreated());
-	TASSERT(TTRUE==IsDisplayCreated());
+	TASSERT(TTRUE == IsCreated());
+	TASSERT(TTRUE == IsDisplayCreated());
 	m_iSceneCount++;
 	return TTRUE;
 }
 
 TBOOL TRenderInterface::EndScene()
 {
-	TASSERT(TTRUE==IsCreated());
-	TASSERT(TTRUE==IsDisplayCreated());
+	TASSERT(TTRUE == IsCreated());
+	TASSERT(TTRUE == IsDisplayCreated());
 	return TTRUE;
 }
 
-TRenderAdapter::Mode::Device* TRenderInterface::GetCurrentDevice()
+TRenderAdapter::Mode::Device *TRenderInterface::GetCurrentDevice()
 {
 	return TNULL;
 }
 
-TRenderInterface::DisplayParams* TRenderInterface::GetCurrentDisplayParams()
+TRenderInterface::DisplayParams *TRenderInterface::GetCurrentDisplayParams()
 {
 	return nullptr;
 }
 
-TBOOL TRenderInterface::Create(TKernelInterface* pKernelInterface)
+TBOOL TRenderInterface::Create(TKernelInterface *pKernelInterface)
 {
 	TASSERT(TFALSE == IsCreated());
 
 	TVALIDADDRESS(pKernelInterface);
 	m_pKernel = pKernelInterface;
-	
+
 	m_pDefaultRenderContext = CreateRenderContext();
 	TVALIDADDRESS(m_pDefaultRenderContext);
 
@@ -92,30 +92,30 @@ TBOOL TRenderInterface::CreateSystemResources()
 {
 	TCString("  Adding base resources\n").Print();
 
-	TBOOL bRes = TFALSE;
+	TBOOL                bRes = TFALSE;
 	TVertexFactoryFormat vertexFormat;
 
 	m_aSysResources[SYSRESOURCE_VFACTORIES] = CreateResource(&TGetClass(TNullResource), "VFactories", TNULL);
 
 	m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1] = CreateResource(TFindClass(TVertexFactoryResource, TNULL), "VFSYSSVNDUV1", GetSystemResource(SYSRESOURCE_VFACTORIES));
 	TVALIDADDRESS(m_aSysResources[SYSRESOURCE_VFSYSSVNDUV1]);
-	vertexFormat.m_uiNumStreams = 1;
+	vertexFormat.m_uiNumStreams                     = 1;
 	vertexFormat.m_aStreamFormats[0].m_uiVertexSize = 24;
-	vertexFormat.m_aStreamFormats[0].m_uiUnk = 0;
-	bRes = static_cast<TVertexFactoryResourceInterface*>(GetSystemResource(SYSRESOURCE_VFSYSSVNDUV1))->Create(&vertexFormat, 11000, 0);
+	vertexFormat.m_aStreamFormats[0].m_uiUnk        = 0;
+	bRes                                            = static_cast<TVertexFactoryResourceInterface *>(GetSystemResource(SYSRESOURCE_VFSYSSVNDUV1))->Create(&vertexFormat, 11000, 0);
 	TASSERT(TTRUE == bRes);
 
 	m_aSysResources[SYSRESOURCE_VFSKIN] = CreateResource(TFindClass(TVertexFactoryResource, TNULL), "VFSKIN", GetSystemResource(SYSRESOURCE_VFACTORIES));
 	TVALIDADDRESS(m_aSysResources[SYSRESOURCE_VFSKIN]);
-	vertexFormat.m_uiNumStreams = 1;
+	vertexFormat.m_uiNumStreams                     = 1;
 	vertexFormat.m_aStreamFormats[0].m_uiVertexSize = 40;
-	vertexFormat.m_aStreamFormats[0].m_uiUnk = 0;
-	bRes = static_cast<TVertexFactoryResourceInterface*>(GetSystemResource(SYSRESOURCE_VFSKIN))->Create(&vertexFormat, 11000, 0);
+	vertexFormat.m_aStreamFormats[0].m_uiUnk        = 0;
+	bRes                                            = static_cast<TVertexFactoryResourceInterface *>(GetSystemResource(SYSRESOURCE_VFSKIN))->Create(&vertexFormat, 11000, 0);
 	TASSERT(TTRUE == bRes);
 
 	m_aSysResources[SYSRESOURCE_TEXTUREFACTORY] = CreateResource(TFindClass(TTextureFactoryHAL, TNULL), "TextureFactory", TNULL);
-	bRes = m_aSysResources[SYSRESOURCE_TEXTUREFACTORY]->Create();
-	TASSERT(TTRUE==bRes);
+	bRes                                        = m_aSysResources[SYSRESOURCE_TEXTUREFACTORY]->Create();
+	TASSERT(TTRUE == bRes);
 
 	return TTRUE;
 }
@@ -124,12 +124,12 @@ void TRenderInterface::DestroySystemResources()
 {
 }
 
-TResource* TRenderInterface::CreateResource(const TClass* a_pClass, TPCCHAR a_szResName, TResource* a_pParent)
-{	
+TResource *TRenderInterface::CreateResource(const TClass *a_pClass, TPCCHAR a_szResName, TResource *a_pParent)
+{
 	TASSERT(TNULL != a_pClass);
 	TASSERT(a_pClass->IsA(TGetClass(TResource)));
 
-	TResource* pResource = (TResource*)a_pClass->CreateObject();
+	TResource *pResource = (TResource *)a_pClass->CreateObject();
 	TASSERT(TNULL != pResource);
 
 	if (a_pParent && a_pParent->IsDying()) {
@@ -144,14 +144,14 @@ TResource* TRenderInterface::CreateResource(const TClass* a_pClass, TPCCHAR a_sz
 	}
 
 	m_Resources.Insert(a_pParent, pResource);
-	pResource->m_uiUId = m_iResourceCount++;
+	pResource->m_uiUId     = m_iResourceCount++;
 	pResource->m_pRenderer = this;
 	pResource->SetName(a_szResName);
 
 	return pResource;
 }
 
-const TRenderAdapter::Mode::Device* TRenderInterface::FindDevice(const DisplayParams* a_pDisplayParams)
+const TRenderAdapter::Mode::Device *TRenderInterface::FindDevice(const DisplayParams *a_pDisplayParams)
 {
 	auto pAdapter = GetAdapterList()->Begin();
 
@@ -197,7 +197,7 @@ const TRenderAdapter::Mode::Device* TRenderInterface::FindDevice(const DisplayPa
 					bPassedWindowed = TFALSE;
 				}
 
-				auto uiWidth = pDevice->GetMode()->GetWidth();
+				auto uiWidth  = pDevice->GetMode()->GetWidth();
 				auto uiHeight = pDevice->GetMode()->GetHeight();
 
 				if (uiHeight < uiWidth || !a_pDisplayParams->bWindowed || a_pDisplayParams->uiWidth <= a_pDisplayParams->uiHeight)
@@ -205,7 +205,7 @@ const TRenderAdapter::Mode::Device* TRenderInterface::FindDevice(const DisplayPa
 					if (uiWidth == a_pDisplayParams->uiWidth && uiHeight == a_pDisplayParams->uiHeight)
 					{
 						if (pDevice->IsDepthStencilFormatSupported(a_pDisplayParams->eDepthStencilFormat) &&
-							bPassedColourDepth && bPassedWindowed)
+						    bPassedColourDepth && bPassedWindowed)
 						{
 							return pDevice;
 						}
@@ -218,7 +218,7 @@ const TRenderAdapter::Mode::Device* TRenderInterface::FindDevice(const DisplayPa
 						if (uiHeight < a_pDisplayParams->uiHeight) continue;
 
 						if (pDevice->IsDepthStencilFormatSupported(a_pDisplayParams->eDepthStencilFormat) &&
-							bPassedColourDepth && bPassedWindowed)
+						    bPassedColourDepth && bPassedWindowed)
 						{
 							return pDevice;
 						}
@@ -240,13 +240,13 @@ void TRenderInterface::FlushDyingResources()
 	}
 }
 
-void TRenderInterface::DestroyDyingResources(TResource* a_pResource)
+void TRenderInterface::DestroyDyingResources(TResource *a_pResource)
 {
 	// TODO: refactor
-	TResource* pTVar1;
-	TResource* next;
-	TResource* pRes1;
-	TResource* pRes2;
+	TResource *pTVar1;
+	TResource *next;
+	TResource *pRes1;
+	TResource *pRes2;
 
 	pRes1 = a_pResource;
 	pRes2 = a_pResource;
@@ -254,28 +254,28 @@ void TRenderInterface::DestroyDyingResources(TResource* a_pResource)
 		do {
 			next = pRes2->Next();
 			if (next == pRes1) {
-				next = (TResource*)0x0;
+				next = (TResource *)0x0;
 			}
 			if ((pRes2->m_Flags & 4) == 0) {
 				pRes2 = pRes2->Child();
-				if (pRes2 != (TResource*)0x0) {
+				if (pRes2 != (TResource *)0x0) {
 					DestroyDyingResources(pRes2);
 				}
 			}
 			else {
 				if (pRes2 == pRes1) {
-					pRes1 = next;
+					pRes1       = next;
 					a_pResource = next;
 				}
 				pTVar1 = pRes2->Child();
-				while (pTVar1 != (TResource*)0x0) {
+				while (pTVar1 != (TResource *)0x0) {
 					pRes1 = pTVar1->Next();
 					if (pRes1 == pTVar1) {
-						pRes1 = (TResource*)0x0;
+						pRes1 = (TResource *)0x0;
 					}
 					DeleteResourceAtomic(pTVar1);
 					pTVar1 = pRes1;
-					pRes1 = a_pResource;
+					pRes1  = a_pResource;
 				}
 				DeleteResourceAtomic(pRes2);
 			}
@@ -284,13 +284,13 @@ void TRenderInterface::DestroyDyingResources(TResource* a_pResource)
 	}
 }
 
-void TRenderInterface::DeleteResource(TResource* a_pResource)
+void TRenderInterface::DeleteResource(TResource *a_pResource)
 {
 	DeleteResourceRecurse(a_pResource->Child());
 	DeleteResourceAtomic(a_pResource);
 }
 
-void TRenderInterface::DeleteResourceRecurse(TResource* a_pResource)
+void TRenderInterface::DeleteResourceRecurse(TResource *a_pResource)
 {
 	while (a_pResource)
 	{
@@ -302,7 +302,7 @@ void TRenderInterface::DeleteResourceRecurse(TResource* a_pResource)
 	}
 }
 
-void TRenderInterface::DeleteResourceAtomic(TResource* a_pResource)
+void TRenderInterface::DeleteResourceAtomic(TResource *a_pResource)
 {
 	if (a_pResource) {
 		DeleteResourceRecurse(a_pResource->Child());
@@ -337,11 +337,11 @@ void TRenderInterface::DumpStats()
 {
 }
 
-void TRenderInterface::GetScreenOffset(TVector2& a_rVec)
+void TRenderInterface::GetScreenOffset(TVector2 &a_rVec)
 {
 }
 
-void TRenderInterface::SetScreenOffset(const TVector2& a_rVec)
+void TRenderInterface::SetScreenOffset(const TVector2 &a_rVec)
 {
 }
 
@@ -360,33 +360,33 @@ TBOOL TRenderInterface::SetPixelAspectRatio(float a_fPixelAspectRatio)
 	return TBOOL();
 }
 
-TRenderContext* TRenderInterface::CreateRenderContext()
+TRenderContext *TRenderInterface::CreateRenderContext()
 {
 	return TNULL;
 }
 
-TRenderCapture* TRenderInterface::CreateCapture()
+TRenderCapture *TRenderInterface::CreateCapture()
 {
 	return TNULL;
 }
 
-void TRenderInterface::DestroyCapture(TRenderCapture* a_pRenderCapture)
+void TRenderInterface::DestroyCapture(TRenderCapture *a_pRenderCapture)
 {
 }
 
-void TRenderInterface::SetLightDirectionMatrix(const TMatrix44& a_rMatrix)
+void TRenderInterface::SetLightDirectionMatrix(const TMatrix44 &a_rMatrix)
 {
 }
 
-void TRenderInterface::SetLightColourMatrix(const TMatrix44& a_rMatrix)
+void TRenderInterface::SetLightColourMatrix(const TMatrix44 &a_rMatrix)
 {
 }
 
-void TRenderInterface::ConnectDefaultViewportHandelrs(TViewport& a_pViewport)
+void TRenderInterface::ConnectDefaultViewportHandelrs(TViewport &a_pViewport)
 {
 }
 
-TModel* TRenderInterface::CreateModel(TPCCHAR a_szName, TINT a_iUnk1)
+TModel *TRenderInterface::CreateModel(TPCCHAR a_szName, TINT a_iUnk1)
 {
 	return nullptr;
 }
