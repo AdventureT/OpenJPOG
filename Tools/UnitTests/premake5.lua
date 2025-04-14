@@ -10,9 +10,8 @@ end
 
 
 project "UnitTests"
+	kind "ConsoleApp"
 	language "C++"
-	cppdialect "C++20"
-	characterset "ASCII"
 
 	links
 	{
@@ -41,7 +40,7 @@ project "UnitTests"
 	
 	defines
 	{
-		"TOSHI_USER_CLIENT",
+		"TOSHI_USER_CLIENT"
 	}
 	
 	postbuildcommands
@@ -52,51 +51,20 @@ project "UnitTests"
 	}
 
 	filter "system:windows"
-		systemversion "latest"
-
-		defines
-		{
-			"TOSHI_CONSOLE",
-			"TOSHI_SKU_WINDOWS"
-		}
+		defines "TOSHI_CONSOLE"
 
 	filter "configurations:Debug"
-		kind "ConsoleApp"
-		runtime "Debug"
-		defines "TOSHI_DEBUG"
-		symbols "On"
-		
 		ExtractLib { dbg = "d" }
 		
-		links
-		{
-			"Catch2d.lib"
-		}
+		links "Catch2d.lib"
 
 	filter "configurations:Release"
-		kind "ConsoleApp"
-		runtime "Release"
-		defines "TOSHI_RELEASE"
-		optimize "On"
-		
-		ExtractLib { dbg = ""}
-		
-		links
-		{
-			"Catch2.lib"
-		}
-
-	filter "configurations:Final"
-		kind "ConsoleApp"
-		runtime "Release"
-		defines "TOSHI_FINAL"
-		optimize "On"
-		
 		ExtractLib { dbg = "" }
 		
-		links
-		{
-			"Catch2.lib"
-		}
+		links "Catch2.lib"
 
+	filter "configurations:Final"
+		ExtractLib { dbg = "" }
+		
+		links "Catch2.lib"
 		

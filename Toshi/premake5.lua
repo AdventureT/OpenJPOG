@@ -1,8 +1,6 @@
 project ("TKernelInterface")
 	kind "SharedLib"
 	language "C++"
-	cppdialect "C++20"
-	characterset "ASCII"
 	
 	links
 	{
@@ -18,21 +16,15 @@ project ("TKernelInterface")
 
 	defines
 	{
-		"TKERNELINTERFACE",
-		"_CRT_SECURE_NO_WARNINGS"
+		"TKERNELINTERFACE"
 	}
 	
 	libdirs
 	{
 		"%{LibDir.fmod}"
 	}
-	
-	filter "files:**.c"
-		flags { "NoPCH" }
 
 	filter "system:windows"
-		systemversion "latest"
-		
 		files
 		{
 			"Include/*.h",
@@ -43,32 +35,10 @@ project ("TKernelInterface")
 			"Include/TKernel/**.h",
 			"Source/TKernel/**.cpp"
 		}
-
-		defines
-		{
-			"TOSHI_SKU_WINDOWS"
-		}
-
-	filter "configurations:Debug"
-		defines "TOSHI_DEBUG"
-		runtime "Debug"
-		symbols "On"
-
-	filter "configurations:Release"
-		defines "TOSHI_RELEASE"
-		runtime "Release"
-		optimize "On"
-
-	filter "configurations:Final"
-		defines "TOSHI_FINAL"
-		runtime "Release"
-		optimize "On"
 		
 project ("TApplication")
 	kind "SharedLib"
 	language "C++"
-	cppdialect "C++20"
-	characterset "ASCII"
 	
 	links
 	{
@@ -92,41 +62,12 @@ project ("TApplication")
 	
 	defines
 	{
-		"TAPPLICATION",
-		"_CRT_SECURE_NO_WARNINGS"
+		"TAPPLICATION"
 	}
-	
-	filter "files:**.c"
-		flags { "NoPCH" }
-
-	filter "system:windows"
-		systemversion "latest"
-
-		defines
-		{
-			"TOSHI_SKU_WINDOWS"
-		}
-
-	filter "configurations:Debug"
-		defines "TOSHI_DEBUG"
-		runtime "Debug"
-		symbols "On"
-
-	filter "configurations:Release"
-		defines "TOSHI_RELEASE"
-		runtime "Release"
-		optimize "On"
-
-	filter "configurations:Final"
-		defines "TOSHI_FINAL"
-		runtime "Release"
-		optimize "On"
 		
 project ("TTerrainInterface")
 	kind "SharedLib"
 	language "C++"
-	cppdialect "C++20"
-	characterset "ASCII"
 	
 	links
 	{
@@ -150,41 +91,12 @@ project ("TTerrainInterface")
 	
 	defines
 	{
-		"TTERRAININTERFACE",
-		"_CRT_SECURE_NO_WARNINGS"
+		"TTERRAININTERFACE"
 	}
-	
-	filter "files:**.c"
-		flags { "NoPCH" }
-
-	filter "system:windows"
-		systemversion "latest"
-
-		defines
-		{
-			"TOSHI_SKU_WINDOWS"
-		}
-
-	filter "configurations:Debug"
-		defines "TOSHI_DEBUG"
-		runtime "Debug"
-		symbols "On"
-
-	filter "configurations:Release"
-		defines "TOSHI_RELEASE"
-		runtime "Release"
-		optimize "On"
-
-	filter "configurations:Final"
-		defines "TOSHI_FINAL"
-		runtime "Release"
-		optimize "On"
 		
 project ("TRenderInterface")
 	kind "SharedLib"
 	language "C++"
-	cppdialect "C++20"
-	characterset "ASCII"
 	
 	links
 	{
@@ -201,16 +113,10 @@ project ("TRenderInterface")
 
 	defines
 	{
-		"TRENDERINTERFACE",
-		"_CRT_SECURE_NO_WARNINGS"
+		"TRENDERINTERFACE"
 	}
-	
-	filter "files:**.c"
-		flags { "NoPCH" }
 
 	filter "system:windows"
-		systemversion "latest"
-		
 		files
 		{
 			"Include/*.h",
@@ -218,31 +124,9 @@ project ("TRenderInterface")
 			"Source/TRender/**.cpp"
 		}
 
-		defines
-		{
-			"TOSHI_SKU_WINDOWS"
-		}
-
-	filter "configurations:Debug"
-		defines "TOSHI_DEBUG"
-		runtime "Debug"
-		symbols "On"
-
-	filter "configurations:Release"
-		defines "TOSHI_RELEASE"
-		runtime "Release"
-		optimize "On"
-
-	filter "configurations:Final"
-		defines "TOSHI_FINAL"
-		runtime "Release"
-		optimize "On"
-
 project ("TRenderD3DInterface")
 	kind "SharedLib"
 	language "C++"
-	cppdialect "C++20"
-	characterset "ASCII"
 	
 	links
 	{
@@ -276,18 +160,12 @@ project ("TRenderD3DInterface")
 	defines
 	{
 		"TRENDERINTERFACED3D",
-		"SAFESEH=0",
-		"_CRT_SECURE_NO_WARNINGS"
+		"SAFESEH=0"
 	}
 	
 	linkoptions "/SAFESEH:NO"
-	
-	filter "files:**.c"
-		flags { "NoPCH" }
 
 	filter "system:windows"
-		systemversion "latest"
-		
 		files
 		{
 			"Include/*.h",
@@ -295,31 +173,9 @@ project ("TRenderD3DInterface")
 			"Source/TRenderD3D/**.cpp"
 		}
 
-		defines
-		{
-			"TOSHI_SKU_WINDOWS"
-		}
-
-	filter "configurations:Debug"
-		defines "TOSHI_DEBUG"
-		runtime "Debug"
-		symbols "On"
-
-	filter "configurations:Release"
-		defines "TOSHI_RELEASE"
-		runtime "Release"
-		optimize "On"
-
-	filter "configurations:Final"
-		defines "TOSHI_FINAL"
-		runtime "Release"
-		optimize "On"
-
 project ("TSysShaderD3D")
 	kind "SharedLib"
 	language "C++"
-	cppdialect "C++20"
-	characterset "ASCII"
 	
 	links
 	{
@@ -353,44 +209,18 @@ project ("TSysShaderD3D")
 	defines
 	{
 		"TSYSSHADERD3D",
-		"SAFESEH=0",
-		"_CRT_SECURE_NO_WARNINGS"
+		"SAFESEH=0"
 	}
 	
 	linkoptions "/SAFESEH:NO"
-	
-	filter "files:**.c"
-		flags { "NoPCH" }
 
 	filter "system:windows"
-		systemversion "latest"
-		
 		files
 		{
 			"Include/*.h",
 			"Shaders/TSysShader/Include/**.h",
 			"Shaders/TSysShader/Source/**.cpp"
 		}
-
-		defines
-		{
-			"TOSHI_SKU_WINDOWS"
-		}
-
-	filter "configurations:Debug"
-		defines "TOSHI_DEBUG"
-		runtime "Debug"
-		symbols "On"
-
-	filter "configurations:Release"
-		defines "TOSHI_RELEASE"
-		runtime "Release"
-		optimize "On"
-
-	filter "configurations:Final"
-		defines "TOSHI_FINAL"
-		runtime "Release"
-		optimize "On"
 
 project ("TGuiInterface")
 	kind "SharedLib"
@@ -420,32 +250,5 @@ project ("TGuiInterface")
 	
 	defines
 	{
-		"TGUIINTERFACE",
-		"_CRT_SECURE_NO_WARNINGS"
+		"TGUIINTERFACE"
 	}
-	
-	filter "files:**.c"
-		flags { "NoPCH" }
-
-	filter "system:windows"
-		systemversion "latest"
-
-		defines
-		{
-			"TOSHI_SKU_WINDOWS"
-		}
-
-	filter "configurations:Debug"
-		defines "TOSHI_DEBUG"
-		runtime "Debug"
-		symbols "On"
-
-	filter "configurations:Release"
-		defines "TOSHI_RELEASE"
-		runtime "Release"
-		optimize "On"
-
-	filter "configurations:Final"
-		defines "TOSHI_FINAL"
-		runtime "Release"
-		optimize "On"

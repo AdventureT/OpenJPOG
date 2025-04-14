@@ -2,6 +2,9 @@ include "Settings.lua"
 include "Dependencies.lua"
 
 workspace ("OpenJPOG")
+	cppdialect "C++20"
+	characterset "ASCII"
+	
 	platforms "Windows"
 	configurations { "Debug", "Release", "Final" }
 	
@@ -10,12 +13,49 @@ workspace ("OpenJPOG")
 	debugdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
+
+	-- Disable precompiled headers for C files
+	filter "files:**.c"
+		flags { "NoPCH" }
+
+	-- Global defines
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS",
+		"NOMINMAX"
+	}
+
+	-- Windows defines
+	filter "system:windows"
+		systemversion "latest"
+
+		defines
+		{
+			"TOSHI_SKU_WINDOWS"
+		}
 	
+	-- Architectures
 	filter "options:arch=x86"
 		architecture "x86"
 		
 	filter "options:arch=x64"
 		architecture "x64"
+
+	-- Building modes
+	filter "configurations:Debug"
+		defines "TOSHI_DEBUG"
+		runtime "Debug"
+		symbols "On"
+
+	filter "configurations:Release"
+		defines "TOSHI_RELEASE"
+		runtime "Release"
+		optimize "On"
+
+	filter "configurations:Final"
+		defines "TOSHI_FINAL"
+		runtime "Release"
+		optimize "On"
 
 group "Engine"
 	include "Toshi"
