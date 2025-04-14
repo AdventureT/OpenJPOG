@@ -217,15 +217,14 @@ TBOOL ABINKMoviePlayer::InitializeVideoResource()
 
 TBOOL ABINKMoviePlayer::InitializeAudioResource()
 {
-	TManagedPtr<TRenderInterface> renderer    = g_oTheApp.GetRootTask()->GetRenderInterface();
-	TRenderD3DInterface          *d3drenderer = (TRenderD3DInterface *)renderer.operator Toshi::TRenderInterface *();
+	TRenderD3DInterface          *renderer    = g_oTheApp.GetRootTask()->GetRenderInterface();
 	HRESULT                       hResult     = DirectSoundCreate(NULL, &m_pDirectSound, NULL);
 
 	if (FAILED(hResult)) {
 		m_pDirectSound = NULL;
 	}
 	else {
-		m_pDirectSound->SetCooperativeLevel(d3drenderer->GetMSWindow()->GetHWND(), 2);
+		m_pDirectSound->SetCooperativeLevel(renderer->GetMSWindow()->GetHWND(), 2);
 		BinkSoundUseDirectSound(m_pDirectSound);
 	}
 	return TTRUE;
