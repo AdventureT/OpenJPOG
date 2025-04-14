@@ -1,11 +1,14 @@
 #pragma once
 #include "Defines.h"
 #include "TKernel/TObject.h"
+#include "TKernel/TRefCounted.h"
 #include "TGUIActionMap.h"
 
 TOSHI_NAMESPACE_BEGIN
 
-class TGUIINTERFACE_EXPORTS TGUIInterface : public TObject
+class TGUIINTERFACE_EXPORTS TGUIInterface
+	: public TObject
+	, public TRefCounted
 {
 	DECLARE_DYNAMIC(TGUIInterface)
 

@@ -3,72 +3,69 @@
 #include "TRefCounted.h"
 #include "TSystemTools.h"
 
+#include <type_traits>
+
 TOSHI_NAMESPACE_BEGIN
 
 template <class T>
-class TManagedPtr : public TRefCounted
+class TManagedPtr
 {
 public:
+	static_assert(std::is_base_of<TRefCounted, T>::value);
+
 	TManagedPtr()
 		: m_pObject(TNULL)
 	{
 	}
 
 	TManagedPtr(T *a_pObject)
+		: m_pObject( a_pObject )
 	{
 		if (m_pObject) {
 			m_pObject = a_pObject;
-			if (m_pObject) {
-				IncRefCount();
-			}
+			m_pObject->TRefCounted::IncRefCount();
 		}
 	}
 
-	TManagedPtr(TManagedPtr &a_source)
+	// copy constructor
+	TManagedPtr(const TManagedPtr &a_source)
 	{
-		if (m_pObject != a_source.m_pObject) {
-			if (m_pObject && DecRefCount() == 0) {
-				delete m_pObject;
-			}
-			m_pObject = a_source.m_pObject;
-			if (a_source.m_pObject) {
-				a_source.IncRefCount();
-			}
+		m_pObject = a_source.m_pObject;
+
+		if (m_pObject) {
+			m_pObject->TRefCounted::IncRefCount();
 		}
+	}
+
+	// move constructor
+	TManagedPtr(TManagedPtr &&a_source)
+	{
+		m_pObject          = a_source.m_pObject;
+		a_source.m_pObject = TNULL;
 	}
 
 	~TManagedPtr()
 	{
-		if (m_pObject) {
-			if (DecRefCount() == 0) {
-				delete m_pObject;
-			}
-			m_pObject = TNULL;
+		if (m_pObject && m_pObject->TRefCounted::DecRefCount() == 0) {
+			delete m_pObject;
 		}
 	}
 
 	TManagedPtr &operator=(T *a_pObject)
 	{
-		if (m_pObject) {
-			m_pObject = a_pObject;
-			if (m_pObject) {
-				IncRefCount();
-			}
+		if (m_pObject != a_pObject) {
+			Create(a_pObject);
 		}
+
 		return *this;
 	}
 
-	TManagedPtr &operator=(TManagedPtr &a_source)
+	TManagedPtr &operator=(const TManagedPtr &a_source)
 	{
 		if (m_pObject != a_source.m_pObject) {
-			if (m_pObject && DecRefCount() == 0) {
-				delete m_pObject;
-			}
-			m_pObject = a_source.m_pObject;
-			if (a_source.m_pObject) {
-				a_source.IncRefCount();
-			}
+			Create(a_source.m_pObject);
 		}
+
 		return *this;
 	}
 
@@ -88,6 +85,25 @@ public:
 	{
 		TASSERT(m_pObject != TNULL);
 		return m_pObject;
+	}
+
+	TINT GetRefCount() const
+	{
+		return m_pObject ? m_pObject->TRefCounted::GetRefCount() : 0;
+	}
+
+private:
+	void Create(T *a_pObject)
+	{
+		if (m_pObject && m_pObject->TRefCounted::DecRefCount() == 0) {
+			delete m_pObject;
+		}
+
+		m_pObject = a_pObject;
+		
+		if (m_pObject) {
+			m_pObject->TRefCounted::IncRefCount();
+		}
 	}
 
 private:

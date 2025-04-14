@@ -47,6 +47,7 @@ TVertexBlockResource *TVertexFactoryResource::FindBlockResource(TVertexPoolResou
 		return TNULL;
 	}
 	RecurseSimple(CallBack, this, &result);
+	return result.m_pBlock;
 }
 
 TVertexBlockResource *TVertexFactoryResource::CreateBlockResource(TUSHORT a_uiMaxVertices, TUINT a_uiFlags)

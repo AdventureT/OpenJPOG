@@ -2,6 +2,7 @@
 
 #include "TKernel/TObject.h"
 #include "TKernel/TKernelInterface.h"
+#include "TKernel/TRefCounted.h"
 #include "TRenderContext.h"
 #include "TResource.h"
 #include "TRenderAdapter.h"
@@ -14,7 +15,9 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TRENDERINTERFACE_EXPORTS TRenderInterface : public TObject
+class TRENDERINTERFACE_EXPORTS TRenderInterface 
+	: public TObject
+	, public TRefCounted
 {
 	DECLARE_DYNAMIC(TRenderInterface)
 
