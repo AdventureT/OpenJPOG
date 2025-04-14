@@ -20,16 +20,16 @@ class TKERNELINTERFACE_EXPORTS TPooledCString : public TRefCounted
 
 private:
 	TPooledCString();
-	TPooledCString(TPCCHAR a_szString, TCStringPool* a_pStringPool);
-	
+	TPooledCString(TPCCHAR a_szString, TCStringPool *a_pStringPool);
+
 	void Delete();
 
 	~TPooledCString();
 
 private:
 	// 0x0 base (m_iRefCount)
-	TCString m_oString;           // 0x4
-	TCStringPool* m_pCStringPool; // 0xC
+	TCString      m_oString;      // 0x4
+	TCStringPool *m_pCStringPool; // 0xC
 };
 
 class TKERNELINTERFACE_EXPORTS TPCString
@@ -43,7 +43,8 @@ public:
 		m_pPCS = TNULL;
 	}
 
-	TPCString(const TPCString& a_rPCS) : TPCString()
+	TPCString(const TPCString &a_rPCS)
+		: TPCString()
 	{
 		if (a_rPCS.m_pPCS) {
 			m_pPCS = a_rPCS.m_pPCS;
@@ -61,7 +62,7 @@ public:
 		}
 	}
 
-	TINT Compare(const TPCString& a_rString) const
+	TINT Compare(const TPCString &a_rString) const
 	{
 		if (!GetPtr() && a_rString.GetPtr()) {
 			return -1;
@@ -83,32 +84,32 @@ public:
 		return GetCString().IsEmpty();
 	}
 
-	TBOOL operator!=(const TPCString& a_rString) const
+	TBOOL operator!=(const TPCString &a_rString) const
 	{
 		return GetPtr() != a_rString.GetPtr();
 	}
 
-	const TCString& operator*() const
+	const TCString &operator*() const
 	{
 		return m_pPCS ? m_pPCS->m_oString : ms_sEmpty;
 	}
 
-	const TCString* operator->() const
+	const TCString *operator->() const
 	{
 		return m_pPCS ? &m_pPCS->m_oString : &ms_sEmpty;
 	}
 
-	TBOOL operator<(const TPCString& a_rString) const
+	TBOOL operator<(const TPCString &a_rString) const
 	{
 		return Compare(a_rString) == 0;
 	}
 
-	TBOOL operator==(const TPCString& a_rString) const
+	TBOOL operator==(const TPCString &a_rString) const
 	{
 		return GetPtr() == a_rString.GetPtr();
 	}
 
-	TPCString& operator=(const TPCString& a_rString)
+	TPCString &operator=(const TPCString &a_rString)
 	{
 		if (GetPtr() != a_rString.GetPtr()) {
 			if (GetPtr() && GetPtr()->DecRefCount() == 0) {
@@ -120,27 +121,27 @@ public:
 		return *this;
 	}
 
-	operator const TCString* () const
+	operator const TCString *() const
 	{
 		return GetPtr() ? &GetPtr()->m_oString : &ms_sEmpty;
 	}
 
-	TPooledCString* GetPtr() const
+	TPooledCString *GetPtr() const
 	{
 		return m_pPCS;
 	}
 
-	const TCString& GetCString() const
+	const TCString &GetCString() const
 	{
 		return GetPtr() ? GetPtr()->m_oString : ms_sEmpty;
 	}
 
-	TCStringPool* GetStringPool() const
+	TCStringPool *GetStringPool() const
 	{
 		return GetPtr()->m_pCStringPool;
 	}
 
-	TCString& GetVolatileCString() const
+	TCString &GetVolatileCString() const
 	{
 		TASSERT(GetPtr() != TNULL);
 		TASSERT(GetPtr()->m_pCStringPool == TNULL);
@@ -148,34 +149,35 @@ public:
 	}
 
 private:
-
-	TPCString(TPooledCString* a_pPCS)
+	TPCString(TPooledCString *a_pPCS)
 	{
 		m_pPCS = a_pPCS;
 		if (a_pPCS) {
 			a_pPCS->IncRefCount();
 		}
 	}
-	
-	TPooledCString* m_pPCS;
+
+	TPooledCString *m_pPCS;
 };
 
 class TKERNELINTERFACE_EXPORTS TCStringPool
 {
 	friend class TPooledCString;
-public:
 
-	TCStringPool() : TCStringPool(0x400, 0) {}
+public:
+	TCStringPool()
+		: TCStringPool(0x400, 0) {}
 
 	TCStringPool(TINT a_iMaxSize, TINT a_iInitialSize);
 
 	TPCString Get(TPCCHAR a_szString);
 	TPCString Get(TINT a_iInt);
+
 protected:
-	void Remove(TPooledCString& a_rPooledCString);
+	void Remove(TPooledCString &a_rPooledCString);
 
 private:
-	TINT m_iMaxSize;                          // 0x0
+	TINT                   m_iMaxSize;        // 0x0
 	TArray<TPooledCString> m_oPooledCStrings; // 0x4
 };
 

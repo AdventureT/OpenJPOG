@@ -2,7 +2,7 @@
 
 TOSHI_NAMESPACE_USING
 
-void TMutexLock::Create(TMutex* a_pMutex)
+void TMutexLock::Create(TMutex *a_pMutex)
 {
 	TVALIDADDRESS(a_pMutex);
 	m_pMutex = a_pMutex;

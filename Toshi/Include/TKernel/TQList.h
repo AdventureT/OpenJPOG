@@ -16,16 +16,16 @@ public:
 	public:
 		TNode()
 		{
-			m_pNext = TSTATICCAST(T*, this);
-			m_pPrev = TSTATICCAST(T*, this);
+			m_pNext = TSTATICCAST(T *, this);
+			m_pPrev = TSTATICCAST(T *, this);
 		}
 
 		~TNode()
 		{
 			m_pPrev->m_pNext = m_pNext;
 			m_pNext->m_pPrev = m_pPrev;
-			m_pNext = TSTATICCAST(T*, this);
-			m_pPrev = TSTATICCAST(T*, this);
+			m_pNext          = TSTATICCAST(T *, this);
+			m_pPrev          = TSTATICCAST(T *, this);
 		}
 
 		TBOOL IsLinked() const
@@ -33,63 +33,62 @@ public:
 			return this != m_pNext;
 		}
 
-		T* Next() const
+		T *Next() const
 		{
 			return m_pNext;
 		}
 
-		T* Prev() const
+		T *Prev() const
 		{
 			return m_pPrev;
 		}
 
 	private:
-		void InsertAfter(TNode* a_pNode)
+		void InsertAfter(TNode *a_pNode)
 		{
 			TASSERT(TFALSE == IsLinked());
-			m_pPrev = TSTATICCAST(T*, a_pNode);
-			m_pNext = a_pNode->m_pNext;
-			a_pNode->m_pNext = TSTATICCAST(T*, this);
-			m_pNext->m_pPrev = TSTATICCAST(T*, this);
+			m_pPrev          = TSTATICCAST(T *, a_pNode);
+			m_pNext          = a_pNode->m_pNext;
+			a_pNode->m_pNext = TSTATICCAST(T *, this);
+			m_pNext->m_pPrev = TSTATICCAST(T *, this);
 		}
 
-		void InsertBefore(TNode* a_pNode)
+		void InsertBefore(TNode *a_pNode)
 		{
 			TASSERT(TFALSE == IsLinked());
-			m_pNext = TSTATICCAST(T*, a_pNode);
-			m_pPrev = a_pNode->m_pPrev;
-			a_pNode->m_pPrev = TSTATICCAST(T*, this);
-			m_pPrev->m_pNext = TSTATICCAST(T*, this);
+			m_pNext          = TSTATICCAST(T *, a_pNode);
+			m_pPrev          = a_pNode->m_pPrev;
+			a_pNode->m_pPrev = TSTATICCAST(T *, this);
+			m_pPrev->m_pNext = TSTATICCAST(T *, this);
 		}
 
 		void Remove()
 		{
 			m_pPrev->m_pNext = m_pNext;
 			m_pNext->m_pPrev = m_pPrev;
-			m_pNext = TSTATICCAST(T*, this);
-			m_pPrev = TSTATICCAST(T*, this);
+			m_pNext          = TSTATICCAST(T *, this);
+			m_pPrev          = TSTATICCAST(T *, this);
 		}
 
 	private:
-		T* m_pNext;
-		T* m_pPrev;
+		T *m_pNext;
+		T *m_pPrev;
 	};
 
 	class Iterator
 	{
 	public:
-
 		Iterator()
 		{
 			m_pPtr = TNULL;
 		}
 
-		Iterator(TNode* pPtr)
+		Iterator(TNode *pPtr)
 		{
-			m_pPtr = static_cast<T*>(pPtr);
+			m_pPtr = static_cast<T *>(pPtr);
 		}
 
-		Iterator(T* pPtr)
+		Iterator(T *pPtr)
 		{
 			m_pPtr = pPtr;
 		}
@@ -104,33 +103,33 @@ public:
 			return m_pNode != ptr;
 		}*/
 
-		void operator=(const Iterator& other)
+		void operator=(const Iterator &other)
 		{
 			m_pPtr = other.m_pPtr;
 		}
 
-		void operator=(T* pPtr)
+		void operator=(T *pPtr)
 		{
 			m_pPtr = pPtr;
 		}
 
-		T* operator->() const
+		T *operator->() const
 		{
 			TASSERT(m_pPtr != TNULL);
 			return m_pPtr;
 		}
 
-		operator T* () const
+		operator T *() const
 		{
 			TASSERT(m_pPtr != TNULL);
-			return static_cast<T*>(m_pPtr);
+			return static_cast<T *>(m_pPtr);
 		}
 
 		Iterator operator++(int)
 		{
 			TASSERT(m_pPtr != TNULL);
 			Iterator old = m_pPtr;
-			m_pPtr = static_cast<T*>(m_pPtr->Next());
+			m_pPtr       = static_cast<T *>(m_pPtr->Next());
 			return old;
 		}
 
@@ -138,26 +137,26 @@ public:
 		{
 			TASSERT(m_pPtr != TNULL);
 			Iterator old = m_pPtr;
-			m_pPtr = static_cast<T*>(m_pPtr->Prev());
+			m_pPtr       = static_cast<T *>(m_pPtr->Prev());
 			return old;
 		}
 
 		Iterator operator++()
 		{
 			TASSERT(m_pPtr != TNULL);
-			m_pPtr = static_cast<T*>(m_pPtr->Next());
+			m_pPtr = static_cast<T *>(m_pPtr->Next());
 			return Iterator{ m_pPtr };
 		}
 
 		Iterator operator--()
 		{
 			TASSERT(m_pPtr != TNULL);
-			m_pPtr = static_cast<T*>(m_pPtr->Prev());
+			m_pPtr = static_cast<T *>(m_pPtr->Prev());
 			return Iterator{ m_pPtr };
 		}
 
 	private:
-		T* m_pPtr;
+		T *m_pPtr;
 	};
 
 public:
@@ -165,17 +164,17 @@ public:
 
 	~TQList() { TASSERT(IsEmpty()); }
 
-	void PushFront(T* a_pNode)
+	void PushFront(T *a_pNode)
 	{
 		a_pNode->InsertAfter(&m_oRoot);
 	}
 
-	void Push(T* a_pNode)
+	void Push(T *a_pNode)
 	{
 		a_pNode->InsertBefore(&m_oRoot);
 	}
 
-	T* Pop()
+	T *Pop()
 	{
 		auto pFirstElement = m_oRoot.m_pNext;
 		pFirstElement->Remove();
@@ -192,7 +191,7 @@ public:
 		return m_oRoot.m_pNext;
 	}
 
-	const TNode* End() const
+	const TNode *End() const
 	{
 		return &m_oRoot;
 	}
@@ -205,7 +204,7 @@ public:
 		}
 	}
 
-	void Remove(T* a_pNode)
+	void Remove(T *a_pNode)
 	{
 		a_pNode->Remove();
 	}

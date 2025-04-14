@@ -12,10 +12,10 @@ class TRENDERINTERFACED3D_EXPORTS TVertexFactoryResource : public TVertexFactory
 	DECLARE_DYNAMIC(TVertexFactoryResource)
 
 public:
-	virtual TVertexPoolResourceInterface* CreatePoolResource(TUSHORT a_uiMaxStaticVertices, TUINT a_uiFlags);
+	virtual TVertexPoolResourceInterface *CreatePoolResource(TUSHORT a_uiMaxStaticVertices, TUINT a_uiFlags);
 
-	TVertexBlockResource* FindBlockResource(TVertexPoolResource* a_pResource);
-	TVertexBlockResource* CreateBlockResource(TUSHORT a_uiMaxVertices, TUINT a_uiFlags);
+	TVertexBlockResource *FindBlockResource(TVertexPoolResource *a_pResource);
+	TVertexBlockResource *CreateBlockResource(TUSHORT a_uiMaxVertices, TUINT a_uiFlags);
 };
 
 TOSHI_NAMESPACE_END

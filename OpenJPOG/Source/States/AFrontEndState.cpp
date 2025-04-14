@@ -26,7 +26,7 @@ void AFrontendState::OnRemoval()
 	ARootState::OnRemoval();
 }
 
-TBOOL AFrontendState::ParentAllowed(ARootState& a_rParent)
+TBOOL AFrontendState::ParentAllowed(ARootState &a_rParent)
 {
 	return !a_rParent.IsA(TGetClass(AGameState));
 }

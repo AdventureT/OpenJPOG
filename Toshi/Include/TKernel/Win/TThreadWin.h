@@ -26,11 +26,12 @@ public:
 	TBOOL Lock(TUINT a_uiFlags);
 	TBOOL Unlock();
 
-	TMutex& operator=(const TMutex& a_rOther)
+	TMutex &operator=(const TMutex &a_rOther)
 	{
 		m_hMutexHnd = a_rOther.m_hMutexHnd;
 		return *this;
 	}
+
 private:
 	HANDLE m_hMutexHnd;
 };

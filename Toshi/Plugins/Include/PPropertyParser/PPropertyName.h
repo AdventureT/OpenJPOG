@@ -5,10 +5,8 @@
 class PPROPERTYPARSER_EXPORTS PPropertyName
 {
 public:
-
 	PPropertyName()
 	{
-
 	}
 	PPropertyName(const Toshi::TPCString &a_rName)
 	{
@@ -16,7 +14,7 @@ public:
 	}
 	PPropertyName(const Toshi::TPCString &a_rName, const Toshi::TPCString &a_rSubName)
 	{
-		m_oName = a_rName;
+		m_oName    = a_rName;
 		m_oSubName = a_rSubName;
 	}
 
@@ -52,6 +50,7 @@ public:
 	}
 	TBOOL operator<(const PPropertyName &a_rPropName) const
 	{
+		// Is this actually TBOOL? [4/14/2025 InfiniteC0re]
 		TBOOL ret = m_oName.Compare(a_rPropName.GetName()) == 0;
 		if (ret < 0) {
 			return TTRUE;
@@ -76,6 +75,7 @@ public:
 		}
 		return m_oSubName.Compare(a_rPropName.GetSubName()) > 0;
 	}
+
 protected:
 	void Split(const Toshi::TPCString &a_rString);
 

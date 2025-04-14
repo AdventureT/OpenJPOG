@@ -11,7 +11,6 @@ void TProfiler::Start()
 void TProfiler::Stop()
 {
 	m_sProfilerStopped = TTRUE;
-
 }
 
 void TProfiler::PrintSummary()

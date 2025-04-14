@@ -7,7 +7,7 @@ IMPLEMENT_DYNAMIC(TVertexPoolResourceInterface, TResource)
 TVertexPoolResourceInterface::LockBuffer::LockBuffer()
 {
 	uiNumStreams = 0;
-	uiOffset = 0;
+	uiOffset     = 0;
 	apStreams[0] = TNULL;
 	apStreams[1] = TNULL;
 	apStreams[2] = TNULL;
@@ -20,21 +20,21 @@ TVertexPoolResourceInterface::LockBuffer::LockBuffer()
 
 TVertexPoolResourceInterface::TVertexPoolResourceInterface()
 {
-	m_pFactory = TNULL;
-	m_usFlags = 0;
+	m_pFactory      = TNULL;
+	m_usFlags       = 0;
 	m_usMaxVertices = 0;
 	m_usNumVertices = 0;
-	m_uiLockCount = 0;
+	m_uiLockCount   = 0;
 }
 
 void TVertexPoolResourceInterface::OnDestroy()
 {
-	TASSERT(0==m_uiLockCount);
+	TASSERT(0 == m_uiLockCount);
 	m_pFactory->m_uiNumCreatedVertexPools--;
 	TResource::OnDestroy();
 }
 
-TBOOL TVertexPoolResourceInterface::Lock(LockBuffer* a_pLockBuffer)
+TBOOL TVertexPoolResourceInterface::Lock(LockBuffer *a_pLockBuffer)
 {
 	return TBOOL();
 }
@@ -43,12 +43,10 @@ void TVertexPoolResourceInterface::Unlock(TUSHORT a_uiNewNumVertices)
 {
 }
 
-TBOOL TVertexPoolResourceInterface::Create(TVertexFactoryResourceInterface* a_pFactory, TUINT a_uiMaxVertices, TUINT a_uiFlags)
+TBOOL TVertexPoolResourceInterface::Create(TVertexFactoryResourceInterface *a_pFactory, TUINT a_uiMaxVertices, TUINT a_uiFlags)
 {
-	m_pFactory = a_pFactory;
+	m_pFactory      = a_pFactory;
 	m_usMaxVertices = a_uiMaxVertices;
-	m_usFlags = a_uiFlags;
+	m_usFlags       = a_uiFlags;
 	return TResource::Create();
 }
-
-

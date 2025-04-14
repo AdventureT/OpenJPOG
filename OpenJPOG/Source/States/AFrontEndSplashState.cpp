@@ -8,16 +8,16 @@ IMPLEMENT_DYNCREATE(AFrontEndSplashState, AFrontendState)
 
 AFrontEndSplashState::AFrontEndSplashState(TBOOL a_bInitialise, TFLOAT a_fUnk)
 {
-	m_bInitialise = a_bInitialise;
-	m_bMovieStarted = TFALSE;
+	m_bInitialise      = a_bInitialise;
+	m_bMovieStarted    = TFALSE;
 	m_iLogoScreenIndex = 0;
-	m_bLogoScreenSet = TFALSE;
+	m_bLogoScreenSet   = TFALSE;
 }
 
 void AFrontEndSplashState::OnActivate()
 {
 	ARootState::OnActivate();
-	AMoviePlayer* pMoviePlayer = g_oTheApp.GetRootTask()->GetMoviePlayer();
+	AMoviePlayer *pMoviePlayer = g_oTheApp.GetRootTask()->GetMoviePlayer();
 
 	//AGUISystem::GetGUISystem()->Get;
 
@@ -27,11 +27,11 @@ void AFrontEndSplashState::OnActivate()
 
 TBOOL AFrontEndSplashState::OnUpdate(TFLOAT a_fDeltaTime)
 {
-	AMoviePlayer* pMoviePlayer = g_oTheApp.GetRootTask()->GetMoviePlayer();
+	AMoviePlayer *pMoviePlayer = g_oTheApp.GetRootTask()->GetMoviePlayer();
 
 	if (m_bInitialise) {
-		static TFLOAT s_fStopLoadingSounds = 0.0f;
-		static TFLOAT s_fStartLoadingSounds = 5.0f;
+		static TFLOAT s_fStopLoadingSounds     = 0.0f;
+		static TFLOAT s_fStartLoadingSounds    = 5.0f;
 		static TFLOAT s_fTimeLeftLoadingSounds = 5.0f;
 		if (s_fStopLoadingSounds < s_fTimeLeftLoadingSounds) {
 			if (s_fTimeLeftLoadingSounds < s_fStartLoadingSounds && s_bLoadedSound) {
@@ -58,7 +58,7 @@ TBOOL AFrontEndSplashState::OnUpdate(TFLOAT a_fDeltaTime)
 	if (s_StartMovie) {
 		s_StartMovie = TFALSE;
 		if (pMoviePlayer && !pMoviePlayer->IsMoviePlaying()) {
-			pMoviePlayer->StartMovie((TPCHAR)"Intro", TFALSE, (TPCHAR)"Intro", TTRUE);
+			pMoviePlayer->StartMovie((TPCHAR) "Intro", TFALSE, (TPCHAR) "Intro", TTRUE);
 		}
 	}
 	else if (!pMoviePlayer) {

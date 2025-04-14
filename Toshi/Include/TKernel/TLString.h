@@ -18,11 +18,11 @@ public:
 class TKERNELINTERFACE_EXPORTS TLocalisedString
 {
 public:
-	static TFreeList& TOSHI_API GetFreeList() { return m_oFreelist; }
+	static TFreeList &TOSHI_API GetFreeList() { return m_oFreelist; }
 
 private:
 	static TFreeList m_oFreelist;
-	
+
 	TINT m_iIDInt; // 0x4
 };
 

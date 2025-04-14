@@ -18,33 +18,33 @@ public:
 	protected:
 		TNode()
 		{
-			m_Tree = TNULL;
-			m_Next = (T*)this;
-			m_Prev = (T*)this;
+			m_Tree   = TNULL;
+			m_Next   = (T *)this;
+			m_Prev   = (T *)this;
 			m_Parent = TNULL;
-			m_Child = TNULL;
+			m_Child  = TNULL;
 		}
 
 	public:
 		TBOOL IsChildOfDefaultRoot() const
 		{
 			TASSERT(IsLinked() == TTRUE);
-			return m_Parent == (T*)(&GetTree()->m_Root);
+			return m_Parent == (T *)(&GetTree()->m_Root);
 		}
 
-		TBOOL IsLinked() const { return m_Tree != TNULL; }
-		T* Parent() const { return m_Parent; }
-		T* Next() const { return m_Next; }
-		T* Prev() const { return m_Prev; }
-		TNodeTree<T>* GetTree() const { return m_Tree; }
-		T* Child() const { return m_Child; }
+		TBOOL         IsLinked() const { return m_Tree != TNULL; }
+		T            *Parent() const { return m_Parent; }
+		T            *Next() const { return m_Next; }
+		T            *Prev() const { return m_Prev; }
+		TNodeTree<T> *GetTree() const { return m_Tree; }
+		T            *Child() const { return m_Child; }
 
 	protected:
-		TNodeTree<T>* m_Tree;
-		T* m_Next;
-		T* m_Prev;
-		T* m_Parent;
-		T* m_Child;
+		TNodeTree<T> *m_Tree;
+		T            *m_Next;
+		T            *m_Prev;
+		T            *m_Parent;
+		T            *m_Child;
 	};
 
 public:
@@ -65,7 +65,7 @@ public:
 	* @param parentNode Reference to the parent node.
 	* @param a_rSourceNode Reference to the node you want to insert.
 	*/
-	void Insert(T* parentNode, T* a_rSourceNode)
+	void Insert(T *parentNode, T *a_rSourceNode)
 	{
 		// Toshi::TNodeTree<Toshi::TResource>::Insert - 00691aa0
 		TASSERT(a_rSourceNode->IsLinked() == TFALSE);
@@ -74,14 +74,14 @@ public:
 		Remove(*a_rSourceNode, TFALSE);
 
 		// Get the first attached to parent node
-		T* firstAttached = parentNode->Child();
+		T *firstAttached = parentNode->Child();
 
 		if (firstAttached != TNULL)
 		{
 			// Attach node to other attached nodes
-			T* lastAttached = firstAttached->Prev();
+			T *lastAttached = firstAttached->Prev();
 
-			lastAttached->m_Next = a_rSourceNode;
+			lastAttached->m_Next  = a_rSourceNode;
 			firstAttached->m_Prev = a_rSourceNode;
 
 			a_rSourceNode->m_Next = firstAttached;
@@ -93,7 +93,7 @@ public:
 			parentNode->m_Child = a_rSourceNode;
 		}
 
-		a_rSourceNode->m_Tree = this;
+		a_rSourceNode->m_Tree   = this;
 		a_rSourceNode->m_Parent = parentNode;
 		m_Count++;
 	}
@@ -103,7 +103,7 @@ public:
 	*
 	* @param a_rSourceNode Pointer to the node you want to insert.
 	*/
-	void InsertAtRoot(T* sourceNode)
+	void InsertAtRoot(T *sourceNode)
 	{
 		Insert(GetRoot(), sourceNode);
 	}
@@ -111,7 +111,7 @@ public:
 	/**
 	 * Tries to remove a_rSourceNode from the tree and inserts it to the parentNode or to the root
 	 */
-	void ReInsert(T* parentNode, T* sourceNode)
+	void ReInsert(T *parentNode, T *sourceNode)
 	{
 		Remove(sourceNode, TFALSE);
 
@@ -127,12 +127,12 @@ public:
 		Insert(parentNode, sourceNode);
 	}
 
-	T* Remove(T& node, TBOOL flag = TFALSE)
+	T *Remove(T &node, TBOOL flag = TFALSE)
 	{
 		// Toshi::TNodeTree<Toshi::TResource>::Remove - 00691e70
-		TNodeTree<T>* nodeRoot = node.GetTree();
-		T* nodeParent = node.Parent();
-		
+		TNodeTree<T> *nodeRoot   = node.GetTree();
+		T            *nodeParent = node.Parent();
+
 		if (nodeRoot) {
 			// Check if the node belongs to the current tree
 			if (nodeRoot != this) {
@@ -143,11 +143,11 @@ public:
 		}
 
 		if (flag) {
-			T* attachedNode = node.Child();
+			T *attachedNode = node.Child();
 
 			while (attachedNode)
 			{
-				TNodeTree<T>* nodeRoot = node.GetTree();
+				TNodeTree<T> *nodeRoot = node.GetTree();
 
 				Remove(*attachedNode, TFALSE);
 				Insert(node.Parent(), attachedNode);
@@ -170,22 +170,22 @@ public:
 
 		node.m_Prev->m_Next = node.m_Next;
 		node.m_Next->m_Prev = node.m_Prev;
-		node.m_Next = &node;
-		node.m_Prev = &node;
-		node.m_Tree = TNULL;
+		node.m_Next         = &node;
+		node.m_Prev         = &node;
+		node.m_Tree         = TNULL;
 		return &node;
 	}
 
-	T* Remove(T* node, TBOOL flag = TFALSE)
+	T *Remove(T *node, TBOOL flag = TFALSE)
 	{
 		return Remove(*node, flag);
 	}
 
-	void DeleteRecurse(T* node)
+	void DeleteRecurse(T *node)
 	{
 		while (node != TNULL)
 		{
-			T* next = (node->Next() != node) ? node->Next() : TNULL;
+			T *next = (node->Next() != node) ? node->Next() : TNULL;
 
 			if (node->Child() != TNULL)
 			{
@@ -199,7 +199,7 @@ public:
 
 			if (node->GetTree() == TNULL || node->GetTree() == this)
 			{
-				T* nodeParent = node->Parent();
+				T *nodeParent = node->Parent();
 
 				if (nodeParent != TNULL)
 				{
@@ -213,10 +213,10 @@ public:
 				}
 
 				node->m_Prev->m_Parent = node->m_Next;
-				node->m_Next->m_Child = node->m_Prev;
-				node->m_Next = node;
-				node->m_Prev = node;
-				node->m_Tree = TNULL;
+				node->m_Next->m_Child  = node->m_Prev;
+				node->m_Next           = node;
+				node->m_Prev           = node;
+				node->m_Tree           = TNULL;
 			}
 
 			delete node;
@@ -226,7 +226,7 @@ public:
 
 	void DeleteAll()
 	{
-		T* node = GetRoot()->Child();
+		T *node = GetRoot()->Child();
 
 		while (node != TNULL)
 		{
@@ -238,12 +238,12 @@ public:
 		TASSERT(Count() == 0);
 	}
 
-	T* GetRoot()
+	T *GetRoot()
 	{
-		return TSTATICCAST(T*, &m_Root);
+		return TSTATICCAST(T *, &m_Root);
 	}
 
-	T* ChildOfRoot()
+	T *ChildOfRoot()
 	{
 		return m_Root.Child();
 	}
@@ -259,7 +259,7 @@ public:
 	}
 
 protected:
-	TNode m_Root;   // 0x0
+	TNode  m_Root;  // 0x0
 	size_t m_Count; // 0x14
 };
 

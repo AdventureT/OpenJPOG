@@ -9,7 +9,7 @@ static TUser testUser2("AdventureT");
 TEST_CASE("Register User", "[TUser]")
 {
 	TSHORT iUserID = testUser.Register();
-	
+
 	REQUIRE(iUserID != -1);
 	REQUIRE(TUserHandler::GetSingleton().FindUser("Test"));
 	REQUIRE(testUser.IsRegistered());

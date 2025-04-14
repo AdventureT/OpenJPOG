@@ -2,14 +2,14 @@
 
 TOSHI_NAMESPACE_USING
 
-TFile* TOSHI_API TFile::Create(const TCString& a_sName, TUINT a_uiMode)
+TFile *TOSHI_API TFile::Create(const TCString &a_sName, TUINT a_uiMode)
 {
 	TFileManager *pFileManager = TFileManager::GetFileManager();
 	TVALIDADDRESS(pFileManager);
 	return pFileManager->CreateFile(a_sName, a_uiMode);
 }
 
-void TOSHI_API TFile::Destroy(TFile* a_pFile)
+void TOSHI_API TFile::Destroy(TFile *a_pFile)
 {
 	TFileManager *pFileManager = TFileManager::GetFileManager();
 	TVALIDADDRESS(pFileManager);
@@ -18,7 +18,7 @@ void TOSHI_API TFile::Destroy(TFile* a_pFile)
 	}
 }
 
-TCString TOSHI_API TFile::ConcatPath(TCString const& a_rcPath1, TCString const& a_rcPath2)
+TCString TOSHI_API TFile::ConcatPath(TCString const &a_rcPath1, TCString const &a_rcPath2)
 {
 	TCString strResult;
 
@@ -27,94 +27,94 @@ TCString TOSHI_API TFile::ConcatPath(TCString const& a_rcPath1, TCString const& 
 
 	// Copy filesystem/volume name from a_rcPath1 or a_rcPath2
 	// prioritizing the one in a_rcPath2
-	TINT iColonPos = a_rcPath2.FindReverse( ':' );
+	TINT iColonPos = a_rcPath2.FindReverse(':');
 
-	if ( iColonPos == -1 )
+	if (iColonPos == -1)
 	{
-		iColonPos = a_rcPath1.FindReverse( ':' );
+		iColonPos = a_rcPath1.FindReverse(':');
 
-		if ( iColonPos > -1 )
+		if (iColonPos > -1)
 		{
 			// Copy volume/filesystem name from the first path
 			iPath1StartPos = iColonPos + 1;
-			strResult.Concat( a_rcPath1, iPath1StartPos );
+			strResult.Concat(a_rcPath1, iPath1StartPos);
 		}
 	}
 	else
 	{
 		// Copy volume/filesystem name from the second path
 		iPath2StartPos = iColonPos + 1;
-		strResult.Concat( a_rcPath2, iPath2StartPos );
+		strResult.Concat(a_rcPath2, iPath2StartPos);
 
 		// Ignore everything before the ':' character in the first path
-		iPath1StartPos = a_rcPath1.FindReverse( ':' ) + 1;
+		iPath1StartPos = a_rcPath1.FindReverse(':') + 1;
 	}
 
 	TINT iPath1Length = a_rcPath1.Length();
 	TINT iPath2Length = a_rcPath2.Length();
 
-	if ( iPath2StartPos < iPath2Length &&
-		 ( a_rcPath2[ iPath2StartPos ] == '/' || a_rcPath2[ iPath2StartPos ] == '\\' ) )
+	if (iPath2StartPos < iPath2Length &&
+	    (a_rcPath2[iPath2StartPos] == '/' || a_rcPath2[iPath2StartPos] == '\\'))
 	{
 		// The second path starts from a filesystem/volume root so ignore the first path
-		strResult += a_rcPath2.GetString( iPath2StartPos );
+		strResult += a_rcPath2.GetString(iPath2StartPos);
 	}
 	else
 	{
 		// Concat the first path with the second one trimming parts like 'C:' or 'native:' and etc.
-		strResult += a_rcPath1.GetString( iPath1StartPos );
-		if ( iPath1StartPos < iPath1Length && iPath2StartPos < iPath2Length &&
-			 a_rcPath1[ iPath1Length - 1 ] != '/' && a_rcPath1[ iPath1Length - 1 ] != '\\' )
+		strResult += a_rcPath1.GetString(iPath1StartPos);
+		if (iPath1StartPos < iPath1Length && iPath2StartPos < iPath2Length &&
+		    a_rcPath1[iPath1Length - 1] != '/' && a_rcPath1[iPath1Length - 1] != '\\')
 		{
 			strResult += "/";
 		}
 
-		strResult += a_rcPath2.GetString( iPath2StartPos );
+		strResult += a_rcPath2.GetString(iPath2StartPos);
 	}
 
-	return SimplifyPath( strResult );
+	return SimplifyPath(strResult);
 }
 
 
-TCString TOSHI_API TFile::SimplifyPath( const TCString& a_rcPath )
+TCString TOSHI_API TFile::SimplifyPath(const TCString &a_rcPath)
 {
 	TCString strPath = a_rcPath;
 
 	// Fix path slashes to make it easier to read the path
-	for ( TUINT i = 0; i < strPath.Length(); i++ )
+	for (TINT i = 0; i < strPath.Length(); i++)
 	{
-		if ( strPath[ i ] == '\\' )
-			strPath[ i ] = '/';
+		if (strPath[i] == '\\')
+			strPath[i] = '/';
 	}
 
-	TINT iPos = 0;
+	TINT     iPos = 0;
 	TCString strResult;
 
 	// Keep filesystem/volume/protocol name in the simplified path and leave it as it is
-	TINT iColonPos = strPath.FindReverse( ':' );
-	if ( iColonPos > -1 )
+	TINT iColonPos = strPath.FindReverse(':');
+	if (iColonPos > -1)
 	{
 		iPos = iColonPos + 1;
-		strResult.Concat( strPath, iPos );
+		strResult.Concat(strPath, iPos);
 	}
 
-	if ( strPath[ iPos ] == '/' )
+	if (strPath[iPos] == '/')
 	{
 		iPos += 1;
 		strResult += "/";
 	}
 
 	TINT iInitialResultLength = strResult.Length();
-	TINT iResultLength = iInitialResultLength;
+	TINT iResultLength        = iInitialResultLength;
 
 	strPath += "/";
-	TINT iSlashPos = strPath.Find( '/', iPos );
+	TINT iSlashPos = strPath.Find('/', iPos);
 
-	while ( iSlashPos >= 0 )
+	while (iSlashPos >= 0)
 	{
-		if ( !strncmp( strPath.GetString( iPos ), "../", 3 ) )
+		if (!strncmp(strPath.GetString(iPos), "../", 3))
 		{
-			if ( iResultLength == strResult.Length() )
+			if (iResultLength == strResult.Length())
 			{
 				// Can't go back to a previous dir since it's the only one
 				strResult += "../";
@@ -125,29 +125,29 @@ TCString TOSHI_API TFile::SimplifyPath( const TCString& a_rcPath )
 				// Truncate the path removing the current dir
 				TINT iTruncateTo;
 
-				if ( strResult.Length() > 1 && ( iTruncateTo = strResult.FindReverse( '/', strResult.Length() - 2 ), iResultLength <= iTruncateTo ) )
+				if (strResult.Length() > 1 && (iTruncateTo = strResult.FindReverse('/', strResult.Length() - 2), iResultLength <= iTruncateTo))
 				{
-					strResult.Truncate( iTruncateTo + 1 );
+					strResult.Truncate(iTruncateTo + 1);
 				}
 				else
 				{
-					strResult.Truncate( iResultLength );
+					strResult.Truncate(iResultLength);
 				}
 			}
 		}
 		// Add anything except './'
-		else if ( strncmp( strPath.GetString( iPos ), "./", 2 ) != 0 )
+		else if (strncmp(strPath.GetString(iPos), "./", 2) != 0)
 		{
-			strResult.Concat( strPath.GetString( iPos ), ( iSlashPos - iPos ) + 1 );
+			strResult.Concat(strPath.GetString(iPos), (iSlashPos - iPos) + 1);
 		}
 
-		iPos = iSlashPos + 1;
-		iSlashPos = strPath.Find( '/', iPos );
+		iPos      = iSlashPos + 1;
+		iSlashPos = strPath.Find('/', iPos);
 	}
 
-	if ( iInitialResultLength < strResult.Length() )
+	if (iInitialResultLength < strResult.Length())
 	{
-		strResult.Truncate( strResult.Length() - 1 );
+		strResult.Truncate(strResult.Length() - 1);
 	}
 
 	return strResult;
@@ -158,7 +158,8 @@ void TFile::Destroy()
 	Destroy(this);
 }
 
-TFileManager::TFileManager() : m_pcWorkingDirectory("/")
+TFileManager::TFileManager()
+	: m_pcWorkingDirectory("/")
 {
 	m_bValidated = false;
 	TASSERT(s_pFileManager == TNULL);
@@ -168,11 +169,11 @@ TFileManager::TFileManager() : m_pcWorkingDirectory("/")
 
 TFileManager::~TFileManager()
 {
-	TASSERT(s_pFileManager!=TNULL);
+	TASSERT(s_pFileManager != TNULL);
 	s_pFileManager = TNULL;
 }
 
-TFile* TFileManager::CreateFile(TCString const& a_sName, TUINT a_uiMode)
+TFile *TFileManager::CreateFile(TCString const &a_sName, TUINT a_uiMode)
 {
 	TASSERT(a_sName.Length() > 0);
 	ValidateSystemPath();
@@ -184,7 +185,7 @@ TFile* TFileManager::CreateFile(TCString const& a_sName, TUINT a_uiMode)
 
 		str1.Copy(a_sName, pos);
 		str2.Copy(a_sName.GetString(pos + 1));
-		TFileSystem* fs = FindFileSystem(str1);
+		TFileSystem *fs = FindFileSystem(str1);
 
 		if (fs != TNULL) {
 			return fs->CreateFile(str2, a_uiMode);
@@ -192,16 +193,16 @@ TFile* TFileManager::CreateFile(TCString const& a_sName, TUINT a_uiMode)
 	}
 
 	for (auto pNode = m_aValidated.Begin(); pNode != m_aValidated.End(); pNode++) {
-		TFile* pFile = pNode->CreateFile(a_sName, a_uiMode);
+		TFile *pFile = pNode->CreateFile(a_sName, a_uiMode);
 		if (pFile != TNULL) return pFile;
 	}
 
 	return TNULL;
 }
 
-TFileSystem* TFileManager::FindFileSystem(const TCString& a_rFileSysName)
+TFileSystem *TFileManager::FindFileSystem(const TCString &a_rFileSysName)
 {
-	TFileSystem* pFileSystem = TFileManager::FindFileSystem(m_aValidated, a_rFileSysName);
+	TFileSystem *pFileSystem = TFileManager::FindFileSystem(m_aValidated, a_rFileSysName);
 
 	if (!pFileSystem) {
 		pFileSystem = TFileManager::FindFileSystem(m_aInvalidated, a_rFileSysName);
@@ -210,26 +211,26 @@ TFileSystem* TFileManager::FindFileSystem(const TCString& a_rFileSysName)
 	return pFileSystem;
 }
 
-void TFileManager::MountFileSystem(TFileSystem* a_pFileSystem)
+void TFileManager::MountFileSystem(TFileSystem *a_pFileSystem)
 {
 	TASSERT(FindFileSystem(a_pFileSystem->GetName()) == TNULL);
 	m_aInvalidated.InsertTail(a_pFileSystem);
 	InvalidateSystemPath();
 }
 
-void TFileManager::UnmountFileSystem(TFileSystem* a_pFileSystem)
+void TFileManager::UnmountFileSystem(TFileSystem *a_pFileSystem)
 {
 	TASSERT(FindFileSystem(a_pFileSystem->GetName()) == TNULL);
 	a_pFileSystem->Remove();
 	InvalidateSystemPath();
 }
 
-TCString TFileManager::MakeAbsolutePath(TCString const& a_rPath)
+TCString TFileManager::MakeAbsolutePath(TCString const &a_rPath)
 {
 	return TFile::ConcatPath(a_rPath, GetWorkingDirectory());
 }
 
-TFileSystem* TOSHI_API TFileManager::FindFileSystem(TDList<TFileSystem>& a_rFileSystems, const TCString& a_rFileSysName)
+TFileSystem *TOSHI_API TFileManager::FindFileSystem(TDList<TFileSystem> &a_rFileSystems, const TCString &a_rFileSysName)
 {
 	for (auto pNode = a_rFileSystems.Begin(); pNode != a_rFileSystems.End(); pNode++) {
 		if (pNode->GetName() == a_rFileSysName) return pNode;
@@ -246,11 +247,11 @@ void TFileManager::ValidateSystemPath()
 			m_aInvalidated.InsertHead(pNode);
 		}
 
-		TCString fsName;
+		TCString     fsName;
 		TSysPathIter pathIter(m_pcSystemPath);
 
 		for (TBOOL hasPath = pathIter.First(fsName); hasPath; hasPath = pathIter.Next(fsName)) {
-			TFileSystem* pFS = FindFileSystem(m_aInvalidated, fsName);
+			TFileSystem *pFS = FindFileSystem(m_aInvalidated, fsName);
 			if (pFS) {
 				pFS->Remove();
 				m_aValidated.InsertTail(pFS);
@@ -261,7 +262,7 @@ void TFileManager::ValidateSystemPath()
 	}
 }
 
-void TFileSystem::SetPrefix(const TCString& a_rPrefix)
+void TFileSystem::SetPrefix(const TCString &a_rPrefix)
 {
 	m_sPrefix = a_rPrefix;
 

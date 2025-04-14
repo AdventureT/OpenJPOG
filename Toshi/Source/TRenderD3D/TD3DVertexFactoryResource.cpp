@@ -5,12 +5,11 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TVertexFactoryResource, TVertexFactoryResourceInterface)
 
-TVertexPoolResourceInterface* TVertexFactoryResource::CreatePoolResource(TUSHORT a_uiMaxStaticVertices, TUINT a_uiFlags)
+TVertexPoolResourceInterface *TVertexFactoryResource::CreatePoolResource(TUSHORT a_uiMaxStaticVertices, TUINT a_uiFlags)
 {
-	TVertexPoolResource* pVertexPool = TSTATICCAST(
-		TVertexPoolResource*,
-		GetRenderer()->CreateResource(&TGetClass(TVertexPoolResource), TNULL, this)
-	);
+	TVertexPoolResource *pVertexPool = TSTATICCAST(
+		TVertexPoolResource *,
+		GetRenderer()->CreateResource(&TGetClass(TVertexPoolResource), TNULL, this));
 
 	TVALIDADDRESS(pVertexPool);
 
@@ -21,14 +20,14 @@ TVertexPoolResourceInterface* TVertexFactoryResource::CreatePoolResource(TUSHORT
 
 struct CallbackStruct
 {
-	TVertexBlockResource* m_pBlock;
-	TVertexPoolResource*  m_pPool;
+	TVertexBlockResource *m_pBlock;
+	TVertexPoolResource  *m_pPool;
 };
 
-static TBOOL CallBack(TResource* a_pResource, TPVOID a_pUserData)
+static TBOOL CallBack(TResource *a_pResource, TPVOID a_pUserData)
 {
-	CallbackStruct* pStruct = TSTATICCAST(CallbackStruct*, a_pUserData);
-	TVertexBlockResource* pBlockResource = TSTATICCAST(TVertexBlockResource*, a_pResource);
+	CallbackStruct       *pStruct        = TSTATICCAST(CallbackStruct *, a_pUserData);
+	TVertexBlockResource *pBlockResource = TSTATICCAST(TVertexBlockResource *, a_pResource);
 
 	if (a_pResource->IsA(TGetClass(TVertexBlockResource))) {
 
@@ -41,7 +40,7 @@ static TBOOL CallBack(TResource* a_pResource, TPVOID a_pUserData)
 	return TTRUE;
 }
 
-TVertexBlockResource* TVertexFactoryResource::FindBlockResource(TVertexPoolResource* a_pResource)
+TVertexBlockResource *TVertexFactoryResource::FindBlockResource(TVertexPoolResource *a_pResource)
 {
 	CallbackStruct result = { TNULL, a_pResource };
 	if (a_pResource->GetFlags() & 2) {
@@ -50,12 +49,11 @@ TVertexBlockResource* TVertexFactoryResource::FindBlockResource(TVertexPoolResou
 	RecurseSimple(CallBack, this, &result);
 }
 
-TVertexBlockResource* TVertexFactoryResource::CreateBlockResource(TUSHORT a_uiMaxVertices, TUINT a_uiFlags)
+TVertexBlockResource *TVertexFactoryResource::CreateBlockResource(TUSHORT a_uiMaxVertices, TUINT a_uiFlags)
 {
-	TVertexBlockResource* pVertexBlock = TSTATICCAST(
-		TVertexBlockResource*,
-		GetRenderer()->CreateResource(&TGetClass(TVertexBlockResource), TNULL, this)
-	);
+	TVertexBlockResource *pVertexBlock = TSTATICCAST(
+		TVertexBlockResource *,
+		GetRenderer()->CreateResource(&TGetClass(TVertexBlockResource), TNULL, this));
 
 	TVALIDADDRESS(pVertexBlock);
 

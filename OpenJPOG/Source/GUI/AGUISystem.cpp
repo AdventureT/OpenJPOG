@@ -12,8 +12,8 @@ AGUISystem::AGUISystem()
 
 TBOOL AGUISystem::OnCreate()
 {
-	auto pRenderer = g_oTheApp.GetRootTask()->GetRenderInterface();
-	m_pNullResource = (TNullResource*)pRenderer->CreateResource(&TGetClass(TNullResource), TNULL, TNULL);
+	auto pRenderer  = g_oTheApp.GetRootTask()->GetRenderInterface();
+	m_pNullResource = (TNullResource *)pRenderer->CreateResource(&TGetClass(TNullResource), TNULL, TNULL);
 	m_pGUIInterface->Create();
 	return TBOOL();
 }
@@ -27,7 +27,7 @@ void AGUISystem::UpdateHUDComponets()
 {
 }
 
-AGUISystem* TOSHI_API AGUISystem::GetGUISystem()
+AGUISystem *TOSHI_API AGUISystem::GetGUISystem()
 {
 	return g_oTheApp.GetRootTask()->GetGUISystem();
 }

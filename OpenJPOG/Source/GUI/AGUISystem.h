@@ -9,22 +9,20 @@ class AGUISystem : public Toshi::TTask
 {
 	DECLARE_DYNAMIC(AGUISystem)
 public:
-
 	AGUISystem();
 
 	virtual TBOOL OnCreate() override;
 	virtual TBOOL OnUpdate(TFLOAT a_fDeltaTime) override;
 
-	void UpdateHUDComponets();
+	void                                     UpdateHUDComponets();
 	Toshi::TManagedPtr<Toshi::TGUIInterface> GetGUIInterface() const
 	{
 		return m_pGUIInterface;
 	}
 
-	static AGUISystem* TOSHI_API GetGUISystem();
+	static AGUISystem *TOSHI_API GetGUISystem();
 
 private:
-	Toshi::TGUIInterface* m_pGUIInterface; // 0x24
-	Toshi::TNullResource* m_pNullResource; // 0x140
+	Toshi::TGUIInterface *m_pGUIInterface; // 0x24
+	Toshi::TNullResource *m_pNullResource; // 0x140
 };
-

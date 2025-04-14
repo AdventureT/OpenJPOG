@@ -5,7 +5,7 @@ workspace ("OpenJPOG")
 	platforms "Windows"
 	configurations { "Debug", "Release", "Final" }
 	
-	disablewarnings { "4996" }
+	disablewarnings { "4996", "4251", "4275" }
 	
 	debugdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")

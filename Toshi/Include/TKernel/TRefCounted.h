@@ -6,7 +6,6 @@ TOSHI_NAMESPACE_BEGIN
 class TKERNELINTERFACE_EXPORTS TRefCounted
 {
 public:
-
 	TINT DecRefCount(TPVOID a_pData = TNULL)
 	{
 		return --m_iRefCount;
@@ -23,19 +22,17 @@ public:
 	}
 
 private:
-
-	TRefCounted& operator=(const TRefCounted& a_rRefCounted)
+	TRefCounted &operator=(const TRefCounted &a_rRefCounted)
 	{
 		return *this;
 	}
 
-	TRefCounted(const TRefCounted& a_rRefCounted)
+	TRefCounted(const TRefCounted &a_rRefCounted)
 	{
 		m_iRefCount = 0;
 	}
 
 public:
-
 	TRefCounted()
 	{
 		m_iRefCount = 0;

@@ -5,11 +5,11 @@
 class AVibrationManager : public Toshi::TTask
 {
 	DECLARE_DYNAMIC(AVibrationManager);
+
 public:
-	AVibrationManager() = default;
+	AVibrationManager()          = default;
 	virtual ~AVibrationManager() = default;
 
 private:
-
 private:
 };

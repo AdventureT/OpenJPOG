@@ -5,25 +5,25 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TScheduler, TObject);
 
-TBOOL Profiler_Control_ParentStart = TFALSE;
-TBOOL Profiler_Control_ParentStop = TFALSE;
+TBOOL     Profiler_Control_ParentStart = TFALSE;
+TBOOL     Profiler_Control_ParentStop  = TFALSE;
 TProfiler Profiler_Program;
 
-TScheduler::TScheduler(TKernelInterface* a_pKernel)
+TScheduler::TScheduler(TKernelInterface *a_pKernel)
 {
-	m_pCurrentTask = TNULL;
-	m_pKernel = a_pKernel;
+	m_pCurrentTask      = TNULL;
+	m_pKernel           = a_pKernel;
 	m_fCurrentTimeDelta = 0.0f;
-	m_fTotalTime = 0.0f;
-	m_fDebugSlowTime = 1.0f;
-	m_iFrameCount = 0;
+	m_fTotalTime        = 0.0f;
+	m_fDebugSlowTime    = 1.0f;
+	m_iFrameCount       = 0;
 	TDPRINTF("Creating TScheduler.\n");
 }
 
-TTask* TScheduler::CreateTask(TClass const& a_rTaskClass, TTask* a_pTask)
+TTask *TScheduler::CreateTask(TClass const &a_rTaskClass, TTask *a_pTask)
 {
 	TASSERT(a_rTaskClass.IsA(TGetClass(TTask)) == TTRUE);
-	TTask *pTask = static_cast<TTask*>(a_rTaskClass.CreateObject());
+	TTask *pTask = static_cast<TTask *>(a_rTaskClass.CreateObject());
 	TASSERT(pTask != TNULL);
 	m_oTaskTree.InsertAtRoot(pTask);
 	if (a_pTask) {
@@ -65,15 +65,15 @@ void TScheduler::Update()
 	UpdateActiveTasks(m_oTaskTree.ChildOfRoot());
 }
 
-void TScheduler::DestroyDyingTasks(TTask* a_pTask)
+void TScheduler::DestroyDyingTasks(TTask *a_pTask)
 {
 	if (a_pTask != TNULL)
 	{
-		TTask* currentTask = a_pTask->Prev();
+		TTask *currentTask = a_pTask->Prev();
 
 		while (currentTask != TNULL)
 		{
-			TTask* nextTask = (currentTask->Prev() != a_pTask) ? currentTask->Prev() : TNULL;
+			TTask *nextTask = (currentTask->Prev() != a_pTask) ? currentTask->Prev() : TNULL;
 
 			if (!currentTask->IsDying())
 			{
@@ -104,9 +104,9 @@ void TScheduler::DestroyDyingTasks(TTask* a_pTask)
 	}*/
 }
 
-void TScheduler::DestroyTaskRecurse(TTask* a_pTask)
+void TScheduler::DestroyTaskRecurse(TTask *a_pTask)
 {
-	for (TTask* pTask = a_pTask; pTask != TNULL; pTask = (pTask->Next() != a_pTask) ? a_pTask->Next() : TNULL) {
+	for (TTask *pTask = a_pTask; pTask != TNULL; pTask = (pTask->Next() != a_pTask) ? a_pTask->Next() : TNULL) {
 		pTask->m_Flags |= TTask::State_Dying;
 
 		if (pTask->Child() != TNULL) {
@@ -115,13 +115,13 @@ void TScheduler::DestroyTaskRecurse(TTask* a_pTask)
 	}
 }
 
-void TScheduler::UpdateActiveTasks(TTask* a_pTask)
+void TScheduler::UpdateActiveTasks(TTask *a_pTask)
 {
-	TTask* currentTask = a_pTask;
+	TTask *currentTask = a_pTask;
 
 	while (currentTask != TNULL)
 	{
-		TTask* nextTask = (currentTask->Next() != a_pTask) ? currentTask->Next() : TNULL;
+		TTask *nextTask = (currentTask->Next() != a_pTask) ? currentTask->Next() : TNULL;
 
 		TBOOL recurse = TTRUE;
 		if (a_pTask->IsCreated() && a_pTask->IsActive())
@@ -150,14 +150,14 @@ void TScheduler::UpdateActiveTasks(TTask* a_pTask)
 
 void TScheduler::DestroyAllTasks()
 {
-	TTask* pAttached = m_oTaskTree.ChildOfRoot();
+	TTask *pAttached = m_oTaskTree.ChildOfRoot();
 	if (pAttached) {
 		DestroyTask(*pAttached);
 		DeleteTaskAtomic(pAttached);
 	}
 }
 
-void TScheduler::DestroyTask(TTask& a_rTask)
+void TScheduler::DestroyTask(TTask &a_rTask)
 {
 	if (!a_rTask.IsDying()) {
 		a_rTask.m_Flags |= TTask::State_Dying;
@@ -165,24 +165,24 @@ void TScheduler::DestroyTask(TTask& a_rTask)
 	}
 }
 
-void TScheduler::DeleteTask(TTask* a_pTask)
+void TScheduler::DeleteTask(TTask *a_pTask)
 {
 	DeleteTaskRecurse(a_pTask->Child());
 	DeleteTaskAtomic(a_pTask);
 }
 
-void TScheduler::DeleteTaskRecurse(TTask* a_pTask)
+void TScheduler::DeleteTaskRecurse(TTask *a_pTask)
 {
 	if (!a_pTask) return;
-	for (TTask* pTask = a_pTask->Prev(); pTask != TNULL; pTask = (pTask->Prev() != a_pTask) ? a_pTask->Prev() : TNULL) {
+	for (TTask *pTask = a_pTask->Prev(); pTask != TNULL; pTask = (pTask->Prev() != a_pTask) ? a_pTask->Prev() : TNULL) {
 		DeleteTaskAtomic(pTask);
 	}
 }
 
-void TScheduler::DeleteTaskAtomic(TTask* a_pTask)
+void TScheduler::DeleteTaskAtomic(TTask *a_pTask)
 {
 	if (!a_pTask) return;
-	TTask* taskParent = TNULL;
+	TTask *taskParent = TNULL;
 
 	if (a_pTask->IsChildOfDefaultRoot() == TFALSE) {
 		taskParent = a_pTask->Parent();
@@ -197,7 +197,7 @@ void TScheduler::DeleteTaskAtomic(TTask* a_pTask)
 		DeleteTaskRecurse(a_pTask->Child());
 	}
 
-	TClass* pClass = &a_pTask->GetClass();
+	TClass *pClass = &a_pTask->GetClass();
 	a_pTask->OnDestroy();
 	m_oTaskTree.Remove(a_pTask, TFALSE);
 	a_pTask->Delete();

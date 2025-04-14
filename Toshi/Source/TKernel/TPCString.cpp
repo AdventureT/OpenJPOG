@@ -6,7 +6,7 @@ IMPLEMENT_FREELIST(TPooledCString, 0, 8)
 
 TCStringPool::TCStringPool(TINT a_iMaxSize, TINT a_iInitialSize)
 {
-	m_iMaxSize = a_iMaxSize;
+	m_iMaxSize        = a_iMaxSize;
 	m_oPooledCStrings = TArray<TPooledCString>(a_iMaxSize, a_iInitialSize);
 }
 
@@ -22,7 +22,7 @@ TPCString TCStringPool::Get(TPCCHAR a_szString)
 			return TPCString(&m_oPooledCStrings[i]);
 		}
 	}
-	TPooledCString* string = new TPooledCString(a_szString, this);
+	TPooledCString *string = new TPooledCString(a_szString, this);
 	m_oPooledCStrings.Push(*string);
 	return TPCString(string);
 }
@@ -32,7 +32,7 @@ TPCString TCStringPool::Get(TINT a_iInt)
 	return Get(TCString().Format("%d", a_iInt));
 }
 
-void TCStringPool::Remove(TPooledCString& a_rPooledCString)
+void TCStringPool::Remove(TPooledCString &a_rPooledCString)
 {
 	TASSERT(a_rPooledCString.GetRefCount() == 0);
 	//auto iter = TArray<TPooledCString>::Iterator(-1, a_rPooledCString);
@@ -45,9 +45,9 @@ TPooledCString::TPooledCString()
 	m_pCStringPool = TNULL;
 }
 
-TPooledCString::TPooledCString(TPCCHAR a_szString, TCStringPool* a_pStringPool)
+TPooledCString::TPooledCString(TPCCHAR a_szString, TCStringPool *a_pStringPool)
 {
-	m_oString = TCString(a_szString);
+	m_oString      = TCString(a_szString);
 	m_pCStringPool = a_pStringPool;
 }
 

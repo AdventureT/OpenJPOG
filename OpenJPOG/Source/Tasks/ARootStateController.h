@@ -5,7 +5,7 @@
 
 class ARootStateController;
 
-static inline ARootStateController* s_pCurrentStateController = TNULL;
+static inline ARootStateController *s_pCurrentStateController = TNULL;
 
 class ARootStateController : public Toshi::TTask
 {
@@ -16,15 +16,15 @@ public:
 
 	virtual TBOOL OnCreate() override;
 	virtual TBOOL OnUpdate(TFLOAT a_fDeltaTime) override;
-	virtual void OnDestroy() override;
+	virtual void  OnDestroy() override;
 
-	void TransferControl(ARootState* a_pState);
+	void TransferControl(ARootState *a_pState);
 	void SetupToolBarHUD();
 
 public:
-	ARootState* GetBaseAppState() { return m_pBaseAppState; }
-	static ARootStateController* TOSHI_API GetRootStateController() { return s_pCurrentStateController; }
+	ARootState                            *GetBaseAppState() { return m_pBaseAppState; }
+	static ARootStateController *TOSHI_API GetRootStateController() { return s_pCurrentStateController; }
 
 private:
-	ARootState* m_pBaseAppState; // 0x24
+	ARootState *m_pBaseAppState; // 0x24
 };

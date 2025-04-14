@@ -38,13 +38,13 @@ public:
 		delete m_pDirectSound;
 		return TTRUE;
 	}
-	virtual void SetLocaleInfoA(TPCHAR a_szBuffer);
-	virtual TTextureResource* GetTexture() { return m_pTextures[m_iCurrentTextureIndex]; }
+	virtual void              SetLocaleInfoA(TPCHAR a_szBuffer);
+	virtual TTextureResource *GetTexture() { return m_pTextures[m_iCurrentTextureIndex]; }
 
-	void BinkSleep(TINT a_iMicroseconds);
-	TBOOL RenderToTiles();
-	TTextureResource* GetCurrentTexture() { return m_pTextures[m_iCurrentTextureIndex]; }
-	void SetCurrentTexture(TTextureResource* a_pTexture)
+	void              BinkSleep(TINT a_iMicroseconds);
+	TBOOL             RenderToTiles();
+	TTextureResource *GetCurrentTexture() { return m_pTextures[m_iCurrentTextureIndex]; }
+	void              SetCurrentTexture(TTextureResource *a_pTexture)
 	{
 		if (!m_pTextures[m_iCurrentTextureIndex]) {
 			m_pTextures[m_iCurrentTextureIndex] = a_pTexture;
@@ -52,34 +52,33 @@ public:
 	}
 
 private:
-
-	static void PTR4* RADLINK RADMEMALLOC(U32 bytes)
+	static void PTR4 *RADLINK RADMEMALLOC(U32 bytes)
 	{
 		return tmalloc(bytes, TNULL, -1);
 	}
 
-	static void RADLINK RADMEMFREE(void PTR4* ptr)
+	static void RADLINK RADMEMFREE(void PTR4 *ptr)
 	{
 		tfree(ptr);
 	}
 
 private:
-	TCHAR m_szMovieFileName[256];            // 0x10
-	TCHAR m_szMovieName[256];                // 0x110
-	TBOOL m_bHasMovieStopped;                // 0x210
-	TBOOL m_bIsBINKInitialized;              // 0x211
-	TBOOL m_bDrawingFrame;                   // 0x213
-	TBOOL m_bRenderingTiles;                 // 0x214
-	HBINK m_hBink;                           // 0x218
-	TINT m_iFrameCount;                      // 0x220
-	TINT m_iFrameBufferWidth;                // 0x224
-	TINT m_iFrameBufferHeight;               // 0x228
-	TINT m_iWidth;                           // 0x22C
-	TINT m_iHeight;                          // 0x230
-	Toshi::TTextureResource* m_pTextures[8]; // 0x240
-	TPBYTE m_pFrameBufferBits;               // 0x234
-	LPDIRECTSOUND m_pDirectSound;            // 0x278
-	TINT m_iCurrentTextureIndex;             // 0x27C
+	TCHAR                    m_szMovieFileName[256]; // 0x10
+	TCHAR                    m_szMovieName[256];     // 0x110
+	TBOOL                    m_bHasMovieStopped;     // 0x210
+	TBOOL                    m_bIsBINKInitialized;   // 0x211
+	TBOOL                    m_bDrawingFrame;        // 0x213
+	TBOOL                    m_bRenderingTiles;      // 0x214
+	HBINK                    m_hBink;                // 0x218
+	TINT                     m_iFrameCount;          // 0x220
+	TINT                     m_iFrameBufferWidth;    // 0x224
+	TINT                     m_iFrameBufferHeight;   // 0x228
+	TINT                     m_iWidth;               // 0x22C
+	TINT                     m_iHeight;              // 0x230
+	Toshi::TTextureResource *m_pTextures[8];         // 0x240
+	TPBYTE                   m_pFrameBufferBits;     // 0x234
+	LPDIRECTSOUND            m_pDirectSound;         // 0x278
+	TINT                     m_iCurrentTextureIndex; // 0x27C
 };
 
 TOSHI_NAMESPACE_END

@@ -21,25 +21,25 @@ public:
 	public:
 		Iterator()
 		{
-			m_iIndex = 0;
+			m_iIndex  = 0;
 			m_poArray = TNULL;
 		}
 
-		Iterator(const Iterator& other)
+		Iterator(const Iterator &other)
 		{
 			m_poArray = other.m_poArray;
-			m_iIndex = 0;
+			m_iIndex  = 0;
 		}
 
-		Iterator(Storage& a_poArray)
+		Iterator(Storage &a_poArray)
 		{
-			m_iIndex = 0;
+			m_iIndex  = 0;
 			m_poArray = &a_poArray;
 		}
 
-		Iterator(TINT a_iIndex, Storage& a_poArray)
+		Iterator(TINT a_iIndex, Storage &a_poArray)
 		{
-			m_iIndex = a_iIndex;
+			m_iIndex  = a_iIndex;
 			m_poArray = &a_poArray;
 		}
 
@@ -55,7 +55,7 @@ public:
 			return m_iIndex;
 		}
 
-		TINT& IncrementSafe()
+		TINT &IncrementSafe()
 		{
 			m_iIndex++;
 			TASSERT(m_poArray);
@@ -67,13 +67,13 @@ public:
 			return m_iIndex;
 		}
 
-		void Push(const T& element)
+		void Push(const T &element)
 		{
 			TASSERT(m_poArray);
 			m_poArray->Push(element);
 		}
 
-		T* operator->() const
+		T *operator->() const
 		{
 			TASSERT(m_iIndex >= 0);
 			TASSERT(m_poArray);
@@ -81,7 +81,7 @@ public:
 			return &m_poArray->m_pData[m_iIndex];
 		}
 
-		T& Get()
+		T &Get()
 		{
 			TASSERT(m_iIndex >= 0);
 			TASSERT(m_poArray);
@@ -94,7 +94,7 @@ public:
 			return (m_iIndex >= m_poArray->GetNumElements() || m_iIndex == -1);
 		}
 
-		const T& Get() const
+		const T &Get() const
 		{
 			TASSERT(m_iIndex >= 0);
 			TASSERT(m_poArray);
@@ -102,7 +102,7 @@ public:
 			return m_poArray->m_pData[m_iIndex];
 		}
 
-		Iterator& operator++()
+		Iterator &operator++()
 		{
 			m_iIndex++;
 			return *this;
@@ -115,7 +115,7 @@ public:
 			return temp;
 		}
 
-		Iterator& operator--()
+		Iterator &operator--()
 		{
 			m_iIndex--;
 			return *this;
@@ -139,25 +139,24 @@ public:
 		}
 
 	private:
-		TINT m_iIndex;      // 0x0
-		Storage* m_poArray; // 0x4
+		TINT     m_iIndex;  // 0x0
+		Storage *m_poArray; // 0x4
 	};
 
 public:
-
-	TArray() : TArray(10, 0)
+	TArray()
+		: TArray(10, 0)
 	{
-
 	}
 
 	TArray(TINT a_iGrowSize, TINT a_iSize)
 	{
-		m_iGrowSize = a_iGrowSize;
+		m_iGrowSize         = a_iGrowSize;
 		m_iNumAllocElements = a_iSize;
-		m_iNumElements = 0;
+		m_iNumElements      = 0;
 
 		if (m_iNumAllocElements > 0) {
-			m_pData = TSTATICCAST(T*, tmemalign(alignof(T), m_iNumAllocElements * sizeof(T)));
+			m_pData = TSTATICCAST(T *, tmemalign(alignof(T), m_iNumAllocElements * sizeof(T)));
 		}
 		else {
 			TASSERT(m_iGrowSize != 0);
@@ -216,28 +215,28 @@ public:
 		m_iGrowSize = a_iGrowSize;
 	}
 
-	T* Push(const T& element)
+	T *Push(const T &element)
 	{
 		GrowBy(1);
-		T* current = &m_pData[m_iNumElements++];
+		T *current = &m_pData[m_iNumElements++];
 		memcpy(current, &element, sizeof(T));
 		return current;
 	}
 
-	T& Pop()
+	T &Pop()
 	{
 		TASSERT(m_iNumElements >= 1);
 		return m_pData[--m_iNumElements];
 	}
 
-	T& operator[](TINT a_iIndex)
+	T &operator[](TINT a_iIndex)
 	{
 		TASSERT(a_iIndex >= 0);
 		TASSERT(a_iIndex < m_iNumElements);
 		return m_pData[a_iIndex];
 	}
 
-	const T& operator[](TINT a_iIndex) const
+	const T &operator[](TINT a_iIndex) const
 	{
 		TASSERT(a_iIndex >= 0);
 		TASSERT(a_iIndex < m_iNumElements);
@@ -258,7 +257,7 @@ private:
 	void Resize(TINT a_iNewSize)
 	{
 		if (a_iNewSize != 0) {
-			T* pNewBuffer = TSTATICCAST(T*, tmemalign(alignof(T), a_iNewSize * sizeof(T)));
+			T     *pNewBuffer = TSTATICCAST(T *, tmemalign(alignof(T), a_iNewSize * sizeof(T)));
 			size_t uiCopySize = TMIN(m_iNumElements, a_iNewSize);
 
 			TSystem::MemCopy(pNewBuffer, m_pData, sizeof(T) * uiCopySize);
@@ -271,9 +270,9 @@ private:
 		}
 		else {
 			if (m_pData) tfree(m_pData);
-			m_pData = TNULL;
+			m_pData             = TNULL;
 			m_iNumAllocElements = 0;
-			m_iNumElements = 0;
+			m_iNumElements      = 0;
 		}
 	}
 
@@ -281,7 +280,7 @@ private:
 	TINT m_iGrowSize;         // 0x0
 	TINT m_iNumElements;      // 0x4
 	TINT m_iNumAllocElements; // 0x8
-	T* m_pData;               // 0xC
+	T   *m_pData;             // 0xC
 };
 
 TOSHI_NAMESPACE_END

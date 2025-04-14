@@ -16,12 +16,12 @@ public:
 	class PPROPERTYPARSER_EXPORTS PProperty : public Toshi::TQList<PProperty>::TNode
 	{
 		DECLARE_FREELIST(PProperty)
-		  
+
 	public:
 		// $PPropertyParser: FUNCTION 10001e30 COMPLETED
 		PProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue)
 		{
-			m_oName = PPropertyName(a_rName);
+			m_oName  = PPropertyName(a_rName);
 			m_oValue = PPropertyValue(a_rValue);
 		}
 		// $PPropertyParser: FUNCTION 10001e70 COMPLETED
@@ -33,7 +33,6 @@ public:
 		// $PPropertyParser: FUNCTION 10002910 COMPLETED
 		~PProperty()
 		{
-
 		}
 		// $PPropertyParser: FUNCTION 100029b0 COMPLETED
 		void SetComment(const Toshi::TPCString &a_rComment)
@@ -41,9 +40,9 @@ public:
 			m_sComment = a_rComment;
 		}
 		// $PPropertyParser: FUNCTION 10002a20 COMPLETED
-		void SetLine(TINT a_iLine) 
-		{ 
-			m_iLine = a_iLine; 
+		void SetLine(TINT a_iLine)
+		{
+			m_iLine = a_iLine;
 		}
 		// $PPropertyParser: FUNCTION 10002a30 COMPLETED
 		void SetValue(const PPropertyValue &a_rValue)
@@ -51,32 +50,32 @@ public:
 			m_oValue = a_rValue;
 		}
 		// $PPropertyParser: FUNCTION 100029f0 COMPLETED
-		Toshi::TPCString GetComment() const 
-		{ 
-			return m_sComment; 
+		Toshi::TPCString GetComment() const
+		{
+			return m_sComment;
 		}
 		// $PPropertyParser: FUNCTION 10002a10 COMPLETED
-		TINT GetLine() const 
-		{ 
-			return m_iLine; 
+		TINT GetLine() const
+		{
+			return m_iLine;
 		}
 		// $PPropertyParser: FUNCTION 10002a60 COMPLETED
-		const PPropertyName &GetName() const 
-		{ 
-			return m_oName; 
+		const PPropertyName &GetName() const
+		{
+			return m_oName;
 		}
 		// $PPropertyParser: FUNCTION 10002a50 COMPLETED
-		const PPropertyValue &GetValue() const 
-		{ 
-			return m_oValue; 
+		const PPropertyValue &GetValue() const
+		{
+			return m_oValue;
 		}
 
 	private:
 		// 0x0 m_pNext
 		// 0x4 m_pPrev
-		PPropertyName m_oName;       // 0x8
-		PPropertyValue m_oValue;     // 0x10
-		TINT m_iLine;                // 0x18
+		PPropertyName    m_oName;    // 0x8
+		PPropertyValue   m_oValue;   // 0x10
+		TINT             m_iLine;    // 0x18
 		Toshi::TPCString m_sComment; // 0x1C
 	};
 
@@ -84,13 +83,13 @@ public:
 	PProperties()
 	{
 		m_pParentProps = TNULL;
-		m_iPropCount = 0;
+		m_iPropCount   = 0;
 	}
 	// $PPropertyParser: FUNCTION 100010c0
 	PProperties(PProperties *a_pParentProps)
 	{
 		m_pParentProps = a_pParentProps;
-		m_iPropCount = 0;
+		m_iPropCount   = 0;
 	}
 
 	// $PPropertyParser: FUNCTION 10002b50
@@ -150,7 +149,7 @@ public:
 
 	const PProperty *FindProperty(const Toshi::TPCString &a_szProperty, Toshi::TQList<PProperty>::Iterator &a_oProperties);
 
-	PProperties *m_pParentProps;            // 0x8
-	Toshi::TQList<PProperty> m_oPropSet;    // 0xC
-	TINT m_iPropCount;                      // 0x14
+	PProperties             *m_pParentProps; // 0x8
+	Toshi::TQList<PProperty> m_oPropSet;     // 0xC
+	TINT                     m_iPropCount;   // 0x14
 };

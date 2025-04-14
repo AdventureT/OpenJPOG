@@ -8,12 +8,12 @@ TUINT TD3DAdapter::GetAdapterIndex() const
 	return m_uiAdapterIndex;
 }
 
-const TCString& TD3DAdapter::GetDriver() const
+const TCString &TD3DAdapter::GetDriver() const
 {
 	return m_Driver;
 }
 
-const TCString& TD3DAdapter::GetDriverDescription() const
+const TCString &TD3DAdapter::GetDriverDescription() const
 {
 	return m_Description;
 }
@@ -38,7 +38,7 @@ TUSHORT TD3DAdapter::GetBuild() const
 	return m_DriverVersionLowPart & 0xFFFF;
 }
 
-const GUID& TD3DAdapter::GetDeviceIdentifier() const
+const GUID &TD3DAdapter::GetDeviceIdentifier() const
 {
 	return m_DeviceIdentifier;
 }
@@ -48,13 +48,13 @@ TUINT TD3DAdapter::GetNumSupportedDevices() const
 	return Mode::NUMSUPPORTEDDEVICES;
 }
 
-void TD3DAdapter::EnumerateOutputs(TRenderInterface* a_pRenderer)
+void TD3DAdapter::EnumerateOutputs(TRenderInterface *a_pRenderer)
 {
-	TRenderD3DInterface* pRenderer = TSTATICCAST(TRenderD3DInterface*, a_pRenderer);
+	TRenderD3DInterface *pRenderer = TSTATICCAST(TRenderD3DInterface *, a_pRenderer);
 
-	TUINT32 uiAdapterIndex = GetAdapterIndex();
+	TUINT32 uiAdapterIndex        = GetAdapterIndex();
 	TUINT32 uiNumSupportedDevices = GetNumSupportedDevices();
-	TUINT32 uiAdapterModeCount = pRenderer->GetD3DInterface()->GetAdapterModeCount(uiAdapterIndex);
+	TUINT32 uiAdapterModeCount    = pRenderer->GetD3DInterface()->GetAdapterModeCount(uiAdapterIndex);
 
 	for (TUINT32 i = 0; i < uiAdapterModeCount; i++)
 	{
@@ -67,7 +67,7 @@ void TD3DAdapter::EnumerateOutputs(TRenderInterface* a_pRenderer)
 
 		for (TUINT32 k = 0; k < uiNumSupportedDevices; k++)
 		{
-			auto pDevice = TSTATICCAST(TD3DAdapter::Mode::Device*, pMode->GetDevice(k));
+			auto pDevice = TSTATICCAST(TD3DAdapter::Mode::Device *, pMode->GetDevice(k));
 
 			pDevice->SetOwnerMode(pMode);
 			pDevice->SetDeviceIndex(k);
@@ -78,12 +78,11 @@ void TD3DAdapter::EnumerateOutputs(TRenderInterface* a_pRenderer)
 				Mode::Device::DEVICETYPES[k],
 				pMode->GetD3DDisplayMode().Format,
 				pMode->GetD3DDisplayMode().Format,
-				FALSE
-			);
+				FALSE);
 
 			if (SUCCEEDED(hRes))
 			{
-				auto& caps = pDevice->GetD3DCaps();
+				auto &caps = pDevice->GetD3DCaps();
 
 				if (Mode::Device::DEVICETYPES[k] == D3DDEVTYPE_REF)
 				{
@@ -98,7 +97,7 @@ void TD3DAdapter::EnumerateOutputs(TRenderInterface* a_pRenderer)
 				if (caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)
 				{
 					pDevice->m_bSupportsTransformation = TTRUE;
-					pDevice->m_bSupportsPureDevice = caps.DevCaps & D3DDEVCAPS_PUREDEVICE;
+					pDevice->m_bSupportsPureDevice     = caps.DevCaps & D3DDEVCAPS_PUREDEVICE;
 				}
 
 				if (caps.DevCaps & D3DDEVCAPS_NPATCHES)
@@ -132,18 +131,16 @@ void TD3DAdapter::EnumerateOutputs(TRenderInterface* a_pRenderer)
 							pMode->GetD3DDisplayMode().Format,
 							D3DUSAGE_DEPTHSTENCIL,
 							D3DRTYPE_SURFACE,
-							Mode::Device::DEPTHSTENCILFORMATS[j]
-						);
+							Mode::Device::DEPTHSTENCILFORMATS[j]);
 
 						if (SUCCEEDED(hCheck))
 						{
-							HRESULT hMatch = pRenderer->GetD3DInterface ()->CheckDepthStencilMatch(
+							HRESULT hMatch = pRenderer->GetD3DInterface()->CheckDepthStencilMatch(
 								uiAdapterIndex,
 								Mode::Device::DEVICETYPES[k],
 								pMode->GetD3DDisplayMode().Format,
 								pMode->GetD3DDisplayMode().Format,
-								Mode::Device::DEPTHSTENCILFORMATS[j]
-							);
+								Mode::Device::DEPTHSTENCILFORMATS[j]);
 
 							if (SUCCEEDED(hMatch))
 							{
@@ -159,7 +156,7 @@ void TD3DAdapter::EnumerateOutputs(TRenderInterface* a_pRenderer)
 	}
 }
 
-TRenderAdapter* TD3DAdapter::Mode::GetAdapter() const
+TRenderAdapter *TD3DAdapter::Mode::GetAdapter() const
 {
 	return m_pOwnerAdapter;
 }
@@ -186,8 +183,7 @@ TBOOL TD3DAdapter::Mode::Is32Bit() const
 
 TBOOL TD3DAdapter::Mode::Is16Bit() const
 {
-	return
-		m_DisplayMode.Format == D3DFMT_R5G6B5 ||
+	return m_DisplayMode.Format == D3DFMT_R5G6B5 ||
 		m_DisplayMode.Format == D3DFMT_X1R5G5B5 ||
 		m_DisplayMode.Format == D3DFMT_X4R4G4B4;
 }
@@ -197,7 +193,7 @@ TUINT TD3DAdapter::Mode::GetRefreshRate() const
 	return m_DisplayMode.RefreshRate;
 }
 
-TRenderAdapter::Mode::Device* TD3DAdapter::Mode::GetDevice(TUINT a_iDevice)
+TRenderAdapter::Mode::Device *TD3DAdapter::Mode::GetDevice(TUINT a_iDevice)
 {
 	if (a_iDevice >= 0 && a_iDevice < NUMSUPPORTEDDEVICES)
 	{
@@ -211,13 +207,13 @@ D3DFORMAT TD3DAdapter::Mode::GetBackBufferFormat(TUINT a_uiColourDepth)
 {
 	if (a_uiColourDepth == 16)
 	{
-		return TSTATICCAST(D3DFORMAT, (-(TUINT32)((*(TUINT8*)&(m_DisplayMode).Format & 0x17) != 0) & 0xfffffff9) + D3DFMT_X4R4G4B4);
+		return TSTATICCAST(D3DFORMAT, (-(TUINT32)((*(TUINT8 *)&(m_DisplayMode).Format & 0x17) != 0) & 0xfffffff9) + D3DFMT_X4R4G4B4);
 	}
 
 	return TSTATICCAST(D3DFORMAT, (a_uiColourDepth != 32) - 1 & 0x16);
 }
 
-TRenderAdapter::Mode* TD3DAdapter::Mode::Device::GetMode() const
+TRenderAdapter::Mode *TD3DAdapter::Mode::Device::GetMode() const
 {
 	return m_pOwnerMode;
 }

@@ -9,11 +9,10 @@ TOSHI_NAMESPACE_BEGIN
 class TPCString;
 class TWString;
 
-class TKERNELINTERFACE_EXPORTS TCString 
+class TKERNELINTERFACE_EXPORTS TCString
 {
 public:
-	
-	friend TCString TKERNELINTERFACE_EXPORTS TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS);
+	friend TCString TKERNELINTERFACE_EXPORTS TOSHI_API operator+(TPCCHAR a_pLHS, const TCString &a_rRHS);
 
 	// $TKernelInterface: FUNCTION 1000a5a0 COMPLETED
 	TCString()
@@ -22,51 +21,51 @@ public:
 		AllocBuffer(0);
 	}
 
-    // $TKernelInterface: FUNCTION 1000a5d0 COMPLETED
+	// $TKernelInterface: FUNCTION 1000a5d0 COMPLETED
 	TCString(TINT a_iLength)
 	{
 		Reset();
 		AllocBuffer(a_iLength);
 	}
 
-    // $TKernelInterface: FUNCTION 1000b9f0 COMPLETED
+	// $TKernelInterface: FUNCTION 1000b9f0 COMPLETED
 	TCString(const TCString &a_rOther)
 	{
 		Reset();
 		Copy(a_rOther);
 	}
 
-    // $TKernelInterface: FUNCTION 1000b9c0 COMPLETED
+	// $TKernelInterface: FUNCTION 1000b9c0 COMPLETED
 	TCString(const TWString &a_rOther)
 	{
 		Reset();
 		Copy(a_rOther);
 	}
 
-    // $TKernelInterface: FUNCTION 1000ba50 COMPLETED
+	// $TKernelInterface: FUNCTION 1000ba50 COMPLETED
 	TCString(TPCCHAR a_pcString)
 	{
 		Reset();
 		Copy(a_pcString);
 	}
 
-    // $TKernelInterface: FUNCTION 1000b9b0 COMPLETED
+	// $TKernelInterface: FUNCTION 1000b9b0 COMPLETED
 	~TCString()
 	{
 		FreeBuffer();
 	}
 
-	TCString& Concat(TCString const& a_rString, TINT a_iLength = -1);
-	TCString& Concat(TPCCHAR a_String, TINT a_iLength = -1);
-	TINT Compare(TPCCHAR a_pcString, int a_iLength = -1) const;
+	TCString &Concat(TCString const &a_rString, TINT a_iLength = -1);
+	TCString &Concat(TPCCHAR a_String, TINT a_iLength = -1);
+	TINT      Compare(TPCCHAR a_pcString, int a_iLength = -1) const;
 
-	void Copy(const TCString& a_rOther, TINT a_iLength = -1);
+	void Copy(const TCString &a_rOther, TINT a_iLength = -1);
 	void Copy(const TWString &a_rOther, TINT a_iLength = -1);
 	void Copy(TPCCHAR a_pcString, TINT a_iLength = -1);
 
-	TCString& TOSHI_CALLBACKAPI Format(TPCCHAR a_pcFormat, ...);
-	TINT Find(TCHAR a_cFind, TINT a_iIndex = 0) const;
-	TINT FindReverse(TCHAR a_cFind, TINT a_iIndex = -1) const;
+	TCString &TOSHI_CALLBACKAPI Format(TPCCHAR a_pcFormat, ...);
+	TINT                        Find(TCHAR a_cFind, TINT a_iIndex = 0) const;
+	TINT                        FindReverse(TCHAR a_cFind, TINT a_iIndex = -1) const;
 
 	TCString Mid(TINT a_iFirst, TINT a_iCount) const;
 
@@ -92,7 +91,7 @@ public:
 		return Compare(a_pcString) != 0;
 	}
 
-	bool operator!=(const TCString& a_rOther) const
+	bool operator!=(const TCString &a_rOther) const
 	{
 		return Compare(a_rOther.m_pBuffer) != 0;
 	}
@@ -102,18 +101,18 @@ public:
 		return Compare(a_pcString) == 0;
 	}
 
-	bool operator==(const TCString& a_rOther) const
+	bool operator==(const TCString &a_rOther) const
 	{
 		return Compare(a_rOther.m_pBuffer) == 0;
 	}
 
-	TCString& operator=(TPCCHAR a_pcString)
+	TCString &operator=(TPCCHAR a_pcString)
 	{
 		Copy(a_pcString);
 		return *this;
 	}
 
-	TCString& operator=(TCString& a_rOther)
+	TCString &operator=(TCString &a_rOther)
 	{
 		Copy(a_rOther);
 		return *this;
@@ -137,33 +136,33 @@ public:
 		return str.Concat(a_rRHS);
 	}
 
-	TCString& operator+=(TPCCHAR a_pcString)
+	TCString &operator+=(TPCCHAR a_pcString)
 	{
 		Concat(a_pcString);
 		return *this;
 	}
 
-	TCString& operator+=(const TCString &a_rString)
+	TCString &operator+=(const TCString &a_rString)
 	{
 		Concat(a_rString);
 		return *this;
 	}
 
-	TCCHAR& operator[](TINT a_iIndex) const
-	{
-		TASSERT((a_iIndex>=0) && (a_iIndex<=(TINT)m_iStrLen));
-		return m_pBuffer[a_iIndex];
-	}
-
-	TCHAR& operator[](TINT a_iIndex)
+	TCCHAR &operator[](TINT a_iIndex) const
 	{
 		TASSERT((a_iIndex >= 0) && (a_iIndex <= (TINT)m_iStrLen));
 		return m_pBuffer[a_iIndex];
 	}
 
-	const TCString& Print() const
+	TCHAR &operator[](TINT a_iIndex)
 	{
-		TASSERT(GetString()!=TNULL);
+		TASSERT((a_iIndex >= 0) && (a_iIndex <= (TINT)m_iStrLen));
+		return m_pBuffer[a_iIndex];
+	}
+
+	const TCString &Print() const
+	{
+		TASSERT(GetString() != TNULL);
 		TDPRINTF("%s", GetString());
 		return *this;
 	}
@@ -186,21 +185,20 @@ private:
 
 	void Reset()
 	{
-		m_pBuffer = m_aNull;
+		m_pBuffer    = m_aNull;
 		m_iExcessLen = 0;
-		m_iStrLen = 0;
+		m_iStrLen    = 0;
 	}
 
 private:
-
 	inline static TCHAR m_aNull[4] = { 0, 0, 0, 0 };
 
-	TPCHAR m_pBuffer;           // 0x0
-	TINT m_iStrLen    : 24 = 0; // 0x4
-	TINT m_iExcessLen : 8 = 0;  // 0x5
+	TPCHAR m_pBuffer;            // 0x0
+	TINT   m_iStrLen : 24   = 0; // 0x4
+	TINT   m_iExcessLen : 8 = 0; // 0x5
 };
 
-TCString TKERNELINTERFACE_EXPORTS TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS);
-TCString TKERNELINTERFACE_EXPORTS TOSHI_API operator+(const TCString& a_rLHS, const TPCString& a_rRHS);
+TCString TKERNELINTERFACE_EXPORTS TOSHI_API operator+(TPCCHAR a_pLHS, const TCString &a_rRHS);
+TCString TKERNELINTERFACE_EXPORTS TOSHI_API operator+(const TCString &a_rLHS, const TPCString &a_rRHS);
 
 TOSHI_NAMESPACE_END

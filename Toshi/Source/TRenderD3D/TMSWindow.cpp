@@ -6,32 +6,32 @@ TOSHI_NAMESPACE_USING
 IMPLEMENT_DYNCREATE(TMSWindow, TObject)
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message,
-	WPARAM wParam, LPARAM lParam);
+                            WPARAM wParam, LPARAM lParam);
 
 TMSWindow::TMSWindow()
 {
-	m_hWnd = NULL;
+	m_hWnd          = NULL;
 	m_pD3DInterface = TNULL;
-	m_bIsEnabled = TFALSE;
-	m_bIsWindowed = TTRUE;
+	m_bIsEnabled    = TFALSE;
+	m_bIsWindowed   = TTRUE;
 
 	TCString className = TGetClass(TRenderD3DInterface).GetName();
 	Destroy();
 
 	WNDCLASSEX wndClass;
-	wndClass.cbSize = sizeof(WNDCLASSEX);
-	wndClass.style = CS_CLASSDC;
-	wndClass.lpfnWndProc = WindowProc;
-	wndClass.cbClsExtra = 0;     // No extra bytes after the window class
-	wndClass.cbWndExtra = 0;     // structure or the window instance
-	wndClass.hInstance = 0;
-	wndClass.hIcon = 0;
-	wndClass.hCursor = 0;
+	wndClass.cbSize        = sizeof(WNDCLASSEX);
+	wndClass.style         = CS_CLASSDC;
+	wndClass.lpfnWndProc   = WindowProc;
+	wndClass.cbClsExtra    = 0; // No extra bytes after the window class
+	wndClass.cbWndExtra    = 0; // structure or the window instance
+	wndClass.hInstance     = 0;
+	wndClass.hIcon         = 0;
+	wndClass.hCursor       = 0;
 	wndClass.hbrBackground = 0;
-	wndClass.lpszMenuName = 0;
+	wndClass.lpszMenuName  = 0;
 	wndClass.lpszClassName = 0;
-	wndClass.hIconSm = 0;
-	wndClass.hInstance = GetModuleHandle(NULL);
+	wndClass.hIconSm       = 0;
+	wndClass.hInstance     = GetModuleHandle(NULL);
 	wndClass.lpszClassName = className;
 
 	RegisterClassEx(&wndClass);
@@ -44,11 +44,11 @@ TMSWindow::~TMSWindow()
 }
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message,
-	WPARAM wParam, LPARAM lParam)
+                            WPARAM wParam, LPARAM lParam)
 {
-	TMSWindow* pWindow;
+	TMSWindow *pWindow;
 	if (message == WM_CREATE) {
-		SetWindowLong(hWnd, GWL_USERDATA, *(LONG*)lParam);
+		SetWindowLong(hWnd, GWL_USERDATA, *(LONG *)lParam);
 		return 0;
 	}
 	if (message != WM_CLOSE) {
@@ -65,7 +65,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message,
 			else if (message != WM_DESTROY) {
 				if (message == WM_SETCURSOR) {
 					SetCursor(NULL);
-					pWindow = (TMSWindow*)GetWindowLong(hWnd, GWL_USERDATA);
+					pWindow = (TMSWindow *)GetWindowLong(hWnd, GWL_USERDATA);
 					pWindow->GetD3DInterface()->GetD3DDevice()->ShowCursor(TRUE);
 					return 1;
 				}
@@ -74,26 +74,25 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message,
 		}
 		return 0;
 	}
-	pWindow = (TMSWindow*)GetWindowLong(hWnd, GWL_USERDATA);
+	pWindow = (TMSWindow *)GetWindowLong(hWnd, GWL_USERDATA);
 	pWindow->GetD3DInterface()->Exit();
 	return 0;
 }
 
-TBOOL TMSWindow::Create(TRenderD3DInterface* a_pRenderer, TPCCHAR a_szName)
+TBOOL TMSWindow::Create(TRenderD3DInterface *a_pRenderer, TPCCHAR a_szName)
 {
 	Destroy();
 	m_pD3DInterface = a_pRenderer;
-	m_hWnd = CreateWindowEx(
-		0, 
-		TGetClass(TRenderD3DInterface).GetName(), 
-		a_szName, 
-		WS_DISABLED | WS_CAPTION | WS_SYSMENU | WS_GROUP,
-		0, 0, 0, 0,
-		GetDesktopWindow(),
-		NULL,
-		GetModuleHandle(NULL),
-		this
-	);
+	m_hWnd          = CreateWindowEx(
+        0,
+        TGetClass(TRenderD3DInterface).GetName(),
+        a_szName,
+        WS_DISABLED | WS_CAPTION | WS_SYSMENU | WS_GROUP,
+        0, 0, 0, 0,
+        GetDesktopWindow(),
+        NULL,
+        GetModuleHandle(NULL),
+        this);
 
 	if (m_hWnd) {
 		Disable();

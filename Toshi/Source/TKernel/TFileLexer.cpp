@@ -3,28 +3,28 @@
 
 TOSHI_NAMESPACE_USING
 
-void TFileLexer::Token::assign(const Token& a_rToken)
+void TFileLexer::Token::assign(const Token &a_rToken)
 {
 	this->~Token();
 	m_iValue = 0;
-	m_type = a_rToken.GetType();
-	m_iLine = a_rToken.m_iLine;
+	m_type   = a_rToken.GetType();
+	m_iLine  = a_rToken.m_iLine;
 	switch (a_rToken.GetType())
 	{
-	case Toshi::TFileLexer::TOKEN_IDENT:
-	case Toshi::TFileLexer::TOKEN_STRING:
-	case Toshi::TFileLexer::TOKEN_COMMENT:
-		m_szValue = a_rToken.GetString();
-		break;
-	case Toshi::TFileLexer::TOKEN_INTEGER:
-		m_iValue = a_rToken.GetInteger();
-		break;
-	case Toshi::TFileLexer::TOKEN_UINTEGER:
-		m_uiValue = a_rToken.GetUInteger();
-		break;
-	case Toshi::TFileLexer::TOKEN_FLOAT:
-		m_fValue = a_rToken.GetFloat();
-		break;
+		case Toshi::TFileLexer::TOKEN_IDENT:
+		case Toshi::TFileLexer::TOKEN_STRING:
+		case Toshi::TFileLexer::TOKEN_COMMENT:
+			m_szValue = a_rToken.GetString();
+			break;
+		case Toshi::TFileLexer::TOKEN_INTEGER:
+			m_iValue = a_rToken.GetInteger();
+			break;
+		case Toshi::TFileLexer::TOKEN_UINTEGER:
+			m_uiValue = a_rToken.GetUInteger();
+			break;
+		case Toshi::TFileLexer::TOKEN_FLOAT:
+			m_fValue = a_rToken.GetFloat();
+			break;
 	}
 }
 
@@ -33,47 +33,47 @@ TCString TFileLexer::Token::tostring() const
 	TCString tokenType;
 	switch (GetType())
 	{
-	case Toshi::TFileLexer::TOKEN_IDENT:
-		tokenType = "IDENT:" + GetString();
-		break;
-	case Toshi::TFileLexer::TOKEN_STRING:
-		tokenType += "STRING:" + GetString();
-		break;
-	case Toshi::TFileLexer::TOKEN_INTEGER:
-		tokenType.Format("%sINTEGER:%d", tokenType.GetString(), m_iValue);
-		break;
-	case Toshi::TFileLexer::TOKEN_UINTEGER:
-		tokenType.Format("%sUINTEGER:%d", tokenType.GetString(), m_uiValue);
-		break;
-	case Toshi::TFileLexer::TOKEN_FLOAT:
-		tokenType.Format("%sFLOAT:%f", tokenType.GetString(), m_fValue);
-		break;
-	default:
-		tokenType = TFileLexer::tostring(GetType());
-		break;
+		case Toshi::TFileLexer::TOKEN_IDENT:
+			tokenType = "IDENT:" + GetString();
+			break;
+		case Toshi::TFileLexer::TOKEN_STRING:
+			tokenType += "STRING:" + GetString();
+			break;
+		case Toshi::TFileLexer::TOKEN_INTEGER:
+			tokenType.Format("%sINTEGER:%d", tokenType.GetString(), m_iValue);
+			break;
+		case Toshi::TFileLexer::TOKEN_UINTEGER:
+			tokenType.Format("%sUINTEGER:%d", tokenType.GetString(), m_uiValue);
+			break;
+		case Toshi::TFileLexer::TOKEN_FLOAT:
+			tokenType.Format("%sFLOAT:%f", tokenType.GetString(), m_fValue);
+			break;
+		default:
+			tokenType = TFileLexer::tostring(GetType());
+			break;
 	}
 	return TCString().Format("Token[Line: %d, %s]", GetLine(), tokenType.GetString());
 }
 
 TFileLexer::TFileLexer()
 {
-	m_pFile = TNULL;
-	m_bOutputComments = TFALSE;
-	m_iCharLookaheadSize = 0;
-	m_iCharLookaheadMask = 0;
-	m_piCharLookahead = TNULL;
-	m_iCharLookaheadBack = 0;
-	m_iCharLookaheadFront = 0;
-	m_iLine = 0;
-	m_iTokenLookaheadSize = 1;
-	m_iTokenLookaheadMask = 1;
-	m_pLookaheadTokens = new Token();
+	m_pFile                   = TNULL;
+	m_bOutputComments         = TFALSE;
+	m_iCharLookaheadSize      = 0;
+	m_iCharLookaheadMask      = 0;
+	m_piCharLookahead         = TNULL;
+	m_iCharLookaheadBack      = 0;
+	m_iCharLookaheadFront     = 0;
+	m_iLine                   = 0;
+	m_iTokenLookaheadSize     = 1;
+	m_iTokenLookaheadMask     = 1;
+	m_pLookaheadTokens        = new Token();
 	m_iTokenLookaheadBuffered = 0;
-	m_iTokenLookaheadFront = 0;
-	m_iTokenLookaheadBack = 0;
-	m_iSomeNum = 0;
-	m_bAllowPreprocessor = TTRUE;
-	m_bEOF = TFALSE;
+	m_iTokenLookaheadFront    = 0;
+	m_iTokenLookaheadBack     = 0;
+	m_iSomeNum                = 0;
+	m_bAllowPreprocessor      = TTRUE;
+	m_bEOF                    = TFALSE;
 	//m_oEmitter = TEmitter<TFileLexer, ParseError>(this);
 #if defined(TOSHI_SKU_WINDOWS)
 	Define("TOSHI_SKU_WINDOWS");
@@ -84,25 +84,25 @@ TFileLexer::TFileLexer()
 #endif
 }
 
-TFileLexer::TFileLexer(TFile* a_pFile, TINT a_iTokenLookaheadSize)
+TFileLexer::TFileLexer(TFile *a_pFile, TINT a_iTokenLookaheadSize)
 {
-	m_pFile = a_pFile;
-	m_bOutputComments = TFALSE;
-	m_iCharLookaheadSize = 0;
-	m_iCharLookaheadMask = 0;
-	m_piCharLookahead = TNULL;
-	m_iCharLookaheadBack = 0;
-	m_iCharLookaheadFront = 0;
-	m_iLine = 0;
-	m_iTokenLookaheadSize = 1;
-	m_iTokenLookaheadMask = 1;
-	m_pLookaheadTokens = new Token[a_iTokenLookaheadSize];
+	m_pFile                   = a_pFile;
+	m_bOutputComments         = TFALSE;
+	m_iCharLookaheadSize      = 0;
+	m_iCharLookaheadMask      = 0;
+	m_piCharLookahead         = TNULL;
+	m_iCharLookaheadBack      = 0;
+	m_iCharLookaheadFront     = 0;
+	m_iLine                   = 0;
+	m_iTokenLookaheadSize     = 1;
+	m_iTokenLookaheadMask     = 1;
+	m_pLookaheadTokens        = new Token[a_iTokenLookaheadSize];
 	m_iTokenLookaheadBuffered = 0;
-	m_iTokenLookaheadFront = 0;
-	m_iTokenLookaheadBack = 0;
-	m_iTokenLookaheadSize = TGETLOOKAHEADSIZE(a_iTokenLookaheadSize);
-	m_iTokenLookaheadMask = TMAX(1, m_iTokenLookaheadSize - 1);
-	m_bEOF = TFALSE;
+	m_iTokenLookaheadFront    = 0;
+	m_iTokenLookaheadBack     = 0;
+	m_iTokenLookaheadSize     = TGETLOOKAHEADSIZE(a_iTokenLookaheadSize);
+	m_iTokenLookaheadMask     = TMAX(1, m_iTokenLookaheadSize - 1);
+	m_bEOF                    = TFALSE;
 	TASSERT(a_pFile != TNULL);
 	SetInputStream(a_pFile);
 	//m_oEmitter = TEmitter<TFileLexer, ParseError>(this);
@@ -120,7 +120,7 @@ TBOOL TFileLexer::Expect(TFileLexer::TokenType a_type)
 	return a_type == GetNextToken().GetType();
 }
 
-TBOOL TFileLexer::Expect(TFileLexer::TokenType a_type, TFileLexer::Token& a_rToken)
+TBOOL TFileLexer::Expect(TFileLexer::TokenType a_type, TFileLexer::Token &a_rToken)
 {
 	a_rToken.assign(GetNextToken());
 	return a_type == a_rToken.GetType();
@@ -203,23 +203,23 @@ void TFileLexer::SetCharacterLookaheadSize(TINT a_iCharLookaheadSize)
 	TASSERT(m_pFile != TNULL);
 	TASSERT(m_piCharLookahead == TNULL);
 
-	m_iCharLookaheadSize = TGETLOOKAHEADSIZE(a_iCharLookaheadSize);
-	m_iCharLookaheadMask = m_iCharLookaheadSize - 1;
-	m_iCharLookaheadBack = 0;
+	m_iCharLookaheadSize  = TGETLOOKAHEADSIZE(a_iCharLookaheadSize);
+	m_iCharLookaheadMask  = m_iCharLookaheadSize - 1;
+	m_iCharLookaheadBack  = 0;
 	m_iCharLookaheadFront = 0;
-	m_piCharLookahead = new int[m_iCharLookaheadSize];
+	m_piCharLookahead     = new int[m_iCharLookaheadSize];
 
 	for (TINT i = 0; i < m_iCharLookaheadSize; i++) {
 		m_piCharLookahead[i] = TLEXERGETCHAR();
 	}
 }
 
-void TFileLexer::SetInputStream(TFile* a_pFile)
+void TFileLexer::SetInputStream(TFile *a_pFile)
 {
-	m_pFile = a_pFile;
-	m_iLine = 1;
-	m_iSomeNum = 0;
-	m_bFlags[0] = TTRUE;
+	m_pFile              = a_pFile;
+	m_iLine              = 1;
+	m_iSomeNum           = 0;
+	m_bFlags[0]          = TTRUE;
 	m_bAllowPreprocessor = ComputePreprocessorAllow();
 	SetCharacterLookaheadSize(3);
 }
@@ -228,38 +228,38 @@ TPCCHAR TOSHI_API TFileLexer::tostring(TokenType a_type)
 {
 	switch (a_type)
 	{
-	case Toshi::TFileLexer::TOKEN_EOF:
-		return "EOF";
-	case Toshi::TFileLexer::TOKEN_SEMI:
-		return "SEMI";
-	case Toshi::TFileLexer::TOKEN_COLON:
-		return "COLON";
-	case Toshi::TFileLexer::TOKEN_COMMA:
-		return "COMMA";
-	case Toshi::TFileLexer::TOKEN_DOT:
-		return "DOT";
-	case Toshi::TFileLexer::TOKEN_DOLLAR:
-		return "DOLLAR";
-	case Toshi::TFileLexer::TOKEN_OPENSQR:
-		return "OPENSQR";
-	case Toshi::TFileLexer::TOKEN_CLOSESQR:
-		return "CLOSESQR";
-	case Toshi::TFileLexer::TOKEN_OPENBRACE:
-		return "OPENBRACE";
-	case Toshi::TFileLexer::TOKEN_CLOSEBRACE:
-		return "CLOSEBRACE";
-	case Toshi::TFileLexer::TOKEN_OPENPAREN:
-		return "OPENPAREN";
-	case Toshi::TFileLexer::TOKEN_CLOSEPAREN:
-		return "CLOSEPAREN";
-	case Toshi::TFileLexer::TOKEN_LESSTHAN:
-		return "LESSTHAN";
-	case Toshi::TFileLexer::TOKEN_GREATERTHAN:
-		return "GREATERTHAN";
-	case Toshi::TFileLexer::TOKEN_EQUAL:
-		return "EQUAL";
-	default:
-		return "?????";
+		case Toshi::TFileLexer::TOKEN_EOF:
+			return "EOF";
+		case Toshi::TFileLexer::TOKEN_SEMI:
+			return "SEMI";
+		case Toshi::TFileLexer::TOKEN_COLON:
+			return "COLON";
+		case Toshi::TFileLexer::TOKEN_COMMA:
+			return "COMMA";
+		case Toshi::TFileLexer::TOKEN_DOT:
+			return "DOT";
+		case Toshi::TFileLexer::TOKEN_DOLLAR:
+			return "DOLLAR";
+		case Toshi::TFileLexer::TOKEN_OPENSQR:
+			return "OPENSQR";
+		case Toshi::TFileLexer::TOKEN_CLOSESQR:
+			return "CLOSESQR";
+		case Toshi::TFileLexer::TOKEN_OPENBRACE:
+			return "OPENBRACE";
+		case Toshi::TFileLexer::TOKEN_CLOSEBRACE:
+			return "CLOSEBRACE";
+		case Toshi::TFileLexer::TOKEN_OPENPAREN:
+			return "OPENPAREN";
+		case Toshi::TFileLexer::TOKEN_CLOSEPAREN:
+			return "CLOSEPAREN";
+		case Toshi::TFileLexer::TOKEN_LESSTHAN:
+			return "LESSTHAN";
+		case Toshi::TFileLexer::TOKEN_GREATERTHAN:
+			return "GREATERTHAN";
+		case Toshi::TFileLexer::TOKEN_EQUAL:
+			return "EQUAL";
+		default:
+			return "?????";
 	}
 }
 
@@ -330,7 +330,7 @@ TFileLexer::Token TFileLexer::get_next_token()
 		}
 		else if (peek() == '"') {
 			// Handle strings
-			TINT len = 0;
+			TINT len  = 0;
 			TINT prev = peek();
 			advance();
 			do {
@@ -363,64 +363,64 @@ TFileLexer::Token TFileLexer::get_next_token()
 		}
 		// Handle special characters
 		switch (peek()) {
-		case '$':
-			advance();
-			return Token(TOKEN_DOLLAR, m_iLine);
-		case '(':
-			advance();
-			return Token(TOKEN_OPENPAREN, m_iLine);
-		case ')':
-			advance();
-			return Token(TOKEN_CLOSEPAREN, m_iLine);
-		case '*':
-			advance();
-			return Token(TOKEN_ASTERISK, m_iLine);
-		case ',':
-			advance();
-			return Token(TOKEN_COMMA, m_iLine);
-		case '.':
-			advance();
-			return Token(TOKEN_DOT, m_iLine);
-		case ':':
-			advance();
-			return Token(TOKEN_COLON, m_iLine);
-		case ';':
-			advance();
-			return Token(TOKEN_SEMI, m_iLine);
-		case '<':
-			advance();
-			return Token(TOKEN_LESSTHAN, m_iLine);
-		case '=':
-			advance();
-			return Token(TOKEN_EQUAL, m_iLine);
-		case '>':
-			advance();
-			return Token(TOKEN_GREATERTHAN, m_iLine);
-		case '[':
-			advance();
-			return Token(TOKEN_OPENSQR, m_iLine);
-		case ']':
-			advance();
-			return Token(TOKEN_CLOSESQR, m_iLine);
-		case '{':
-			advance();
-			return Token(TOKEN_OPENBRACE, m_iLine);
-		case '}':
-			advance();
-			return Token(TOKEN_CLOSEBRACE, m_iLine);
-		default:
-			ThrowError("Invalid character");
-			return Token();
+			case '$':
+				advance();
+				return Token(TOKEN_DOLLAR, m_iLine);
+			case '(':
+				advance();
+				return Token(TOKEN_OPENPAREN, m_iLine);
+			case ')':
+				advance();
+				return Token(TOKEN_CLOSEPAREN, m_iLine);
+			case '*':
+				advance();
+				return Token(TOKEN_ASTERISK, m_iLine);
+			case ',':
+				advance();
+				return Token(TOKEN_COMMA, m_iLine);
+			case '.':
+				advance();
+				return Token(TOKEN_DOT, m_iLine);
+			case ':':
+				advance();
+				return Token(TOKEN_COLON, m_iLine);
+			case ';':
+				advance();
+				return Token(TOKEN_SEMI, m_iLine);
+			case '<':
+				advance();
+				return Token(TOKEN_LESSTHAN, m_iLine);
+			case '=':
+				advance();
+				return Token(TOKEN_EQUAL, m_iLine);
+			case '>':
+				advance();
+				return Token(TOKEN_GREATERTHAN, m_iLine);
+			case '[':
+				advance();
+				return Token(TOKEN_OPENSQR, m_iLine);
+			case ']':
+				advance();
+				return Token(TOKEN_CLOSESQR, m_iLine);
+			case '{':
+				advance();
+				return Token(TOKEN_OPENBRACE, m_iLine);
+			case '}':
+				advance();
+				return Token(TOKEN_CLOSEBRACE, m_iLine);
+			default:
+				ThrowError("Invalid character");
+				return Token();
 		}
 	}
 
 HandleNumerics:
-	TINT len = 0;
-	TBOOL isFloat = TFALSE;
+	TINT  len        = 0;
+	TBOOL isFloat    = TFALSE;
 	TBOOL isUnsigned = TFALSE;
-	TBOOL isHex = TFALSE;
+	TBOOL isHex      = TFALSE;
 	if (peek() == '.') {
-		isFloat = TTRUE;
+		isFloat         = TTRUE;
 		s_Buffer[len++] = '0';
 	}
 	s_Buffer[len++] = peek();
@@ -517,9 +517,9 @@ HandleNumerics:
 	}
 
 	// This is basically atoi without hex support
-	TBOOL isNegative = TFALSE;
-	TINT value = 0;
-	TPCCHAR num = s_Buffer;
+	TBOOL   isNegative = TFALSE;
+	TINT    value      = 0;
+	TPCCHAR num        = s_Buffer;
 	if (num[0] == '-') {
 		isNegative = TTRUE;
 		num++;
@@ -624,9 +624,9 @@ void TFileLexer::skipWhiteSpace()
 
 void TFileLexer::advance()
 {
-	m_iCharLookaheadBack = (m_iCharLookaheadBack + 1) & m_iCharLookaheadMask;
+	m_iCharLookaheadBack                     = (m_iCharLookaheadBack + 1) & m_iCharLookaheadMask;
 	m_piCharLookahead[m_iCharLookaheadFront] = TLEXERGETCHAR();
-	m_iCharLookaheadFront = m_iCharLookaheadBack;
+	m_iCharLookaheadFront                    = m_iCharLookaheadBack;
 }
 
 void TFileLexer::advance(TINT a_dist)
@@ -640,7 +640,7 @@ void TFileLexer::fillLookAhead()
 {
 	while (m_iCharLookaheadFront != m_iCharLookaheadBack) {
 		m_piCharLookahead[m_iCharLookaheadFront] = TLEXERGETCHAR();
-		m_iCharLookaheadFront = (m_iCharLookaheadFront + 1) & m_iCharLookaheadMask;
+		m_iCharLookaheadFront                    = (m_iCharLookaheadFront + 1) & m_iCharLookaheadMask;
 	}
 }
 

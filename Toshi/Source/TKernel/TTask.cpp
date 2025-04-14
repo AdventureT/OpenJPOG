@@ -7,7 +7,7 @@ IMPLEMENT_DYNAMIC(TTask, TObject);
 
 TBOOL TTask::Create()
 {
-	TASSERT(IsCreated()==TFALSE);
+	TASSERT(IsCreated() == TFALSE);
 	if (!IsCreated()) {
 		if (!OnCreate()) {
 			OnDestroy();
@@ -40,7 +40,7 @@ void TTask::Activate(TBOOL a_bActivate)
 {
 	TUINT8 oldState = m_Flags;
 	TUINT8 newFlags = a_bActivate ? State_Active : 0;
-	m_Flags = (m_Flags & ~State_Active) | newFlags;
+	m_Flags         = (m_Flags & ~State_Active) | newFlags;
 
 	if (oldState != m_Flags) {
 		if (a_bActivate) {
@@ -57,7 +57,7 @@ void TTask::DestroyTask()
 	m_pScheduler->DestroyTask(*this);
 }
 
-TScheduler* TTask::GetScheduler()
+TScheduler *TTask::GetScheduler()
 {
 	return m_pScheduler;
 }

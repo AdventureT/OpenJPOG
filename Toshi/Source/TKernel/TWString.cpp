@@ -14,8 +14,8 @@ TBOOL TWString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 		if (a_iLength == 0) {
 			if (a_bClear) tfree(m_pBuffer);
 
-			m_pBuffer = m_aNull;
-			hasChanged = TTRUE;
+			m_pBuffer    = m_aNull;
+			hasChanged   = TTRUE;
 			m_iExcessLen = 0;
 		}
 		else {
@@ -24,14 +24,14 @@ TBOOL TWString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 			if (newExcessLen < 0 || newExcessLen > 0xFF) {
 				if (m_iStrLen != 0 && a_bClear) tfree(m_pBuffer);
 
-				m_pBuffer = (TPWCHAR)tmalloc((a_iLength + 1) * 2, TNULL, -1);
+				m_pBuffer    = (TPWCHAR)tmalloc((a_iLength + 1) * 2, TNULL, -1);
 				m_iExcessLen = 0;
 				TASSERT(m_pBuffer != TNULL);
 				hasChanged = TTRUE;
 			}
 			else {
 				m_iExcessLen = newExcessLen;
-				hasChanged = TFALSE;
+				hasChanged   = TFALSE;
 			}
 		}
 		m_iStrLen = a_iLength;
@@ -40,15 +40,15 @@ TBOOL TWString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 	return hasChanged;
 }
 
-TWString& TWString::Concat(TWString const& a_rString, TINT a_iLength)
+TWString &TWString::Concat(TWString const &a_rString, TINT a_iLength)
 {
 	TINT len = a_rString.Length();
 	if (len < a_iLength || a_iLength == -1) {
 		a_iLength = len;
 	}
 	TPWCHAR pBuffer = m_pBuffer;
-	len = Length();
-	TBOOL ret = AllocBuffer(len + a_iLength, TFALSE);
+	len             = Length();
+	TBOOL ret       = AllocBuffer(len + a_iLength, TFALSE);
 	if (ret) {
 		TSystem::StringCopy(m_pBuffer, pBuffer, -1);
 	}
@@ -60,15 +60,15 @@ TWString& TWString::Concat(TWString const& a_rString, TINT a_iLength)
 	return *this;
 }
 
-TWString& TWString::Concat(TPCWCHAR a_String, TINT a_iLength)
+TWString &TWString::Concat(TPCWCHAR a_String, TINT a_iLength)
 {
 	TINT len = TSystem::StringLength(a_String);
 	if (len < a_iLength || a_iLength == -1) {
 		a_iLength = len;
 	}
 	TPWCHAR pBuffer = m_pBuffer;
-	len = Length();
-	TBOOL ret = AllocBuffer(len + a_iLength, TFALSE);
+	len             = Length();
+	TBOOL ret       = AllocBuffer(len + a_iLength, TFALSE);
 	if (ret) {
 		TSystem::StringCopy(m_pBuffer, pBuffer, -1);
 	}
@@ -91,7 +91,7 @@ TINT TWString::Compare(TPCWCHAR a_pcString, int a_iLength) const
 	return wcscmp(GetString(), a_pcString);
 }
 
-void TWString::Copy(const TWString& a_rOther, TINT a_iLength)
+void TWString::Copy(const TWString &a_rOther, TINT a_iLength)
 {
 	if (*this != a_rOther) {
 		if (a_rOther.m_iStrLen < a_iLength || a_iLength == -1) a_iLength = a_rOther.m_iStrLen;
@@ -123,9 +123,9 @@ void TWString::Copy(TPCCHAR a_pcString, TINT a_iLength)
 	m_pBuffer[a_iLength] = L'\0';
 }
 
-TWString& TOSHI_CALLBACKAPI TWString::Format(TPCWCHAR a_pcFormat, ...)
+TWString &TOSHI_CALLBACKAPI TWString::Format(TPCWCHAR a_pcFormat, ...)
 {
-	TWCHAR buffer[0x400];
+	TWCHAR  buffer[0x400];
 	va_list vargs;
 	va_start(vargs, a_pcFormat);
 	_vsnwprintf(buffer, sizeof(buffer), a_pcFormat, vargs);
@@ -150,7 +150,7 @@ void TWString::Truncate(TINT a_iLength)
 		a_iLength = len;
 	}
 	TPWCHAR pBuffer = m_pBuffer;
-	TBOOL ret = AllocBuffer(a_iLength, TFALSE);
+	TBOOL   ret     = AllocBuffer(a_iLength, TFALSE);
 	if (ret) {
 		TSystem::StringCopy(m_pBuffer, pBuffer, a_iLength);
 	}
@@ -159,4 +159,3 @@ void TWString::Truncate(TINT a_iLength)
 		tfree(pBuffer);
 	}
 }
-

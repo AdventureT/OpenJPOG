@@ -4,11 +4,11 @@ TOSHI_NAMESPACE_USING
 
 TFreeList::TFreeList(TUINT a_uiItemSize, TINT a_iInitialSize, TINT a_iGrowSize, TPCHAR a_pcName)
 {
-	m_iFreeCount = 0;
+	m_iFreeCount    = 0;
 	m_iMaxFreeCount = 0;
-	m_pcName = a_pcName;
-	m_iCapacity = 0;
-	m_uiItemSize = a_uiItemSize;
+	m_pcName        = a_pcName;
+	m_iCapacity     = 0;
+	m_uiItemSize    = a_uiItemSize;
 	//m_oLastNode = TNULL;
 	//m_oRootNode = TNULL;
 	TASSERT(m_iGrowSize >= 0);
@@ -19,32 +19,32 @@ TFreeList::TFreeList(TUINT a_uiItemSize, TINT a_iInitialSize, TINT a_iGrowSize, 
 
 TFreeList::~TFreeList()
 {
-	for (Node* pNode = m_oRootNode.m_pNext; pNode != TNULL; pNode = m_oRootNode.m_pNext) {
+	for (Node *pNode = m_oRootNode.m_pNext; pNode != TNULL; pNode = m_oRootNode.m_pNext) {
 		m_oRootNode.m_pNext = pNode->m_pNext;
 		delete[] pNode;
 	}
 }
 
-TFreeList::Node* TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
+TFreeList::Node *TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
 {
 	m_iCapacity += a_iNumber;
 	m_iFreeCount += a_iNumber;
 	m_iMaxFreeCount = m_iMaxFreeCount <= m_iFreeCount ? m_iFreeCount : m_iMaxFreeCount;
 
-	const int len = a_uiSize * a_iNumber + sizeof(Node);
-	Node* pNewNode = (Node*)tmalloc(len, TNULL, -1);
+	const int len      = a_uiSize * a_iNumber + sizeof(Node);
+	Node     *pNewNode = (Node *)tmalloc(len, TNULL, -1);
 
-	pNewNode->m_pNext = m_oRootNode.m_pNext;
+	pNewNode->m_pNext   = m_oRootNode.m_pNext;
 	m_oRootNode.m_pNext = pNewNode;
 
-	Node* pData = pNewNode + 1;
-	Node* pNext = TNULL;
+	Node *pData = pNewNode + 1;
+	Node *pNext = TNULL;
 
 	for (TINT i = a_iNumber - 1; i != 0; i--) {
 		pData->m_pNext = pNext;
-		pNext = pData;
-		
-		pData = (Node*)((TBYTE*)pData + a_uiSize);
+		pNext          = pData;
+
+		pData = (Node *)((TBYTE *)pData + a_uiSize);
 	}
 
 	m_oLastNode.m_pNext = pNext;
@@ -54,10 +54,10 @@ TFreeList::Node* TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
 TPVOID TFreeList::New(TUINT a_uiSize)
 {
 	if (a_uiSize != m_uiItemSize) {
-		return operator new (a_uiSize);
+		return operator new(a_uiSize);
 	}
 
-	Node* pLastNode = m_oLastNode.m_pNext;
+	Node *pLastNode = m_oLastNode.m_pNext;
 
 	if (pLastNode != TNULL) {
 		m_iFreeCount--;
@@ -72,15 +72,15 @@ TPVOID TFreeList::New(TUINT a_uiSize)
 
 void TFreeList::Delete(TPVOID a_pData)
 {
-	Node* pNode = (Node*)a_pData;
+	Node *pNode = (Node *)a_pData;
 
 	if (m_oLastNode.m_pNext != TNULL) {
-		pNode->m_pNext = m_oLastNode.m_pNext;
+		pNode->m_pNext      = m_oLastNode.m_pNext;
 		m_oLastNode.m_pNext = pNode;
 	}
 	else {
 		m_oLastNode.m_pNext = pNode;
-		pNode->m_pNext = TNULL;
+		pNode->m_pNext      = TNULL;
 	}
 
 	m_iFreeCount++;
@@ -90,8 +90,8 @@ void TFreeList::Delete(TPVOID a_pData)
 void TFreeList::SetCapacity(TINT a_iCapacity)
 {
 	if (a_iCapacity <= m_iCapacity) return;
-	Node* pNode = Allocate(a_iCapacity - m_iCapacity, m_uiItemSize);
-	pNode->m_pNext = m_oLastNode.m_pNext;
+	Node *pNode         = Allocate(a_iCapacity - m_iCapacity, m_uiItemSize);
+	pNode->m_pNext      = m_oLastNode.m_pNext;
 	m_oLastNode.m_pNext = pNode;
 }
 

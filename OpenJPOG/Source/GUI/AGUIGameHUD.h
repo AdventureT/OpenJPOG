@@ -7,7 +7,6 @@
 class AGUIGameHUD
 {
 public:
-
 	enum HUDComponents
 	{
 
@@ -54,8 +53,7 @@ public:
 	}
 
 private:
-	Toshi::TLString m_LSHintMessage; // 0x4
-	HUDComponents m_eHUDComponents;  // 0x8
-	Toshi::TCString m_szBKGMatLib;   // 0x2C
+	Toshi::TLString m_LSHintMessage;  // 0x4
+	HUDComponents   m_eHUDComponents; // 0x8
+	Toshi::TCString m_szBKGMatLib;    // 0x2C
 };
-

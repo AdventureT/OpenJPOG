@@ -10,7 +10,6 @@ class TRegMaterial;
 
 class TRENDERINTERFACE_EXPORTS TShader
 {
-
 };
 
 class TRENDERINTERFACE_EXPORTS TMaterial : public TResource
@@ -19,7 +18,7 @@ class TRENDERINTERFACE_EXPORTS TMaterial : public TResource
 public:
 	TMaterial()
 	{
-		m_iFlags = 0;
+		m_iFlags       = 0;
 		m_pOwnerShader = TNULL;
 		m_iNumTextures = 0;
 		m_pRegMaterial = TNULL;
@@ -27,12 +26,10 @@ public:
 	// $TRenderInterface: FUNCTION 10008460
 	virtual void PostRender()
 	{
-
 	}
 	// $TRenderInterface: FUNCTION 10008470
 	virtual void PreRender()
 	{
-
 	}
 	// $TRenderInterface: FUNCTION 10008470
 	void SetFlag(TUINT a_uiFlag, TBOOL m_bEnable)
@@ -56,23 +53,23 @@ public:
 		m_iNumTextures = a_iNumTextures;
 	}
 	// $TRenderInterface: FUNCTION 100117a0
-	void SetRegMaterial(TRegMaterial* a_pRegMaterial)
+	void SetRegMaterial(TRegMaterial *a_pRegMaterial)
 	{
 		m_pRegMaterial = a_pRegMaterial;
 	}
 	// $TRenderInterface: FUNCTION 100084e0
-	void SetShader(TShader* a_pOwnerShader)
+	void SetShader(TShader *a_pOwnerShader)
 	{
-		TASSERT(TNULL==m_pOwnerShader);
+		TASSERT(TNULL == m_pOwnerShader);
 		m_pOwnerShader = a_pOwnerShader;
 	}
 	// $TRenderInterface: FUNCTION 100084e0
-	TShader* GetShader()
+	TShader *GetShader()
 	{
 		return m_pOwnerShader;
 	}
 	// $TRenderInterface: FUNCTION 10008450
-	TRegMaterial* GetRegMaterial()
+	TRegMaterial *GetRegMaterial()
 	{
 		return m_pRegMaterial;
 	}
@@ -86,11 +83,12 @@ public:
 	{
 		return m_iNumTextures;
 	}
+
 private:
-	TINT m_iFlags;                // 0x30
-	TShader* m_pOwnerShader;      // 0x34
-	TRegMaterial* m_pRegMaterial; // 0x38
-	TINT m_iNumTextures;          // 0x3C
+	TINT          m_iFlags;       // 0x30
+	TShader      *m_pOwnerShader; // 0x34
+	TRegMaterial *m_pRegMaterial; // 0x38
+	TINT          m_iNumTextures; // 0x3C
 };
 
 TOSHI_NAMESPACE_END

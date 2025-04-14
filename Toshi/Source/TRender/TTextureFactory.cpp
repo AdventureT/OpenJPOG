@@ -7,27 +7,27 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TTextureFactory, TResource)
 
-TTextureResource* TTextureFactory::CreateTextureFromFile(TPCCHAR a_szFileName, TUINT a_eTextureFlags)
+TTextureResource *TTextureFactory::CreateTextureFromFile(TPCCHAR a_szFileName, TUINT a_eTextureFlags)
 {
 	return TNULL;
 }
 
-TTextureResource* TTextureFactory::CreateTextureFromMemory(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels)
+TTextureResource *TTextureFactory::CreateTextureFromMemory(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels)
 {
 	return TNULL;
 }
 
-TTextureResource* TTextureFactory::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_uiFormatBits)
+TTextureResource *TTextureFactory::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_uiFormatBits)
 {
 	return TNULL;
 }
 
-TTextureFactory* TOSHI_API TTextureFactory::CreateHAL(TRenderInterface* a_pRenderer, TPCCHAR a_szName, TResource* a_pResource)
+TTextureFactory *TOSHI_API TTextureFactory::CreateHAL(TRenderInterface *a_pRenderer, TPCCHAR a_szName, TResource *a_pResource)
 {
-	return (TTextureFactory*)a_pRenderer->CreateResource(TClass::Find("TTextureFactoryHAL", TNULL), a_szName, a_pResource);
+	return (TTextureFactory *)a_pRenderer->CreateResource(TClass::Find("TTextureFactoryHAL", TNULL), a_szName, a_pResource);
 }
 
-TTextureResource* TTextureFactory::FindTexture(TPCCHAR a_szName)
+TTextureResource *TTextureFactory::FindTexture(TPCCHAR a_szName)
 {
 	auto pList = &m_aLists[HashName(a_szName)];
 
@@ -42,11 +42,11 @@ TTextureResource* TTextureFactory::FindTexture(TPCCHAR a_szName)
 	return TNULL;
 }
 
-void TTextureFactory::DeregisterTexture(TTextureResource* a_pTexture)
+void TTextureFactory::DeregisterTexture(TTextureResource *a_pTexture)
 {
 	TVALIDADDRESS(a_pTexture);
 
-	TTextureFactory::NameEntry* pList = a_pTexture->m_pNameEntry;
+	TTextureFactory::NameEntry *pList = a_pTexture->m_pNameEntry;
 
 	if (pList) {
 		pList->Remove();
@@ -66,9 +66,9 @@ TUINT TTextureFactory::HashName(TPCCHAR a_szName)
 	return iHash % NUM_LISTS;
 }
 
-TTextureFactory::NameEntry* TTextureFactory::RegisterTexture(TPCCHAR a_szName, TTextureResource* a_pTexture)
+TTextureFactory::NameEntry *TTextureFactory::RegisterTexture(TPCCHAR a_szName, TTextureResource *a_pTexture)
 {
-	auto pList = &m_aLists[HashName(a_szName)];
+	auto pList  = &m_aLists[HashName(a_szName)];
 	auto pEntry = new TTextureFactory::NameEntry(a_szName, a_pTexture);
 
 	a_pTexture->m_pNameEntry = pEntry;

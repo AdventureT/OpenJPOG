@@ -6,28 +6,26 @@ TOSHI_NAMESPACE_BEGIN
 
 class TRENDERINTERFACE_EXPORTS TModelLOD
 {
-
 };
 
 class TRENDERINTERFACE_EXPORTS TModel
 {
-	#define MAX_NUM_LODS 5
+#define MAX_NUM_LODS 5
 
 	enum Flags
 	{
-		Flags_None = 0,
+		Flags_None    = 0,
 		Flags_Created = BITFIELD(0),
-		Flags_Loaded = BITFIELD(1),
+		Flags_Loaded  = BITFIELD(1),
 	};
 
 public:
-
 	TUINT GetFlags()
 	{
 		return m_uiFlags;
 	}
 
-	TModelLOD& GetLOD(TINT a_iLODLevel)
+	TModelLOD &GetLOD(TINT a_iLODLevel)
 	{
 		TASSERT(a_iLODLevel < m_iLODCount);
 		return m_LODs[a_iLODLevel];
@@ -39,9 +37,9 @@ public:
 	}
 
 private:
-	TUINT m_uiFlags;        // 0x4
-	TINT m_iInstanceCount;  // 0x8
-	TINT m_iLODCount;       // 0xC
+	TUINT     m_uiFlags;        // 0x4
+	TINT      m_iInstanceCount; // 0x8
+	TINT      m_iLODCount;      // 0xC
 	TModelLOD m_LODs[MAX_NUM_LODS];
 };
 

@@ -10,7 +10,7 @@ struct Test
 
 TEST_CASE("Test Managed Pointer", "[TManagedPtr]")
 {
-	TManagedPtr<Test> testptr(new Test{1});
+	TManagedPtr<Test> testptr(new Test{ 1 });
 	REQUIRE(testptr->m_iTest == 1);
 	REQUIRE(testptr.GetRefCount() == 1);
 	TManagedPtr<Test> testptr2 = testptr;

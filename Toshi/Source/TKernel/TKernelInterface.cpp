@@ -1,29 +1,33 @@
 #include "TKernelInterface.h"
+#include "TUser.h"
+
+#ifdef TOSHI_SKU_WINDOWS
+#  include "Win/TNativeFileWin.h"
+#endif // TOSHI_SKU_WINDOWS
+
 #include <windows.h>
 #include <direct.h> // _getcwd
 #include <TKernel/TFile.h>
-#include TOSHI_MULTIPLATFORM(TNativeFile)
-#include "TUser.h"
 
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TKernelInterface, TObject);
 
-static TUINT s_iFlagUser = 0;
-static TKernelInterface* s_pKernel;
+static TUINT             s_iFlagUser = 0;
+static TKernelInterface *s_pKernel;
 
-TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbose)
+TKernelInterface::TKernelInterface(TINT argc, TPCHAR *const argv, TBOOL a_bVerbose)
 {
 	TWARNING("TKernelInterface::TKernelInterface() not implemented\n");
 	m_pScheduler = TNULL;
 	m_fDeltaTime = 0.0f;
-	m_fAvgFPS = 0.0f;
-	m_bVerbose = a_bVerbose;
+	m_fAvgFPS    = 0.0f;
+	m_bVerbose   = a_bVerbose;
 
 	if (!HASFLAG(s_iFlagUser & 1)) {
 		s_iFlagUser |= 1;
 		static TUser s_oUser = TUser("Toshi");
-		s_pKernel = TNULL;
+		s_pKernel            = TNULL;
 		s_oUser.Register();
 	}
 	s_pKernel = this;
@@ -32,7 +36,7 @@ TKernelInterface::TKernelInterface(TINT argc, TPCHAR* const argv, TBOOL a_bVerbo
 		TDPRINTF("Creating TKernelInterface\n");
 	}
 
-	TCHAR pPath[260];
+	TCHAR  pPath[260];
 	TPCHAR pBuffer = _getcwd(pPath, sizeof(pPath));
 	TVALIDADDRESS(pBuffer);
 	TFileManager *pFileManager = new TFileManager();
@@ -71,7 +75,7 @@ TBOOL TKernelInterface::Update()
 static int GetProcessorSpeed()
 {
 	LARGE_INTEGER qwFreq, qwStart, qwStop;
-	BOOL bSuccess = QueryPerformanceFrequency(&qwFreq);
+	BOOL          bSuccess = QueryPerformanceFrequency(&qwFreq);
 	if (bSuccess == FALSE) return 0;
 	QueryPerformanceCounter(&qwStart);
 	unsigned __int64 Start = __rdtsc();
@@ -93,7 +97,7 @@ void TKernelInterface::DumpInfo()
 	if (!bSuccess)
 	{
 		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-		bSuccess = GetVersionExA((LPOSVERSIONINFO)&osvi);
+		bSuccess                 = GetVersionExA((LPOSVERSIONINFO)&osvi);
 		if (!bSuccess) goto skipPlatform;
 	}
 	TPCCHAR system;
@@ -111,12 +115,12 @@ void TKernelInterface::DumpInfo()
 	}
 	if (!bSuccess) {
 		TDPRINTF("Windows version: %s version %d.%d (Build %d)\n", system, osvi.dwMajorVersion,
-			osvi.dwMinorVersion, osvi.dwBuildNumber);
+		         osvi.dwMinorVersion, osvi.dwBuildNumber);
 	}
 	else {
 		TDPRINTF("Windows version: %s version %d.%d (Build %d) Service Pack %d.%d\n", system, osvi.dwMajorVersion,
-			osvi.dwMinorVersion, osvi.dwBuildNumber,
-			osvi.wServicePackMajor, osvi.wServicePackMinor);
+		         osvi.dwMinorVersion, osvi.dwBuildNumber,
+		         osvi.wServicePackMajor, osvi.wServicePackMinor);
 	}
 
 skipPlatform:
@@ -143,7 +147,7 @@ skipPlatform:
 	TDPRINTF("<\n");
 }
 
-TKernelInterfaceDLL* TKernelInterface::FindInterface(const TCString& a_rszInterface)
+TKernelInterfaceDLL *TKernelInterface::FindInterface(const TCString &a_rszInterface)
 {
 	for (auto i = m_Interfaces.Begin(); i != m_Interfaces.End(); i++) {
 		if (i->GetFilename() == a_rszInterface) {
@@ -153,9 +157,9 @@ TKernelInterfaceDLL* TKernelInterface::FindInterface(const TCString& a_rszInterf
 	return TNULL;
 }
 
-TKernelInterfaceDLL* TKernelInterface::LoadInterface(const TCString& a_rszInterface)
+TKernelInterfaceDLL *TKernelInterface::LoadInterface(const TCString &a_rszInterface)
 {
-	TKernelInterfaceDLL* pInterface = FindInterface(a_rszInterface);
+	TKernelInterfaceDLL *pInterface = FindInterface(a_rszInterface);
 	if (pInterface) {
 		return pInterface;
 	}
@@ -167,15 +171,15 @@ TKernelInterfaceDLL* TKernelInterface::LoadInterface(const TCString& a_rszInterf
 	return pInterface;
 }
 
-void TKernelInterface::UnloadInterface(TKernelInterfaceDLL& a_rInterface)
+void TKernelInterface::UnloadInterface(TKernelInterfaceDLL &a_rInterface)
 {
 	a_rInterface.Unload();
 	m_Interfaces.Delete(a_rInterface);
 }
 
-void TKernelInterface::UnloadInterface(const TCString& a_rszInterface)
+void TKernelInterface::UnloadInterface(const TCString &a_rszInterface)
 {
-	TKernelInterfaceDLL* pInterface = FindInterface(a_rszInterface);
+	TKernelInterfaceDLL *pInterface = FindInterface(a_rszInterface);
 	if (pInterface) {
 		UnloadInterface(*pInterface);
 	}

@@ -9,9 +9,7 @@ class TKERNELINTERFACE_EXPORTS TGenericNTree
 	class TNode
 	{
 	protected:
-
-
-		TINT FindChild(TNode const* a_pNode, TINT a_iCount)
+		TINT FindChild(TNode const *a_pNode, TINT a_iCount)
 		{
 			for (TINT i = 0; i < a_iCount; i++) {
 				if (a_pNode == m_pChildren[i]) {
@@ -21,16 +19,15 @@ class TKERNELINTERFACE_EXPORTS TGenericNTree
 			return -1;
 		}
 
-		TNode* Child(TINT a_iIndex) const { return m_pChildren[a_iIndex]; }
-		TNode* Parent() const { return m_pParent; }
+		TNode *Child(TINT a_iIndex) const { return m_pChildren[a_iIndex]; }
+		TNode *Parent() const { return m_pParent; }
 
 	private:
-		TNode* m_pParent;   // 0x0
-		TNode** m_pChildren; // 0x4
+		TNode  *m_pParent;   // 0x0
+		TNode **m_pChildren; // 0x4
 	};
 
 protected:
-
 	TGenericNTree()
 	{
 		m_pRoot = TNULL;
@@ -47,9 +44,10 @@ protected:
 		m_pRoot = TNULL;
 	}
 
-	TNode* Root() const { return m_pRoot; }
+	TNode *Root() const { return m_pRoot; }
+
 private:
-	TNode* m_pRoot;   // 0x0
+	TNode *m_pRoot; // 0x0
 };
 
 

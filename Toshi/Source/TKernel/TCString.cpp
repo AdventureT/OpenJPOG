@@ -17,8 +17,8 @@ TBOOL TCString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 		if (a_iLength == 0) {
 			if (a_bClear) tfree(m_pBuffer);
 
-			m_pBuffer = m_aNull;
-			hasChanged = TTRUE;
+			m_pBuffer    = m_aNull;
+			hasChanged   = TTRUE;
 			m_iExcessLen = 0;
 		}
 		else {
@@ -26,15 +26,15 @@ TBOOL TCString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 
 			if (newExcessLen < 0 || newExcessLen > 0xFF) {
 				if (m_iStrLen != 0 && a_bClear) tfree(m_pBuffer);
-				
-				m_pBuffer = (TPCHAR)tmalloc(a_iLength + 1, TNULL, -1);
+
+				m_pBuffer    = (TPCHAR)tmalloc(a_iLength + 1, TNULL, -1);
 				m_iExcessLen = 0;
-				TASSERT(m_pBuffer!=TNULL);
+				TASSERT(m_pBuffer != TNULL);
 				hasChanged = TTRUE;
 			}
 			else {
 				m_iExcessLen = newExcessLen;
-				hasChanged = TFALSE;
+				hasChanged   = TFALSE;
 			}
 		}
 		m_iStrLen = a_iLength;
@@ -43,15 +43,15 @@ TBOOL TCString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 	return hasChanged;
 }
 
-TCString& TCString::Concat(TCString const& a_rString, TINT a_iLength)
+TCString &TCString::Concat(TCString const &a_rString, TINT a_iLength)
 {
 	TINT len = a_rString.Length();
 	if (len < a_iLength || a_iLength == -1) {
 		a_iLength = len;
 	}
 	TPCHAR pBuffer = m_pBuffer;
-	len = Length();
-	TBOOL ret = AllocBuffer(len + a_iLength, TFALSE);
+	len            = Length();
+	TBOOL ret      = AllocBuffer(len + a_iLength, TFALSE);
 	if (ret) {
 		TSystem::StringCopy(m_pBuffer, pBuffer, -1);
 	}
@@ -63,15 +63,15 @@ TCString& TCString::Concat(TCString const& a_rString, TINT a_iLength)
 	return *this;
 }
 
-TCString& TCString::Concat(TPCCHAR a_String, TINT a_iLength)
+TCString &TCString::Concat(TPCCHAR a_String, TINT a_iLength)
 {
 	TINT len = TSystem::StringLength(a_String);
 	if (len < a_iLength || a_iLength == -1) {
 		a_iLength = len;
 	}
 	TPCHAR pBuffer = m_pBuffer;
-	len = Length();
-	TBOOL ret = AllocBuffer(len + a_iLength, TFALSE);
+	len            = Length();
+	TBOOL ret      = AllocBuffer(len + a_iLength, TFALSE);
 	if (ret) {
 		TSystem::StringCopy(m_pBuffer, pBuffer, -1);
 	}
@@ -85,8 +85,8 @@ TCString& TCString::Concat(TPCCHAR a_String, TINT a_iLength)
 
 TINT TCString::Compare(TPCCHAR a_pcString, int a_iLength) const
 {
-	TASSERT(a_pcString!=TNULL);
-	TASSERT(GetString()!=TNULL);
+	TASSERT(a_pcString != TNULL);
+	TASSERT(GetString() != TNULL);
 	if (a_iLength != -1)
 	{
 		return strncmp(GetString(), a_pcString, a_iLength);
@@ -94,7 +94,7 @@ TINT TCString::Compare(TPCCHAR a_pcString, int a_iLength) const
 	return strcmp(GetString(), a_pcString);
 }
 
-void TCString::Copy(const TCString& a_rOther, TINT a_iLength)
+void TCString::Copy(const TCString &a_rOther, TINT a_iLength)
 {
 	if (*this != a_rOther) {
 		if (a_rOther.m_iStrLen < a_iLength || a_iLength == -1) a_iLength = a_rOther.m_iStrLen;
@@ -123,9 +123,9 @@ void TCString::Copy(TPCCHAR a_pcString, TINT a_iLength)
 	}
 }
 
-TCString& TOSHI_CALLBACKAPI TCString::Format(TPCCHAR a_pcFormat, ...)
+TCString &TOSHI_CALLBACKAPI TCString::Format(TPCCHAR a_pcFormat, ...)
 {
-	char buffer[0x400];
+	char    buffer[0x400];
 	va_list vargs;
 	va_start(vargs, a_pcFormat);
 	_vsnprintf(buffer, sizeof(buffer), a_pcFormat, vargs);
@@ -150,7 +150,7 @@ void TCString::Truncate(TINT a_iLength)
 		a_iLength = len;
 	}
 	TPCHAR pBuffer = m_pBuffer;
-	TBOOL ret = AllocBuffer(a_iLength, TFALSE);
+	TBOOL  ret     = AllocBuffer(a_iLength, TFALSE);
 	if (ret) {
 		TSystem::StringCopy(m_pBuffer, pBuffer, a_iLength);
 	}
@@ -168,28 +168,28 @@ TINT TCString::FindReverse(TCHAR a_cFind, TINT a_iIndex /*= -1*/) const
 	else if (!IsIndexValid(a_iIndex)) {
 		return -1;
 	}
-	
+
 	if (a_iIndex < 0) {
 		return -1;
 	}
 
-	TINT iBytesLeft = a_iIndex;
-	const TCHAR* pchString = GetString(0);
+	TINT         iBytesLeft = a_iIndex;
+	const TCHAR *pchString  = GetString(0);
 
 	// Look for the character by checking 5 bytes sequences
 	for (; iBytesLeft > 5; iBytesLeft -= 5)
 	{
-		if ( pchString[iBytesLeft - 0] == a_cFind ) return iBytesLeft - 0;
-		if ( pchString[iBytesLeft - 1] == a_cFind ) return iBytesLeft - 1;
-		if ( pchString[iBytesLeft - 2] == a_cFind ) return iBytesLeft - 2;
-		if ( pchString[iBytesLeft - 3] == a_cFind ) return iBytesLeft - 3;
-		if ( pchString[iBytesLeft - 4] == a_cFind ) return iBytesLeft - 4;
+		if (pchString[iBytesLeft - 0] == a_cFind) return iBytesLeft - 0;
+		if (pchString[iBytesLeft - 1] == a_cFind) return iBytesLeft - 1;
+		if (pchString[iBytesLeft - 2] == a_cFind) return iBytesLeft - 2;
+		if (pchString[iBytesLeft - 3] == a_cFind) return iBytesLeft - 3;
+		if (pchString[iBytesLeft - 4] == a_cFind) return iBytesLeft - 4;
 	}
 
 	// Check the left bytes
 	for (; iBytesLeft > 0; iBytesLeft--)
 	{
-		if ( pchString[iBytesLeft] == a_cFind )
+		if (pchString[iBytesLeft] == a_cFind)
 			return iBytesLeft;
 	}
 
@@ -217,14 +217,14 @@ TCString TCString::Mid(TINT a_iFirst, TINT a_iCount) const
 	return strResult;
 }
 
-TCString TOSHI_API operator+(TPCCHAR a_pLHS, const TCString& a_rRHS)
+TCString TOSHI_API operator+(TPCCHAR a_pLHS, const TCString &a_rRHS)
 {
 	TCString str(a_pLHS);
 	TASSERT(a_pLHS);
 	return str.Concat(a_rRHS);
 }
 
-TCString TOSHI_API operator+(const TCString& a_rLHS, const TPCString& a_rRHS)
+TCString TOSHI_API operator+(const TCString &a_rLHS, const TPCString &a_rRHS)
 {
 	return TCString(a_rLHS) += a_rRHS.GetCString();
 }

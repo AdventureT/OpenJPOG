@@ -2,7 +2,7 @@
 
 #include "TKernel/TObject.h"
 #include "TKernel/TKernelInterface.h"
-#include "TRenderContext.h"	
+#include "TRenderContext.h"
 #include "TResource.h"
 #include "TRenderAdapter.h"
 #include "TTextureFactory.h"
@@ -19,19 +19,18 @@ class TRENDERINTERFACE_EXPORTS TRenderInterface : public TObject
 	DECLARE_DYNAMIC(TRenderInterface)
 
 public:
-
 	enum FLAG
 	{
-		FLAG_DIRTY = BITFIELD(0),
-		FLAG_FOG = BITFIELD(1),
-		FLAG_HAS_MODELWORLDMATRIX = BITFIELD(2),
-		FLAG_HAS_VIEWWORLDMATRIX = BITFIELD(3),
-		FLAG_UNK3 = BITFIELD(4),
-		FLAG_UNK4 = BITFIELD(5),
-		FLAG_HAS_WORLDPLANES = BITFIELD(6),
-		FLAG_UNK6 = BITFIELD(7),
+		FLAG_DIRTY                  = BITFIELD(0),
+		FLAG_FOG                    = BITFIELD(1),
+		FLAG_HAS_MODELWORLDMATRIX   = BITFIELD(2),
+		FLAG_HAS_VIEWWORLDMATRIX    = BITFIELD(3),
+		FLAG_UNK3                   = BITFIELD(4),
+		FLAG_UNK4                   = BITFIELD(5),
+		FLAG_HAS_WORLDPLANES        = BITFIELD(6),
+		FLAG_UNK6                   = BITFIELD(7),
 		FLAG_DIRTY_WORLDMODELMATRIX = BITFIELD(8),
-		FLAG_DIRTY_VIEWMODELMATRIX = BITFIELD(9),
+		FLAG_DIRTY_VIEWMODELMATRIX  = BITFIELD(9),
 	};
 
 	enum SYSRESOURCES
@@ -64,94 +63,92 @@ public:
 		TUINT32 uiHeight;
 		TUINT32 uiColourDepth;
 		TUINT32 eDepthStencilFormat;
-		TBOOL bWindowed;
+		TBOOL   bWindowed;
 	};
 
 public:
-
 	TRenderInterface();
 
 public:
-	virtual TBOOL CreateDisplay(const DisplayParams& a_rParams) = 0;
-	virtual TBOOL DestroyDisplay() = 0;
-	virtual TBOOL Update(float a_fDeltaTime) = 0;
-	virtual TBOOL BeginScene() = 0;
-	virtual TBOOL EndScene() = 0;
-	virtual TRenderAdapter::Mode::Device* GetCurrentDevice() = 0;
-	virtual DisplayParams* GetCurrentDisplayParams() = 0;
-	virtual TBOOL Create(TKernelInterface* pKernelInterface);
-	virtual TBOOL Destroy();
-	virtual void RenderIndexPrimitive(int param_2, int param_3, int param_4, int param_5, int param_6, int param_7);
-	virtual void DumpStats();
-	virtual void GetScreenOffset(TVector2& a_rVec);
-	virtual void SetScreenOffset(const TVector2& a_rVec);
-	virtual float GetScreenAspectRatio();
-	virtual float GetPixelAspectRatio();
-	virtual TBOOL SetPixelAspectRatio(float a_fPixelAspectRatio);
-	virtual TBOOL IsTextureFormatSupported(TTEXTURERESOURCEFORMAT a_eTextureFormat) { return TTRUE; }
-	virtual TBOOL Supports32BitTextures() { return TFALSE; }
-	virtual TRenderContext* CreateRenderContext() = 0;
-	virtual TRenderCapture* CreateCapture() = 0;
-	virtual void DestroyCapture(TRenderCapture* a_pRenderCapture) = 0;
-	virtual void SetLightDirectionMatrix(const TMatrix44& a_rMatrix);
-	virtual void SetLightColourMatrix(const TMatrix44& a_rMatrix);
-	virtual void ConnectDefaultViewportHandelrs(TViewport& a_pViewport);
-	virtual TModel* CreateModel(TPCCHAR a_szName, TINT a_iUnk1);
-	virtual TBOOL CreateSystemResources();
-	virtual void DestroySystemResources();
+	virtual TBOOL                         CreateDisplay(const DisplayParams &a_rParams) = 0;
+	virtual TBOOL                         DestroyDisplay()                              = 0;
+	virtual TBOOL                         Update(float a_fDeltaTime)                    = 0;
+	virtual TBOOL                         BeginScene()                                  = 0;
+	virtual TBOOL                         EndScene()                                    = 0;
+	virtual TRenderAdapter::Mode::Device *GetCurrentDevice()                            = 0;
+	virtual DisplayParams                *GetCurrentDisplayParams()                     = 0;
+	virtual TBOOL                         Create(TKernelInterface *pKernelInterface);
+	virtual TBOOL                         Destroy();
+	virtual void                          RenderIndexPrimitive(int param_2, int param_3, int param_4, int param_5, int param_6, int param_7);
+	virtual void                          DumpStats();
+	virtual void                          GetScreenOffset(TVector2 &a_rVec);
+	virtual void                          SetScreenOffset(const TVector2 &a_rVec);
+	virtual float                         GetScreenAspectRatio();
+	virtual float                         GetPixelAspectRatio();
+	virtual TBOOL                         SetPixelAspectRatio(float a_fPixelAspectRatio);
+	virtual TBOOL                         IsTextureFormatSupported(TTEXTURERESOURCEFORMAT a_eTextureFormat) { return TTRUE; }
+	virtual TBOOL                         Supports32BitTextures() { return TFALSE; }
+	virtual TRenderContext               *CreateRenderContext()                            = 0;
+	virtual TRenderCapture               *CreateCapture()                                  = 0;
+	virtual void                          DestroyCapture(TRenderCapture *a_pRenderCapture) = 0;
+	virtual void                          SetLightDirectionMatrix(const TMatrix44 &a_rMatrix);
+	virtual void                          SetLightColourMatrix(const TMatrix44 &a_rMatrix);
+	virtual void                          ConnectDefaultViewportHandelrs(TViewport &a_pViewport);
+	virtual TModel                       *CreateModel(TPCCHAR a_szName, TINT a_iUnk1);
+	virtual TBOOL                         CreateSystemResources();
+	virtual void                          DestroySystemResources();
 
 
 public:
-	TResource* CreateResource(const TClass* a_pClass, TPCCHAR a_szResName, TResource* a_pResource);
+	TResource *CreateResource(const TClass *a_pClass, TPCCHAR a_szResName, TResource *a_pResource);
 
-	const TRenderAdapter::Mode::Device* FindDevice(const DisplayParams* a_pDisplayParams);
+	const TRenderAdapter::Mode::Device *FindDevice(const DisplayParams *a_pDisplayParams);
 
 	void FlushDyingResources();
 
-	TResource* GetSystemResource(SYSRESOURCES a_SystemResource)
+	TResource *GetSystemResource(SYSRESOURCES a_SystemResource)
 	{
 		TASSERT(a_SystemResource < TRenderInterface::SYSRESOURCES_NUMOF);
-		TASSERT(m_aSysResources[a_SystemResource]!=TNULL);
+		TASSERT(m_aSysResources[a_SystemResource] != TNULL);
 		return m_aSysResources[a_SystemResource];
 	}
 
-	TRenderContext* SetCurrentRenderContext(TRenderContext* a_pRenderContext)
+	TRenderContext *SetCurrentRenderContext(TRenderContext *a_pRenderContext)
 	{
-		TRenderContext* pLastRenderContext = m_pCurrentRenderContext;
-		m_pCurrentRenderContext = a_pRenderContext;
+		TRenderContext *pLastRenderContext = m_pCurrentRenderContext;
+		m_pCurrentRenderContext            = a_pRenderContext;
 		return pLastRenderContext;
 	}
 
 	TBOOL IsCreated() { return m_bIsCreated; }
 	TBOOL IsDisplayCreated() { return m_bIsDiplayCreated; }
 	// $TRenderInterface: FUNCTION 1000f230
-	TBOOL IsInScene() { return m_bInScene; }
-	TNodeList<TRenderAdapter>* GetAdapterList() { return &m_pAdapterList; };
+	TBOOL                      IsInScene() { return m_bInScene; }
+	TNodeList<TRenderAdapter> *GetAdapterList() { return &m_pAdapterList; };
 
-	static TRenderInterface* TOSHI_API GetRenderer() { return s_Interface; }
+	static TRenderInterface *TOSHI_API GetRenderer() { return s_Interface; }
 
 private:
+	void DestroyDyingResources(TResource *a_pResource);
+	void DeleteResource(TResource *a_pResource);
+	void DeleteResourceRecurse(TResource *a_pResource);
+	void DeleteResourceAtomic(TResource *a_pResource);
 
-	void DestroyDyingResources(TResource* a_pResource);
-	void DeleteResource(TResource* a_pResource);
-	void DeleteResourceRecurse(TResource* a_pResource);
-	void DeleteResourceAtomic(TResource* a_pResource);
+	static TRenderInterface *s_Interface;
 
-	static TRenderInterface* s_Interface;
 protected:
-
-	TBOOL m_bInScene;                                // 0x8
-	TBOOL m_bIsCreated;                              // 0x9
-	TBOOL m_bIsDiplayCreated;                        // 0xA
-	TRenderContext* m_pCurrentRenderContext;         // 0x1C
-	TRenderContext* m_pDefaultRenderContext;         // 0x20
-	TKernelInterface* m_pKernel;                     // 0x24
-	TResource* m_aSysResources[SYSRESOURCES_NUMOF];  // 0x28
-	TNodeList<TRenderAdapter> m_pAdapterList;        // 0xFC
-	TINT m_iResourceCount;                           // 0x124
-	TNodeTree<TResource> m_Resources;                // 0x128???
-	TINT m_iSceneCount;                              // 0x128
-	TBOOL m_bHasDyingResources;                      // 0x12C
+	TBOOL                     m_bInScene;                          // 0x8
+	TBOOL                     m_bIsCreated;                        // 0x9
+	TBOOL                     m_bIsDiplayCreated;                  // 0xA
+	TRenderContext           *m_pCurrentRenderContext;             // 0x1C
+	TRenderContext           *m_pDefaultRenderContext;             // 0x20
+	TKernelInterface         *m_pKernel;                           // 0x24
+	TResource                *m_aSysResources[SYSRESOURCES_NUMOF]; // 0x28
+	TNodeList<TRenderAdapter> m_pAdapterList;                      // 0xFC
+	TINT                      m_iResourceCount;                    // 0x124
+	TNodeTree<TResource>      m_Resources;                         // 0x128???
+	TINT                      m_iSceneCount;                       // 0x128
+	TBOOL                     m_bHasDyingResources;                // 0x12C
 };
 
 TOSHI_NAMESPACE_END

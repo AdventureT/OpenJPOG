@@ -19,7 +19,7 @@ class AApplication : public Toshi::TApplication
 
 static AApplication g_oTheApp;
 
-int main(int argc, char* argv[]) 
+int main(int argc, char* argv[])
 {
 	int result = 0;
 	if (g_oTheApp.Create("UnitTests", argc, argv)) {

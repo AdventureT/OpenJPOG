@@ -5,15 +5,15 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TResource, TObject)
 
-static TINT s_iResourceCount = 0;
+static TINT s_iResourceCount    = 0;
 static TINT s_iResourcesCreated = 0;
 
 TResource::TResource()
 {
-	m_Flags = 0;
-	m_uiUId = 0;
+	m_Flags     = 0;
+	m_uiUId     = 0;
 	m_pRenderer = TNULL;
-	*m_szName = 0;
+	*m_szName   = 0;
 	s_iResourceCount++;
 	if (s_iResourcesCreated < s_iResourceCount) {
 		s_iResourcesCreated = s_iResourceCount;
@@ -36,8 +36,8 @@ TBOOL TResource::Create()
 
 TBOOL TResource::Validate()
 {
-	TASSERT((TNULL==Parent()) || (TFALSE==Parent()->IsDying()));
-	TASSERT(!(m_Flags&TResource::FLAGS_DYING));
+	TASSERT((TNULL == Parent()) || (TFALSE == Parent()->IsDying()));
+	TASSERT(!(m_Flags & TResource::FLAGS_DYING));
 	if (IsDying()) return TFALSE;
 	m_Flags |= FLAGS_VALID;
 	return TTRUE;
@@ -55,7 +55,7 @@ void TResource::OnDestroy()
 {
 }
 
-void TResource::SetParent(TResource* a_pParent)
+void TResource::SetParent(TResource *a_pParent)
 {
 	TASSERT((TNULL == a_pParent) || (TTRUE == IsDying()) || (TFALSE == a_pParent->IsDying()));
 	TASSERT(TNULL != GetTree());
@@ -81,16 +81,16 @@ void TResource::SetName(TPCCHAR a_strName)
 		szName[3] = ':';
 		TSystem::StringIntToString(GetUId(), &szName[4], 10);
 	}
-	TASSERT(TSystem::StringLength(a_strName)<=MAXNAMELEN);
+	TASSERT(TSystem::StringLength(a_strName) <= MAXNAMELEN);
 	TSystem::StringCopy(m_szName, a_strName, -1);
 }
 
-TBOOL Recurse(TResource::t_RecurseCb a_pCallback, TResource* a_pResource, TBOOL a_bFlag, TPVOID a_pUserData)
+TBOOL Recurse(TResource::t_RecurseCb a_pCallback, TResource *a_pResource, TBOOL a_bFlag, TPVOID a_pUserData)
 {
-	TResource* pResource = a_pResource;
+	TResource *pResource = a_pResource;
 
 	while (pResource) {
-		TResource* pNext = pResource->Next();
+		TResource *pNext = pResource->Next();
 
 		if (pNext == a_pResource || pNext == pResource || !a_bFlag) {
 			pNext = TNULL;
@@ -111,7 +111,7 @@ TBOOL Recurse(TResource::t_RecurseCb a_pCallback, TResource* a_pResource, TBOOL 
 	return TTRUE;
 }
 
-void TResource::RecurseSimple(t_RecurseCb a_pfnCallback, TResource* a_pResource, TPVOID a_pUserData)
+void TResource::RecurseSimple(t_RecurseCb a_pfnCallback, TResource *a_pResource, TPVOID a_pUserData)
 {
 	TASSERT(TNULL != GetTree());
 	TASSERT(TNULL != a_pfnCallback);

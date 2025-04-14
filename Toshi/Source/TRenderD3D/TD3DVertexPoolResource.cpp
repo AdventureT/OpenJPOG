@@ -13,8 +13,8 @@ TBOOL TVertexPoolResource::Validate()
 		return TTRUE;
 	}
 
-	TVertexFactoryResource* pFactory = TSTATICCAST(TVertexFactoryResource*, GetFactory());
-	TVertexBlockResource* pVertexBlock = pFactory->FindBlockResource(this);
+	TVertexFactoryResource *pFactory     = TSTATICCAST(TVertexFactoryResource *, GetFactory());
+	TVertexBlockResource   *pVertexBlock = pFactory->FindBlockResource(this);
 
 	if (!pVertexBlock)
 	{
@@ -30,7 +30,7 @@ TBOOL TVertexPoolResource::Validate()
 		}
 		else if (uiUnk1 == 2) {
 			uiNumVerts = GetMaxVertices();
-			uiFlags = 2;
+			uiFlags    = 2;
 		}
 		else {
 			if (uiUnk1 != 4) {
@@ -38,7 +38,7 @@ TBOOL TVertexPoolResource::Validate()
 			}
 
 			uiNumVerts = GetMaxVertices();
-			uiFlags = 4;
+			uiFlags    = 4;
 		}
 
 		pVertexBlock = pFactory->CreateBlockResource(uiNumVerts, uiFlags);
@@ -61,7 +61,7 @@ void TVertexPoolResource::OnDestroy()
 {
 }
 
-TBOOL TVertexPoolResource::Lock(LockBuffer* a_pLockBuffer)
+TBOOL TVertexPoolResource::Lock(LockBuffer *a_pLockBuffer)
 {
 	return TBOOL();
 }
@@ -70,7 +70,7 @@ void TVertexPoolResource::Unlock(TUSHORT a_uiNewNumVertices)
 {
 }
 
-TBOOL TVertexPoolResource::Create(TVertexFactoryResourceInterface* a_pFactory, TUINT a_uiMaxVertices, TUINT a_uiFlags)
+TBOOL TVertexPoolResource::Create(TVertexFactoryResourceInterface *a_pFactory, TUINT a_uiMaxVertices, TUINT a_uiFlags)
 {
 	return TBOOL();
 }

@@ -11,19 +11,19 @@ IMPLEMENT_DYNCREATE(TRenderD3DInterface, TRenderInterface)
 
 TRenderD3DInterface::TRenderD3DInterface()
 {
-	m_pD3DInterface = NULL;
-	m_pD3DDevice = NULL;
-	m_hAccel = NULL;
-	m_pCurrentDevice = TNULL;
-	m_oDisplayParams.uiWidth = 640;
-	m_oDisplayParams.uiHeight = 480;
-	m_oDisplayParams.uiColourDepth = 32;
-	m_oDisplayParams.bWindowed = TTRUE;
-	m_bIsExited = TFALSE;
-	m_bUsingColorCorrection = TTRUE;
+	m_pD3DInterface                   = NULL;
+	m_pD3DDevice                      = NULL;
+	m_hAccel                          = NULL;
+	m_pCurrentDevice                  = TNULL;
+	m_oDisplayParams.uiWidth          = 640;
+	m_oDisplayParams.uiHeight         = 480;
+	m_oDisplayParams.uiColourDepth    = 32;
+	m_oDisplayParams.bWindowed        = TTRUE;
+	m_bIsExited                       = TFALSE;
+	m_bUsingColorCorrection           = TTRUE;
 	m_bCheckedCapableColourCorrection = TFALSE;
-	m_bCapableColourCorrection = TFALSE;
-	m_bEnableColourCorrection = TTRUE;
+	m_bCapableColourCorrection        = TFALSE;
+	m_bEnableColourCorrection         = TTRUE;
 }
 
 void TOSHI_API TRenderD3DInterface::TD3DAssert(HRESULT a_hr, TPCCHAR a_pError)
@@ -44,7 +44,7 @@ TRenderD3DInterface::~TRenderD3DInterface()
 	Destroy();
 }
 
-TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams& a_rParams)
+TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams &a_rParams)
 {
 	TASSERT(TTRUE == IsCreated());
 	TASSERT(TFALSE == IsDisplayCreated());
@@ -53,7 +53,7 @@ TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams& 
 		return TFALSE;
 	}
 
-	m_pCurrentDevice = (TD3DAdapter::Mode::Device*)FindDevice(&a_rParams);
+	m_pCurrentDevice = (TD3DAdapter::Mode::Device *)FindDevice(&a_rParams);
 	m_oDisplayParams = a_rParams;
 	TASSERT(m_pCurrentDevice != TNULL);
 
@@ -61,7 +61,7 @@ TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams& 
 		return TFALSE;
 	}
 
-	TRenderInterface::DisplayParams* pDisplayParams = GetCurrentDisplayParams();
+	TRenderInterface::DisplayParams *pDisplayParams = GetCurrentDisplayParams();
 
 	RECT clientRect;
 	GetClientRect(GetDesktopWindow(), &clientRect);
@@ -74,25 +74,25 @@ TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams& 
 	TUINT32 uiWindowPosY = 0;
 
 	if (pDisplayParams->bWindowed) {
-		TRenderAdapter::Mode* pMode = GetCurrentDevice()->GetMode();
-		uiWindowPosX = (clientRect.right - pMode->GetWidth()) / 2;
-		uiWindowPosY = (clientRect.bottom - pMode->GetHeight()) / 2;
+		TRenderAdapter::Mode *pMode = GetCurrentDevice()->GetMode();
+		uiWindowPosX                = (clientRect.right - pMode->GetWidth()) / 2;
+		uiWindowPosY                = (clientRect.bottom - pMode->GetHeight()) / 2;
 	}
 
 	TSystem::MemSet(&m_oPresentParams, 0, sizeof(m_oPresentParams));
-	m_oPresentParams.Windowed = pDisplayParams->bWindowed;
-	m_oPresentParams.BackBufferCount = 1;
-	m_oPresentParams.MultiSampleType = D3DMULTISAMPLE_NONE;
-	m_oPresentParams.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	m_oPresentParams.Windowed               = pDisplayParams->bWindowed;
+	m_oPresentParams.BackBufferCount        = 1;
+	m_oPresentParams.MultiSampleType        = D3DMULTISAMPLE_NONE;
+	m_oPresentParams.SwapEffect             = D3DSWAPEFFECT_DISCARD;
 	m_oPresentParams.EnableAutoDepthStencil = TRUE;
-	m_oPresentParams.hDeviceWindow = GetMSWindow()->GetHWND();
+	m_oPresentParams.hDeviceWindow          = GetMSWindow()->GetHWND();
 	m_oPresentParams.AutoDepthStencilFormat = TD3DAdapter::Mode::Device::DEPTHSTENCILFORMATS[pDisplayParams->eDepthStencilFormat];
-	m_oPresentParams.BackBufferWidth = pDisplayParams->uiWidth;
-	m_oPresentParams.BackBufferHeight = pDisplayParams->uiHeight;
+	m_oPresentParams.BackBufferWidth        = pDisplayParams->uiWidth;
+	m_oPresentParams.BackBufferHeight       = pDisplayParams->uiHeight;
 
-	auto pDevice = TSTATICCAST(TD3DAdapter::Mode::Device*, GetCurrentDevice());
-	auto pMode = TSTATICCAST(TD3DAdapter::Mode*, pDevice->GetMode());
-	auto pAdapter = TSTATICCAST(TD3DAdapter*, pMode->GetAdapter());
+	auto pDevice        = TSTATICCAST(TD3DAdapter::Mode::Device *, GetCurrentDevice());
+	auto pMode          = TSTATICCAST(TD3DAdapter::Mode *, pDevice->GetMode());
+	auto pAdapter       = TSTATICCAST(TD3DAdapter *, pMode->GetAdapter());
 	auto uiAdapterIndex = pAdapter->GetAdapterIndex();
 
 	if (pDisplayParams->bWindowed) {
@@ -108,8 +108,7 @@ TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams& 
 		GetMSWindow()->GetHWND(),
 		pDevice->GetD3DDeviceFlags(),
 		&m_oPresentParams,
-		&m_pD3DDevice
-	);
+		&m_pD3DDevice);
 
 	if (FAILED(hRes)) {
 		TD3DAssert(hRes, "Failed to create D3D Device!");
@@ -128,7 +127,7 @@ TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams& 
 	GetMSWindow()->Position(uiWindowPosX, uiWindowPosY, pDisplayParams->uiWidth, pDisplayParams->uiHeight);
 	GetMSWindow()->Enable();
 
-	IDirect3DSurface8* pSurface;
+	IDirect3DSurface8 *pSurface;
 	GetD3DDevice()->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &pSurface);
 	pSurface->GetDesc(&m_oSurfaceDesk);
 	pSurface->Release();
@@ -138,9 +137,9 @@ TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams& 
 	for (int i = 0; i < 32; i++) {
 		invalidTextureData[i] = 0xff0fff0f;
 	}
-		
-	TTextureFactoryHAL* factory = (TTextureFactoryHAL*)GetSystemResource(SYSRESOURCE_TEXTUREFACTORY);
-	m_pInvalidTexture = factory->CreateTextureFromMemory(invalidTextureData, sizeof(invalidTextureData), 17, 8, 8);
+
+	TTextureFactoryHAL *factory = (TTextureFactoryHAL *)GetSystemResource(SYSRESOURCE_TEXTUREFACTORY);
+	m_pInvalidTexture           = factory->CreateTextureFromMemory(invalidTextureData, sizeof(invalidTextureData), 17, 8, 8);
 	TVALIDADDRESS(m_pInvalidTexture);
 
 	EnableColourCorrection(TTRUE);
@@ -169,7 +168,7 @@ TBOOL TRenderD3DInterface::Update(float a_fDeltaTime)
 			if (TranslateAccelerator(GetMSWindow()->GetHWND(), GetAcceleratorTable(), &msg) == 0) {
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
-			}									
+			}
 		}
 	}
 	if (!m_bIsExited) {
@@ -180,8 +179,8 @@ TBOOL TRenderD3DInterface::Update(float a_fDeltaTime)
 
 TBOOL TRenderD3DInterface::BeginScene()
 {
-	TASSERT(TTRUE==IsDisplayCreated());
-	TASSERT(TFALSE==IsInScene());
+	TASSERT(TTRUE == IsDisplayCreated());
+	TASSERT(TFALSE == IsInScene());
 	if (TRenderInterface::BeginScene()) {
 		if (FAILED(m_pD3DDevice->BeginScene())) {
 			return TFALSE;
@@ -189,12 +188,12 @@ TBOOL TRenderD3DInterface::BeginScene()
 		RECT windowRect;
 		GetWindowRect(GetMSWindow()->GetHWND(), &windowRect);
 		D3DVIEWPORT8 viewport = {
-			.X = 0,
-			.Y = 0,
-			.Width = DWORD(windowRect.right - windowRect.left),
+			.X      = 0,
+			.Y      = 0,
+			.Width  = DWORD(windowRect.right - windowRect.left),
 			.Height = DWORD(windowRect.bottom - windowRect.top),
-			.MinZ = 0.0f,
-			.MaxZ = 1.0f,
+			.MinZ   = 0.0f,
+			.MaxZ   = 1.0f,
 		};
 		m_pD3DDevice->SetViewport(&viewport);
 		//UpdateColourSettings();
@@ -206,8 +205,8 @@ TBOOL TRenderD3DInterface::BeginScene()
 
 TBOOL TRenderD3DInterface::EndScene()
 {
-	TASSERT(TTRUE==IsDisplayCreated());
-	TASSERT(TFALSE==IsInScene());
+	TASSERT(TTRUE == IsDisplayCreated());
+	TASSERT(TFALSE == IsInScene());
 	static TBOOL s_bDeviceLost = TFALSE;
 	if (IsInScene()) {
 		if (FAILED(m_pD3DDevice->EndScene())) {
@@ -241,19 +240,19 @@ TBOOL TRenderD3DInterface::EndScene()
 	return TTRUE;
 }
 
-TRenderAdapter::Mode::Device* TRenderD3DInterface::GetCurrentDevice()
+TRenderAdapter::Mode::Device *TRenderD3DInterface::GetCurrentDevice()
 {
 	return m_pCurrentDevice;
 }
 
-TRenderInterface::DisplayParams* TRenderD3DInterface::GetCurrentDisplayParams()
+TRenderInterface::DisplayParams *TRenderD3DInterface::GetCurrentDisplayParams()
 {
 	return &m_oDisplayParams;
 }
 
-TBOOL TRenderD3DInterface::Create(TKernelInterface* a_pKernel)
+TBOOL TRenderD3DInterface::Create(TKernelInterface *a_pKernel)
 {
-	TASSERT(TFALSE==IsCreated());
+	TASSERT(TFALSE == IsCreated());
 
 	if (!TRenderInterface::Create(a_pKernel)) {
 		return TFALSE;
@@ -314,27 +313,27 @@ TBOOL TRenderD3DInterface::SetPixelAspectRatio(float a_fPixelAspectRatio)
 	return TBOOL();
 }
 
-TRenderContext* TRenderD3DInterface::CreateRenderContext()
+TRenderContext *TRenderD3DInterface::CreateRenderContext()
 {
-	TRenderContextD3D* pRenderContext = new TRenderContextD3D();
+	TRenderContextD3D *pRenderContext = new TRenderContextD3D();
 	TVALIDADDRESS(pRenderContext);
 	return pRenderContext;
 }
 
-TRenderCapture* TRenderD3DInterface::CreateCapture()
+TRenderCapture *TRenderD3DInterface::CreateCapture()
 {
 	return nullptr;
 }
 
-void TRenderD3DInterface::DestroyCapture(TRenderCapture* a_pRenderCapture)
+void TRenderD3DInterface::DestroyCapture(TRenderCapture *a_pRenderCapture)
 {
 }
 
-void TRenderD3DInterface::ConnectDefaultViewportHandelrs(TViewport& a_pViewport)
+void TRenderD3DInterface::ConnectDefaultViewportHandelrs(TViewport &a_pViewport)
 {
 }
 
-TModel* TRenderD3DInterface::CreateModel(TPCCHAR a_szName, TINT a_iUnk1)
+TModel *TRenderD3DInterface::CreateModel(TPCCHAR a_szName, TINT a_iUnk1)
 {
 	return nullptr;
 }
@@ -343,7 +342,7 @@ TBOOL TRenderD3DInterface::IsCapableColourCorrection()
 {
 	if (!m_bCheckedCapableColourCorrection) {
 		D3DCAPS8 caps;
-		HRESULT hRes = GetD3DDevice()->GetDeviceCaps(&caps);
+		HRESULT  hRes              = GetD3DDevice()->GetDeviceCaps(&caps);
 		m_bCapableColourCorrection = SUCCEEDED(hRes) && HASFLAG(caps.AdapterOrdinal & 0x20000);
 	}
 
@@ -358,16 +357,16 @@ void TRenderD3DInterface::EnableColourCorrection(TBOOL a_bEnable)
 TBOOL TRenderD3DInterface::IsTextureFormatSupported(TTEXTURERESOURCEFORMAT a_eTextureFormat)
 {
 	switch (a_eTextureFormat) {
-	case R8G8B8A8:
-		return IsTextureFormatSupported(D3DFMT_A8R8G8B8);
-	case R8G8B8:
-		return IsTextureFormatSupported(D3DFMT_X8R8G8B8);
-	case R5G5B5A1:
-		return IsTextureFormatSupported(D3DFMT_A1R5G5B5);
-	case DDS:
-		return TTRUE;
-	default:
-		return TFALSE;
+		case R8G8B8A8:
+			return IsTextureFormatSupported(D3DFMT_A8R8G8B8);
+		case R8G8B8:
+			return IsTextureFormatSupported(D3DFMT_X8R8G8B8);
+		case R5G5B5A1:
+			return IsTextureFormatSupported(D3DFMT_A1R5G5B5);
+		case DDS:
+			return TTRUE;
+		default:
+			return TFALSE;
 	}
 }
 
@@ -380,9 +379,7 @@ TBOOL TRenderD3DInterface::IsTextureFormatSupported(D3DFORMAT a_eFormat)
 			m_oPresentParams.BackBufferFormat,
 			0,
 			D3DRTYPE_TEXTURE,
-			a_eFormat
-		)
-	);
+			a_eFormat));
 }
 
 TBOOL TRenderD3DInterface::Supports32BitTextures()
@@ -397,7 +394,7 @@ void TRenderD3DInterface::BuildAdapterDatabase()
 		pAdapter->SetAdapterIndex(i);
 
 		D3DDISPLAYMODE displayMode;
-		auto pIdentifier = pAdapter->GetD3DIdentifier8();
+		auto           pIdentifier = pAdapter->GetD3DIdentifier8();
 		m_pD3DInterface->GetAdapterIdentifier(i, D3DENUM_NO_WHQL_LEVEL, pIdentifier);
 		m_pD3DInterface->GetAdapterDisplayMode(i, &displayMode);
 
@@ -424,13 +421,13 @@ void TRenderD3DInterface::CreateAcceleratorTableA()
 	ACCEL accel[2];
 	// ESCAPE
 	accel[0].fVirt = FVIRTKEY;
-	accel[0].key = VK_ESCAPE;
-	accel[0].cmd = 0;
+	accel[0].key   = VK_ESCAPE;
+	accel[0].cmd   = 0;
 	// ALT+ENTER
 	accel[1].fVirt = FALT;
-	accel[1].key = VK_RETURN;
-	accel[1].cmd = 1;
-	m_hAccel = ::CreateAcceleratorTableA(accel, 2);
+	accel[1].key   = VK_RETURN;
+	accel[1].cmd   = 1;
+	m_hAccel       = ::CreateAcceleratorTableA(accel, 2);
 }
 
 void TRenderD3DInterface::DestroyAcceleratorTable()
