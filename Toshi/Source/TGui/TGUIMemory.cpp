@@ -9,7 +9,7 @@ TPile TGUIMemory::ms_oMemoryPile   = TPile(0x8000, 0x100000, 0);
 void *TOSHI_API TGUINew(TUINT a_uiSize)
 {
 	if (TGUIMemory::ms_bAllocUsePile) {
-		TGUIMemory::ms_oMemoryPile.RawAlloc(a_uiSize, 4);
+		return TGUIMemory::ms_oMemoryPile.RawAlloc(a_uiSize, 4);
 	}
 	return tmalloc(a_uiSize, TNULL, -1);
 }
