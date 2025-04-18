@@ -2,7 +2,7 @@
 #include "Defines.h"
 #include "TKernel/TObject.h"
 #include "TGui/TGUIInterface.h"
-#include "PPropertyParser/PPropertyValue.h"
+#include "PPropertyParser/PProperties.h"
 
 TOSHI_NAMESPACE_BEGIN
 

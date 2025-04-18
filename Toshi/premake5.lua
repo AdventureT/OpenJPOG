@@ -232,7 +232,7 @@ project ("TGuiInterface")
 	{
 		"winmm.lib",
 		"TKernelInterface",
-		"PProperties"
+		"PPropertyParser"
 	}
 
 	includedirs
