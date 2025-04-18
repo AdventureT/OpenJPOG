@@ -6,9 +6,10 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(AFrontEndSplashState, AFrontendState)
 
-AFrontEndSplashState::AFrontEndSplashState(TBOOL a_bInitialise, TFLOAT a_fUnk)
+AFrontEndSplashState::AFrontEndSplashState(TBOOL a_bInitialise, TFLOAT a_fMoviePlayingTime)
 {
 	m_bInitialise      = a_bInitialise;
+	m_fMoviePlayingTime = a_fMoviePlayingTime;
 	m_bMovieStarted    = TFALSE;
 	m_iLogoScreenIndex = 0;
 	m_bLogoScreenSet   = TFALSE;
@@ -59,6 +60,7 @@ TBOOL AFrontEndSplashState::OnUpdate(TFLOAT a_fDeltaTime)
 		s_StartMovie = TFALSE;
 		if (pMoviePlayer && !pMoviePlayer->IsMoviePlaying()) {
 			pMoviePlayer->StartMovie((TPCHAR) "Intro", TFALSE, (TPCHAR) "Intro", TTRUE);
+			m_oHUDState.ClearBackgroundPicture();
 		}
 	}
 	else if (!pMoviePlayer) {
