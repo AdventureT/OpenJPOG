@@ -19,7 +19,6 @@ public:
 	TPile(TINT a_iPileSize, TINT a_iBlockSize, TUINT a_iFlags);
 	~TPile()
 	{
-
 	}
 
 	void *RawAlloc(TINT a_iSize, TINT a_iAlignment);

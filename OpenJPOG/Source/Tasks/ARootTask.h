@@ -79,14 +79,14 @@ private:
 	void LoadMaterialLibrary(TINT a_iIndex);
 
 private:
-	Toshi::TCString          m_szName;
-	AOptions                *m_pOptions;             // 0x24
-	AFrontEndController     *m_pFrontEndController;  // 0x28
-	AGUISystem              *m_pGUISystem;           // 0x34
-	Toshi::TTask            *m_pInputTask;           // 0x38
+	Toshi::TCString                             m_szName;
+	AOptions                                   *m_pOptions;             // 0x24
+	AFrontEndController                        *m_pFrontEndController;  // 0x28
+	AGUISystem                                 *m_pGUISystem;           // 0x34
+	Toshi::TTask                               *m_pInputTask;           // 0x38
 	Toshi::TManagedPtr<Toshi::TRenderInterface> m_pRenderInterface;     // 0xD0
-	Toshi::ARenderer        *m_pRenderer;            // 0xD4
-	ARootStateController    *m_pGameStateController; // 0xD8
-	AVibrationManager       *m_pVibrationTask;       // 0xE8
-	Toshi::AMoviePlayer     *m_pMoviePlayer;         // 0xF0
+	Toshi::ARenderer                           *m_pRenderer;            // 0xD4
+	ARootStateController                       *m_pGameStateController; // 0xD8
+	AVibrationManager                          *m_pVibrationTask;       // 0xE8
+	Toshi::AMoviePlayer                        *m_pMoviePlayer;         // 0xF0
 };

@@ -217,8 +217,8 @@ TBOOL ABINKMoviePlayer::InitializeVideoResource()
 
 TBOOL ABINKMoviePlayer::InitializeAudioResource()
 {
-	TRenderD3DInterface          *renderer    = g_oTheApp.GetRootTask()->GetRenderInterface();
-	HRESULT                       hResult     = DirectSoundCreate(NULL, &m_pDirectSound, NULL);
+	TRenderD3DInterface *renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
+	HRESULT              hResult  = DirectSoundCreate(NULL, &m_pDirectSound, NULL);
 
 	if (FAILED(hResult)) {
 		m_pDirectSound = NULL;

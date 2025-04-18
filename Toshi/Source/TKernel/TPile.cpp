@@ -21,8 +21,8 @@ TPile::TPile(TINT a_iBlockSize, TINT a_iSize, TUINT a_iFlags)
 void *TPile::RawAlloc(TINT a_iSize, TINT a_iAlignment)
 {
 	m_iNumAllocs++;
-	TINT uiAlignMask = ~(a_iAlignment - 1);
-	TPCHAR pAligned   = (TPCHAR)(((TUINT)m_pBlockStart + (a_iAlignment - 1)) & uiAlignMask);
+	TINT   uiAlignMask = ~(a_iAlignment - 1);
+	TPCHAR pAligned    = (TPCHAR)(((TUINT)m_pBlockStart + (a_iAlignment - 1)) & uiAlignMask);
 	if (m_pBlockEnd < pAligned + a_iSize) {
 		if (m_iCurrentBlock < m_iNumBlocks) {
 			m_pBlocksTail = m_pBlocksTail->m_pNext;
@@ -33,7 +33,7 @@ void *TPile::RawAlloc(TINT a_iSize, TINT a_iAlignment)
 			}
 			Block *pBlock;
 			if ((m_iFlags & PILEFLAG_USEBLOCKALIGNMENT) == 0) {
-				pBlock = (Block *)operator new (m_iBlockSize + 4);
+				pBlock = (Block *)operator new(m_iBlockSize + 4);
 			}
 			else {
 				const TINT uiBlockAlignment = 32;
@@ -85,12 +85,12 @@ void TPile::Free()
 void TPile::Reset()
 {
 	if (m_pBlocksHead) {
-		m_pBlockStart    = m_pBlocksHead + 4;
+		m_pBlockStart   = m_pBlocksHead + 4;
 		m_pBlockEnd     = m_pBlocksHead + m_iBlockSize + 4;
 		m_iCurrentBlock = 1;
 	}
 	else {
-		m_pBlockStart    = TNULL;
+		m_pBlockStart   = TNULL;
 		m_pBlockEnd     = TNULL;
 		m_iCurrentBlock = 0;
 	}

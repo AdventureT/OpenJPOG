@@ -8,11 +8,11 @@ IMPLEMENT_DYNCREATE(AFrontEndSplashState, AFrontendState)
 
 AFrontEndSplashState::AFrontEndSplashState(TBOOL a_bInitialise, TFLOAT a_fMoviePlayingTime)
 {
-	m_bInitialise      = a_bInitialise;
+	m_bInitialise       = a_bInitialise;
 	m_fMoviePlayingTime = a_fMoviePlayingTime;
-	m_bMovieStarted    = TFALSE;
-	m_iLogoScreenIndex = 0;
-	m_bLogoScreenSet   = TFALSE;
+	m_bMovieStarted     = TFALSE;
+	m_iLogoScreenIndex  = 0;
+	m_bLogoScreenSet    = TFALSE;
 }
 
 void AFrontEndSplashState::OnActivate()

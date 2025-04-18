@@ -19,7 +19,7 @@ public:
 	}
 
 	TManagedPtr(T *a_pObject)
-		: m_pObject( a_pObject )
+		: m_pObject(a_pObject)
 	{
 		if (m_pObject) {
 			m_pObject = a_pObject;
@@ -81,7 +81,7 @@ public:
 		return m_pObject;
 	}
 
-	template<typename P>
+	template <typename P>
 	operator P *() const
 	{
 		static_assert(std::is_base_of<TRefCounted, P>::value);
@@ -109,7 +109,7 @@ private:
 		}
 
 		m_pObject = a_pObject;
-		
+
 		if (m_pObject) {
 			m_pObject->TRefCounted::IncRefCount();
 		}

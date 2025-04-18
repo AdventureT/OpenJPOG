@@ -27,10 +27,10 @@ private:
 	static inline TBOOL            s_bLoadedSound      = TFALSE;
 	static inline TFLOAT           sm_fLogoDisplayTime = 2.5f;
 
-	TFLOAT m_fMoviePlayingTime;// 0x54
-	TBOOL  m_bMovieStarted;    // 0x5C
-	TBOOL  m_bInitialise;      // 0x64
-	TINT   m_iLogoScreenIndex; // 0x68
-	TFLOAT m_fLogoDisplayTime; // 0x6C
-	TBOOL  m_bLogoScreenSet;   // 0x70
+	TFLOAT m_fMoviePlayingTime; // 0x54
+	TBOOL  m_bMovieStarted;     // 0x5C
+	TBOOL  m_bInitialise;       // 0x64
+	TINT   m_iLogoScreenIndex;  // 0x68
+	TFLOAT m_fLogoDisplayTime;  // 0x6C
+	TBOOL  m_bLogoScreenSet;    // 0x70
 };

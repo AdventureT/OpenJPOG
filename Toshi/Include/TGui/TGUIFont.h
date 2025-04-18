@@ -1,0 +1,10 @@
+#pragma once
+#include "Defines.h"
+
+TOSHI_NAMESPACE_BEGIN
+
+class TGUIINTERFACE_EXPORTS TGUIFont
+{
+};
+
+TOSHI_NAMESPACE_END

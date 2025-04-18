@@ -15,7 +15,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-class TRENDERINTERFACE_EXPORTS TRenderInterface 
+class TRENDERINTERFACE_EXPORTS TRenderInterface
 	: public TObject
 	, public TRefCounted
 {
