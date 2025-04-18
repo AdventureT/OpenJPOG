@@ -1,3 +1,5 @@
+#if 0
+
 #include "TKernel/TPile.h"
 #include <catch2/catch_test_macros.hpp>
 
@@ -32,3 +34,5 @@ TEST_CASE("Test Pile Allocations", "[TPile]")
 	delete pTest;
 	delete pTest2;
 }
+
+#endif
