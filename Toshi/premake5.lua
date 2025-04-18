@@ -231,14 +231,16 @@ project ("TGuiInterface")
 	links
 	{
 		"winmm.lib",
-		"TKernelInterface"
+		"TKernelInterface",
+		"PProperties"
 	}
 
 	includedirs
 	{
 		"Include",
 		"Include/TKernel",
-		"Include/TGui"
+		"Include/TGui",
+		"Plugins/Include"
 	}
 	
 	files
