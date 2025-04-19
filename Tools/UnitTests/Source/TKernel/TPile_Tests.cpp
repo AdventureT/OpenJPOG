@@ -1,19 +1,22 @@
-#if 0
-
 #include "TKernel/TPile.h"
 #include <catch2/catch_test_macros.hpp>
 
 TOSHI_NAMESPACE_USING
 
-static TPile m_soMemoryPile = TPile(0x1000, 0x3000, 0);
+static TPile s_oMemoryPile = TPile(0x2000, 0x1000, 0);
 
 class PileTest
 {
 public:
 
-	void* operator new(size_t size)
+	void* operator new(unsigned int size)
 	{
-		return m_soMemoryPile.RawAlloc(size, 4);
+		return s_oMemoryPile.RawAlloc(size, 4);
+	}
+
+	void operator delete(void *ptr)
+	{
+		
 	}
 
 	int x[2000] = {2};
@@ -27,12 +30,11 @@ TEST_CASE("Test Pile Allocations", "[TPile]")
 
 	REQUIRE(pTest->x[0] == 2);
 	REQUIRE(pTest->x[1] == 0);
+	REQUIRE(pTest->x[1100] == 0);
 	REQUIRE(pTest->y == 1);
-	REQUIRE(m_soMemoryPile.RawIsInside(pTest));
-	REQUIRE(!m_soMemoryPile.RawIsInside(pTest2));
+	REQUIRE(s_oMemoryPile.RawIsInside(pTest));
+	REQUIRE(!s_oMemoryPile.RawIsInside(pTest2));
 
 	delete pTest;
 	delete pTest2;
 }
-
-#endif
