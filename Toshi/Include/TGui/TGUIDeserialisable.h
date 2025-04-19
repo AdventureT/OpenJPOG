@@ -12,7 +12,7 @@ class TGUIINTERFACE_EXPORTS TGUIDeserialisable : public TObject
 
 public:
 	static TGUIDeserialisable *TOSHI_API Create(TGUIInterface *a_pInterface, const PProperties *a_pProperties);
-	
+
 	TBOOL ValidateProperty(const TPCString &a_rPropName, const PPropertyValue &a_rValue);
 };
 

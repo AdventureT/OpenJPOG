@@ -24,9 +24,9 @@ public:
 	static AGUISystem *TOSHI_API GetGUISystem();
 
 private:
-	Toshi::TGUIInterface *m_pGUIInterface; // 0x24
+	Toshi::TGUIInterface *m_pGUIInterface;   // 0x24
 	PGUITRDisplayContext *m_pDisplayContext; // 0xA4
-	PGUITRTextureFactory *m_pTextureFactory;    // 0xA8
-	PGUITRFontFactory    *m_pFontFactory;       // 0xAC
-	Toshi::TNullResource *m_pNullResource; // 0x140
+	PGUITRTextureFactory *m_pTextureFactory; // 0xA8
+	PGUITRFontFactory    *m_pFontFactory;    // 0xAC
+	Toshi::TNullResource *m_pNullResource;   // 0x140
 };

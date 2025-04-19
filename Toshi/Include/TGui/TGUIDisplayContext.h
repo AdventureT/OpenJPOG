@@ -18,8 +18,8 @@ class TGUIINTERFACE_EXPORTS TGUIDisplayContext : public TObject
 public:
 	virtual void PushClip(int a_iMinX, int a_iMinY, int a_MaxX, int a_iMaxY);
 	virtual void PopClip();
-	virtual void PushRotation(float a_fRotation, int a_iX, int a_iY)                                                                                                              = 0;
-	virtual void PushRotation(float a_fRotation)                                                                                                                                  ;
+	virtual void PushRotation(float a_fRotation, int a_iX, int a_iY) = 0;
+	virtual void PushRotation(float a_fRotation);
 	virtual void PushScale(float a_fYaw, float a_fPitch)                                                                                                                          = 0;
 	virtual void PopTransform()                                                                                                                                                   = 0;
 	virtual void PushModulateColour(const TGUIColour &m_rColour)                                                                                                                  = 0;
@@ -36,7 +36,7 @@ public:
 	virtual void DrawLabel(const TGUIRectangle &a_rRectangle, const TGUIFont *m_pFont, const TGUIColour &m_rColour, const TLString &a_rLabel, const TGUIRectangle &a_rRectangle2) = 0;
 	virtual void DrawLabel(const TGUIRectangle &a_rRectangle, const TGUIFont *m_pFont, const TGUIColour &m_rColour, const TLString &a_rLabel)                                     = 0;
 	virtual void DrawLabel(const TGUIRectangle &a_rRectangle, const TGUIFont *m_pFont, const TGUIColour &m_rColour, const TWString &a_rLabel, bool)                               = 0;
-	virtual void DrawFormattedText(const TGUIFormattedText &a_rFormattedText, int a_iX, int a_iY, int a_iWidth, int a_iHeight)                                                    ;
+	virtual void DrawFormattedText(const TGUIFormattedText &a_rFormattedText, int a_iX, int a_iY, int a_iWidth, int a_iHeight);
 
 protected:
 	virtual void Imp_DrawTextureSection(const TGUITextureSection *a_rTextureSection, const TGUIColour &m_rColour, int a_iX, int a_iY, int a_iWidth, int a_iHeight, TGUIAlignment a_eAlignW, TGUIAlignment a_eAlignH) = 0;

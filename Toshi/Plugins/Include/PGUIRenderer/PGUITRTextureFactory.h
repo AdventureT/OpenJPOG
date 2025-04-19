@@ -8,7 +8,6 @@ class PGUIRENDERER_EXPORTS PGUITRTextureFactory : public Toshi::TGUITextureFacto
 	DECLARE_DYNAMIC(PGUITRTextureFactory)
 
 public:
-
 	enum TextureFlag
 	{
 
@@ -17,14 +16,12 @@ public:
 	class Texture
 	{
 	public:
-
 		Texture(const Toshi::TPCString &a_rName, PGUITRTextureFactory *a_pTextureFactory, TBOOL a_bValidate)
 		{
 			m_sName           = a_rName;
 			m_pTextureFactory = a_pTextureFactory;
 			m_iWidth          = -1;
 			m_iHeight         = -1;
-
 		}
 
 		TBOOL GetFlag(TextureFlag a_eFlag) const
@@ -35,7 +32,7 @@ public:
 		{
 			return m_iHeight;
 		}
-		const Toshi::TPCString& GetName() const
+		const Toshi::TPCString &GetName() const
 		{
 			return m_sName;
 		}
@@ -62,10 +59,10 @@ public:
 		}
 
 	private:
-		Toshi::TPCString m_sName; // 0x0
+		Toshi::TPCString      m_sName;           // 0x0
 		PGUITRTextureFactory *m_pTextureFactory; // 0x4
-		TINT             m_iWidth; // 0x10
-		TINT  m_iHeight; // 0x14
-		TUINT m_eFlags; // 0x18
+		TINT                  m_iWidth;          // 0x10
+		TINT                  m_iHeight;         // 0x14
+		TUINT                 m_eFlags;          // 0x18
 	};
 };
