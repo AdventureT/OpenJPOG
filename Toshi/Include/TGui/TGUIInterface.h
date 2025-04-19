@@ -14,6 +14,7 @@ class TGUIINTERFACE_EXPORTS TGUIInterface
 
 public:
 	void Create();
+	void Error(const TCString &a_rText);
 
 private:
 	TGUIActionMap m_oActionMap; // 0x84

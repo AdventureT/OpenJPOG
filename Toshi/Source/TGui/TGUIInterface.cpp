@@ -1,4 +1,5 @@
 #include "TGUIInterface.h"
+#include "TWString.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -34,6 +35,12 @@ void TGUIInterface::Create()
 	m_oActionMap.AddActionMapping(0x2006a, 1);
 	m_oActionMap.AddActionMapping(0x20012, 2);
 	m_oActionMap.AddActionMapping(0x20005, 2);
+}
+
+void TGUIInterface::Error(const TCString &a_rText)
+{
+	TWString().Format(L"Runtime error in TGUIInterface:\n\t%s\n", TWString(a_rText)).Print();
+	// Throw event
 }
 
 TOSHI_NAMESPACE_END

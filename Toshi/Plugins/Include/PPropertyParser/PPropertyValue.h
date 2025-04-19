@@ -78,6 +78,10 @@ public:
 	{
 		return m_type != TYPE_UNDEF;
 	}
+	TBOOL IsType(const Toshi::TClass *a_pClass) const
+	{
+		return m_type == a_pClass;
+	}
 
 protected:
 	// Toshi::TManagedPtr<PProperties>
