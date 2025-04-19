@@ -12,4 +12,12 @@ void TGUIDisplayContext::PopClip()
 {
 }
 
+void TGUIDisplayContext::PushRotation(float a_fRotation)
+{
+}
+
+void TGUIDisplayContext::DrawFormattedText(const TGUIFormattedText &a_rFormattedText, int a_iX, int a_iY, int a_iWidth, int a_iHeight)
+{
+}
+
 TOSHI_NAMESPACE_END

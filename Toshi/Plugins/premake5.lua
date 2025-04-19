@@ -30,7 +30,7 @@ project ("PPropertyParser")
 			"Source/PPropertyParser/**.cpp"
 		}
 
-project ("PGui")
+project ("PGUIRenderer")
 	kind "SharedLib"
 	language "C++"
 	cppdialect "C++20"
@@ -39,25 +39,25 @@ project ("PGui")
 	links
 	{
 		"winmm.lib", 
-		"TKernelInterface"
+		"TKernelInterface",
+		"TGuiInterface",
+		"TRenderInterface"
 	}
 
 	includedirs
 	{
 		"Include",
 		"%{wks.location}/Toshi/Include",
-		"%{wks.location}/Toshi/Include/TKernel"
 	}
 
 	defines
 	{
-		"PGUI"
+		"PGUIRENDERER"
 	}
 
 	filter "system:windows"
 		files
 		{
-			"Include/*.h",
-			"Include/PGui/**.h",
-			"Source/PGui/**.cpp"
+			"Include/PGUIRenderer/**.h",
+			"Source/PGUIRenderer/**.cpp"
 		}

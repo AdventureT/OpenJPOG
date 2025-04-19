@@ -44,4 +44,9 @@ TGUIDeserialisable *TOSHI_API TGUIDeserialisable::Create(TGUIInterface *a_pInter
 	return (TGUIDeserialisable *)pObject;
 }
 
+TBOOL TGUIDeserialisable::ValidateProperty(const TPCString &a_rPropName, const PPropertyValue &a_rValue)
+{
+	return TFALSE;
+}
+
 TOSHI_NAMESPACE_END

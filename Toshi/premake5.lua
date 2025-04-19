@@ -173,55 +173,6 @@ project ("TRenderD3DInterface")
 			"Source/TRenderD3D/**.cpp"
 		}
 
-project ("TSysShaderD3D")
-	kind "SharedLib"
-	language "C++"
-	
-	links
-	{
-		"d3d8.lib",
-		"d3dx8.lib",
-		"dxguid.lib",
-		"dxgi.lib",
-		"DxErr8.lib",
-		"legacy_stdio_definitions.lib",
-		"winmm.lib",
-		"dinput8.lib",
-		"TKernelInterface",
-		"TRenderInterface"
-	}
-
-	includedirs
-	{
-		"Include"
-	}
-	
-	externalincludedirs
-	{
-		"%{IncludeDir.dx8}"
-	}
-
-	libdirs
-	{
-		"%{LibDir.dx8}"
-	}
-
-	defines
-	{
-		"TSYSSHADERD3D",
-		"SAFESEH=0"
-	}
-	
-	linkoptions "/SAFESEH:NO"
-
-	filter "system:windows"
-		files
-		{
-			"Include/*.h",
-			"Shaders/TSysShader/Include/**.h",
-			"Shaders/TSysShader/Source/**.cpp"
-		}
-
 project ("TGuiInterface")
 	kind "SharedLib"
 	language "C++"
@@ -239,15 +190,15 @@ project ("TGuiInterface")
 	{
 		"Include",
 		"Include/TKernel",
-		"Include/TGui",
+		"Include/TGUI",
 		"Plugins/Include"
 	}
 	
 	files
 	{
 		"Include/*.h",
-		"Include/TGui/**.h",
-		"Source/TGui/**.cpp"
+		"Include/TGUI/**.h",
+		"Source/TGUI/**.cpp"
 	}
 	
 	defines

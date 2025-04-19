@@ -10,6 +10,7 @@ project ("OpenJPOG")
 		"TRenderInterface",
 		"TRenderD3DInterface",
 		"TGuiInterface",
+		"PGUIRenderer",
 		"PPropertyParser",
 		"d3d8.lib",
 		"d3dx8.lib",
@@ -63,7 +64,9 @@ project ("OpenJPOG")
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TRenderInterface/TRenderInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TRenderD3DInterface/TRenderD3DInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TGuiInterface/TGuiInterface.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
+		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/TSpriteShaderD3D/TSpriteShaderD3D.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/PPropertyParser/PPropertyParser.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
+		"{COPY} \"%{wks.location}bin/" .. outputdir .. "/PGUIRenderer/PGUIRenderer.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}Toshi/vendor/fmod/lib/fmod.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 		"{COPY} \"%{wks.location}Toshi/vendor/bink/lib/binkw32.dll\" \"%{wks.location}bin/" .. outputdir .. "/%{prj.name}\"",
 	}

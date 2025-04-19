@@ -4,6 +4,7 @@
 #include "TKernel/TManagedPointer.h"
 #include "TRender/TNullResource.h"
 #include "TGui/TGUIInterface.h"
+#include "PGuiRenderer/PGUITRDisplayContext.h"
 
 class AGUISystem : public Toshi::TTask
 {
@@ -24,5 +25,8 @@ public:
 
 private:
 	Toshi::TGUIInterface *m_pGUIInterface; // 0x24
+	PGUITRDisplayContext *m_pDisplayContext; // 0xA4
+	PGUITRTextureFactory *m_pTextureFactory;    // 0xA8
+	PGUITRFontFactory    *m_pFontFactory;       // 0xAC
 	Toshi::TNullResource *m_pNullResource; // 0x140
 };

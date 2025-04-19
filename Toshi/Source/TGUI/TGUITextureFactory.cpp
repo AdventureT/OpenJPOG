@@ -1,0 +1,9 @@
+#include "TGUITextureFactory.h"
+
+TOSHI_NAMESPACE_BEGIN
+
+IMPLEMENT_DYNAMIC(TGUITextureFactory, TObject);
+
+
+
+TOSHI_NAMESPACE_END

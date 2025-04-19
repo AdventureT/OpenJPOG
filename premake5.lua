@@ -57,11 +57,16 @@ workspace ("OpenJPOG")
 		runtime "Release"
 		optimize "On"
 
-group "Engine"
-	include "Toshi"
+group "00-Game"
 	include "OpenJPOG"
 
-group "Plugin"
+group "10-Engine"
+	include "Toshi"
+
+group "10-Engine/11-Shader"
+	include "Toshi/Shaders"
+
+group "20-Plugin"
 	include "Toshi/Plugins"
 	
 --group "Third-Party"
@@ -70,5 +75,5 @@ group "Plugin"
 --	include "Toshi/Vendor/libtheora"
 --	include "Toshi/Vendor/theoraplay"
 
-group "Tools"
+group "30-Tools"
 	include "Tools/UnitTests"
