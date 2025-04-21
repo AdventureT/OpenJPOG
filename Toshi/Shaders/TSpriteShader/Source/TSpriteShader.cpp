@@ -1,0 +1,7 @@
+#include "TSpriteShader.h"
+
+TOSHI_NAMESPACE_BEGIN
+
+IMPLEMENT_DYNAMIC(TSpriteMaterial, TMaterial)
+
+TOSHI_NAMESPACE_END

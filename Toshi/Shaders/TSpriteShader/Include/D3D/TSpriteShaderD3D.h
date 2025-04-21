@@ -8,7 +8,13 @@ TOSHI_NAMESPACE_BEGIN
 
 class TSPRITESHADERD3D_EXPORTS TSpriteMaterialHAL : public TSpriteMaterial
 {
+	DECLARE_DYNAMIC(TSpriteMaterialHAL, TSpriteMaterial)
 public:
+
+	TSpriteMaterialHAL()
+	{
+		m_pTexture[0] = TNULL;
+	}
 
 	TRenderD3DInterface* GetRenderer() const
 	{
@@ -17,9 +23,6 @@ public:
 
 	virtual void PreRender() override;
 	virtual void PostRender() override;
-
-private:
-	TTextureResourceHAL *m_pTexture; // 0x40
 };
 
 class TSPRITESHADERD3D_EXPORTS TSpriteMeshHAL
