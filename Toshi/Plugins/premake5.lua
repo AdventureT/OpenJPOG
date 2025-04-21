@@ -48,6 +48,7 @@ project ("PGUIRenderer")
 	{
 		"Include",
 		"%{wks.location}/Toshi/Include",
+		"%{wks.location}/Toshi/Shaders",
 	}
 
 	defines

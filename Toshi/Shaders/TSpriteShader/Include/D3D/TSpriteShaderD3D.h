@@ -1,11 +1,25 @@
 #pragma once
 #include "Defines.h"
-#include "../TSpriteShader.h"
+#include "TSpriteShader.h"
+#include "TRenderD3D/TRenderD3DInterface.h"
+#include "TRenderD3D/TTextureResourceD3D.h"
 
 TOSHI_NAMESPACE_BEGIN
 
-class TSPRITESHADERD3D_EXPORTS TSpriteMaterialHAL
+class TSPRITESHADERD3D_EXPORTS TSpriteMaterialHAL : public TSpriteMaterial
 {
+public:
+
+	TRenderD3DInterface* GetRenderer() const
+	{
+		return TSTATICCAST(TRenderD3DInterface *, m_pRenderer);
+	}
+
+	virtual void PreRender() override;
+	virtual void PostRender() override;
+
+private:
+	TTextureResourceHAL *m_pTexture; // 0x40
 };
 
 class TSPRITESHADERD3D_EXPORTS TSpriteMeshHAL

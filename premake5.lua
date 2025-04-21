@@ -64,7 +64,8 @@ group "10-Engine"
 	include "Toshi"
 
 group "10-Engine/11-Shader"
-	include "Toshi/Shaders"
+	include "Toshi/Shaders/TSysShader"
+	include "Toshi/Shaders/TSpriteShader"
 
 group "20-Plugin"
 	include "Toshi/Plugins"

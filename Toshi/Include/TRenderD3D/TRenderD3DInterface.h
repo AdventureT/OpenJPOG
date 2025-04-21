@@ -5,6 +5,7 @@
 #include "TKernel/TKernelInterface.h"
 #include "TRenderD3D/TMSWindow.h"
 #include "TRenderD3D/TRenderD3DAdapter.h"
+#include "TRender/TTextureResource.h"
 #include <d3d8.h>
 
 TOSHI_NAMESPACE_BEGIN
@@ -56,6 +57,8 @@ public:
 
 	TBOOL IsTextureFormatSupported(D3DFORMAT a_eFormat);
 	void  Exit() { m_bIsExited = TTRUE; }
+
+	void SetTextureAddressMode(DWORD a_dwStage, TTextureResource::ADDRESSMODE a_eType);
 
 private:
 	void BuildAdapterDatabase();

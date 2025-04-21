@@ -12,6 +12,7 @@
 #include "TKernel/TMatrix44.h"
 #include "TRenderCapture.h"
 #include "TModel.h"
+#include "TMaterialLibrary.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -130,6 +131,10 @@ public:
 	TNodeList<TRenderAdapter> *GetAdapterList() { return &m_pAdapterList; };
 
 	static TRenderInterface *TOSHI_API GetRenderer() { return s_Interface; }
+	TMaterialLibraryManager *GetMaterialLibraryManager()
+	{
+		return &m_oMaterialLibraryManager;
+	}
 
 private:
 	void DestroyDyingResources(TResource *a_pResource);
@@ -152,6 +157,7 @@ protected:
 	TNodeTree<TResource>      m_Resources;                         // 0x128???
 	TINT                      m_iSceneCount;                       // 0x128
 	TBOOL                     m_bHasDyingResources;                // 0x12C
+	TMaterialLibraryManager   m_oMaterialLibraryManager;           // 0x130
 };
 
 TOSHI_NAMESPACE_END

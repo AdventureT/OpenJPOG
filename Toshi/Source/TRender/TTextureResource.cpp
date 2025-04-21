@@ -7,7 +7,7 @@ IMPLEMENT_DYNAMIC(TTextureResource, TResource)
 
 TTextureResource::TTextureResource()
 {
-	m_eAddressMode = ADDRESSMODE_UNKNOWN;
+	m_eAddressMode = ADDRESSMODE_WRAP;
 	m_CreateFlags  = 0;
 	m_pNameEntry   = TNULL;
 }

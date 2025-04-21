@@ -382,6 +382,31 @@ TBOOL TRenderD3DInterface::IsTextureFormatSupported(D3DFORMAT a_eFormat)
 			a_eFormat));
 }
 
+void TRenderD3DInterface::SetTextureAddressMode(DWORD a_dwStage, TTextureResource::ADDRESSMODE a_eAddressMode)
+{
+	switch (a_eAddressMode)
+	{
+		case TTextureResource::ADDRESSMODE_WRAP:
+			m_pD3DDevice->SetTextureStageState(a_dwStage, D3DTSS_ADDRESSU, D3DTADDRESS_WRAP);
+			m_pD3DDevice->SetTextureStageState(a_dwStage, D3DTSS_ADDRESSV, D3DTADDRESS_WRAP);
+			return;
+		case TTextureResource::ADDRESSMODE_MIRROR:
+			m_pD3DDevice->SetTextureStageState(a_dwStage, D3DTSS_ADDRESSU, D3DTADDRESS_MIRROR);
+			m_pD3DDevice->SetTextureStageState(a_dwStage, D3DTSS_ADDRESSV, D3DTADDRESS_MIRROR);
+			return;
+		case TTextureResource::ADDRESSMODE_CLAMP:
+			m_pD3DDevice->SetTextureStageState(a_dwStage, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP);
+			m_pD3DDevice->SetTextureStageState(a_dwStage, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP);
+			return;
+		case TTextureResource::ADDRESSMODE_BORDER:
+			m_pD3DDevice->SetTextureStageState(a_dwStage, D3DTSS_ADDRESSU, D3DTADDRESS_BORDER);
+			m_pD3DDevice->SetTextureStageState(a_dwStage, D3DTSS_ADDRESSV, D3DTADDRESS_BORDER);
+			return;
+		default:
+			return;
+	}
+}
+
 TBOOL TRenderD3DInterface::Supports32BitTextures()
 {
 	return IsTextureFormatSupported(R8G8B8A8) && IsTextureFormatSupported(R8G8B8);

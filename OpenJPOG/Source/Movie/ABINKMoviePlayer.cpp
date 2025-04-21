@@ -210,7 +210,7 @@ TBOOL ABINKMoviePlayer::InitializeVideoResource()
 	TPVOID buffer = tmalloc(size, TNULL, -1);
 	TSystem::MemSet(buffer, 0xFF, size);
 	m_pTextures[2] = factory->CreateEx(buffer, size, 256, 256, 1, textureFormat, textureFormatSize);
-	m_pTextures[2]->SetAddressModeMode(TTextureResource::ADDRESSMODE_UNKNOWN3);
+	m_pTextures[2]->SetAddressModeMode(TTextureResource::ADDRESSMODE_CLAMP);
 
 	return TTRUE;
 }

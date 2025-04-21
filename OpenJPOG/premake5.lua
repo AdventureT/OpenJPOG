@@ -35,6 +35,7 @@ project ("OpenJPOG")
 	{
 		"Source",
 		"%{wks.location}/Toshi/Include",
+		"%{wks.location}/Toshi/Shaders",
 		"%{wks.location}/Toshi/Plugins/Include",
 		"%{IncludeDir.fmod}",
 		"%{IncludeDir.bink}"
