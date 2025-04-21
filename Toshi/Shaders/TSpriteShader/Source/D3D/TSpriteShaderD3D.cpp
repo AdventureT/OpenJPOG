@@ -33,8 +33,27 @@ void TSpriteMaterialHAL::PreRender()
 		case 0:
 			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+			break;
+		case 1:
+			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-		default:
+			break;
+		case 2:
+			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ZERO);
+			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_SRCCOLOR);
+			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+			break;
+		case 3:
+			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+			break;
+		case 6:
+			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
+			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
+			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 			break;
 	}
 }
