@@ -58,7 +58,7 @@ TUINT TTextureFactory::HashName(TPCCHAR a_szName)
 {
 	TUINT iHash = 0;
 
-	for (size_t i = 0; i < TSystem::StringLength(a_szName); i++)
+	for (TINT i = 0; i < TSystem::StringLength(a_szName); i++)
 	{
 		iHash += a_szName[i];
 	}

@@ -4,6 +4,8 @@
 
 TOSHI_NAMESPACE_BEGIN
 
+class TTextureResourceHAL;
+
 class TSpriteMaterial : public TMaterial
 {
 	DECLARE_DYNAMIC(TSpriteMaterial)

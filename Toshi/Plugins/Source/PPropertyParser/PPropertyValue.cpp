@@ -171,7 +171,7 @@ TINT PPropertyValue::GetInteger() const
 		if (m_type != TYPE_FLOAT) {
 			return 0;
 		}
-		return m_valueFloat;
+		return TINT( m_valueFloat );
 	}
 	return m_valueInt;
 }
@@ -185,7 +185,7 @@ TUINT PPropertyValue::GetUINT32() const
 		if (m_type != TYPE_FLOAT) {
 			return 0;
 		}
-		return m_valueFloat;
+		return TUINT( m_valueFloat );
 	}
 	return m_valueUInt;
 }
@@ -193,7 +193,7 @@ TUINT PPropertyValue::GetUINT32() const
 TFLOAT PPropertyValue::GetFloat() const
 {
 	if (m_type == TYPE_INT) {
-		return m_valueInt;
+		return TFLOAT( m_valueInt );
 	}
 	if (m_type != TYPE_UINT32) {
 		if (m_type != TYPE_FLOAT) {

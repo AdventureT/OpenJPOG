@@ -72,7 +72,7 @@ TBOOL TKernelInterface::Update()
 	return TTRUE;
 }
 
-static int GetProcessorSpeed()
+static TINT GetProcessorSpeed()
 {
 	LARGE_INTEGER qwFreq, qwStart, qwStop;
 	BOOL          bSuccess = QueryPerformanceFrequency(&qwFreq);
@@ -81,7 +81,7 @@ static int GetProcessorSpeed()
 	unsigned __int64 Start = __rdtsc();
 	Sleep(10);
 	QueryPerformanceCounter(&qwStop);
-	return ((__rdtsc() - Start) * qwFreq.LowPart) / (qwStop.LowPart - qwStart.HighPart);
+	return TINT(((__rdtsc() - Start) * qwFreq.LowPart) / (qwStop.LowPart - qwStart.HighPart));
 }
 
 void TKernelInterface::DumpInfo()
