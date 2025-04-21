@@ -8,7 +8,7 @@ TOSHI_NAMESPACE_BEGIN
 
 class TSPRITESHADERD3D_EXPORTS TSpriteMaterialHAL : public TSpriteMaterial
 {
-	DECLARE_DYNAMIC(TSpriteMaterialHAL, TSpriteMaterial)
+	DECLARE_DYNAMIC(TSpriteMaterialHAL)
 public:
 
 	TSpriteMaterialHAL()

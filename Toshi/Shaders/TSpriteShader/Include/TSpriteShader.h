@@ -6,7 +6,7 @@ TOSHI_NAMESPACE_BEGIN
 
 class TSpriteMaterial : public TMaterial
 {
-	DECLARE_DYNAMIC(TSpriteMaterial, TMaterial)
+	DECLARE_DYNAMIC(TSpriteMaterial)
 
 public:
 	TSpriteMaterial()
