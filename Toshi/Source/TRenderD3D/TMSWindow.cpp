@@ -1,6 +1,12 @@
 #include "TRenderD3D/TMSWindow.h"
 #include "TRenderD3D/TRenderD3DInterface.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TMSWindow, TObject)

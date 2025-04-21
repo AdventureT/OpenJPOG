@@ -13,17 +13,21 @@ workspace ("OpenJPOG")
 	debugdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
+	
+	-- Global defines
+	defines
+	{
+		-- Engine defines
+		"TKERNELINTERFACE_ENABLE_MEMORY_PROFILER",
+		
+		-- Other defines
+		"_CRT_SECURE_NO_WARNINGS",
+		"NOMINMAX"
+	}
 
 	-- Disable precompiled headers for C files
 	filter "files:**.c"
 		flags { "NoPCH" }
-
-	-- Global defines
-	defines
-	{
-		"_CRT_SECURE_NO_WARNINGS",
-		"NOMINMAX"
-	}
 
 	-- Windows defines
 	filter "system:windows"

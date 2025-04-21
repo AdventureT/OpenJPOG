@@ -1,6 +1,12 @@
 #include "TUser.h"
 #include "TSystemTools.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 TUserHandler TUserHandler::ms_oSingleton = TUserHandler();

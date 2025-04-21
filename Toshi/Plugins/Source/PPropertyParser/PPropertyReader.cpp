@@ -1,5 +1,11 @@
 #include "PPropertyParser/PPropertyReader.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 PPropertyReader::PPropertyReader()
 {
 	m_pFile          = TNULL;

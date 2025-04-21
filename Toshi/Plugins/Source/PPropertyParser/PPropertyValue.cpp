@@ -15,6 +15,12 @@ const TClass *PPropertyValue::TYPE_ARRAY     = new Toshi::TClass("PPropertyValue
 const TClass *PPropertyValue::TYPE_PROPS     = new Toshi::TClass("PProperties", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
 const TClass *PPropertyValue::TYPE_UNDEF     = TNULL;
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 PPropertyValue::PPropertyValue()
 {
 	m_type = TYPE_UNDEF;
@@ -171,7 +177,7 @@ TINT PPropertyValue::GetInteger() const
 		if (m_type != TYPE_FLOAT) {
 			return 0;
 		}
-		return m_valueFloat;
+		return TINT( m_valueFloat );
 	}
 	return m_valueInt;
 }
@@ -185,7 +191,7 @@ TUINT PPropertyValue::GetUINT32() const
 		if (m_type != TYPE_FLOAT) {
 			return 0;
 		}
-		return m_valueFloat;
+		return TUINT( m_valueFloat );
 	}
 	return m_valueUInt;
 }
@@ -193,7 +199,7 @@ TUINT PPropertyValue::GetUINT32() const
 TFLOAT PPropertyValue::GetFloat() const
 {
 	if (m_type == TYPE_INT) {
-		return m_valueInt;
+		return TFLOAT( m_valueInt );
 	}
 	if (m_type != TYPE_UINT32) {
 		if (m_type != TYPE_FLOAT) {

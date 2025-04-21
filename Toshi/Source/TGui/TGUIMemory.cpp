@@ -1,6 +1,12 @@
 #include "TGUIMemory.h"
 #include "TKernel/TMemory.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_BEGIN
 
 TBOOL TGUIMemory::ms_bAllocUsePile = TTRUE;
@@ -11,7 +17,7 @@ void *TOSHI_API TGUINew(TUINT a_uiSize)
 	if (TGUIMemory::ms_bAllocUsePile) {
 		return TGUIMemory::ms_oMemoryPile.RawAlloc(a_uiSize, 4);
 	}
-	return tmalloc(a_uiSize, TNULL, -1);
+	return tmalloc(a_uiSize);
 }
 
 void TOSHI_API TGUIDelete(void *a_pMemory)

@@ -13,7 +13,8 @@ project ("TSpriteShaderD3D")
 		"winmm.lib",
 		"dinput8.lib",
 		"TKernelInterface",
-		"TRenderInterface"
+		"TRenderInterface",
+		"TRenderD3DInterface"
 	}
 
 	includedirs

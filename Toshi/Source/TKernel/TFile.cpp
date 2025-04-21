@@ -1,5 +1,11 @@
 #include "TFile.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 TFile *TOSHI_API TFile::Create(const TCString &a_sName, TUINT a_uiMode)

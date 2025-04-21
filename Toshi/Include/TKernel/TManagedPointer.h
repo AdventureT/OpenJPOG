@@ -84,7 +84,7 @@ public:
 	template <typename P>
 	operator P *() const
 	{
-		static_assert(std::is_base_of<TRefCounted, P>::value);
+		static_assert(std::is_base_of<T, P>::value);
 
 		TASSERT(m_pObject != TNULL);
 		return (P *)m_pObject;

@@ -38,7 +38,7 @@ public:
 			m_iFlags |= a_uiFlag;
 		}
 		else {
-			m_iFlags &= -a_uiFlag;
+			m_iFlags &= ~a_uiFlag;
 		}
 	}
 	// $TRenderInterface: FUNCTION 100084f0

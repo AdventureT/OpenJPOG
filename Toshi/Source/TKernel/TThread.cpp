@@ -1,5 +1,11 @@
 #include "TThread.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 void TMutexLock::Create(TMutex *a_pMutex)

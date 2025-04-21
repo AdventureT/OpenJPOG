@@ -3,6 +3,12 @@
 #include "TNullResource.h"
 #include "TVertexFactoryResourceInterface.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TRenderInterface, TObject)

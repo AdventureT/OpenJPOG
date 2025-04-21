@@ -1,5 +1,11 @@
 #include "TVector2.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_BEGIN
 
 const TVector2 TVector2::VEC_ZERO = { 0, 0 };

@@ -1,6 +1,12 @@
 #include "TTask.h"
 #include "TScheduler.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TTask, TObject);

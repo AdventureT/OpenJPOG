@@ -1,6 +1,12 @@
 #include "TRenderD3D/TRenderCaptureD3D.h"
 #include "TRenderD3D/TRenderD3DInterface.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_BEGIN
 
 TBOOL TRenderCaptureD3D::Create(FORMAT a_eFormat, TINT a_iWidth, TINT a_iHeight)

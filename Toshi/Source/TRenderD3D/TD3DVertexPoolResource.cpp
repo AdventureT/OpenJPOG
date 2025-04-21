@@ -2,10 +2,15 @@
 #include "TRenderD3D/TD3DVertexBlockResource.h"
 #include "TRenderD3D/TD3DVertexFactoryResource.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TVertexPoolResource, TVertexPoolResourceInterface)
-
 
 TBOOL TVertexPoolResource::Validate()
 {

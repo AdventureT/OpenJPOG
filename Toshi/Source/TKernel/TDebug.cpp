@@ -3,6 +3,12 @@
 #include <windows.h>
 #include "TSystemTools.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 #ifdef TOSHI_NOTFINAL
 
 #  include "../resource.h"

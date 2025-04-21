@@ -1,5 +1,11 @@
 #include "TTerrainSection.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_BEGIN
 
 void TTerrainSection::SetSystemFlags(TUINT a_ui32ClipFlags)

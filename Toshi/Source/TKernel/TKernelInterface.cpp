@@ -9,6 +9,12 @@
 #include <direct.h> // _getcwd
 #include <TKernel/TFile.h>
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TKernelInterface, TObject);
@@ -72,7 +78,7 @@ TBOOL TKernelInterface::Update()
 	return TTRUE;
 }
 
-static int GetProcessorSpeed()
+static TINT GetProcessorSpeed()
 {
 	LARGE_INTEGER qwFreq, qwStart, qwStop;
 	BOOL          bSuccess = QueryPerformanceFrequency(&qwFreq);
@@ -81,7 +87,7 @@ static int GetProcessorSpeed()
 	unsigned __int64 Start = __rdtsc();
 	Sleep(10);
 	QueryPerformanceCounter(&qwStop);
-	return ((__rdtsc() - Start) * qwFreq.LowPart) / (qwStop.LowPart - qwStart.HighPart);
+	return TINT(((__rdtsc() - Start) * qwFreq.LowPart) / (qwStop.LowPart - qwStart.HighPart));
 }
 
 void TKernelInterface::DumpInfo()
