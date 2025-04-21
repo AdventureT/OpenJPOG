@@ -1,6 +1,12 @@
 #include "main.h"
 #include "TRender/TResource.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 AApplication g_oTheApp;
 
 TBOOL AApplication::OnCreate(TINT argc, TPCHAR *const argv)

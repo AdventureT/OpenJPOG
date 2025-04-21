@@ -2,6 +2,12 @@
 #include "TSystemTools.h"
 #include <string.h>
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 TBOOL TWString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
@@ -24,7 +30,7 @@ TBOOL TWString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 			if (newExcessLen < 0 || newExcessLen > 0xFF) {
 				if (m_iStrLen != 0 && a_bClear) tfree(m_pBuffer);
 
-				m_pBuffer    = (TPWCHAR)tmalloc((a_iLength + 1) * 2, TNULL, -1);
+				m_pBuffer    = (TPWCHAR)tmalloc((a_iLength + 1) * 2);
 				m_iExcessLen = 0;
 				TASSERT(m_pBuffer != TNULL);
 				hasChanged = TTRUE;

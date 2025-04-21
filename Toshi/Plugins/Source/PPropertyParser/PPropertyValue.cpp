@@ -15,6 +15,12 @@ const TClass *PPropertyValue::TYPE_ARRAY     = new Toshi::TClass("PPropertyValue
 const TClass *PPropertyValue::TYPE_PROPS     = new Toshi::TClass("PProperties", TNULL, TNULL, TNULL, TNULL, TNULL, 1);
 const TClass *PPropertyValue::TYPE_UNDEF     = TNULL;
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 PPropertyValue::PPropertyValue()
 {
 	m_type = TYPE_UNDEF;

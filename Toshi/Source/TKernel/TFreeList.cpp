@@ -1,5 +1,11 @@
 #include "TFreeList.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 TFreeList::TFreeList(TUINT a_uiItemSize, TINT a_iInitialSize, TINT a_iGrowSize, TPCHAR a_pcName)
@@ -32,7 +38,7 @@ TFreeList::Node *TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
 	m_iMaxFreeCount = m_iMaxFreeCount <= m_iFreeCount ? m_iFreeCount : m_iMaxFreeCount;
 
 	const int len      = a_uiSize * a_iNumber + sizeof(Node);
-	Node     *pNewNode = (Node *)tmalloc(len, TNULL, -1);
+	Node     *pNewNode = (Node *)tmalloc(len);
 
 	pNewNode->m_pNext   = m_oRootNode.m_pNext;
 	m_oRootNode.m_pNext = pNewNode;
@@ -54,7 +60,7 @@ TFreeList::Node *TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
 TPVOID TFreeList::New(TUINT a_uiSize)
 {
 	if (a_uiSize != m_uiItemSize) {
-		return operator new(a_uiSize);
+		return tmalloc(a_uiSize);
 	}
 
 	Node *pLastNode = m_oLastNode.m_pNext;

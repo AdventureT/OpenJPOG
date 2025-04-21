@@ -1,5 +1,11 @@
 #include "PGuiRenderer/PGUITRDisplayContext.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 void PGUITRDisplayContext::Create()
 {
 }

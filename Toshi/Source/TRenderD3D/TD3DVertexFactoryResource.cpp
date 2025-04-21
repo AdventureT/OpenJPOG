@@ -1,6 +1,12 @@
 #include "TRenderD3D/TD3DVertexFactoryResource.h"
 #include "TRender/TRenderInterface.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TVertexFactoryResource, TVertexFactoryResourceInterface)

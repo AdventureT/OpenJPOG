@@ -4,6 +4,12 @@
 #include <string.h>
 #include <stdio.h>
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 TPCCHAR TOSHI_API TSystem::StringUnicodeToChar(TPCHAR a_CharString, TPCWCHAR a_UnicodeString, TINT a_iLength)

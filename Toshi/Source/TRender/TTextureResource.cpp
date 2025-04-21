@@ -1,6 +1,12 @@
 #include "TTextureResource.h"
 #include "TRenderInterface.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TTextureResource, TResource)

@@ -1,5 +1,11 @@
 #include "TEvent.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_BEGIN
 
 void TGenericListener::Connect(TGenericEmitter *a_pEmitter, void *a_pCaller, t_Callback a_pCallback, int a_iPriority)

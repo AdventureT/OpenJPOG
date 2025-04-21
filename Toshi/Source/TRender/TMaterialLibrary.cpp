@@ -1,6 +1,12 @@
 #include "TMaterialLibrary.h"
 #include "TRender/TRenderInterface.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_BEGIN
 
 TMaterial *TMaterialLibrary::GetMaterial(TPCCHAR a_szMaterial)

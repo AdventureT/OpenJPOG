@@ -58,7 +58,7 @@ public:
 	static MemNode *TOSHI_API  GetMemNodeFromAddress(TPVOID a_pAddr);
 	static void TOSHI_API      ExtendNodeSize(MemNode *a_pMemNode, TUINT a_iuSize);
 
-	TPVOID Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock *a_pMemBlock, TPCHAR a_pBuffer, TINT a_iUnk3);
+	TPVOID Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock *a_pMemBlock, TPCCHAR a_pszFileName, TINT a_iLineNum);
 	TBOOL  Free(TPVOID a_pMem);
 
 protected:
@@ -75,6 +75,6 @@ inline static TMemory g_oMemManager;
 
 TOSHI_NAMESPACE_END
 
-TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk);
+TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmalloc(TINT a_iSize, TPCCHAR a_pszFileName = TNULL, TINT a_iLineNum = -1);
 TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmemalign(TINT a_iAlign, TINT a_iSize);
 void TKERNELINTERFACE_EXPORTS TOSHI_API   tfree(TPVOID a_pMem);

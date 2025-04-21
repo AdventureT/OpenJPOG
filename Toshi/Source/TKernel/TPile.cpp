@@ -1,6 +1,12 @@
 #include "TPile.h"
 #include "TMemory.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_BEGIN
 
 TPile::TPile(TINT a_iBlockSize, TINT a_iSize, TUINT a_iFlags)
@@ -33,7 +39,7 @@ void *TPile::RawAlloc(TINT a_iSize, TINT a_iAlignment)
 			}
 			Block *pBlock;
 			if ((m_iFlags & PILEFLAG_USEBLOCKALIGNMENT) == 0) {
-				pBlock = (Block *)operator new(m_iBlockSize + 4);
+				pBlock = (Block *)tmalloc(m_iBlockSize + 4);
 			}
 			else {
 				const TINT uiBlockAlignment = 32;

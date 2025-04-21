@@ -3,6 +3,12 @@
 #include "TKernel/TManagedPointer.h"
 #include "TRenderD3D/TRenderD3DInterface.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 static U32 s_iPlayForegroundFast = 0;
@@ -207,7 +213,7 @@ TBOOL ABINKMoviePlayer::InitializeVideoResource()
 		textureFormatSize = 8;
 	}
 	size *= 256 * 256;
-	TPVOID buffer = tmalloc(size, TNULL, -1);
+	TPVOID buffer = tmalloc(size);
 	TSystem::MemSet(buffer, 0xFF, size);
 	m_pTextures[2] = factory->CreateEx(buffer, size, 256, 256, 1, textureFormat, textureFormatSize);
 	m_pTextures[2]->SetAddressModeMode(TTextureResource::ADDRESSMODE_CLAMP);

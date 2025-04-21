@@ -1,5 +1,11 @@
 #include "TDLL.h"
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 TPVOID TDLL::GetAddress(const TCString &a_rProcName)

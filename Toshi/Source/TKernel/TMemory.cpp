@@ -1,6 +1,9 @@
 #include "TMemory.h"
 #include <new>
 
+#include "TMemoryDebug.h"
+#include "TMemoryDebugOff.h"
+
 void *__CRTDECL operator new(size_t size)
 {
 	return tmalloc(size, TNULL, -1);
@@ -82,10 +85,11 @@ void TOSHI_API TMemory::ExtendNodeSize(MemNode *a_pMemNode, TUINT a_uiSize)
 {
 }
 
-TPVOID TMemory::Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock *a_pMemBlock, TPCHAR a_pBuffer, TINT a_iUnk3)
+TPVOID TMemory::Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock *a_pMemBlock, TPCCHAR a_pszFileName, TINT a_iLineNum)
 {
 	// Let's just use malloc until i implemented this
 	return malloc(a_uiSize);
+
 	TMutexLock lock;
 	Initialise();
 	lock.Create(g_pMutex);
@@ -117,17 +121,35 @@ TBOOL TMemory::Free(TPVOID a_pMem)
 	return TBOOL();
 }
 
-TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmalloc(TINT a_iSize, TPCHAR a_pBuffer, TINT a_iUnk)
+TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmalloc(TINT a_iSize, TPCCHAR a_pszFileName, TINT a_iLineNum)
 {
+#ifdef TKERNELINTERFACE_ENABLE_MEMORY_PROFILER
+
+	if (a_pszFileName) {
+		TMemory__FILE__ = a_pszFileName;
+		TMemory__LINE__ = a_iLineNum;
+		TMemory__FUNC__ = "UNKNOWN";
+	}
+
+#endif // TKERNELINTERFACE_ENABLE_MEMORY_PROFILER
+
 #ifdef TOSHI_NOTFINAL
 	return malloc(a_iSize);
 #else
-	return Toshi::TMemory::GetMemMangager().Alloc(a_iSize, 16, Toshi::TMemory::GetGlobalBlock(), a_pBuffer, a_iUnk);
+	return Toshi::TMemory::GetMemMangager().Alloc(a_iSize, 16, Toshi::TMemory::GetGlobalBlock(), a_pszFileName, a_iLineNum);
 #endif
 }
 
 TPVOID TKERNELINTERFACE_EXPORTS TOSHI_API tmemalign(TINT a_iAlign, TINT a_iSize)
 {
+#ifdef TKERNELINTERFACE_ENABLE_MEMORY_PROFILER
+
+	TMemory__FILE__ = "UNKNOWN";
+	TMemory__LINE__ = -1;
+	TMemory__FUNC__ = "UNKNOWN";
+
+#endif // TKERNELINTERFACE_ENABLE_MEMORY_PROFILER
+
 #ifdef TOSHI_NOTFINAL
 	return malloc(a_iSize);
 #else

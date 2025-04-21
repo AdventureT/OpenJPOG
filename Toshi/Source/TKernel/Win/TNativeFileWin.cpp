@@ -2,6 +2,12 @@
 #include "TMemory.h"
 #include <TKernel/TMath.h>
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 TNativeFileSystem::TNativeFileSystem(TPCCHAR a_pcName)
@@ -327,7 +333,7 @@ TBOOL TNativeFile::Open(const TCString &a_rFileName, TUINT a_uiMode)
 		m_bWriteBuffered = TFALSE;
 	}
 	else {
-		m_pBuffer = tmalloc(BUFFER_SIZE, TNULL, -1);
+		m_pBuffer = tmalloc(BUFFER_SIZE);
 		TVALIDADDRESS(m_pBuffer);
 		m_bWriteBuffered = TFALSE;
 	}

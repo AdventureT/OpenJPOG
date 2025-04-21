@@ -1,6 +1,12 @@
 #include "TFileLexer.h"
 #include <assert.h>
 
+//-----------------------------------------------------------------------------
+// Enables memory debugging.
+// Note: Should be the last include!
+//-----------------------------------------------------------------------------
+#include <TKernel/TMemoryDebugOn.h>
+
 TOSHI_NAMESPACE_USING
 
 void TFileLexer::Token::assign(const Token &a_rToken)
