@@ -38,9 +38,28 @@
 #define TOSHI_NAMESPACE_END   }
 #define TOSHI_NAMESPACE_USING using namespace Toshi;
 
-#define TSTATICCAST(type, value) static_cast<type>(value)
+#define TSTATICASSERT(...)            static_assert(__VA_ARGS__, "Compile time assert failed: " #__VA_ARGS__)
+#define TREINTERPRETCAST(TYPE, VALUE) (reinterpret_cast<TYPE>(VALUE))
+#define TSTATICCAST(type, value)      static_cast<type>(value)
+#define TARRAYSIZE(ARRAY)             (sizeof(ARRAY) / sizeof(*ARRAY))
+#define TOFFSETOF(CLASS, MEMBER)      offsetof(CLASS, MEMBER)
+#define TALIGNAS(VALUE)               alignas(VALUE)
+#define TINLINE                       inline
+#define TFORCEINLINE                  __forceinline
 
 #define _TS8(str) #str
+
+#define T_FOREACH(vecName, iteratorName) \
+	for (auto iteratorName = vecName.Begin(); iteratorName != vecName.End(); iteratorName++)
+
+#define T_FOREACH_BACK(vecName, iteratorName) \
+	for (auto iteratorName = vecName.Tail(); iteratorName != vecName.End(); iteratorName--)
+
+#define T_FOREACH_ARRAY(arrName, iteratorName) \
+	for (TINT iteratorName = 0; iteratorName < TARRAYSIZE(arrName); iteratorName++)
+
+#define T_FOREACH_ARRAY_BACK(arrName, iteratorName) \
+	for (TINT iteratorName = TARRAYSIZE(arrName) - 1; iteratorName >= 0; iteratorName--)
 
 typedef bool             TBOOL;
 typedef int              TINT;
@@ -58,6 +77,8 @@ typedef char             TCHAR;
 typedef const char       TCCHAR;
 typedef char             TINT8;
 typedef unsigned char    TUINT8;
+typedef short            TINT16;
+typedef unsigned short   TUINT16;
 typedef unsigned char    TBYTE;
 typedef unsigned char   *TPBYTE;
 typedef void            *TPVOID;
