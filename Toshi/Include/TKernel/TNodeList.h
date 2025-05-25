@@ -848,4 +848,24 @@ protected:
 	size_t        m_Count;
 };
 
+template<typename T>
+class TNodeListNodeWrapper : public Toshi::TNodeList<TNodeListNodeWrapper<T>>::TNode
+{
+public:
+	using Type = T;
+
+public:
+	TNodeListNodeWrapper() {}
+	TNodeListNodeWrapper(Type *a_pValue)
+		: m_pValue(a_pValue) {}
+
+	Type *Get() const { return m_pValue; }
+
+	operator Type &() const { return *m_pValue; }
+	Type *operator->() const { return m_pValue; }
+
+private:
+	Type *m_pValue;
+};
+
 TOSHI_NAMESPACE_END
