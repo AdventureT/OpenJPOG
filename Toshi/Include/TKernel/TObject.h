@@ -176,3 +176,24 @@ protected:
 };
 
 TOSHI_NAMESPACE_END
+
+//-----------------------------------------------------------------------------
+// Safely casts TObject to specified TClass
+//-----------------------------------------------------------------------------
+template <class T>
+TFORCEINLINE T *TDynamicCast(Toshi::TObject *a_pObject)
+{
+	TSTATICASSERT(T::IsTObject);
+
+	if (a_pObject)
+	{
+		if (a_pObject->IsA(&TGetClass(T)))
+		{
+			return TSTATICCAST(T, a_pObject);
+		}
+	}
+
+	return TNULL;
+}
+
+#define TDYNAMICCAST(T, OBJECT) (TDynamicCast<T>(OBJECT))
