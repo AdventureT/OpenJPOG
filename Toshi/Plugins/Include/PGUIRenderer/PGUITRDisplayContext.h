@@ -1,10 +1,12 @@
+#pragma once
 #include "Defines.h"
 #include "TKernel/TObject.h"
 #include "TKernel/TManagedPointer.h"
 #include "TGui/TGUIDisplayContext.h"
 #include "TRender/TRenderInterface.h"
-#include "PGUITRTextureFactory.h"
-#include "PGUITRFontFactory.h"
+#include "PGUIRenderer/PGUITRFontFactory.h"
+
+class PGUITRTextureFactory;
 
 class PGUIRENDERER_EXPORTS PGUITRDisplayContext : Toshi::TGUIDisplayContext
 {

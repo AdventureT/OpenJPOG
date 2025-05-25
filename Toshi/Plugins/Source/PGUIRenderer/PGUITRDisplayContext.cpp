@@ -1,4 +1,5 @@
-#include "PGuiRenderer/PGUITRDisplayContext.h"
+#include "PGUIRenderer/PGUITRDisplayContext.h"
+#include "PGUIRenderer/PGUITRTextureFactory.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.

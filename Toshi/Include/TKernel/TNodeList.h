@@ -92,7 +92,7 @@ public:
 		~Iterator() = default;
 
 		TBOOL operator!() { return IsNull(); }
-		TBOOL operator!=(Iterator &a_rIterator) { return m_pPtr != a_rIterator.m_pPtr; }
+		TBOOL operator!=(Iterator &a_rIterator) const { return m_pPtr != a_rIterator.m_pPtr; }
 
 		TNode &operator*() const
 		{
@@ -145,7 +145,7 @@ public:
 
 		TBOOL IsNull() { return m_pPtr == TNULL; }
 
-	private:
+	protected:
 		TNode *m_pPtr;
 	};
 
@@ -324,6 +324,205 @@ protected:
 	TINT  m_iCount; // 0x10
 };
 
+//template <typename T>
+//class TNodeList : public TGenericNodeList
+//{
+//public:
+//	class TNode : public TGenericNodeList::TNode
+//    {
+//    public:
+//        TNode() : TGenericNodeList::TNode() {}
+//        TNode(const TNode& node) : TGenericNodeList::TNode(node) {}
+//
+//        static T* FromBase(TGenericNodeList::TNode* pNode) {
+//            return static_cast<T*>(static_cast<TNode*>(pNode));
+//        }
+//        
+//        static const T* FromBase(const TGenericNodeList::TNode* pNode) {
+//            return static_cast<const T*>(static_cast<const TNode*>(pNode));
+//        }
+//
+//        T* Next() const { return FromBase(TGenericNodeList::TNode::Next()); }
+//        T* Prev() const { return FromBase(TGenericNodeList::TNode::Prev()); }
+//        
+//        TNodeList<T>* GetList() const {
+//            return static_cast<TNodeList<T>*>(TGenericNodeList::TNode::GetList());
+//        }
+//    };
+//
+//    class Iterator
+//    {
+//    public:
+//        Iterator() : m_pPtr(nullptr) {}
+//        Iterator(T* node) : m_pPtr(node) {}
+//        Iterator(const TGenericNodeList::Iterator& base) : 
+//            m_pPtr(TNode::FromBase(static_cast<TGenericNodeList::TNode*>(base))) {}
+//
+//        T& operator*() const {
+//            return *m_pPtr;
+//        }
+//
+//        T* operator->() const {
+//            return m_pPtr;
+//        }
+//
+//        Iterator& operator++() {
+//            m_pPtr = m_pPtr->Next();
+//            return *this;
+//        }
+//
+//        Iterator operator++(int) {
+//            Iterator tmp = *this;
+//            m_pPtr = m_pPtr->Next();
+//            return tmp;
+//        }
+//
+//        Iterator& operator--() {
+//            m_pPtr = m_pPtr->Prev();
+//            return *this;
+//        }
+//
+//        Iterator operator--(int) {
+//            Iterator tmp = *this;
+//            m_pPtr = m_pPtr->Prev();
+//            return tmp;
+//        }
+//
+//        TBOOL operator!() const { 
+//            return m_pPtr == nullptr; 
+//        }
+//        
+//        TBOOL operator!=(const Iterator& other) const {
+//            return m_pPtr != other.m_pPtr;
+//        }
+//
+//        TBOOL operator==(const Iterator& other) const {
+//            return m_pPtr == other.m_pPtr;
+//        }
+//
+//        operator T*() const {
+//            return m_pPtr;
+//        }
+//
+//        operator TGenericNodeList::Iterator() const {
+//            return TGenericNodeList::Iterator(m_pPtr);
+//        }
+//
+//    private:
+//        T* m_pPtr;
+//    };
+//
+//	TNodeList()
+//		: TGenericNodeList() {}
+//	~TNodeList() {}
+//
+//	// Insert methods
+//	void InsertAfter(T &rInsertAfter, T &rNewNode)
+//	{
+//		TGenericNodeList::InsertAfter(rInsertAfter, rNewNode);
+//	}
+//
+//	void InsertBefore(T &rInsertBefore, T &rNewNode)
+//	{
+//		TGenericNodeList::InsertBefore(rInsertBefore, rNewNode);
+//	}
+//
+//	void InsertHead(T &rNode)
+//	{
+//		TGenericNodeList::InsertHead(rNode);
+//	}
+//
+//	void InsertTail(T &rNode)
+//	{
+//		TGenericNodeList::InsertTail(rNode);
+//	}
+//
+//	// Remove methods
+//	T *Remove(T &rNode)
+//	{
+//		return TNode::FromBase(TGenericNodeList::Remove(rNode));
+//	}
+//
+//	T *RemoveHead()
+//	{
+//		return TNode::FromBase(TGenericNodeList::RemoveHead());
+//	}
+//
+//	T *RemoveTail()
+//	{
+//		return TNode::FromBase(TGenericNodeList::RemoveTail());
+//	}
+//
+//	// Delete methods
+//	void Delete(T &rNode)
+//	{
+//		TGenericNodeList::Delete(rNode);
+//	}
+//
+//	void DeleteAll()
+//	{
+//		TGenericNodeList::DeleteAll();
+//	}
+//
+//	void DeleteHead()
+//	{
+//		if (!IsEmpty()) {
+//			Delete(*Head());
+//		}
+//	}
+//
+//	void DeleteTail()
+//	{
+//		if (!IsEmpty()) {
+//			Delete(*Tail());
+//		}
+//	}
+//
+//	// Iterator methods
+//	Iterator Begin() const
+//	{
+//		return Iterator(TNode::FromBase(TGenericNodeList::Head()));
+//	}
+//
+//	Iterator End() const
+//	{
+//		return Iterator(TNode::FromBase(const_cast<TGenericNodeList::TNode *>(&m_oRoot)));
+//	}
+//
+//	Iterator RBegin() const
+//	{
+//		return Iterator(TNode::FromBase(TGenericNodeList::Tail()));
+//	}
+//
+//	Iterator REnd() const
+//	{
+//		return Iterator(TNode::FromBase(const_cast<TGenericNodeList::TNode *>(&m_oRoot)));
+//	}
+//
+//	// Access methods
+//	T *Head() const
+//	{
+//		return TNode::FromBase(TGenericNodeList::Head());
+//	}
+//
+//	T *Tail() const
+//	{
+//		return TNode::FromBase(TGenericNodeList::Tail());
+//	}
+//
+//	// Other methods
+//	TBOOL IsEmpty() const
+//	{
+//		return TGenericNodeList::IsEmpty();
+//	}
+//
+//	TINT Count() const
+//	{
+//		return TGenericNodeList::Count();
+//	}
+//};
+
+
 template <class T, class Node>
 class T2Iterator
 {
@@ -408,95 +607,6 @@ public:
 private:
 	T *m_pPtr;
 };
-
-//class Iterator
-//{
-//public:
-
-//	Iterator()
-//	{
-//		m_pPtr = TNULL;
-//	}
-
-//	Iterator(TNode* a_pNode)
-//	{
-//		m_pPtr = static_cast<T*>(a_pNode);
-//	}
-
-//	Iterator(T* a_pNode)
-//	{
-//		m_pPtr = a_pNode;
-//	}
-
-//	Iterator(const Iterator& a_rIterator)
-//	{
-//		m_pPtr = a_rIterator.m_pPtr;
-//	}
-
-//	~Iterator() = default;
-
-//	TBOOL operator!() { return IsNull(); }
-//	TBOOL operator!=(Iterator& a_rIterator) { return m_pPtr != a_rIterator.m_pPtr; }
-
-//	T& operator*() const
-//	{
-//		TASSERT(m_pPtr != TNULL);
-//		return *m_pPtr;
-//	}
-
-//	Iterator& operator++()
-//	{
-//		TASSERT(m_pPtr != TNULL);
-//		m_pPtr = static_cast<T*>(m_pPtr->Next());
-//		return *this;
-//	}
-
-//	Iterator operator++(int)
-//	{
-//		TASSERT(m_pPtr != TNULL);
-//		Iterator old = m_pPtr;
-//		m_pPtr = static_cast<T*>(m_pPtr->Next());
-//		return old;
-//	}
-
-//	Iterator operator--()
-//	{
-//		TASSERT(m_pPtr != TNULL);
-//		m_pPtr = static_cast<T*>(m_pPtr->Prev());
-//		return *this;
-//	}
-
-//	T* operator->() const
-//	{
-//		return m_pPtr;
-//	}
-
-//	void operator=(const Iterator& a_rIterator)
-//	{
-//		m_pPtr = a_rIterator.m_pPtr;
-//		return *this;
-//	}
-
-//	void operator=(T* pPtr)
-//	{
-//		m_pPtr = pPtr;
-//	}
-
-//	TBOOL operator==(Iterator& a_rIterator) const
-//	{
-//		return m_pPtr == a_rIterator.m_pPtr;
-//	}
-
-//	operator T* () const
-//	{
-//		return static_cast<T*>(m_pPtr);
-//	}
-
-//	TBOOL IsNull() { return m_pPtr == TNULL; }
-
-//private:
-//	T* m_pPtr;
-//};
 
 // For the mean time use this until we probably implemented this
 template <class T>

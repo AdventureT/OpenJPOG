@@ -51,11 +51,10 @@ void TTextureFactory::DeregisterTexture(TTextureResource *a_pTexture)
 {
 	TVALIDADDRESS(a_pTexture);
 
-	TTextureFactory::NameEntry *pList = a_pTexture->m_pNameEntry;
+	TNodeList<TTextureFactory::NameEntry> *pList = a_pTexture->m_pNameEntry->GetList();
 
 	if (pList) {
-		pList->Remove();
-		delete pList;
+		delete pList->Remove(*a_pTexture->m_pNameEntry);
 	}
 }
 

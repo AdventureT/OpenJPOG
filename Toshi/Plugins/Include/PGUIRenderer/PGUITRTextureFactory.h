@@ -4,6 +4,7 @@
 #include "TKernel/TPCString.h"
 #include "TRender/TRenderInterface.h"
 #include "TSpriteShader/Include/TSpriteShader.h"
+#include "PGUIRenderer/PGUITRDisplayContext.h"
 
 class PGUIRENDERER_EXPORTS PGUITRTextureFactory : public Toshi::TGUITextureFactory
 {
@@ -14,8 +15,8 @@ public:
 	{
 
 	};
-
-	class Texture
+	// inherits TNode? Does not align with disassembly
+	class Texture : public Toshi::TNodeList<Texture>::TNode
 	{
 	public:
 		Texture(const Toshi::TPCString &a_rName, PGUITRTextureFactory *a_pTextureFactory, TBOOL a_bValidate)
@@ -59,12 +60,7 @@ public:
 			if (invalid) {
 				return;
 			}
-			static bool                 s_flag          = 0;
-			static const Toshi::TClass *s_pAllowedClass = TNULL;
-			if ((s_flag & 1) == 0) {
-				s_flag |= 1;
-				s_pAllowedClass = Toshi::TClass::Find("TSpriteMaterialHAL", TNULL);
-			}
+			static const Toshi::TClass *s_pAllowedClass = Toshi::TClass::Find("TSpriteMaterialHAL", TNULL);
 			Toshi::TMaterial *pMaterial = Toshi::TRenderInterface::GetRenderer()->GetMaterialLibraryManager()->GetMaterial(*m_sName);
 			if (!pMaterial || !pMaterial->IsA(*s_pAllowedClass)) {
 				m_pMaterial = TNULL;
@@ -72,6 +68,9 @@ public:
 			}
 			m_pMaterial = TSTATICCAST(Toshi::TSpriteMaterial *, pMaterial);
 
+		}
+		void Invalidate()
+		{
 		}
 
 	private:
@@ -82,4 +81,42 @@ public:
 		TINT                    m_iHeight;         // 0x14
 		TUINT                   m_eFlags;          // 0x18
 	};
+
+	class TextureSet : public Toshi::TNodeList<Texture>
+	{
+	public:
+		TextureSet(PGUITRTextureFactory *a_pTextureFactory)
+		{
+			m_pTextureFactory = a_pTextureFactory;
+		}
+		// Revisit this, not sure if it lines up with the disassembly
+		void Add(TPCCHAR a_szTextureName)
+		{
+			Toshi::TPCString textureName = Toshi::TSystem::GetCStringPool()->Get(a_szTextureName);
+			short            sTextureID  = m_pTextureFactory->ReserveTextureID(textureName);
+			Texture         *texture     = new Texture(textureName, m_pTextureFactory, true);
+			m_pTextureFactory->m_oTextureSet[sTextureID].InsertTail(*texture);
+		}
+		void Invalidate()
+		{
+			for (auto node = Begin(); node != End(); node++) {
+				node->Validate();
+			}
+		}
+		void Validate()
+		{
+			for (auto node = Begin(); node != End(); node++) {
+				node->Invalidate();
+			}
+		}
+	private:
+		PGUITRTextureFactory     *m_pTextureFactory; // 0x10
+	};
+
+	void Create(PGUITRDisplayContext *a_pDisplayContext);
+
+	virtual short ReserveTextureID(const Toshi::TPCString &a_rTextureName);
+
+	Toshi::TArray<TextureSet> m_oTextureSet; // 0x4
+	PGUITRDisplayContext *m_pDisplayContext; // 0x1C
 };
