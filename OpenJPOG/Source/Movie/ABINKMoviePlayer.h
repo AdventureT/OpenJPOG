@@ -33,17 +33,21 @@ public:
 
 	virtual TBOOL FreeVideoResource();
 
+	// $JPOG: FUNCTION 006d6640
 	virtual TBOOL FreeAudioResource()
 	{
 		delete m_pDirectSound;
 		return TTRUE;
 	}
 	virtual void              SetLocaleInfoA(TPCHAR a_szBuffer);
+	// $JPOG: FUNCTION 006d6580
 	virtual TTextureResource *GetTexture() { return m_pTextures[m_iCurrentTextureIndex]; }
 
 	void              BinkSleep(TINT a_iMicroseconds);
 	TBOOL             RenderToTiles();
+	// $JPOG: FUNCTION 006d6570
 	TTextureResource *GetCurrentTexture() { return m_pTextures[m_iCurrentTextureIndex]; }
+	// $JPOG: FUNCTION 006d6540
 	void              SetCurrentTexture(TTextureResource *a_pTexture)
 	{
 		if (!m_pTextures[m_iCurrentTextureIndex]) {
@@ -52,11 +56,13 @@ public:
 	}
 
 private:
+	// $JPOG: FUNCTION 006d6520
 	static void PTR4 *RADLINK RADMEMALLOC(U32 bytes)
 	{
 		return tmalloc(bytes, TNULL, -1);
 	}
 
+	// $JPOG: FUNCTION 006d6510
 	static void RADLINK RADMEMFREE(void PTR4 *ptr)
 	{
 		tfree(ptr);

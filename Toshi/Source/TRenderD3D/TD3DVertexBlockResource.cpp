@@ -13,6 +13,7 @@ TOSHI_NAMESPACE_USING
 IMPLEMENT_DYNCREATE(TVertexBlockResource, TResource)
 IMPLEMENT_FREELIST(TVertexBlockResource, 0, 8)
 
+// $TRenderD3DInterface: FUNCTION 10008d80
 TBOOL TVertexBlockResource::CanFit(TVertexPoolResource *a_pPoolResource)
 {
 	if (GetFlags() & 1 && a_pPoolResource->GetFlags() & 1) {
@@ -22,6 +23,7 @@ TBOOL TVertexBlockResource::CanFit(TVertexPoolResource *a_pPoolResource)
 	return TFALSE;
 }
 
+// $TRenderD3DInterface: FUNCTION 10008b00
 TBOOL TVertexBlockResource::AttachPool(TVertexPoolResource *a_pPool)
 {
 	TVALIDADDRESS(a_pPool);
@@ -36,6 +38,7 @@ TBOOL TVertexBlockResource::AttachPool(TVertexPoolResource *a_pPool)
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 100088c0
 TBOOL TVertexBlockResource::Create(TVertexFactoryResource *a_pFactory, TUSHORT a_uiMaxVertices, TUINT a_uiFlags)
 {
 	TASSERT(TFALSE == IsCreated());

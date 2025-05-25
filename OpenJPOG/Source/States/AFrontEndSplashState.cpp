@@ -21,6 +21,7 @@ AFrontEndSplashState::AFrontEndSplashState(TBOOL a_bInitialise, TFLOAT a_fMovieP
 	m_bLogoScreenSet    = TFALSE;
 }
 
+// $JPOG: FUNCTION 00489e00
 void AFrontEndSplashState::OnActivate()
 {
 	ARootState::OnActivate();
@@ -32,6 +33,7 @@ void AFrontEndSplashState::OnActivate()
 	pMoviePlayer->InitializeMoviePlayer();
 }
 
+// $JPOG: FUNCTION 00489bc0
 TBOOL AFrontEndSplashState::OnUpdate(TFLOAT a_fDeltaTime)
 {
 	AMoviePlayer *pMoviePlayer = g_oTheApp.GetRootTask()->GetMoviePlayer();
@@ -85,6 +87,7 @@ TBOOL AFrontEndSplashState::OnUpdate(TFLOAT a_fDeltaTime)
 	return ARootState::OnUpdate(a_fDeltaTime);
 }
 
+// $JPOG: FUNCTION 0048a220
 void AFrontEndSplashState::OnInsertion()
 {
 	AFrontendState::OnInsertion();
@@ -93,6 +96,7 @@ void AFrontEndSplashState::OnInsertion()
 	}
 }
 
+// $JPOG: FUNCTION 0048a010
 TBOOL AFrontEndSplashState::RunLogoState(TFLOAT a_fDeltaTime)
 {
 	if (m_iLogoScreenIndex <= 0) {

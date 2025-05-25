@@ -9,6 +9,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
+// $TRenderD3DInterface: FUNCTION 100043f0
 TBOOL TRenderCaptureD3D::Create(FORMAT a_eFormat, TINT a_iWidth, TINT a_iHeight)
 {
 	TASSERT(a_eFormat == FORMAT_RGB24 || a_eFormat == FORMAT_RGBA32);
@@ -18,11 +19,13 @@ TBOOL TRenderCaptureD3D::Create(FORMAT a_eFormat, TINT a_iWidth, TINT a_iHeight)
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 10004830
 void TRenderCaptureD3D::Destroy()
 {
 	ReleaseBuffer();
 }
 
+// $TRenderD3DInterface: FUNCTION 10004450
 TBOOL TRenderCaptureD3D::Request()
 {
 	ReleaseBuffer();
@@ -52,22 +55,26 @@ TBOOL TRenderCaptureD3D::Request()
 	return false;
 }
 
+// $TRenderD3DInterface: FUNCTION 10004820
 TBOOL TRenderCaptureD3D::Wait()
 {
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 10004810
 TBOOL TRenderCaptureD3D::Poll()
 {
 	return m_pBuffer != TNULL;
 }
 
+// $TRenderD3DInterface: FUNCTION 10004790
 TPVOID TRenderCaptureD3D::ObtainBuffer()
 {
 	TASSERT(TTRUE == Poll());
 	return m_pBuffer;
 }
 
+// $TRenderD3DInterface: FUNCTION 100047e0
 void TRenderCaptureD3D::ReleaseBuffer()
 {
 	if (m_pBuffer) {

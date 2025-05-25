@@ -8,6 +8,7 @@
 
 TOSHI_NAMESPACE_USING
 
+// $TKernelInterface: FUNCTION 1002eb50
 void TMutexLock::Create(TMutex *a_pMutex)
 {
 	TVALIDADDRESS(a_pMutex);
@@ -15,6 +16,7 @@ void TMutexLock::Create(TMutex *a_pMutex)
 	m_pMutex->Lock(0);
 }
 
+// $TKernelInterface: FUNCTION 1002ebb0
 void TMutexLock::Destroy()
 {
 	if (m_pMutex) {

@@ -26,31 +26,37 @@ public:
 			m_pList = node.m_pList;
 		}
 
+		// $TKernelInterface: FUNCTION 10026f40
 		virtual ~TNode()
 		{
 			TASSERT(IsLinked() == TFALSE);
 		}
 
+		// $TKernelInterface: FUNCTION 100271c0
 		TNode *Next() const
 		{
 			return m_pNext;
 		}
 
+		// $TKernelInterface: FUNCTION 100271b0
 		TNode *Prev() const
 		{
 			return m_pPrev;
 		}
 
+		// $TKernelInterface: FUNCTION 10027190
 		TBOOL IsLinked() const
 		{
 			return GetList() != TNULL;
 		}
 
+		// $TKernelInterface: FUNCTION 10027180
 		TGenericNodeList *GetList() const
 		{
 			return m_pList;
 		}
 
+		// $TKernelInterface: FUNCTION 1000a400
 		TNode &operator=(const TNode &node)
 		{
 			m_pNext = node.m_pNext;
@@ -60,6 +66,7 @@ public:
 		}
 
 	protected:
+		// $TKernelInterface: FUNCTION 10027170
 		void SetList(TGenericNodeList *list)
 		{
 			m_pList = list;
@@ -91,9 +98,12 @@ public:
 
 		~Iterator() = default;
 
+		// $TKernelInterface: FUNCTION 100270d0
 		TBOOL operator!() { return IsNull(); }
+		// $TKernelInterface: FUNCTION 100270e0
 		TBOOL operator!=(Iterator &a_rIterator) const { return m_pPtr != a_rIterator.m_pPtr; }
 
+		// $TKernelInterface: FUNCTION 10026f80
 		TNode &operator*() const
 		{
 			TASSERT(m_pPtr != TNULL);
@@ -115,6 +125,7 @@ public:
 			return old;
 		}
 
+		// $TKernelInterface: FUNCTION 10027070
 		Iterator operator--()
 		{
 			TASSERT(m_pPtr != TNULL);
@@ -122,17 +133,20 @@ public:
 			return *this;
 		}
 
+		// $TKernelInterface: FUNCTION 10027130
 		TNode *operator->() const
 		{
 			return m_pPtr;
 		}
 
+		// $TKernelInterface: FUNCTION 1000a3f0
 		Iterator &operator=(const Iterator &a_rIterator)
 		{
 			m_pPtr = a_rIterator.m_pPtr;
 			return *this;
 		}
 
+		// $TKernelInterface: FUNCTION 10027100
 		TBOOL operator==(Iterator &a_rIterator) const
 		{
 			return m_pPtr == a_rIterator.m_pPtr;
@@ -143,6 +157,7 @@ public:
 			return m_pPtr;
 		}
 
+		// $TKernelInterface: FUNCTION 100270c0
 		TBOOL IsNull() { return m_pPtr == TNULL; }
 
 	protected:
@@ -154,6 +169,7 @@ protected:
 	{
 		m_iCount = 0;
 	}
+	// $TKernelInterface: FUNCTION 100273a0
 	~TGenericNodeList() { DeleteAll(); }
 
 private:
@@ -162,6 +178,7 @@ private:
 		TASSERT(!"Not implemented; don't want the default one!");
 	}
 
+	// $TKernelInterface: FUNCTION 1000a450
 	TGenericNodeList &operator=(TGenericNodeList &)
 	{
 		TASSERT(!"Not implemented; don't want the default one!");
@@ -169,16 +186,19 @@ private:
 	}
 
 public:
+	// $TKernelInterface: FUNCTION 100272b0
 	TBOOL IsEmpty() const
 	{
 		return m_oRoot.Next() == &m_oRoot;
 	}
 
+	// $TKernelInterface: FUNCTION 10027290
 	TBOOL IsValid(const TNode *pNode) const
 	{
 		return pNode != TNULL && pNode->GetList() == this;
 	}
 
+	// $TKernelInterface: FUNCTION 10026cb0
 	void Append(TGenericNodeList &a_rList)
 	{
 		if (a_rList.IsEmpty()) return;
@@ -188,6 +208,7 @@ public:
 		}
 	}
 
+	// $TKernelInterface: FUNCTION 10026c40
 	void InsertAfter(TNode &rInsertAfter, TNode &rNewNode)
 	{
 		TASSERT(!rNewNode.IsLinked());
@@ -199,6 +220,7 @@ public:
 		m_iCount++;
 	}
 
+	// $TKernelInterface: FUNCTION 10026bd0
 	void InsertBefore(TNode &rInsertBefore, TNode &rNewNode)
 	{
 		TASSERT(!rNewNode.IsLinked());
@@ -210,16 +232,19 @@ public:
 		m_iCount++;
 	}
 
+	// $TKernelInterface: FUNCTION 10027300
 	void InsertHead(TNode &rNode)
 	{
 		InsertAfter(m_oRoot, rNode);
 	}
 
+	// $TKernelInterface: FUNCTION 100272e0
 	void InsertTail(TNode &rNode)
 	{
 		InsertBefore(m_oRoot, rNode);
 	}
 
+	// $TKernelInterface: FUNCTION 10026dc0
 	TNode *Remove(TNode &rNode)
 	{
 		TASSERT(rNode.GetList() == this);
@@ -232,6 +257,7 @@ public:
 		return &rNode;
 	}
 
+	// $TKernelInterface: FUNCTION 10026e30
 	void RemoveAll()
 	{
 		while (!IsEmpty()) {
@@ -239,6 +265,7 @@ public:
 		}
 	}
 
+	// $TKernelInterface: FUNCTION 10027350
 	TNode *RemoveHead()
 	{
 		if (!IsEmpty()) {
@@ -247,6 +274,7 @@ public:
 		return TNULL;
 	}
 
+	// $TKernelInterface: FUNCTION 10027320
 	TNode *RemoveTail()
 	{
 		if (!IsEmpty()) {
@@ -255,6 +283,7 @@ public:
 		return TNULL;
 	}
 
+	// $TKernelInterface: FUNCTION 10026e70
 	void Delete(TNode &a_rNode)
 	{
 		Remove(a_rNode);
@@ -262,6 +291,7 @@ public:
 		delete &a_rNode;
 	}
 
+	// $TKernelInterface: FUNCTION 10026f10
 	void DeleteAll()
 	{
 		while (!IsEmpty()) {
@@ -269,51 +299,61 @@ public:
 		}
 	}
 
+	// $TKernelInterface: FUNCTION 10026e90
 	void DeleteHead()
 	{
 		Delete(*Head());
 	}
 
+	// $TKernelInterface: FUNCTION 10026ed0
 	void DeleteTail()
 	{
 		Delete(*Tail());
 	}
 
+	// $TKernelInterface: FUNCTION 100271f0
 	Iterator MakeIterator(TNode *a_pNode)
 	{
 		return Iterator(a_pNode);
 	}
 
+	// $TKernelInterface: FUNCTION 10027270
 	Iterator Begin() const
 	{
 		return Iterator(Head());
 	}
 
+	// $TKernelInterface: FUNCTION 10027250
 	Iterator End() const
 	{
 		return Iterator((TNode *)&m_oRoot);
 	}
 
+	// $TKernelInterface: FUNCTION 10027230
 	Iterator RBegin() const
 	{
 		return Iterator(Tail());
 	}
 
+	// $TKernelInterface: FUNCTION 10027210
 	Iterator REnd() const
 	{
 		return Iterator((TNode *)&m_oRoot);
 	}
 
+	// $TKernelInterface: FUNCTION 10027390
 	TNode *Head() const
 	{
 		return m_oRoot.Next();
 	}
 
+	// $TKernelInterface: FUNCTION 10027380
 	TNode *Tail() const
 	{
 		return m_oRoot.Prev();
 	}
 
+	// $TKernelInterface: FUNCTION 100272d0
 	TINT Count() const
 	{
 		return m_iCount;

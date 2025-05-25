@@ -10,6 +10,7 @@ TOSHI_NAMESPACE_BEGIN
 
 IMPLEMENT_DYNAMIC(TGUIDeserialisable, TObject);
 
+// $TGuiInterface: FUNCTION 10009290
 TGUIDeserialisable *TOSHI_API TGUIDeserialisable::Create(TGUIInterface *a_pInterface, const PProperties *a_pProperties)
 {
 	static const TClass    *s_pAllowedClass = TClass::Find("TGUIDeserialisable", TNULL);
@@ -41,6 +42,7 @@ TGUIDeserialisable *TOSHI_API TGUIDeserialisable::Create(TGUIInterface *a_pInter
 	return (TGUIDeserialisable *)pObject;
 }
 
+// $TGuiInterface: FUNCTION 10009630
 TBOOL TGUIDeserialisable::ValidateProperty(const TPCString &a_rPropName, const PPropertyValue &a_rValue)
 {
 	return TFALSE;

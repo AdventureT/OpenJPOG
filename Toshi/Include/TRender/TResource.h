@@ -43,14 +43,21 @@ public:
 
 	void RecurseSimple(t_RecurseCb a_pfnCallback, TResource *a_pResource, TPVOID a_pUserData);
 
+	// $TRenderInterface: FUNCTION 10018460
 	TBOOL IsCreated() const { return m_Flags & FLAGS_CREATED; }
+	// $TRenderInterface: FUNCTION 10018450
 	TBOOL IsDying() const { return m_Flags & FLAGS_DYING; }
+	// $TRenderInterface: FUNCTION 10009890
 	TBOOL IsSceneObject() const { return m_Flags & FLAGS_SCENEOBJECT; }
 	TBOOL IsDead() const { return m_Flags & FLAGS_DEAD; }
+	// $TRenderInterface: FUNCTION 10018470
 	TBOOL IsValid() const { return IsCreated() && m_Flags & FLAGS_VALID; }
 
+	// $TRenderInterface: FUNCTION 10018410
 	TUINT             GetUId() const { return m_uiUId; }
+	// $TRenderInterface: FUNCTION 10018420
 	TPCCHAR           GetName() const { return m_szName; }
+	// $TRenderInterface: FUNCTION 10018430
 	TRenderInterface *GetRenderer() const { return m_pRenderer; }
 
 public:

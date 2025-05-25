@@ -26,10 +26,15 @@ protected:
 	virtual TBOOL Create(TVertexFactoryResourceInterface *a_pFactory, TUINT a_uiMaxVertices, TUINT a_uiFlags);
 
 public:
+	// $TRenderInterface: FUNCTION 100129a0
 	TVertexFactoryResourceInterface *GetFactory() { return m_pFactory; }
+	// $TRenderInterface: FUNCTION 10012950
 	TUINT                            GetFlags() const { return m_usFlags; }
+	// $TRenderInterface: FUNCTION 10012960
 	TUINT                            GetMaxVertices() const { return m_usMaxVertices; }
+	// $TRenderInterface: FUNCTION 10012970
 	TUINT                            GetNumVertices() const { return m_usNumVertices; }
+	// $TRenderInterface: FUNCTION 10012980
 	TBOOL                            IsLocked() const { return m_uiLockCount != 0; }
 
 private:

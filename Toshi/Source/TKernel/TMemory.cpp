@@ -51,6 +51,7 @@ void __CRTDECL operator delete[](void *ptr, size_t _Size) noexcept
 
 TOSHI_NAMESPACE_USING
 
+// $TKernelInterface: FUNCTION 100256a0
 TBOOL TOSHI_API TMemory::Initialise()
 {
 #ifdef TOSHI_NOTFINAL
@@ -70,21 +71,25 @@ TMemory &TOSHI_API TMemory::GetMemMangager()
 	return g_oMemManager;
 }
 
+// $TKernelInterface: FUNCTION 10025e20
 TMemory::MemBlock *TOSHI_API TMemory::GetGlobalBlock()
 {
 	Initialise();
 	return g_oMemManager.m_pMemBlock;
 }
 
+// $TKernelInterface: FUNCTION 100245a0
 TMemory::MemNode *TOSHI_API TMemory::GetMemNodeFromAddress(TPVOID a_pAddr)
 {
 	return TNULL;
 }
 
+// $TKernelInterface: FUNCTION 1000a320
 void TOSHI_API TMemory::ExtendNodeSize(MemNode *a_pMemNode, TUINT a_uiSize)
 {
 }
 
+// $TKernelInterface: FUNCTION 10024600
 TPVOID TMemory::Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock *a_pMemBlock, TPCCHAR a_pszFileName, TINT a_iLineNum)
 {
 	// Let's just use malloc until i implemented this
@@ -106,6 +111,7 @@ TPVOID TMemory::Alloc(TUINT a_uiSize, TUINT a_uiAlignment, MemBlock *a_pMemBlock
 	return TNULL;
 }
 
+// $TKernelInterface: FUNCTION 10024e30
 TBOOL TMemory::Free(TPVOID a_pMem)
 {
 	// Let's just use free until i implemented this

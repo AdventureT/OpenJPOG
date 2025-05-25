@@ -24,6 +24,7 @@ TVertexPoolResourceInterface::LockBuffer::LockBuffer()
 	apStreams[7] = TNULL;
 }
 
+// $TRenderInterface: FUNCTION 10012840
 TVertexPoolResourceInterface::TVertexPoolResourceInterface()
 {
 	m_pFactory      = TNULL;
@@ -33,6 +34,7 @@ TVertexPoolResourceInterface::TVertexPoolResourceInterface()
 	m_uiLockCount   = 0;
 }
 
+// $TRenderInterface: FUNCTION 10012870
 void TVertexPoolResourceInterface::OnDestroy()
 {
 	TASSERT(0 == m_uiLockCount);
@@ -49,6 +51,7 @@ void TVertexPoolResourceInterface::Unlock(TUSHORT a_uiNewNumVertices)
 {
 }
 
+// $TRenderInterface: FUNCTION 10012920
 TBOOL TVertexPoolResourceInterface::Create(TVertexFactoryResourceInterface *a_pFactory, TUINT a_uiMaxVertices, TUINT a_uiFlags)
 {
 	m_pFactory      = a_pFactory;

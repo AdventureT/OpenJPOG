@@ -8,6 +8,7 @@
 
 TOSHI_NAMESPACE_USING
 
+// $TKernelInterface: FUNCTION 100172a0
 TFreeList::TFreeList(TUINT a_uiItemSize, TINT a_iInitialSize, TINT a_iGrowSize, TPCHAR a_pcName)
 {
 	m_iFreeCount    = 0;
@@ -23,6 +24,7 @@ TFreeList::TFreeList(TUINT a_uiItemSize, TINT a_iInitialSize, TINT a_iGrowSize, 
 	SetCapacity(a_iInitialSize);
 }
 
+// $TKernelInterface: FUNCTION 10017350
 TFreeList::~TFreeList()
 {
 	for (Node *pNode = m_oRootNode.m_pNext; pNode != TNULL; pNode = m_oRootNode.m_pNext) {
@@ -31,6 +33,7 @@ TFreeList::~TFreeList()
 	}
 }
 
+// $TKernelInterface: FUNCTION 10017480
 TFreeList::Node *TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
 {
 	m_iCapacity += a_iNumber;
@@ -57,6 +60,7 @@ TFreeList::Node *TFreeList::Allocate(TINT a_iNumber, TUINT a_uiSize)
 	return pData;
 }
 
+// $TKernelInterface: FUNCTION 10017380
 TPVOID TFreeList::New(TUINT a_uiSize)
 {
 	if (a_uiSize != m_uiItemSize) {
@@ -76,6 +80,7 @@ TPVOID TFreeList::New(TUINT a_uiSize)
 	return Allocate(m_iGrowSize, a_uiSize);
 }
 
+// $TKernelInterface: FUNCTION 10017410
 void TFreeList::Delete(TPVOID a_pData)
 {
 	Node *pNode = (Node *)a_pData;
@@ -93,6 +98,7 @@ void TFreeList::Delete(TPVOID a_pData)
 	m_iMaxFreeCount = m_iMaxFreeCount <= m_iFreeCount ? m_iFreeCount : m_iMaxFreeCount;
 }
 
+// $TKernelInterface: FUNCTION 10017450
 void TFreeList::SetCapacity(TINT a_iCapacity)
 {
 	if (a_iCapacity <= m_iCapacity) return;
@@ -101,6 +107,7 @@ void TFreeList::SetCapacity(TINT a_iCapacity)
 	m_oLastNode.m_pNext = pNode;
 }
 
+// $TKernelInterface: FUNCTION 10012790
 void TFreeList::SetGrowSize(TINT a_iGrowSize)
 {
 	m_iGrowSize = a_iGrowSize < 1 ? 8 : a_iGrowSize;

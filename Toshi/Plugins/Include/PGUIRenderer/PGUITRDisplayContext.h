@@ -41,6 +41,7 @@ protected:
 	virtual void Imp_DrawOutlineRectangle(int a_iX, int a_iY, int a_iWidth, int a_iHeight, const Toshi::TGUIColour &m_rColour);
 
 public:
+	// $PGUIRenderer: FUNCTION 10005c20
 	Toshi::TRenderInterface *GetRenderInterface() const
 	{
 		return m_MPRenderer;

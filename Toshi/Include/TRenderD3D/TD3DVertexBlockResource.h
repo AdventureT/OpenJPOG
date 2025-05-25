@@ -32,7 +32,9 @@ public:
 	TBOOL AttachPool(TVertexPoolResource *a_pPool);
 	TBOOL CanFit(TVertexPoolResource *a_pPoolResource);
 
+	// $TRenderD3DInterface: FUNCTION 10009510
 	TVertexFactoryResourceInterface *GetFactory() { return m_pFactory; }
+	// $TRenderD3DInterface: FUNCTION 100094e0
 	TUINT                            GetFlags() { return m_uiFlags; }
 
 private:

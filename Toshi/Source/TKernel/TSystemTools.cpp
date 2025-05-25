@@ -12,6 +12,7 @@
 
 TOSHI_NAMESPACE_USING
 
+// $TKernelInterface: FUNCTION 1002e170
 TPCCHAR TOSHI_API TSystem::StringUnicodeToChar(TPCHAR a_CharString, TPCWCHAR a_UnicodeString, TINT a_iLength)
 {
 	TASSERT((a_UnicodeString != TNULL) && (a_CharString != TNULL));
@@ -26,6 +27,7 @@ TPCCHAR TOSHI_API TSystem::StringUnicodeToChar(TPCHAR a_CharString, TPCWCHAR a_U
 	return a_CharString;
 }
 
+// $TKernelInterface: FUNCTION 1002e0e0
 TPCWCHAR TOSHI_API TSystem::StringCharToUnicode(TPWCHAR a_UnicodeString, TPCCHAR a_CharString, TINT a_iLength)
 {
 	TASSERT((a_UnicodeString != TNULL) && (a_CharString != TNULL));
@@ -40,6 +42,7 @@ TPCWCHAR TOSHI_API TSystem::StringCharToUnicode(TPWCHAR a_UnicodeString, TPCCHAR
 	return a_UnicodeString;
 }
 
+// $TKernelInterface: FUNCTION 1002e710
 TPCCHAR TOSHI_API TSystem::StringIntToString(TINT a_iInt, TPCHAR a_szString, TINT a_iRadix)
 {
 	if (a_iRadix == 8) {
@@ -71,6 +74,7 @@ TINT TOSHI_API TSystem::StringLength(TPCWCHAR a_String)
 	return wcslen(a_String);
 }
 
+// $TKernelInterface: FUNCTION 1002df60
 TINT TOSHI_API TSystem::StringCompareNoCase(TPCCHAR a_String1, TPCCHAR a_String2, TINT a_uiSize)
 {
 	TASSERT((a_String1 != TNULL) && (a_String2 != TNULL));
@@ -101,6 +105,7 @@ TPCWCHAR TOSHI_API TSystem::StringCopy(TPWCHAR a_DestinationString, TPCWCHAR a_S
 	return wcscpy(a_DestinationString, a_SourceString);
 }
 
+// $TKernelInterface: FUNCTION 1002e780
 TPVOID TOSHI_API TSystem::MemCopy(TPVOID a_dest, TPCVOID a_src, TUINT a_iSize)
 {
 	// Note: Idk if they used gcclib's memcpy() or their own
@@ -111,6 +116,7 @@ TPVOID TOSHI_API TSystem::MemCopy(TPVOID a_dest, TPCVOID a_src, TUINT a_iSize)
 	return a_dest;
 }
 
+// $TKernelInterface: FUNCTION 1002e760
 TPVOID TOSHI_API TSystem::MemSet(TPVOID a_dest, TINT a_iValue, TINT m_iSize)
 {
 	TPCHAR dest = (TPCHAR)a_dest;
@@ -119,6 +125,7 @@ TPVOID TOSHI_API TSystem::MemSet(TPVOID a_dest, TINT a_iValue, TINT m_iSize)
 	return a_dest;
 }
 
+// $TKernelInterface: FUNCTION 1002e510
 TCStringPool *TOSHI_API TSystem::GetCStringPool()
 {
 	if (!ms_poTCStringPool) {

@@ -11,6 +11,7 @@ TOSHI_NAMESPACE_BEGIN
 
 IMPLEMENT_DYNAMIC(TGUIInterface, TObject);
 
+// $TGuiInterface: FUNCTION 10010620
 void TGUIInterface::Create()
 {
 	m_oActionMap.Create();
@@ -43,6 +44,7 @@ void TGUIInterface::Create()
 	m_oActionMap.AddActionMapping(0x20005, 2);
 }
 
+// $TGuiInterface: FUNCTION 100114a0
 void TGUIInterface::Error(const TCString &a_rText)
 {
 	TWString().Format(L"Runtime error in TGUIInterface:\n\t%s\n", TWString(a_rText)).Print();

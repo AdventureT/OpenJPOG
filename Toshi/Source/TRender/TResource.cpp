@@ -14,6 +14,7 @@ IMPLEMENT_DYNCREATE(TResource, TObject)
 static TINT s_iResourceCount    = 0;
 static TINT s_iResourcesCreated = 0;
 
+// $TRenderInterface: FUNCTION 10009770
 TResource::TResource()
 {
 	m_Flags     = 0;
@@ -26,6 +27,7 @@ TResource::TResource()
 	}
 }
 
+// $TRenderInterface: FUNCTION 10018200
 TResource::~TResource()
 {
 	TASSERT(0 == (m_Flags & FLAGS_DEAD));
@@ -33,6 +35,7 @@ TResource::~TResource()
 	s_iResourceCount--;
 }
 
+// $TRenderInterface: FUNCTION 10017e60
 TBOOL TResource::Create()
 {
 	TASSERT(TFALSE == IsCreated());
@@ -40,6 +43,7 @@ TBOOL TResource::Create()
 	return TTRUE;
 }
 
+// $TRenderInterface: FUNCTION 10017eb0
 TBOOL TResource::Validate()
 {
 	TASSERT((TNULL == Parent()) || (TFALSE == Parent()->IsDying()));
@@ -49,18 +53,22 @@ TBOOL TResource::Validate()
 	return TTRUE;
 }
 
+// $TRenderInterface: FUNCTION 100184c0
 void TResource::Invalidate()
 {
 }
 
+// $TRenderInterface: FUNCTION 100184a0
 void TResource::DestroyResource()
 {
 }
 
+// $TRenderInterface: FUNCTION 10018290
 void TResource::OnDestroy()
 {
 }
 
+// $TRenderInterface: FUNCTION 10018080
 void TResource::SetParent(TResource *a_pParent)
 {
 	TASSERT((TNULL == a_pParent) || (TTRUE == IsDying()) || (TFALSE == a_pParent->IsDying()));
@@ -76,6 +84,7 @@ void TResource::SetParent(TResource *a_pParent)
 	}
 }
 
+// $TRenderInterface: FUNCTION 10017ff0
 void TResource::SetName(TPCCHAR a_strName)
 {
 	if (!a_strName) {
@@ -117,6 +126,7 @@ TBOOL Recurse(TResource::t_RecurseCb a_pCallback, TResource *a_pResource, TBOOL 
 	return TTRUE;
 }
 
+// $TRenderInterface: FUNCTION 10018140
 void TResource::RecurseSimple(t_RecurseCb a_pfnCallback, TResource *a_pResource, TPVOID a_pUserData)
 {
 	TASSERT(TNULL != GetTree());

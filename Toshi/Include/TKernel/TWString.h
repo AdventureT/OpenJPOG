@@ -41,6 +41,7 @@ public:
 		Copy(a_pcString);
 	}
 
+	// $TKernelInterface: FUNCTION 10031ea0
 	~TWString()
 	{
 		FreeBuffer();
@@ -59,11 +60,13 @@ public:
 
 	void Truncate(TINT a_iLength);
 
+	// $TKernelInterface: FUNCTION 10031660
 	TBOOL IsIndexValid(TINT a_iIndex = 0) const
 	{
 		return a_iIndex <= m_iStrLen && a_iIndex >= 0;
 	}
 
+	// $TKernelInterface: FUNCTION 10031a40
 	TPCWCHAR GetString(TINT a_iIndex = 0) const
 	{
 		return IsIndexValid(a_iIndex) ? m_pBuffer + a_iIndex : TNULL;
@@ -130,6 +133,7 @@ public:
 		return m_pBuffer[a_iIndex];
 	}
 
+	// $TKernelInterface: FUNCTION 10031690
 	const TWString &Print() const
 	{
 		TASSERT(GetString() != TNULL);
@@ -137,12 +141,15 @@ public:
 		return *this;
 	}
 
+	// $TKernelInterface: FUNCTION 10031e30
 	TINT ExcessLength() const { return m_iExcessLen; }
+	// $TKernelInterface: FUNCTION 10031e40
 	TINT Length() const { return m_iStrLen; }
 
 private:
 	TBOOL AllocBuffer(TINT a_iLength, TBOOL a_bClear = TTRUE);
 
+	// $TKernelInterface: FUNCTION 10031a00
 	void FreeBuffer()
 	{
 		if (m_iStrLen != 0) {
@@ -152,6 +159,7 @@ private:
 		Reset();
 	}
 
+	// $TKernelInterface: FUNCTION 10031720
 	void Reset()
 	{
 		m_pBuffer    = m_aNull;

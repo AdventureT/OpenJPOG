@@ -10,6 +10,7 @@
 
 TOSHI_NAMESPACE_USING
 
+// $TKernelInterface: FUNCTION 10006200
 TNativeFileSystem::TNativeFileSystem(TPCCHAR a_pcName)
 	: TFileSystem(a_pcName)
 {
@@ -19,6 +20,7 @@ TNativeFileSystem::TNativeFileSystem(TPCCHAR a_pcName)
 	pFileManager->MountFileSystem(this);
 }
 
+// $TKernelInterface: FUNCTION 100062d0
 TFile *TNativeFileSystem::CreateFile(Toshi::TCString const &a_rFilename, TUINT a_uiMode)
 {
 	TNativeFile *pFile = new TNativeFile(this);
@@ -31,6 +33,7 @@ TFile *TNativeFileSystem::CreateFile(Toshi::TCString const &a_rFilename, TUINT a
 	return pFile;
 }
 
+// $TKernelInterface: FUNCTION 10006340
 void TNativeFileSystem::DestroyFile(TFile *a_pFile)
 {
 	TNativeFile *pFile = static_cast<TNativeFile *>(a_pFile);
@@ -40,11 +43,13 @@ void TNativeFileSystem::DestroyFile(TFile *a_pFile)
 	}
 }
 
+// $TKernelInterface: FUNCTION 10006f50
 TBOOL TNativeFileSystem::RemoveFile(TCString const &a_rFilename)
 {
 	return DeleteFile(a_rFilename.GetString());
 }
 
+// $TKernelInterface: FUNCTION 10006370
 TCString TNativeFileSystem::MakeInternalPath(TCString const &a_rsPath)
 {
 	TCString prefix = GetPrefix();
@@ -63,6 +68,7 @@ TCString TNativeFileSystem::MakeInternalPath(TCString const &a_rsPath)
 	return TCString();
 }
 
+// $TKernelInterface: FUNCTION 10006640
 TINT TNativeFile::Read(TPVOID a_pBuffer, TINT a_iSize)
 {
 	if (a_iSize < 1) {
@@ -121,6 +127,7 @@ TINT TNativeFile::Read(TPVOID a_pBuffer, TINT a_iSize)
 	return readedCount;
 }
 
+// $TKernelInterface: FUNCTION 10006780
 TINT TNativeFile::Write(void const *a_pBuffer, TINT a_iSize)
 {
 	if (m_iBufferPosition != m_iPosition) {
@@ -172,6 +179,7 @@ TINT TNativeFile::Write(void const *a_pBuffer, TINT a_iSize)
 	return 0;
 }
 
+// $TKernelInterface: FUNCTION 10006880
 TBOOL TNativeFile::Seek(TINT a_iOffset, TSEEK a_eSeek)
 {
 	if (a_eSeek == TFile::TSEEK_SET) {
@@ -190,6 +198,7 @@ TBOOL TNativeFile::Seek(TINT a_iOffset, TSEEK a_eSeek)
 	return TTRUE;
 }
 
+// $TKernelInterface: FUNCTION 10006900
 TINT TNativeFile::GetSize()
 {
 	m_iBufferPosition = SetFilePointer(m_hFile, 0, TNULL, TSEEK_END);
@@ -199,6 +208,7 @@ TINT TNativeFile::GetSize()
 	return m_iBufferPosition;
 }
 
+// $TKernelInterface: FUNCTION 10006930
 TUINT64 TNativeFile::GetDate()
 {
 	_FILETIME      fLastWriteTime;
@@ -216,6 +226,7 @@ TUINT64 TNativeFile::GetDate()
 	return lv_Large.QuadPart;
 }
 
+// $TKernelInterface: FUNCTION 10006970
 TINT TNativeFile::GetCChar()
 {
 	TCHAR result;
@@ -232,6 +243,7 @@ TINT TNativeFile::GetCChar()
 	return Read(&result, sizeof(result)) == sizeof(result) ? result : -1;
 }
 
+// $TKernelInterface: FUNCTION 100069d0
 TINT TNativeFile::GetWChar()
 {
 	TWCHAR result;
@@ -248,16 +260,19 @@ TINT TNativeFile::GetWChar()
 	return Read(&result, sizeof(result)) == sizeof(result) ? result : -1;
 }
 
+// $TKernelInterface: FUNCTION 10006ee0
 TINT TNativeFile::PutCChar(TCHAR a_cChar)
 {
 	return Write(&a_cChar, sizeof(a_cChar)) == sizeof(a_cChar) ? sizeof(a_cChar) : -1;
 }
 
+// $TKernelInterface: FUNCTION 10006eb0
 TINT TNativeFile::PutWChar(TWCHAR a_wcChar)
 {
 	return Write(&a_wcChar, sizeof(a_wcChar)) == sizeof(a_wcChar) ? sizeof(a_wcChar) : -1;
 }
 
+// $TKernelInterface: FUNCTION 10006a40
 TINT TNativeFile::VCPrintf(TCHAR const *a_pFormat, va_list a_args)
 {
 	va_list args;
@@ -270,6 +285,7 @@ TINT TNativeFile::VCPrintf(TCHAR const *a_pFormat, va_list a_args)
 	return Write(str, iResult);
 }
 
+// $TKernelInterface: FUNCTION 10006aa0
 TINT TNativeFile::VWPrintf(TWCHAR const *a_pFormat, va_list a_args)
 {
 	va_list args;
@@ -282,6 +298,7 @@ TINT TNativeFile::VWPrintf(TWCHAR const *a_pFormat, va_list a_args)
 	return Write(str, iResult * 2) > -1 ? iResult * 2 : iResult;
 }
 
+// $TKernelInterface: FUNCTION 10006b00
 TNativeFile::TNativeFile(TNativeFileSystem *a_pFileManager)
 	: TFile(a_pFileManager)
 {
@@ -296,6 +313,7 @@ TNativeFile::TNativeFile(TNativeFileSystem *a_pFileManager)
 	m_bWriteBuffered   = TTRUE;
 }
 
+// $TKernelInterface: FUNCTION 10006b40
 TBOOL TNativeFile::Open(const TCString &a_rFileName, TUINT a_uiMode)
 {
 	m_pFileSystem->MakeInternalPath(a_rFileName);
@@ -341,6 +359,7 @@ TBOOL TNativeFile::Open(const TCString &a_rFileName, TUINT a_uiMode)
 	return TTRUE;
 }
 
+// $TKernelInterface: FUNCTION 10006c80
 void TNativeFile::Close()
 {
 	FlushWriteBuffer();
@@ -362,6 +381,7 @@ void TNativeFile::Close()
 	}
 }
 
+// $TKernelInterface: FUNCTION 10006cf0
 TINT TNativeFile::ReadUnbuffered(TPVOID a_pBuffer, TINT a_iSize)
 {
 	DWORD lpNumberOfBytesRead;
@@ -386,6 +406,7 @@ TINT TNativeFile::ReadUnbuffered(TPVOID a_pBuffer, TINT a_iSize)
 	return lpNumberOfBytesRead;
 }
 
+// $TKernelInterface: FUNCTION 10006d70
 TBOOL TNativeFile::LoadBuffer(TINT a_iBufferPos)
 {
 	DWORD lpNumberOfBytesRead;
@@ -411,6 +432,7 @@ TBOOL TNativeFile::LoadBuffer(TINT a_iBufferPos)
 	return TTRUE;
 }
 
+// $TKernelInterface: FUNCTION 10006e20
 TINT TNativeFile::FlushWriteBuffer()
 {
 	DWORD lpNumberOfBytesWritten;

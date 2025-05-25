@@ -18,6 +18,7 @@ class TKERNELINTERFACE_EXPORTS TScheduler : public TObject
 public:
 	TScheduler(TKernelInterface *a_pKernel);
 
+	// $TKernelInterface: FUNCTION 1002ceb0
 	virtual ~TScheduler()
 	{
 		TDPRINTF("Destroying TScheduler.\n");
@@ -30,6 +31,7 @@ public:
 	void   DestroyAllTasks();
 	void   DestroyTask(TTask &a_rTask);
 
+	// $TKernelInterface: FUNCTION 1002d670
 	void SetDebugSlowTime(TBOOL a_bEnable) { m_fDebugSlowTime = a_bEnable ? 0.01f : 1.0f; }
 
 	// $TKernelInterface: FUNCTION 1002d690

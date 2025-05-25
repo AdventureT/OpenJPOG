@@ -58,6 +58,7 @@ public:
 	virtual const GUID     &GetDeviceIdentifier() const    = 0;
 	virtual TUINT           GetNumSupportedDevices() const = 0;
 
+	// $TRenderInterface: FUNCTION 1000bc30
 	TNodeList<Mode> *GetModeList() { return &m_Modes; }
 
 private:

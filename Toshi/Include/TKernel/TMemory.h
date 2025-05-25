@@ -52,6 +52,8 @@ class TKERNELINTERFACE_EXPORTS TMemory
 
 public:
 	static TBOOL TOSHI_API     Initialise();
+
+	// $TKernelInterface: FUNCTION 10025d30
 	static void TOSHI_API      DebugPrintHALMemInfo(TCHAR const *a_pPrint){};
 	static TMemory &TOSHI_API  GetMemMangager();
 	static MemBlock *TOSHI_API GetGlobalBlock();
@@ -62,6 +64,7 @@ public:
 	TBOOL  Free(TPVOID a_pMem);
 
 protected:
+	// $TKernelInterface: FUNCTION 10025cd0
 	static TUINT TOSHI_API GetFreePhysicalMemory() { return 0x8000000; }
 
 private:

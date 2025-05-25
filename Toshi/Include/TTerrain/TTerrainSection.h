@@ -16,30 +16,37 @@ public:
 
 	void ComputeBounds();
 
+	// $TTerrainInterface: FUNCTION 10007cb0
 	void SetDirty(bool a_bEnable)
 	{
 		a_bEnable ? SetSystemFlags(m_ui32ClipFlags | CLIPFLAG_DIRTY) : SetSystemFlags(m_ui32ClipFlags & ~CLIPFLAG_DIRTY);
 	}
+	// $TTerrainInterface: FUNCTION 1000de20
 	TBOOL HasGrass()
 	{
 		return HASFLAG(m_ui32ClipFlags & CLIPFLAG_GRASS);
 	}
+	// $TTerrainInterface: FUNCTION 1000de40
 	void SetGrass(bool a_bEnable)
 	{
 		a_bEnable ? AddFlags(CLIPFLAG_GRASS) : SetFlags(m_ui32ClipFlags & ~CLIPFLAG_GRASS);
 	}
+	// $TTerrainInterface: FUNCTION 1000de00
 	void AddFlags(TUINT a_ui32ClipFlags)
 	{
 		m_ui32ClipFlags |= a_ui32ClipFlags;
 	}
+	// $TTerrainInterface: FUNCTION 1000de10
 	void SetFlags(TUINT a_ui32ClipFlags)
 	{
 		m_ui32ClipFlags = a_ui32ClipFlags;
 	}
+	// $TTerrainInterface: FUNCTION 100069e0
 	TUINT GetFlags() const
 	{
 		return m_ui32ClipFlags;
 	}
+	// $TTerrainInterface: FUNCTION 100069c0
 	TTerrainSection *NextSection() const
 	{
 		return m_pNextSection;

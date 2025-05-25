@@ -8,6 +8,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
+// $TTerrainInterface: FUNCTION 10008900
 void TTerrainSection::SetSystemFlags(TUINT a_ui32ClipFlags)
 {
 	const TUINT uiUserBitsFlagMask = USERBITSFLAGMASK;

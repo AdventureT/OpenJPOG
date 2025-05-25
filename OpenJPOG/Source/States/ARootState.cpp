@@ -10,6 +10,7 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(ARootState, TObject)
 
+// $JPOG: FUNCTION 0058d9c0
 ARootState::ARootState()
 {
 	m_pParent     = TNULL;
@@ -18,14 +19,17 @@ ARootState::ARootState()
 	m_bHasControl = TFALSE;
 }
 
+// $JPOG: FUNCTION 0058df90
 void ARootState::OnActivate()
 {
 }
 
+// $JPOG: FUNCTION 0058dfb0
 void ARootState::OnDeactivate()
 {
 }
 
+// $JPOG: FUNCTION 0058dfe0
 void ARootState::TransferControlTemporary(ARootState *a_pState)
 {
 	m_pChild                = a_pState;
@@ -35,6 +39,7 @@ void ARootState::TransferControlTemporary(ARootState *a_pState)
 	m_pChild->OnActivate();
 }
 
+// $JPOG: FUNCTION 0058e010
 void ARootState::TransferControl(ARootState *a_pState)
 {
 	if (!a_pState->ParentAllowed(*this)) {
@@ -54,6 +59,7 @@ void ARootState::TransferControl(ARootState *a_pState)
 	m_pChild->OnActivate();
 }
 
+// $JPOG: FUNCTION 0058e070
 void ARootState::RemoveSelf()
 {
 	ExplicitDelete();
@@ -67,6 +73,7 @@ void ARootState::RemoveSelf()
 	}
 }
 
+// $JPOG: FUNCTION 0058e0b0
 ARootState *ARootState::ReturnToState(const TClass &a_rStateClass)
 {
 	ARootState *pCurrent;
@@ -76,6 +83,7 @@ ARootState *ARootState::ReturnToState(const TClass &a_rStateClass)
 	return pCurrent;
 }
 
+// $JPOG: FUNCTION 0058e100
 ARootState *ARootState::ReturnToExactState(const Toshi::TClass &a_rStateClass)
 {
 	ARootState *pCurrent;
@@ -85,6 +93,7 @@ ARootState *ARootState::ReturnToExactState(const Toshi::TClass &a_rStateClass)
 	return pCurrent;
 }
 
+// $JPOG: FUNCTION 0058e280
 TBOOL ARootState::AddChild(ARootState &a_rState)
 {
 	if (m_pChild) {
@@ -98,6 +107,7 @@ TBOOL ARootState::AddChild(ARootState &a_rState)
 	return TTRUE;
 }
 
+// $JPOG: FUNCTION 0058e2d0
 TBOOL ARootState::RemoveChild()
 {
 	if (m_pChild) {
@@ -114,6 +124,7 @@ TBOOL ARootState::RemoveChild()
 	return TFALSE;
 }
 
+// $JPOG: FUNCTION 0058e5a0
 ARootState &ARootState::GetCurrent()
 {
 	ARootState *current;
@@ -122,6 +133,7 @@ ARootState &ARootState::GetCurrent()
 	return *current;
 }
 
+// $JPOG: FUNCTION 0058e350
 void ARootState::ExplicitDelete()
 {
 	ARootState *parent = m_pParent;

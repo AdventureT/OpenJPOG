@@ -10,6 +10,7 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(ASoundManager, TObject);
 
+// $JPOG: FUNCTION 0068e1f0
 TFLOAT ASoundManager::GetPitch(TINT a_iChannel) const
 {
 	TINT freq;

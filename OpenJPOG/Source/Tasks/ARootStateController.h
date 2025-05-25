@@ -22,7 +22,9 @@ public:
 	void SetupToolBarHUD();
 
 public:
+	// $JPOG: FUNCTION 0046dfe0
 	ARootState                            *GetBaseAppState() { return m_pBaseAppState; }
+	// $JPOG: FUNCTION 0046dfc0
 	static ARootStateController *TOSHI_API GetRootStateController() { return s_pCurrentStateController; }
 
 private:

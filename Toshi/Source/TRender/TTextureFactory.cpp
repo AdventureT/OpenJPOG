@@ -27,11 +27,13 @@ TTextureResource *TTextureFactory::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, 
 	return TNULL;
 }
 
+// $TRenderInterface: FUNCTION 1000f4c0
 TTextureFactory *TOSHI_API TTextureFactory::CreateHAL(TRenderInterface *a_pRenderer, TPCCHAR a_szName, TResource *a_pResource)
 {
 	return (TTextureFactory *)a_pRenderer->CreateResource(TClass::Find("TTextureFactoryHAL", TNULL), a_szName, a_pResource);
 }
 
+// $TRenderInterface: FUNCTION 10011b90
 TTextureResource *TTextureFactory::FindTexture(TPCCHAR a_szName)
 {
 	auto pList = &m_aLists[HashName(a_szName)];
@@ -47,6 +49,7 @@ TTextureResource *TTextureFactory::FindTexture(TPCCHAR a_szName)
 	return TNULL;
 }
 
+// $TRenderInterface: FUNCTION 10011c70
 void TTextureFactory::DeregisterTexture(TTextureResource *a_pTexture)
 {
 	TVALIDADDRESS(a_pTexture);
@@ -58,6 +61,7 @@ void TTextureFactory::DeregisterTexture(TTextureResource *a_pTexture)
 	}
 }
 
+// $TRenderInterface: FUNCTION 10011d90
 TUINT TTextureFactory::HashName(TPCCHAR a_szName)
 {
 	TUINT iHash = 0;
@@ -70,6 +74,7 @@ TUINT TTextureFactory::HashName(TPCCHAR a_szName)
 	return iHash % NUM_LISTS;
 }
 
+// $TRenderInterface: FUNCTION 10011e10
 TTextureFactory::NameEntry *TTextureFactory::RegisterTexture(TPCCHAR a_szName, TTextureResource *a_pTexture)
 {
 	auto pList  = &m_aLists[HashName(a_szName)];

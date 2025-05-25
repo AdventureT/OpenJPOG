@@ -109,13 +109,16 @@ public:
 
 	static void TOSHI_API DebugFilePrintString(TPCHAR a_pcString);
 
+	// $TKernelInterface: FUNCTION 1000c530
 	static TBOOL EnableDebugFile(TBOOL a_bEnable)
 	{
 		TBOOL previous     = m_bEnableDebugFile;
 		m_bEnableDebugFile = a_bEnable;
 		return previous;
 	}
+	// $TKernelInterface: FUNCTION 10007d00
 	static TBOOL IsDebugFileEnabled() { return m_bEnableDebugFile; }
+	// $TKernelInterface: FUNCTION 1000c5b0
 	static TBOOL IsValidAddress(TPCVOID a_pMem) { return a_pMem && a_pMem != (TPCVOID)0xCDCDCDCD && a_pMem >= (TPCVOID)80; }
 
 	inline static TINT   s_iLogIndent        = 0;

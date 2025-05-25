@@ -10,6 +10,7 @@
 
 TOSHI_NAMESPACE_USING
 
+// $TKernelInterface: FUNCTION 10031740
 TBOOL TWString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 {
 	TASSERT(a_iLength >= 0);
@@ -86,6 +87,7 @@ TWString &TWString::Concat(TPCWCHAR a_String, TINT a_iLength)
 	return *this;
 }
 
+// $TKernelInterface: FUNCTION 100310b0
 TINT TWString::Compare(TPCWCHAR a_pcString, int a_iLength) const
 {
 	TASSERT(a_pcString != TNULL);
@@ -129,6 +131,7 @@ void TWString::Copy(TPCCHAR a_pcString, TINT a_iLength)
 	m_pBuffer[a_iLength] = L'\0';
 }
 
+// $TKernelInterface: FUNCTION 10030e20
 TWString &TOSHI_CALLBACKAPI TWString::Format(TPCWCHAR a_pcFormat, ...)
 {
 	TWCHAR  buffer[0x400];
@@ -140,6 +143,7 @@ TWString &TOSHI_CALLBACKAPI TWString::Format(TPCWCHAR a_pcFormat, ...)
 	return *this;
 }
 
+// $TKernelInterface: FUNCTION 10031390
 TINT TWString::Find(TWCHAR a_cFind, TINT a_iIndex) const
 {
 	if (!IsIndexValid(a_iIndex)) return -1;
@@ -149,6 +153,7 @@ TINT TWString::Find(TWCHAR a_cFind, TINT a_iIndex) const
 	return foundAt - GetString() >> 1;
 }
 
+// $TKernelInterface: FUNCTION 10031520
 void TWString::Truncate(TINT a_iLength)
 {
 	TINT len = Length();

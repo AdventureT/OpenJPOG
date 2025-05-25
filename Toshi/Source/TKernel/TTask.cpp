@@ -11,6 +11,7 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TTask, TObject);
 
+// $TKernelInterface: FUNCTION 1002e850
 TBOOL TTask::Create()
 {
 	TASSERT(IsCreated() == TFALSE);
@@ -30,6 +31,7 @@ TBOOL TTask::Create()
 	return TTRUE;
 }
 
+// $TKernelInterface: FUNCTION 1002e8f0
 TBOOL TTask::CreateFailed()
 {
 	TASSERT(IsCreated() == TFALSE);
@@ -42,6 +44,7 @@ TBOOL TTask::CreateFailed()
 	return TFALSE;
 }
 
+// $TKernelInterface: FUNCTION 1002e960
 void TTask::Activate(TBOOL a_bActivate)
 {
 	TUINT8 oldState = m_Flags;
@@ -58,11 +61,13 @@ void TTask::Activate(TBOOL a_bActivate)
 	}
 }
 
+// $TKernelInterface: FUNCTION 1002ea70
 void TTask::DestroyTask()
 {
 	m_pScheduler->DestroyTask(*this);
 }
 
+// $TKernelInterface: FUNCTION 1002eab0
 TScheduler *TTask::GetScheduler()
 {
 	return m_pScheduler;

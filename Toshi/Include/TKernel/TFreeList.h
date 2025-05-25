@@ -32,6 +32,7 @@ public:
 		friend class TFreeList;
 
 	public:
+		// $TKernelInterface: FUNCTION 10012750
 		Node &operator=(const Node &a_rNode)
 		{
 			m_pNext = a_rNode.m_pNext;
@@ -55,8 +56,11 @@ public:
 	void SetCapacity(TINT a_iCapacity);
 	void SetGrowSize(TINT a_iGrowSize);
 
+	// $TKernelInterface: FUNCTION 100127b0
 	TINT GetCapacity() const { return m_iCapacity; }
+	// $TKernelInterface: FUNCTION 10012780
 	TINT GetGrowSize() const { return m_iGrowSize; }
+	// $TKernelInterface: FUNCTION 10012770
 	TINT GetFreeCount() { return m_iFreeCount; }
 
 private:

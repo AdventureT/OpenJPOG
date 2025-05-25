@@ -51,6 +51,7 @@ public:
 	Result LoadOptions();
 	Result LoadOptions(TINT a_int, TINT a_int2, const Toshi::TCString &a_szOptionsDir, const Toshi::TCString &a_szOptionsName);
 
+	// $JPOG: FUNCTION 00467530
 	TINT GetAutoSaveState() const
 	{
 		return m_iAutoSaveState;

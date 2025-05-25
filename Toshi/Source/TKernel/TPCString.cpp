@@ -10,6 +10,7 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_FREELIST(TPooledCString, 0, 8)
 
+// $TKernelInterface: FUNCTION 10016980
 TCStringPool::TCStringPool(TINT a_iMaxSize, TINT a_iInitialSize)
 {
 	m_iMaxSize        = a_iMaxSize;
@@ -38,6 +39,7 @@ TPCString TCStringPool::Get(TINT a_iInt)
 	return Get(TCString().Format("%d", a_iInt));
 }
 
+// $TKernelInterface: FUNCTION 10028d10
 void TCStringPool::Remove(TPooledCString &a_rPooledCString)
 {
 	TASSERT(a_rPooledCString.GetRefCount() == 0);
@@ -57,11 +59,13 @@ TPooledCString::TPooledCString(TPCCHAR a_szString, TCStringPool *a_pStringPool)
 	m_pCStringPool = a_pStringPool;
 }
 
+// $TKernelInterface: FUNCTION 10028fd0
 void TPooledCString::Delete()
 {
 	delete this;
 }
 
+// $TKernelInterface: FUNCTION 10029000
 TPooledCString::~TPooledCString()
 {
 	if (m_pCStringPool) {

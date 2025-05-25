@@ -7,14 +7,12 @@
 //-----------------------------------------------------------------------------
 #include <TKernel/TMemoryDebugOn.h>
 
-TOSHI_NAMESPACE_USING
-
 HWND GetConsoleHandle()
 {
 	HWND     hwnd;
 	TCHAR    pszWindowTitle[512];
 	TCHAR    time[24];
-	TCString szWindowTitle("{1B5D8052-529A-4c88-9DDE-EE523D440B00}");
+	Toshi::TCString szWindowTitle("{1B5D8052-529A-4c88-9DDE-EE523D440B00}");
 	_ultoa(timeGetTime(), time, 16);
 	szWindowTitle += time;
 
@@ -25,6 +23,9 @@ HWND GetConsoleHandle()
 	return hwnd;
 }
 
+TOSHI_NAMESPACE_BEGIN
+
+// $TApplication: FUNCTION 10001150
 TApplication::TApplication()
 {
 	m_pKernel      = TNULL;
@@ -35,6 +36,7 @@ TApplication::TApplication()
 	*m_hConsole    = GetConsoleHandle();
 }
 
+// $TApplication: FUNCTION 100011a0
 TApplication::~TApplication()
 {
 #ifdef TOSHI_NOTFINAL
@@ -44,6 +46,7 @@ TApplication::~TApplication()
 #endif
 }
 
+// $TApplication: FUNCTION 10001260
 TBOOL TApplication::Create(TPCCHAR a_pcName, TINT argc, TPCHAR *const argv)
 {
 	m_pcName = a_pcName;
@@ -65,6 +68,7 @@ TBOOL TApplication::Create(TPCCHAR a_pcName, TINT argc, TPCHAR *const argv)
 	return OnCreate(argc, argv);
 }
 
+// $TApplication: FUNCTION 100011e0
 TBOOL TApplication::Execute()
 {
 	TASSERT(TTRUE == TApplication::IsCreated());
@@ -75,6 +79,7 @@ TBOOL TApplication::Execute()
 	return OnDestroy();
 }
 
+// $TApplication: FUNCTION 10001300
 TBOOL TApplication::ShowConsole(TBOOL a_bShowConsole)
 {
 	ShowWindow(*m_hConsole, a_bShowConsole);
@@ -83,3 +88,5 @@ TBOOL TApplication::ShowConsole(TBOOL a_bShowConsole)
 	m_bShowConsole = a_bShowConsole;
 	return show;
 }
+
+TOSHI_NAMESPACE_END

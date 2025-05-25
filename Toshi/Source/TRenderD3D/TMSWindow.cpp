@@ -14,6 +14,7 @@ IMPLEMENT_DYNCREATE(TMSWindow, TObject)
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message,
                             WPARAM wParam, LPARAM lParam);
 
+// $TRenderD3DInterface: FUNCTION 100030f0
 TMSWindow::TMSWindow()
 {
 	m_hWnd          = NULL;
@@ -43,6 +44,7 @@ TMSWindow::TMSWindow()
 	RegisterClassEx(&wndClass);
 }
 
+// $TRenderD3DInterface: FUNCTION 100031d0
 TMSWindow::~TMSWindow()
 {
 	TCString className = TGetClass(TRenderD3DInterface).GetName();
@@ -85,6 +87,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message,
 	return 0;
 }
 
+// $TRenderD3DInterface: FUNCTION 10003230
 TBOOL TMSWindow::Create(TRenderD3DInterface *a_pRenderer, TPCCHAR a_szName)
 {
 	Destroy();
@@ -107,6 +110,7 @@ TBOOL TMSWindow::Create(TRenderD3DInterface *a_pRenderer, TPCCHAR a_szName)
 	return TFALSE;
 }
 
+// $TRenderD3DInterface: FUNCTION 100032b0
 void TMSWindow::Destroy()
 {
 	if (GetHWND() != TNULL) {
@@ -117,6 +121,7 @@ void TMSWindow::Destroy()
 	m_pD3DInterface = TNULL;
 }
 
+// $TRenderD3DInterface: FUNCTION 10003350
 void TMSWindow::Disable()
 {
 	TASSERT(GetHWND() != TNULL);
@@ -125,6 +130,7 @@ void TMSWindow::Disable()
 	m_bIsEnabled = TFALSE;
 }
 
+// $TRenderD3DInterface: FUNCTION 100032f0
 void TMSWindow::Enable()
 {
 	TASSERT(GetHWND() != TNULL);
@@ -133,12 +139,14 @@ void TMSWindow::Enable()
 	m_bIsEnabled = TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 100033b0
 void TMSWindow::Position(TINT X, TINT Y, TINT cx, TINT cy)
 {
 	TASSERT(GetHWND() != TNULL);
 	SetWindowPos(GetHWND(), NULL, X, Y, cx, cy, 0);
 }
 
+// $TRenderD3DInterface: FUNCTION 10003480
 void TMSWindow::SetFullscreen()
 {
 	TASSERT(GetHWND() != TNULL);
@@ -146,6 +154,7 @@ void TMSWindow::SetFullscreen()
 	m_bIsWindowed = TFALSE;
 }
 
+// $TRenderD3DInterface: FUNCTION 10003420
 void TMSWindow::SetWindowed()
 {
 	TASSERT(GetHWND() != TNULL);

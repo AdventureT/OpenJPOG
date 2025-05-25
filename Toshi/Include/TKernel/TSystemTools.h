@@ -20,8 +20,11 @@ public:
 	static TPVOID TOSHI_API       MemSet(TPVOID a_dest, TINT a_iValue, TINT m_iSize);
 
 	static TCStringPool *TOSHI_API GetCStringPool();
+	// $TKernelInterface: FUNCTION 10007bf0
 	static TPBYTE                  GetScratchMem() { return ms_aScratchMem; }
+	// $TKernelInterface: FUNCTION 10007bd0
 	static TPCWCHAR                GetTempWString() { return (TPCWCHAR)ms_aScratchMem; }
+	// $TKernelInterface: FUNCTION 10007be0
 	static TPCHAR                  GetTempCString() { return (TPCHAR)ms_aScratchMem; }
 
 private:

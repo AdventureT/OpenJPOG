@@ -15,6 +15,7 @@ TBOOL     Profiler_Control_ParentStart = TFALSE;
 TBOOL     Profiler_Control_ParentStop  = TFALSE;
 TProfiler Profiler_Program;
 
+// $TKernelInterface: FUNCTION 1002ce40
 TScheduler::TScheduler(TKernelInterface *a_pKernel)
 {
 	m_pCurrentTask      = TNULL;
@@ -26,6 +27,7 @@ TScheduler::TScheduler(TKernelInterface *a_pKernel)
 	TDPRINTF("Creating TScheduler.\n");
 }
 
+// $TKernelInterface: FUNCTION 1002d010
 TTask *TScheduler::CreateTask(TClass const &a_rTaskClass, TTask *a_pTask)
 {
 	TASSERT(a_rTaskClass.IsA(TGetClass(TTask)) == TTRUE);
@@ -39,6 +41,7 @@ TTask *TScheduler::CreateTask(TClass const &a_rTaskClass, TTask *a_pTask)
 	return pTask;
 }
 
+// $TKernelInterface: FUNCTION 1002cf70
 void TScheduler::Update()
 {
 	if (Profiler_Control_ParentStart) {
@@ -71,6 +74,7 @@ void TScheduler::Update()
 	UpdateActiveTasks(m_oTaskTree.ChildOfRoot());
 }
 
+// $TKernelInterface: FUNCTION 1002d190
 void TScheduler::DestroyDyingTasks(TTask *a_pTask)
 {
 	if (a_pTask != TNULL)
@@ -110,6 +114,7 @@ void TScheduler::DestroyDyingTasks(TTask *a_pTask)
 	}*/
 }
 
+// $TKernelInterface: FUNCTION 1002d2a0
 void TScheduler::DestroyTaskRecurse(TTask *a_pTask)
 {
 	for (TTask *pTask = a_pTask; pTask != TNULL; pTask = (pTask->Next() != a_pTask) ? a_pTask->Next() : TNULL) {
@@ -121,6 +126,7 @@ void TScheduler::DestroyTaskRecurse(TTask *a_pTask)
 	}
 }
 
+// $TKernelInterface: FUNCTION 1002d200
 void TScheduler::UpdateActiveTasks(TTask *a_pTask)
 {
 	TTask *currentTask = a_pTask;
@@ -154,6 +160,7 @@ void TScheduler::UpdateActiveTasks(TTask *a_pTask)
 	}*/
 }
 
+// $TKernelInterface: FUNCTION 1002d130
 void TScheduler::DestroyAllTasks()
 {
 	TTask *pAttached = m_oTaskTree.ChildOfRoot();
@@ -163,6 +170,7 @@ void TScheduler::DestroyAllTasks()
 	}
 }
 
+// $TKernelInterface: FUNCTION 1002d100
 void TScheduler::DestroyTask(TTask &a_rTask)
 {
 	if (!a_rTask.IsDying()) {
@@ -171,12 +179,14 @@ void TScheduler::DestroyTask(TTask &a_rTask)
 	}
 }
 
+// $TKernelInterface: FUNCTION 1002d630
 void TScheduler::DeleteTask(TTask *a_pTask)
 {
 	DeleteTaskRecurse(a_pTask->Child());
 	DeleteTaskAtomic(a_pTask);
 }
 
+// $TKernelInterface: FUNCTION 1002d350
 void TScheduler::DeleteTaskRecurse(TTask *a_pTask)
 {
 	if (!a_pTask) return;
@@ -185,6 +195,7 @@ void TScheduler::DeleteTaskRecurse(TTask *a_pTask)
 	}
 }
 
+// $TKernelInterface: FUNCTION 1002d3a0
 void TScheduler::DeleteTaskAtomic(TTask *a_pTask)
 {
 	if (!a_pTask) return;

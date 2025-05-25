@@ -14,6 +14,7 @@ TOSHI_NAMESPACE_USING
 IMPLEMENT_DYNCREATE(TTextureResourceHAL, TTextureResource)
 IMPLEMENT_FREELIST(TTextureResourceHAL, 0, 8)
 
+// $TRenderD3DInterface: FUNCTION 1000c7c0
 TBOOL TTextureResourceHAL::Validate()
 {
 	if (IsValid()) {
@@ -79,22 +80,26 @@ TBOOL TTextureResourceHAL::Validate()
 	return TResource::Validate();
 }
 
+// $TRenderD3DInterface: FUNCTION 1000c9c0
 void TTextureResourceHAL::Invalidate()
 {
 }
 
+// $TRenderD3DInterface: FUNCTION 1000d6f0
 TUINT TTextureResourceHAL::GetWidth()
 {
 	Validate();
 	return m_oImageInfo.Width;
 }
 
+// $TRenderD3DInterface: FUNCTION 1000d6e0
 TUINT TTextureResourceHAL::GetHeight()
 {
 	Validate();
 	return m_oImageInfo.Height;
 }
 
+// $TRenderD3DInterface: FUNCTION 1000cab0
 TBOOL TTextureResourceHAL::Lock(TTextureResource::LOCKSTATE &a_rLockState)
 {
 	if (!m_pD3DTexture) {
@@ -117,6 +122,7 @@ TBOOL TTextureResourceHAL::Lock(TTextureResource::LOCKSTATE &a_rLockState)
 	return TFALSE;
 }
 
+// $TRenderD3DInterface: FUNCTION 1000cb10
 void TTextureResourceHAL::Unlock()
 {
 	TASSERT(0 != m_uiLockCount);
@@ -162,6 +168,7 @@ TBOOL TTextureResourceHAL::Create(TPCCHAR a_szFileName, TUINT a_eTextureFlags)
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 1000cc20
 TBOOL TTextureResourceHAL::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_uiMipmapFlags)
 {
 	if (!TTextureResource::CreateEx(a_pData, a_uiDataSize, a_uiWidth, a_uiHeight, a_uiMipLevels, a_eFormat, a_uiMipmapFlags)) {
@@ -182,6 +189,7 @@ TBOOL TTextureResourceHAL::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 1000d500
 TBOOL TTextureResourceHAL::CreateFromFormat()
 {
 	TUINT uiMipLevels = (m_uiMipmapFlags & MIPMAPFLAGS_DISABLED) ? 0 : m_uiMipLevels;
@@ -204,6 +212,7 @@ TBOOL TTextureResourceHAL::CreateFromFormat()
 	}
 }
 
+// $TRenderD3DInterface: FUNCTION 1000d0f0
 TBOOL TTextureResourceHAL::CreateFromMemory8888(TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiLevels, TPVOID a_pData)
 {
 	TRenderD3DInterface *pRenderer = static_cast<TRenderD3DInterface *>(GetRenderer());
@@ -251,6 +260,7 @@ TBOOL TTextureResourceHAL::CreateFromMemory8888(TUINT a_uiWidth, TUINT a_uiHeigh
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 1000d350
 TBOOL TTextureResourceHAL::CreateFromMemory888(TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiLevels, TPVOID a_pData)
 {
 	TRenderD3DInterface *pRenderer = static_cast<TRenderD3DInterface *>(GetRenderer());
@@ -298,11 +308,13 @@ TBOOL TTextureResourceHAL::CreateFromMemory888(TUINT a_uiWidth, TUINT a_uiHeight
 	return TBOOL();
 }
 
+// $TRenderD3DInterface: FUNCTION 1000ccf0
 TBOOL TTextureResourceHAL::CreateFromMemory5551(TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiLevels, TPVOID a_pData)
 {
 	return TBOOL();
 }
 
+// $TRenderD3DInterface: FUNCTION 1000d460
 TBOOL TTextureResourceHAL::CreateFromMemoryDDS(TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiLevels, TPVOID a_pData)
 {
 	auto pRenderer = TSTATICCAST(TRenderD3DInterface *, GetRenderer());
@@ -330,6 +342,7 @@ TBOOL TTextureResourceHAL::CreateFromMemoryDDS(TUINT a_uiWidth, TUINT a_uiHeight
 	return TFALSE;
 }
 
+// $TRenderD3DInterface: FUNCTION 1000cef0
 TBOOL TTextureResourceHAL::CreateFromMemory4444(TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiLevels, TPVOID a_pData)
 {
 	auto pRenderer = TSTATICCAST(TRenderD3DInterface *, GetRenderer());
@@ -375,6 +388,7 @@ TBOOL TTextureResourceHAL::CreateFromMemory4444(TUINT a_uiWidth, TUINT a_uiHeigh
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 1000ccb0
 TBOOL TTextureResourceHAL::IsPPM(TPCCHAR a_pFileName)
 {
 	TINT iLen = TSystem::StringLength(a_pFileName);

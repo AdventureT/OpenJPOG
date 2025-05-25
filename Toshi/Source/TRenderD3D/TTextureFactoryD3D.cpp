@@ -12,6 +12,7 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TTextureFactoryHAL, TTextureFactory)
 
+// $TRenderD3DInterface: FUNCTION 1000c400
 TTextureResource *TTextureFactoryHAL::CreateTextureFromFile(TPCCHAR a_szFileName, TUINT a_eTextureFlags)
 {
 	TTextureResource *pTexture = FindTexture(a_szFileName);
@@ -32,6 +33,7 @@ TTextureResource *TTextureFactoryHAL::CreateTextureFromFile(TPCCHAR a_szFileName
 	return pTexture;
 }
 
+// $TRenderD3DInterface: FUNCTION 1000c480
 TTextureResource *TTextureFactoryHAL::CreateTextureFromMemory(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels)
 {
 	static TUINT s_iNumMemTextures = 0;
@@ -57,6 +59,7 @@ TTextureResource *TTextureFactoryHAL::CreateTextureFromMemory(TPVOID a_pData, TU
 	return pTexture;
 }
 
+// $TRenderD3DInterface: FUNCTION 1000c530
 TTextureResource *TTextureFactoryHAL::CreateEx(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiMipLevels, TTEXTURERESOURCEFORMAT a_eFormat, TUINT a_uiFormatBits)
 {
 	static TUINT s_iNumMemTextures = 0;

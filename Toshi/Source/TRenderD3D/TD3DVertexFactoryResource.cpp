@@ -11,6 +11,7 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TVertexFactoryResource, TVertexFactoryResourceInterface)
 
+// $TRenderD3DInterface: FUNCTION 10009710
 TVertexPoolResourceInterface *TVertexFactoryResource::CreatePoolResource(TUSHORT a_uiMaxStaticVertices, TUINT a_uiFlags)
 {
 	TVertexPoolResource *pVertexPool = TSTATICCAST(
@@ -46,6 +47,7 @@ static TBOOL CallBack(TResource *a_pResource, TPVOID a_pUserData)
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 10009880
 TVertexBlockResource *TVertexFactoryResource::FindBlockResource(TVertexPoolResource *a_pResource)
 {
 	CallbackStruct result = { TNULL, a_pResource };
@@ -56,6 +58,7 @@ TVertexBlockResource *TVertexFactoryResource::FindBlockResource(TVertexPoolResou
 	return result.m_pBlock;
 }
 
+// $TRenderD3DInterface: FUNCTION 100097a0
 TVertexBlockResource *TVertexFactoryResource::CreateBlockResource(TUSHORT a_uiMaxVertices, TUINT a_uiFlags)
 {
 	TVertexBlockResource *pVertexBlock = TSTATICCAST(

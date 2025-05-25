@@ -31,12 +31,16 @@ public:
 	virtual ~TFileSystem()                                                    = default;
 	virtual TFile   *CreateFile(const TCString &a_rsFileName, TUINT a_uiMode) = 0;
 	virtual void     DestroyFile(TFile *a_pFile)                              = 0;
+	// $TKernelInterface: FUNCTION 10007280
 	virtual TBOOL    RemoveFile(const TCString &a_rsFilename) { return TTRUE; }
 	virtual TCString MakeInternalPath(const TCString &a_rsPath) = 0;
+	// $TKernelInterface: FUNCTION 10007270
 	virtual TBOOL    GetFirstFile(const TCString &a_rFolder, TCString &a_rFilename, TUINT a_uiMode) { return TFALSE; }
+	// $TKernelInterface: FUNCTION 10007260
 	virtual TBOOL    GetNextFile(const TCString &a_rsFileName, TUINT a_uiMode) { return TFALSE; };
 	virtual void     SetPrefix(const TCString &a_rPrefix);
 
+	// $TKernelInterface: FUNCTION 100071b0
 	TFileSystem &operator=(TFileSystem &a_rOther)
 	{
 		m_pNext   = a_rOther.m_pNext ? a_rOther.m_pNext : TNULL;
@@ -46,7 +50,9 @@ public:
 		return *this;
 	}
 
+	// $TKernelInterface: FUNCTION 10007240
 	const TCString &GetPrefix() const { return m_sPrefix; }
+	// $TKernelInterface: FUNCTION 10007250
 	const TCString &GetName() const { return m_sName; }
 
 private:
@@ -72,6 +78,7 @@ public:
 			m_iPosition = a_rOther.m_iPosition;
 		}
 
+		// $TKernelInterface: FUNCTION 1000d430
 		TBOOL First(TCString &a_rSysPath)
 		{
 			if (m_sSysPath.Length() > 0) {
@@ -83,6 +90,7 @@ public:
 			return TFALSE;
 		}
 
+		// $TKernelInterface: FUNCTION 1000d490
 		TBOOL Next(TCString &a_rSysPath)
 		{
 			if (m_iPosition >= 0) {
@@ -113,16 +121,20 @@ public:
 
 	TCString MakeAbsolutePath(TCString const &a_rPath);
 
+	// $TKernelInterface: FUNCTION 10007350
 	static TFileManager *TOSHI_API GetFileManager() { return s_pFileManager; }
+	// $TKernelInterface: FUNCTION 1000db90
 	void                           SetSystemPath(TCString const &a_rSysPath)
 	{
 		m_pcSystemPath = a_rSysPath;
 		InvalidateSystemPath();
 	}
+	// $TKernelInterface: FUNCTION 1000db80
 	TCString const &GetWorkingDirectory() const { return m_pcWorkingDirectory; }
 
 private:
 	void                          ValidateSystemPath();
+	// $TKernelInterface: FUNCTION 1000db30
 	void                          InvalidateSystemPath() { m_bValidated = false; };
 	static TFileSystem *TOSHI_API FindFileSystem(TDList<TFileSystem> &a_rFileSystems, const TCString &a_rFileSysName);
 
@@ -149,6 +161,7 @@ enum TMODE : TUINT
 class TKERNELINTERFACE_EXPORTS TFile
 {
 protected:
+	// $TKernelInterface: FUNCTION 10007170
 	TFile(TFileSystem *a_pFileSystem)
 	{
 		m_pFileSystem = a_pFileSystem;
@@ -168,6 +181,7 @@ public:
 	virtual TBOOL   Seek(TINT a_iOffset, TSEEK a_eSeek)        = 0;
 	virtual TINT    Tell()                                     = 0;
 	virtual TINT    GetSize()                                  = 0;
+	// $TKernelInterface: FUNCTION 100071a0
 	virtual TUINT64 GetDate() { return 0; }
 	virtual TINT    GetCChar()                                        = 0;
 	virtual TINT    GetWChar()                                        = 0;
@@ -178,6 +192,7 @@ public:
 
 	static TFile *TOSHI_API Create(const TCString &a_sName, TUINT a_uiMode);
 	static void TOSHI_API   Destroy(TFile *a_pFile);
+	// $TKernelInterface: FUNCTION 1000db00
 	static void TOSHI_API   PrintFileAccess(TBOOL a_bFileAccess) {}
 
 	static TCString TOSHI_API ConcatPath(TCString const &a_rPath1, TCString const &a_rPath2);
@@ -188,6 +203,7 @@ public:
 	static TCString TOSHI_API SimplifyPath(const TCString &a_rPath);
 
 	void         Destroy();
+	// $TKernelInterface: FUNCTION 10007190
 	TFileSystem *GetFileSystem() const { return m_pFileSystem; }
 
 protected:

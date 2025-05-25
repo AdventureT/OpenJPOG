@@ -12,6 +12,7 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TVertexPoolResource, TVertexPoolResourceInterface)
 
+// $TRenderD3DInterface: FUNCTION 10009af0
 TBOOL TVertexPoolResource::Validate()
 {
 	if (IsValid()) {
@@ -58,23 +59,28 @@ TBOOL TVertexPoolResource::Validate()
 	return TResource::Validate();
 }
 
+// $TRenderD3DInterface: FUNCTION 10009c30
 void TVertexPoolResource::Invalidate()
 {
 }
 
+// $TRenderD3DInterface: FUNCTION 1000a500
 void TVertexPoolResource::OnDestroy()
 {
 }
 
+// $TRenderD3DInterface: FUNCTION 10009cd0
 TBOOL TVertexPoolResource::Lock(LockBuffer *a_pLockBuffer)
 {
 	return TBOOL();
 }
 
+// $TRenderD3DInterface: FUNCTION 10009f60
 void TVertexPoolResource::Unlock(TUSHORT a_uiNewNumVertices)
 {
 }
 
+// $TRenderD3DInterface: FUNCTION 1000a3c0
 TBOOL TVertexPoolResource::Create(TVertexFactoryResourceInterface *a_pFactory, TUINT a_uiMaxVertices, TUINT a_uiFlags)
 {
 	return TBOOL();

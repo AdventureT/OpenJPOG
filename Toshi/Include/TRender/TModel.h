@@ -20,17 +20,20 @@ class TRENDERINTERFACE_EXPORTS TModel
 	};
 
 public:
+	// $TRenderInterface: FUNCTION 1000bb60
 	TUINT GetFlags()
 	{
 		return m_uiFlags;
 	}
 
+	// $TRenderInterface: FUNCTION 1000bac0
 	TModelLOD &GetLOD(TINT a_iLODLevel)
 	{
 		TASSERT(a_iLODLevel < m_iLODCount);
 		return m_LODs[a_iLODLevel];
 	}
 
+	// $TRenderInterface: FUNCTION 1000bb10
 	TINT GetLODCount()
 	{
 		return m_iLODCount;

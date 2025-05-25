@@ -7,6 +7,7 @@
 class AApplication : public Toshi::TApplication
 {
 public:
+	// $JPOG: FUNCTION 00466020
 	AApplication()
 	{
 	}
@@ -15,11 +16,17 @@ public:
 	virtual TBOOL OnDestroy() override;
 
 public:
+	// $JPOG: FUNCTION 00484db0
 	ARootTask  *GetRootTask() const { return m_pRootTask; }
+	// $JPOG: FUNCTION 00484da0
 	ADummyTask *GetInputRootTask() const { return m_pInputTask; }
+	// $JPOG: FUNCTION 00484d90
 	ADummyTask *GetUpdate1RootTask() const { return m_pUpdate1Task; }
+	// $JPOG: FUNCTION 00484d80
 	ADummyTask *GetUpdate2RootTask() const { return m_pUpdate2Task; }
+	// $JPOG: FUNCTION 00484d70
 	ADummyTask *GetUpdate3RootTask() const { return m_pUpdate3Task; }
+	// $JPOG: FUNCTION 00484d60
 	ADummyTask *GetRenderRootTask() const { return m_pRenderTask; }
 
 private:
