@@ -65,17 +65,28 @@ public:
 	PGUITRTextureFactory();
 	~PGUITRTextureFactory();
 
+	virtual PGUITextureID GetTextureID(const Toshi::TPCString &a_rTextureName);
+	virtual PGUITextureID FindTextureID(const Toshi::TPCString &a_rTextureName);
 	virtual PGUITextureID ReserveTextureID(const Toshi::TPCString &a_rTextureName);
 
 	void Create(PGUITRDisplayContext *a_pDisplayContext);
 
-	Texture *GetTexture( PGUITextureID a_iID );
+	Texture *GetTexture(PGUITextureID a_iID);
+
+	void DestroyTexture(PGUITextureID a_iID);
+
+protected:
+	PGUITextureID AllocatedTextureID();
 
 protected:
 	// [5/26/2025 InfiniteC0re]
 	// Commented m_oTextureSet since it's probably storing something else, not TextureSet
-	//Toshi::TArray<TextureSet> m_oTextureSet; // 0x4
-	Texture                 **m_ppTextures;
+	// Toshi::TArray<TextureSet> m_oTextureSet; // 0x4
+	Texture **m_ppTextures;          // 0x0
+	TINT      m_iTextureCapacity;    // 0x4
+	TINT      m_iTextureCount;       // 0x8
+	TINT      m_iTextureAllocations; // 0xC
+
 
 	// ...
 	PGUITRDisplayContext *m_pDisplayContext; // 0x1C

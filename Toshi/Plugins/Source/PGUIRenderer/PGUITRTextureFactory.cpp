@@ -10,7 +10,7 @@ IMPLEMENT_DYNCREATE(PGUITRTextureFactory, Toshi::TGUITextureFactory);
 
 // $PGUIRenderer: FUNCTION 100068e0
 PGUITRTextureFactory::PGUITRTextureFactory()
-	: m_ppTextures( TNULL )
+	: m_ppTextures(TNULL), m_iTextureCount(0), m_iTextureCapacity(10), m_iTextureAllocations(0)
 {
 }
 
@@ -23,6 +23,28 @@ PGUITRTextureFactory::~PGUITRTextureFactory()
 void PGUITRTextureFactory::Create(PGUITRDisplayContext *a_pDisplayContext)
 {
 	m_pDisplayContext = a_pDisplayContext;
+
+	if (m_iTextureCapacity < 200) {
+		Texture **newTextures = new Texture *[200];
+		if (!newTextures) {
+			if (m_ppTextures) {
+				delete[] m_ppTextures;
+				m_ppTextures = TNULL;
+			}
+			m_iTextureCount    = 0;
+			m_iTextureCapacity = 0;
+			return;
+		}
+		if (m_ppTextures) {
+			Toshi::TSystem::MemCopy(newTextures, m_ppTextures, m_iTextureCount * sizeof(Texture *));
+			delete[] m_ppTextures;
+		}
+		m_ppTextures       = newTextures;
+		m_iTextureCapacity = 200;
+	}
+	else {
+		m_iTextureCount = 0;
+	}
 }
 
 // $PGUIRenderer: FUNCTION 10006c40
@@ -31,6 +53,73 @@ PGUITRTextureFactory::Texture *PGUITRTextureFactory::GetTexture(PGUITextureID a_
 	// [5/26/2025 InfiniteC0re]
 	// TODO: Add some assert message to make sure no buffer over-read happens
 	return m_ppTextures[a_iID];
+}
+
+// $PGUIRenderer: FUNCTION 10006a80
+void PGUITRTextureFactory::DestroyTexture(PGUITextureID a_iID)
+{
+	Texture *texture = GetTexture(a_iID);
+	if (texture) {
+		delete texture;
+	}
+	m_ppTextures[a_iID] = TNULL;
+}
+
+// $PGUIRenderer: FUNCTION 100070e0
+PGUITextureID PGUITRTextureFactory::AllocatedTextureID()
+{
+	for (PGUITextureID id = 0; id < m_iTextureCount; id++) {
+		if (m_ppTextures[id] == TNULL) {
+			return id;
+		}
+	}
+	if (m_iTextureCount + 1 > m_iTextureCapacity) {
+		TINT      newCapacity = TMAX(m_iTextureCapacity + m_iTextureAllocations, m_iTextureCount + 1);
+		Texture **newTextures = new Texture *[newCapacity];
+		if (!newTextures) {
+			if (m_ppTextures) {
+				delete[] m_ppTextures;
+			}
+			m_iTextureCount    = 0;
+			m_iTextureCapacity = 0;
+			m_ppTextures       = TNULL;
+			return -1;
+		}
+		if (m_ppTextures) {
+			Toshi::TSystem::MemCopy(newTextures, m_ppTextures, m_iTextureCount * sizeof(Texture *));
+			delete[] m_ppTextures;
+		}
+		for (TINT i = m_iTextureCount; i < newCapacity; i++) {
+			newTextures[i] = TNULL;
+		}
+		m_ppTextures       = newTextures;
+		m_iTextureCapacity = newCapacity;
+	}
+	return m_iTextureCount++;
+}
+
+// $PGUIRenderer: FUNCTION 10006b20
+PGUITextureID PGUITRTextureFactory::GetTextureID(const Toshi::TPCString &a_rTextureName)
+{
+	PGUITextureID textureID = FindTextureID(a_rTextureName);
+	if (textureID == -1) {
+		textureID               = AllocatedTextureID();
+		m_ppTextures[textureID] = new Texture(a_rTextureName, this, false);
+	}
+	return textureID;
+}
+
+// $PGUIRenderer: FUNCTION 10006b80
+PGUITextureID PGUITRTextureFactory::FindTextureID(const Toshi::TPCString &a_rTextureName)
+{
+	PGUITextureID textureID = m_iTextureCount == 0 ? -1 : 0;
+	for (; textureID < m_iTextureCount; textureID++) {
+		Texture *texture = m_ppTextures[textureID];
+		if (texture && texture->GetName() == a_rTextureName) {
+			break;
+		}
+	}
+	return textureID;
 }
 
 // $PGUIRenderer: FUNCTION 10006ac0
