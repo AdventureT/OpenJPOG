@@ -13,6 +13,7 @@ TPCCHAR   AOptions::sm_szOptionsDir  = TNULL;
 TPCCHAR   AOptions::sm_szOptionsName = "Options";
 AOptions *AOptions::ms_pSingleton    = TNULL;
 
+// $JPOG: FUNCTION 004674e0
 AOptions::AOptions()
 {
 	m_iAutoSaveState   = 1;
@@ -22,6 +23,7 @@ AOptions::AOptions()
 	m_pCurProps        = props;
 }
 
+// $JPOG: FUNCTION 00474fc0
 TBOOL AOptions::GetOption(TPCCHAR a_szProp, TINT &a_iValue)
 {
 	const PPropertyValue *value = m_pCurProps->GetProperty(TSystem::GetCStringPool()->Get(a_szProp));

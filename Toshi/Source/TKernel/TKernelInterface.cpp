@@ -22,6 +22,7 @@ IMPLEMENT_DYNAMIC(TKernelInterface, TObject);
 static TUINT             s_iFlagUser = 0;
 static TKernelInterface *s_pKernel;
 
+// $TKernelInterface: FUNCTION 100199d0
 TKernelInterface::TKernelInterface(TINT argc, TPCHAR *const argv, TBOOL a_bVerbose)
 {
 	TWARNING("TKernelInterface::TKernelInterface() not implemented\n");
@@ -62,6 +63,7 @@ TKernelInterface::TKernelInterface(TINT argc, TPCHAR *const argv, TBOOL a_bVerbo
 	m_pScheduler = new TScheduler(this);
 }
 
+// $TKernelInterface: FUNCTION 10019ee0
 TBOOL TKernelInterface::Update()
 {
 	THPTimer *pSysTimer = GetSystemTimer();
@@ -90,6 +92,7 @@ static TINT GetProcessorSpeed()
 	return TINT(((__rdtsc() - Start) * qwFreq.LowPart) / (qwStop.LowPart - qwStart.HighPart));
 }
 
+// $TKernelInterface: FUNCTION 1001a120
 void TKernelInterface::DumpInfo()
 {
 	TDPRINTF("> Toshi system info:\n");
@@ -153,6 +156,7 @@ skipPlatform:
 	TDPRINTF("<\n");
 }
 
+// $TKernelInterface: FUNCTION 1001a070
 TKernelInterfaceDLL *TKernelInterface::FindInterface(const TCString &a_rszInterface)
 {
 	for (auto i = m_Interfaces.Begin(); i != m_Interfaces.End(); i++) {
@@ -163,6 +167,7 @@ TKernelInterfaceDLL *TKernelInterface::FindInterface(const TCString &a_rszInterf
 	return TNULL;
 }
 
+// $TKernelInterface: FUNCTION 10019f80
 TKernelInterfaceDLL *TKernelInterface::LoadInterface(const TCString &a_rszInterface)
 {
 	TKernelInterfaceDLL *pInterface = FindInterface(a_rszInterface);

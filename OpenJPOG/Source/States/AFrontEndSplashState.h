@@ -7,6 +7,7 @@ class AFrontEndSplashState : public AFrontendState
 	DECLARE_DYNAMIC(AFrontEndSplashState)
 
 public:
+	// $JPOG: FUNCTION 004899d0
 	AFrontEndSplashState()
 		: AFrontEndSplashState(TTRUE, 0.0f)
 	{

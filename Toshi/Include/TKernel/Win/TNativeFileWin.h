@@ -31,6 +31,7 @@ public:
 	virtual TINT    Read(TPVOID a_pBuffer, TINT a_iSize) override;
 	virtual TINT    Write(void const *a_pBuffer, TINT a_iSize) override;
 	virtual TBOOL   Seek(TINT a_iOffset, TSEEK a_eSeek) override;
+	// $TKernelInterface: FUNCTION 10006f10
 	virtual TINT    Tell() override { return m_iPosition; }
 	virtual TINT    GetSize() override;
 	virtual TUINT64 GetDate() override;

@@ -9,16 +9,19 @@
 
 TOSHI_NAMESPACE_BEGIN
 
+// $TRenderInterface: FUNCTION 1000ff40
 TMaterial *TMaterialLibrary::GetMaterial(TPCCHAR a_szMaterial)
 {
 	return TNULL;
 }
 
+// $TRenderInterface: FUNCTION 10011020
 void TMaterialLibraryManager::Create()
 {
 	TMaterial *pSkin = reinterpret_cast<TMaterial *>(TRenderInterface::GetRenderer()->GetSystemResource(TRenderInterface::SYSRESOURCE_SHSKIN));
 }
 
+// $TRenderInterface: FUNCTION 100110a0
 void TMaterialLibraryManager::Destroy()
 {
 	TASSERT(m_oLibraries.IsEmpty());
@@ -28,6 +31,7 @@ void TMaterialLibraryManager::Destroy()
 	}
 }
 
+// $TRenderInterface: FUNCTION 10011290
 TMaterial *TMaterialLibraryManager::GetMaterial(TPCCHAR a_szMaterial)
 {
 	if (m_oLibraries.IsEmpty()) {

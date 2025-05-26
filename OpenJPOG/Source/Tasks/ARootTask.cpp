@@ -13,6 +13,7 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(ARootTask, TTask);
 
+// $JPOG: FUNCTION 0047a120
 ARootTask::ARootTask()
 {
 	m_pOptions             = TNULL;
@@ -31,6 +32,7 @@ ARootTask::ARootTask()
 	m_pMoviePlayer = TNULL;
 }
 
+// $JPOG: FUNCTION 0047a580
 TBOOL ARootTask::OnCreate()
 {
 	m_pMoviePlayer = new ABINKMoviePlayer();
@@ -45,16 +47,19 @@ TBOOL ARootTask::OnCreate()
 	return TTask::OnCreate();
 }
 
+// $JPOG: FUNCTION 0047d1e0
 void ARootTask::OnDestroy()
 {
 	TTask::OnDestroy();
 }
 
+// $JPOG: FUNCTION 0047a720
 void ARootTask::OnChildDied(TClass *a_pClass, TTask *a_pDeletedTask)
 {
 	TTask::OnChildDied(a_pClass, a_pDeletedTask);
 }
 
+// $JPOG: FUNCTION 0047a440
 void ARootTask::OnActivate()
 {
 	if (GetRootStateController()) {
@@ -66,6 +71,7 @@ void ARootTask::OnActivate()
 	TTask::OnActivate();
 }
 
+// $JPOG: FUNCTION 0047a4e0
 void ARootTask::OnDeactivate()
 {
 	if (GetRootStateController()) {
@@ -77,6 +83,7 @@ void ARootTask::OnDeactivate()
 	TTask::OnDeactivate();
 }
 
+// $JPOG: FUNCTION 0047b6b0
 void ARootTask::LoadFrontEndController()
 {
 	m_pFrontEndController = (AFrontEndController *)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(AFrontEndController), this);
@@ -86,15 +93,18 @@ void ARootTask::LoadFrontEndController()
 	g_oTheApp.GetKernel()->GetSystemTimer()->Reset();
 }
 
+// $JPOG: FUNCTION 0047b700
 void ARootTask::UnloadFrontEndController()
 {
 }
 
+// $JPOG: FUNCTION 0047c680
 void ARootTask::AllocateARenderer()
 {
 	m_pRenderer = ApplicationCreateTask(ARenderer, g_oTheApp.GetRenderRootTask());
 }
 
+// $JPOG: FUNCTION 0047c5e0
 void ARootTask::AllocateRenderInterface()
 {
 	g_oTheApp.GetKernel()->LoadInterface("TRenderD3DInterface");
@@ -103,22 +113,26 @@ void ARootTask::AllocateRenderInterface()
 	m_pRenderInterface->DumpStats();
 }
 
+// $JPOG: FUNCTION 0047c750
 void ARootTask::AllocateGameStateController()
 {
 	m_pGameStateController = ApplicationCreateTask(ARootStateController, this);
 }
 
+// $JPOG: FUNCTION 0047c710
 void ARootTask::AllocateGUISystem()
 {
 	m_pGUISystem = ApplicationCreateTask(AGUISystem, g_oTheApp.GetUpdate3RootTask());
 }
 
+// $JPOG: FUNCTION 0047c6c0
 void ARootTask::AllocateInputSystem()
 {
 	m_pInputTask     = ApplicationCreateTask(ADummyTask, g_oTheApp.GetInputRootTask());
 	m_pVibrationTask = ApplicationCreateTask(AVibrationManager, g_oTheApp.GetInputRootTask());
 }
 
+// $JPOG: FUNCTION 0047cb80
 void ARootTask::CreateARenderer()
 {
 	if (m_pRenderer && m_pRenderer->Create()) {
@@ -127,6 +141,7 @@ void ARootTask::CreateARenderer()
 	m_pRenderer = TNULL;
 }
 
+// $JPOG: FUNCTION 0047c7e0
 TBOOL ARootTask::CreateRenderInterface()
 {
 	TRenderInterface::DisplayParams displayParams;
@@ -140,11 +155,13 @@ TBOOL ARootTask::CreateRenderInterface()
 	return TTRUE;
 }
 
+// $JPOG: FUNCTION 0047d1b0
 void ARootTask::CreateGameStateController()
 {
 	GetRootStateController()->Create();
 }
 
+// $JPOG: FUNCTION 0047c070
 void ARootTask::DeserialiseOptions()
 {
 	TRenderInterface *renderer = g_oTheApp.GetRootTask()->m_pRenderInterface;
@@ -162,6 +179,7 @@ void ARootTask::DeserialiseOptions()
 	}
 }
 
+// $JPOG: FUNCTION 0047cea0
 const TRenderAdapter::Mode::Device *ARootTask::CreateDisplayDevice(TRenderInterface::DisplayParams &a_rDisplayParams, bool a_bReverseOrder)
 {
 	TRenderInterface                   *pRenderer = TRenderInterface::GetRenderer();
@@ -229,6 +247,7 @@ const TRenderAdapter::Mode::Device *ARootTask::CreateDisplayDevice(TRenderInterf
 	return pDevice;
 }
 
+// $JPOG: FUNCTION 0047b780
 void ARootTask::LoadMaterialLibrary(TINT a_iIndex)
 {
 }

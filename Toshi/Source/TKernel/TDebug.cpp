@@ -248,6 +248,7 @@ void TOSHI_CALLBACKAPI TDebug_Message(TDebug::MSGLEVEL a_eMsgLevel, TPCCHAR a_pc
 	}
 }
 
+// $TKernelInterface: FUNCTION 1000c4e0
 void TOSHI_API TDebug::DebugFilePrintString(TPCHAR a_pcString)
 {
 	if (m_pDebugFile && m_bEnableDebugFile) {

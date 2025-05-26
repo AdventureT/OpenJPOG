@@ -7,11 +7,13 @@ TOSHI_NAMESPACE_BEGIN
 class TKERNELINTERFACE_EXPORTS TDLL
 {
 public:
+	// $TKernelInterface: FUNCTION 1000cba0
 	TDLL()
 	{
 		m_pDLL = TNULL;
 	}
 
+	// $TKernelInterface: FUNCTION 1000cb80
 	virtual ~TDLL()
 	{
 		Unload();
@@ -21,7 +23,10 @@ public:
 	TBOOL  Load(const TCString &a_rFileName);
 	void   Unload();
 
+	// $TKernelInterface: FUNCTION 1000cb60
 	HMODULE         GetDLL() { return m_pDLL; }
+
+	// $TKernelInterface: FUNCTION 1000cb70
 	const TCString &GetFilename() { return m_szFilename; }
 
 private:

@@ -13,6 +13,7 @@ TOSHI_NAMESPACE_USING
 
 static U32 s_iPlayForegroundFast = 0;
 
+// $JPOG: FUNCTION 006d52d0
 ABINKMoviePlayer::ABINKMoviePlayer()
 {
 	m_bHasMovieStopped   = TTRUE;
@@ -34,6 +35,7 @@ ABINKMoviePlayer::ABINKMoviePlayer()
 	SetFrameReady(TFALSE);
 }
 
+// $JPOG: FUNCTION 006d5370
 TBOOL ABINKMoviePlayer::InitializeMoviePlayer()
 {
 	if (!m_bIsBINKInitialized) {
@@ -44,6 +46,7 @@ TBOOL ABINKMoviePlayer::InitializeMoviePlayer()
 	return TFALSE;
 }
 
+// $JPOG: FUNCTION 006d57b0
 TBOOL ABINKMoviePlayer::ShutdownMoviePlayer()
 {
 	if (m_bIsBINKInitialized) {
@@ -55,6 +58,7 @@ TBOOL ABINKMoviePlayer::ShutdownMoviePlayer()
 	return TFALSE;
 }
 
+// $JPOG: FUNCTION 006d58b0
 TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a_szUnk2, TBOOL a_bUseLocale)
 {
 	TRenderInterface *renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
@@ -123,6 +127,7 @@ TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a
 	return TTRUE;
 }
 
+// $JPOG: FUNCTION 006d5840
 TBOOL ABINKMoviePlayer::Update(TFLOAT a_fDeltaTime)
 {
 	if (!m_bHasMovieStopped && m_hBink) {
@@ -136,6 +141,7 @@ TBOOL ABINKMoviePlayer::Update(TFLOAT a_fDeltaTime)
 	return TFALSE;
 }
 
+// $JPOG: FUNCTION 006d5dc0
 TBOOL ABINKMoviePlayer::RenderToTexture(TTextureResource *a_pTexture)
 {
 	if (m_hBink) {
@@ -195,6 +201,7 @@ TBOOL ABINKMoviePlayer::RenderToFrameBuffer(TPBYTE a_pDest, TINT a_iDestWidth, T
 }
 
 
+// $JPOG: FUNCTION 006d53a0
 TBOOL ABINKMoviePlayer::InitializeVideoResource()
 {
 	TRenderInterface      *renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
@@ -221,6 +228,7 @@ TBOOL ABINKMoviePlayer::InitializeVideoResource()
 	return TTRUE;
 }
 
+// $JPOG: FUNCTION 006d5710
 TBOOL ABINKMoviePlayer::InitializeAudioResource()
 {
 	TRenderD3DInterface *renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
@@ -236,11 +244,13 @@ TBOOL ABINKMoviePlayer::InitializeAudioResource()
 	return TTRUE;
 }
 
+// $JPOG: FUNCTION 006d57f0
 TBOOL ABINKMoviePlayer::FreeVideoResource()
 {
 	return TTRUE;
 }
 
+// $JPOG: FUNCTION 006d6400
 void ABINKMoviePlayer::SetLocaleInfoA(TPCHAR a_szBuffer)
 {
 	//Toshi::TSystem::GetCStringPool();
@@ -248,6 +258,7 @@ void ABINKMoviePlayer::SetLocaleInfoA(TPCHAR a_szBuffer)
 	sprintf(a_szBuffer, "Data\\Movies\\%s.bik", m_szMovieFileName);
 }
 
+// $JPOG: FUNCTION 006d6310
 void ABINKMoviePlayer::BinkSleep(TINT a_iMicroseconds)
 {
 	static S32 s_iTotalSleep       = 0;
@@ -277,6 +288,7 @@ void ABINKMoviePlayer::BinkSleep(TINT a_iMicroseconds)
 	}
 }
 
+// $JPOG: FUNCTION 006d5f20
 TBOOL ABINKMoviePlayer::RenderToTiles()
 {
 	return TBOOL();

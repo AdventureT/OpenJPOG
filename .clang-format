@@ -23,6 +23,7 @@ AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: No
 BinPackArguments: true
 BreakBeforeBraces: Custom
+ForEachMacros: [T_FOREACH, T_FOREACH_BACK, T_FOREACH_ARRAY, T_FOREACH_ARRAY_BACK]
 BraceWrapping:
   AfterCaseLabel: false
   AfterClass: true

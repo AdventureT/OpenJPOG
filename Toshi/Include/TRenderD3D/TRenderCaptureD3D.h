@@ -6,11 +6,13 @@ TOSHI_NAMESPACE_BEGIN
 
 class TRENDERINTERFACED3D_EXPORTS TRenderCaptureD3D : public TRenderCapture
 {
+	// $TRenderD3DInterface: FUNCTION 10004860
 	TRenderCaptureD3D()
 	{
 		m_pBuffer = TNULL;
 	}
 
+	// $TRenderD3DInterface: FUNCTION 10004840
 	~TRenderCaptureD3D()
 	{
 		ReleaseBuffer();

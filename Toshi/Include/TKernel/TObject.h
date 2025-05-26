@@ -26,41 +26,52 @@ public:
 	TClass(TPCCHAR a_pcName, TClass *a_pParent, t_CreateTObject a_Create, t_CreateTObjectInPlace a_CreateInPlace, t_InitializeStatic a_Init, t_UninitializeStatic a_Uninit, TUINT a_uiVersion);
 	~TClass();
 
+	// $TKernelInterface: FUNCTION 10027e00
 	TObject *CreateObject() const
 	{
 		return m_Create ? m_Create() : TNULL;
 	}
 
+	// $TKernelInterface: FUNCTION 10027de0
 	TObject *CreateObjectInPlace(TPVOID a_pMem) const
 	{
 		return m_CreateInPlace ? m_CreateInPlace(a_pMem) : TNULL;
 	}
 
 	void                           DeinitialiseStatic();
+	// $TKernelInterface: FUNCTION 10027d50
 	TBOOL                          DetachClassFromParent() { return TTRUE; }
 	static void TOSHI_API          DumpObjectClassTree();
 	static const TClass *TOSHI_API Find(TPCCHAR a_pcClassName, const TClass *a_pClass);
 	static const TClass *TOSHI_API FindCommonBaseClass(const TClass &a_rClass, const TClass &a_rBaseClass);
 	static const TClass *TOSHI_API FindRecurse(TPCCHAR a_pcClassName, const TClass *a_pClass, TBOOL a_bHasPrevious);
 
+	// $TKernelInterface: FUNCTION 10027dc0
 	TPCCHAR       GetName() const { return m_pcName; }
+	// $TKernelInterface: FUNCTION 10027dd0
 	const TClass *GetParent() const { return m_pParent; }
+	// $TKernelInterface: FUNCTION 10027db0
 	TUINT         GetVersion() const { return m_uiVersion; }
+	// $TKernelInterface: FUNCTION 10027da0
 	TUSHORT       GetVersionMajor() const { return m_uiVersion >> 16; }
+	// $TKernelInterface: FUNCTION 10027d90
 	TUSHORT       GetVersionMinor() const { return m_uiVersion & 0xFFFF; }
 
 	void  InitialiseStatic();
 	TBOOL IsA(const TClass &a_rClass) const;
 	TBOOL IsAttached() const;
+	// $TKernelInterface: FUNCTION 10027d70
 	TBOOL IsExactly(const TClass &a_rClass) const
 	{
 		return *this == a_rClass;
 	}
+	// $TKernelInterface: FUNCTION 10027d60
 	TBOOL IsStaticInitialised() const
 	{
 		return m_bInitialised;
 	}
 
+	// $TKernelInterface: FUNCTION 10007c30
 	TClass &operator=(const TClass &a_rClass)
 	{
 		m_pcName        = a_rClass.m_pcName;
@@ -75,6 +86,7 @@ public:
 		m_bInitialised  = TFALSE;
 		return *this;
 	}
+	// $TKernelInterface: FUNCTION 10027d00
 	TBOOL operator==(const TClass &a_rClass) const
 	{
 		return m_pcName == a_rClass.m_pcName;
@@ -150,29 +162,59 @@ private:                                                                 \
 class TKERNELINTERFACE_EXPORTS TObject
 {
 private:
+	// $TKernelInterface: FUNCTION 10027cc0
 	static TObject *TOSHI_API CreateObject()
 	{
 		return new TObject;
 	}
+	// $TKernelInterface: FUNCTION 10027ca0
 	static TObject *TOSHI_API CreateObjectInPlace(TPVOID a_pMem)
 	{
 		return new (a_pMem) TObject;
 	}
+	// $TKernelInterface: FUNCTION 10027c80
 	static void TOSHI_API DeinitialiseStatic() {}
+	// $TKernelInterface: FUNCTION 10027c90
 	static void TOSHI_API InitialiseStatic() {}
 
 public:
+	// $TKernelInterface: FUNCTION 10027c70
 	virtual void Delete() { delete this; }
 
+	// $TKernelInterface: FUNCTION 10027c50
 	TBOOL IsA(const TClass &a_rClass) const { return GetClass().IsA(a_rClass); }
+	// $TKernelInterface: FUNCTION 10027c30
 	TBOOL IsExactly(const TClass &a_rClass) const { return GetClass().IsExactly(a_rClass); }
 
+	// $TKernelInterface: FUNCTION 10027cf0
 	virtual TClass      &GetClass() const { return m_sClass; }
 	inline static TClass m_sClass = TClass("TObject", TNULL, TObject::CreateObject, TObject::CreateObjectInPlace, TObject::InitialiseStatic, TObject::DeinitialiseStatic, 1);
 
 protected:
+	// $TKernelInterface: FUNCTION 10007c20
 	TObject() {}
 	virtual ~TObject() = default;
 };
 
 TOSHI_NAMESPACE_END
+
+//-----------------------------------------------------------------------------
+// Safely casts TObject to specified TClass
+//-----------------------------------------------------------------------------
+template <class T>
+TFORCEINLINE T *TDynamicCast(Toshi::TObject *a_pObject)
+{
+	TSTATICASSERT(T::IsTObject);
+
+	if (a_pObject)
+	{
+		if (a_pObject->IsA(&TGetClass(T)))
+		{
+			return TSTATICCAST(T, a_pObject);
+		}
+	}
+
+	return TNULL;
+}
+
+#define TDYNAMICCAST(T, OBJECT) (TDynamicCast<T>(OBJECT))

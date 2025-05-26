@@ -9,6 +9,7 @@
 
 TOSHI_NAMESPACE_USING
 
+// $TKernelInterface: FUNCTION 100275f0
 TClass::TClass(TPCCHAR a_pcName, TClass *a_pParent, t_CreateTObject a_Create, t_CreateTObjectInPlace a_CreateInPlace, t_InitializeStatic a_Init, t_UninitializeStatic a_Uninit, TUINT a_uiVersion)
 {
 	m_pcName        = a_pcName;
@@ -22,6 +23,7 @@ TClass::TClass(TPCCHAR a_pcName, TClass *a_pParent, t_CreateTObject a_Create, t_
 	AttachClassToParent();
 }
 
+// $TKernelInterface: FUNCTION 10027640
 TClass::~TClass()
 {
 	DetachClassFromParent();
@@ -33,6 +35,7 @@ TClass::~TClass()
 	}
 }
 
+// $TKernelInterface: FUNCTION 100276c0
 void TClass::DeinitialiseStatic()
 {
 	if (m_Uninitialize && !m_bInitialised) {
@@ -71,6 +74,7 @@ TBOOL DumpObjectClassTree_Check(TClass *a_pClass, TPCVOID a_pData)
 	return TTRUE;
 }
 
+// $TKernelInterface: FUNCTION 10027d20
 void TOSHI_API TClass::DumpObjectClassTree()
 {
 	s_iCounter      = 0;
@@ -78,6 +82,7 @@ void TOSHI_API TClass::DumpObjectClassTree()
 	pObject->RecurseTree(DumpObjectClassTree_BaseBegin, DumpObjectClassTree_BaseEnd, DumpObjectClassTree_Check, TNULL);
 }
 
+// $TKernelInterface: FUNCTION 100279e0
 const TClass *TOSHI_API TClass::Find(TPCCHAR a_pcClassName, const TClass *a_pClass)
 {
 	TASSERT(a_pcClassName[1] != 0);
@@ -85,11 +90,13 @@ const TClass *TOSHI_API TClass::Find(TPCCHAR a_pcClassName, const TClass *a_pCla
 	return FindRecurse(a_pcClassName, a_pClass, TFALSE);
 }
 
+// $TKernelInterface: FUNCTION 100277b0
 const TClass *TOSHI_API TClass::FindCommonBaseClass(const TClass &a_rClass, const TClass &a_rBaseClass)
 {
 	return nullptr;
 }
 
+// $TKernelInterface: FUNCTION 10027b40
 const TClass *TOSHI_API TClass::FindRecurse(TPCCHAR a_pcClassName, const TClass *a_pClass, TBOOL a_bHasPrevious)
 {
 	while (a_pClass) {
@@ -105,6 +112,7 @@ const TClass *TOSHI_API TClass::FindRecurse(TPCCHAR a_pcClassName, const TClass 
 	return TNULL;
 }
 
+// $TKernelInterface: FUNCTION 10027670
 void TClass::InitialiseStatic()
 {
 	if (m_Initialize && !m_bInitialised) {
@@ -114,6 +122,7 @@ void TClass::InitialiseStatic()
 	}
 }
 
+// $TKernelInterface: FUNCTION 10027710
 TBOOL TClass::IsA(const TClass &a_rClass) const
 {
 	for (const TClass *pClass = this; pClass != TNULL; pClass = pClass->m_pParent) {
@@ -122,6 +131,7 @@ TBOOL TClass::IsA(const TClass &a_rClass) const
 	return TFALSE;
 }
 
+// $TKernelInterface: FUNCTION 10027a40
 void TClass::RecurseTree(t_RecurceTreeBaseBeginCb a_BaseBegin, t_RecurceTreeBaseEndCb a_BaseEnd, t_RecurceTreeCheck a_Check, TPCVOID a_pMem)
 {
 	TBOOL valid = a_Check ? a_Check(this, a_pMem) : TFALSE;
@@ -132,6 +142,7 @@ void TClass::RecurseTree(t_RecurceTreeBaseBeginCb a_BaseBegin, t_RecurceTreeBase
 	}
 }
 
+// $TKernelInterface: FUNCTION 10027ab0
 void TClass::RecurseTree2(t_RecurceTreeBaseBeginCb a_BaseBegin, t_RecurceTreeBaseEndCb a_BaseEnd, t_RecurceTreeCheck a_Check, TPCVOID a_pMem)
 {
 	for (TClass *pClass = m_pLastAttached; pClass != TNULL; pClass = pClass->m_pPrevious) {
@@ -144,6 +155,7 @@ void TClass::RecurseTree2(t_RecurceTreeBaseBeginCb a_BaseBegin, t_RecurceTreeBas
 	}
 }
 
+// $TKernelInterface: FUNCTION 10027780
 TBOOL TClass::AttachClassToParent()
 {
 	if (m_pParent && !IsAttached()) {
@@ -154,6 +166,7 @@ TBOOL TClass::AttachClassToParent()
 	return TFALSE;
 }
 
+// $TKernelInterface: FUNCTION 10027750
 TBOOL TClass::IsAttached() const
 {
 	if (m_pParent) {

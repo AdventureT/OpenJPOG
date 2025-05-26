@@ -21,17 +21,20 @@ public:
 			Reset();
 		}
 
+		// $TKernelInterface: FUNCTION 10007980
 		TNode *Next() const
 		{
 			return m_pNext;
 		}
 
+		// $TKernelInterface: FUNCTION 10007970
 		TNode *Prev() const
 		{
 			return m_pPrev;
 		}
 
 	public:
+		// $TKernelInterface: FUNCTION 10007880
 		TNode &operator=(const TNode &a_rNode)
 		{
 			m_pNext = a_rNode.m_pNext;
@@ -39,13 +42,16 @@ public:
 			return *this;
 		}
 
+		// $TKernelInterface: FUNCTION 10007960
 		TBOOL IsLinked() const { return this != m_pNext; }
+		// $TKernelInterface: FUNCTION 100079b0
 		void  Reset()
 		{
 			m_pNext = this;
 			m_pPrev = this;
 		}
 
+		// $TKernelInterface: FUNCTION 100078c0
 		void InsertAfter(TNode *a_pNode)
 		{
 			TASSERT(!IsLinked());
@@ -56,6 +62,7 @@ public:
 			m_pNext->m_pPrev = this;
 		}
 
+		// $TKernelInterface: FUNCTION 10007910
 		void InsertBefore(TNode *a_pNode)
 		{
 			TASSERT(!IsLinked());
@@ -66,6 +73,7 @@ public:
 			m_pPrev->m_pNext = this;
 		}
 
+		// $TKernelInterface: FUNCTION 100078a0
 		void Remove()
 		{
 			m_pPrev->m_pNext = m_pNext;
@@ -83,24 +91,36 @@ public:
 	};
 
 protected:
+	// $TKernelInterface: FUNCTION 10007b00
 	void InsertHead(TNode *a_pNode) { a_pNode->InsertAfter(&m_oRoot); }
+	// $TKernelInterface: FUNCTION 10007ae0
 	void InsertTail(TNode *a_pNode) { a_pNode->InsertBefore(&m_oRoot); }
+	// $TKernelInterface: FUNCTION 10007ac0
 	void RemoveHead()
 	{
 		if (!IsEmpty()) m_oRoot.Next()->Remove();
 	}
+	// $TKernelInterface: FUNCTION 10007aa0
 	void RemoveTail()
 	{
 		if (!IsEmpty()) m_oRoot.Prev()->Remove();
 	}
+	// $TKernelInterface: FUNCTION 10007b20
 	TBOOL        IsEmpty() const { return m_oRoot.Next() == &m_oRoot; }
+	// $TKernelInterface: FUNCTION 10007b90
 	TNode       *Head() const { return m_oRoot.Next(); }
+	// $TKernelInterface: FUNCTION 10007b80
 	TNode       *Tail() const { return m_oRoot.Prev(); }
+	// $TKernelInterface: FUNCTION 10007b70
 	TNode       *Begin() const { return m_oRoot.Next(); }
+	// $TKernelInterface: FUNCTION 10007b50
 	TNode       *RBegin() const { return m_oRoot.Prev(); }
+	// $TKernelInterface: FUNCTION 10007b60
 	const TNode *End() const { return &m_oRoot; }
+	// $TKernelInterface: FUNCTION 10007b40
 	const TNode *REnd() const { return &m_oRoot; }
 
+	// $TKernelInterface: FUNCTION 10007a50
 	static void TOSHI_API InsertSegmentAfter(TNode *node1, TNode *node2, TNode *node3)
 	{
 		node1->m_pNext          = node3;
@@ -109,6 +129,7 @@ protected:
 		node2->m_pPrev->m_pNext = node2;
 	}
 
+	// $TKernelInterface: FUNCTION 10007a70
 	static void TOSHI_API InsertSegmentBefore(TNode *node1, TNode *node2, TNode *node3)
 	{
 		node2->m_pPrev          = node3;
@@ -117,6 +138,7 @@ protected:
 		node1->m_pNext->m_pPrev = node1;
 	}
 
+	// $TKernelInterface: FUNCTION 10007a00
 	void InsertSegmentAtHead(TNode *node1, TNode *node2)
 	{
 		node1->m_pNext          = &m_oRoot;
@@ -125,6 +147,7 @@ protected:
 		node2->m_pPrev->m_pNext = node2;
 	}
 
+	// $TKernelInterface: FUNCTION 100079e0
 	void InsertSegmentAtTail(TNode *node1, TNode *node2)
 	{
 		node2->m_pPrev          = &m_oRoot;
@@ -133,6 +156,7 @@ protected:
 		node1->m_pNext->m_pPrev = node1;
 	}
 
+	// $TKernelInterface: FUNCTION 10007a20
 	static void TOSHI_API RemoveSegment(TNode *node1, TNode *node2)
 	{
 		node1->m_pPrev->m_pNext = node2->m_pNext;
@@ -141,6 +165,7 @@ protected:
 		node2->m_pNext          = node2;
 	}
 
+	// $TKernelInterface: FUNCTION 1000c7d0
 	void RemoveAll()
 	{
 		for (TNode *pNode = Begin(); pNode != End(); pNode = m_oRoot.Next()) {
@@ -149,8 +174,10 @@ protected:
 	}
 
 protected:
+	// $TKernelInterface: FUNCTION 10007bb0
 	TGenericDList() {}
 
+	// $TKernelInterface: FUNCTION 10007ba0
 	~TGenericDList() { RemoveAll(); }
 
 protected:
@@ -178,16 +205,19 @@ public:
 		}
 
 	public:
+		// $TKernelInterface: FUNCTION 10007710
 		TNode *Next() const
 		{
 			return (TNode *)m_pNext;
 		}
 
+		// $TKernelInterface: FUNCTION 10007700
 		TNode *Prev() const
 		{
 			return (TNode *)m_pPrev;
 		}
 
+		// $TKernelInterface: FUNCTION 10007690
 		TNode &operator=(const TNode &node)
 		{
 			m_pNext = node.m_pNext;
@@ -196,27 +226,32 @@ public:
 			return *this;
 		}
 
+		// $TKernelInterface: FUNCTION 10007740
 		void Reset()
 		{
 			TGenericDList::TNode::Reset();
 			SetPriority(0);
 		}
 
+		// $TKernelInterface: FUNCTION 100076b0
 		void Remove()
 		{
 			TGenericDList::TNode::Remove();
 		}
 
+		// $TKernelInterface: FUNCTION 100076d0
 		void SetPriority(int priority)
 		{
 			m_iPriority = priority;
 		}
 
+		// $TKernelInterface: FUNCTION 100076e0
 		int GetPriority() const
 		{
 			return m_iPriority;
 		}
 
+		// $TKernelInterface: FUNCTION 100076f0
 		TBOOL IsLinked() const
 		{
 			return this != m_pNext;
@@ -253,11 +288,13 @@ public:
 		}
 	}
 
+	// $TKernelInterface: FUNCTION 1000c920
 	void InsertHead(TNode *a_pNode)
 	{
 		a_pNode->m_iPriority = -0x8000;
 		a_pNode->InsertAfter(&m_oRoot);
 	}
+	// $TKernelInterface: FUNCTION 1000c8c0
 	void InsertTail(TNode *a_pNode)
 	{
 		a_pNode->m_iPriority = 0x7FFF;
@@ -265,22 +302,26 @@ public:
 	}
 
 protected:
+	// $TKernelInterface: FUNCTION 1000c980
 	void SetPriority(TNode *a_pNode, int priority)
 	{
 		a_pNode->Remove();
 		Insert(a_pNode);
 	}
 
+	// $TKernelInterface: FUNCTION 10007790
 	void RemoveAll()
 	{
 		TGenericDList::RemoveAll();
 	}
 
 protected:
+	// $TKernelInterface: FUNCTION 10007780
 	TGenericPriList()
 	{
 	}
 
+	// $TKernelInterface: FUNCTION 10007770
 	~TGenericPriList() { RemoveAll(); }
 };
 

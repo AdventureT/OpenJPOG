@@ -12,10 +12,12 @@ enum TMutexLockFlag
 class TKERNELINTERFACE_EXPORTS TMutex
 {
 public:
+	// $TKernelInterface: FUNCTION 10007630
 	TMutex()
 	{
 		m_hMutexHnd = NULL;
 	}
+	// $TKernelInterface: FUNCTION 10007600
 	~TMutex()
 	{
 		TASSERT(m_hMutexHnd == NULL);
@@ -26,6 +28,7 @@ public:
 	TBOOL Lock(TUINT a_uiFlags);
 	TBOOL Unlock();
 
+	// $TKernelInterface: FUNCTION 100075f0
 	TMutex &operator=(const TMutex &a_rOther)
 	{
 		m_hMutexHnd = a_rOther.m_hMutexHnd;

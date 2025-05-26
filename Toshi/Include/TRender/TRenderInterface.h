@@ -90,7 +90,9 @@ public:
 	virtual float                         GetScreenAspectRatio();
 	virtual float                         GetPixelAspectRatio();
 	virtual TBOOL                         SetPixelAspectRatio(float a_fPixelAspectRatio);
+	// $TRenderInterface: FUNCTION 10008b80
 	virtual TBOOL                         IsTextureFormatSupported(TTEXTURERESOURCEFORMAT a_eTextureFormat) { return TTRUE; }
+	// $TRenderInterface: FUNCTION 10008b70
 	virtual TBOOL                         Supports32BitTextures() { return TFALSE; }
 	virtual TRenderContext               *CreateRenderContext()                            = 0;
 	virtual TRenderCapture               *CreateCapture()                                  = 0;
@@ -110,6 +112,7 @@ public:
 
 	void FlushDyingResources();
 
+	// $TRenderInterface: FUNCTION 1000e5b0
 	TResource *GetSystemResource(SYSRESOURCES a_SystemResource)
 	{
 		TASSERT(a_SystemResource < TRenderInterface::SYSRESOURCES_NUMOF);
@@ -117,6 +120,7 @@ public:
 		return m_aSysResources[a_SystemResource];
 	}
 
+	// $TRenderInterface: FUNCTION 1000f150
 	TRenderContext *SetCurrentRenderContext(TRenderContext *a_pRenderContext)
 	{
 		TRenderContext *pLastRenderContext = m_pCurrentRenderContext;
@@ -124,13 +128,18 @@ public:
 		return pLastRenderContext;
 	}
 
+	// $TRenderInterface: FUNCTION 1000f220
 	TBOOL IsCreated() { return m_bIsCreated; }
+	// $TRenderInterface: FUNCTION 1000f210
 	TBOOL IsDisplayCreated() { return m_bIsDiplayCreated; }
 	// $TRenderInterface: FUNCTION 1000f230
 	TBOOL                      IsInScene() { return m_bInScene; }
+	// $TRenderInterface: FUNCTION 1000f280
 	TNodeList<TRenderAdapter> *GetAdapterList() { return &m_pAdapterList; };
 
+	// $TRenderInterface: FUNCTION 10008b40
 	static TRenderInterface *TOSHI_API GetRenderer() { return s_Interface; }
+	// $TRenderInterface: FUNCTION 10008b90
 	TMaterialLibraryManager *GetMaterialLibraryManager()
 	{
 		return &m_oMaterialLibraryManager;

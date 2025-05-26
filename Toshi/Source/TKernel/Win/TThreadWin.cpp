@@ -8,6 +8,7 @@
 
 TOSHI_NAMESPACE_USING
 
+// $TKernelInterface: FUNCTION 10007f30
 TBOOL TMutex::Create()
 {
 	m_hMutexHnd = CreateMutex(NULL, FALSE, NULL);
@@ -15,6 +16,7 @@ TBOOL TMutex::Create()
 	return TTRUE;
 }
 
+// $TKernelInterface: FUNCTION 10007f80
 TBOOL TMutex::Destroy()
 {
 	TASSERT(m_hMutexHnd != NULL);
@@ -23,6 +25,7 @@ TBOOL TMutex::Destroy()
 	return bRes;
 }
 
+// $TKernelInterface: FUNCTION 10007fe0
 TBOOL TMutex::Lock(TUINT a_uiFlags)
 {
 	TASSERT(m_hMutexHnd != NULL);
@@ -32,6 +35,7 @@ TBOOL TMutex::Lock(TUINT a_uiFlags)
 	return result == WAIT_OBJECT_0;
 }
 
+// $TKernelInterface: FUNCTION 10008050
 TBOOL TMutex::Unlock()
 {
 	TASSERT(m_hMutexHnd != NULL);

@@ -8,6 +8,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
+// $TKernelInterface: FUNCTION 1000cc90
 void TGenericListener::Connect(TGenericEmitter *a_pEmitter, void *a_pCaller, t_Callback a_pCallback, int a_iPriority)
 {
 	TASSERT(IsLinked() == TFALSE);
@@ -17,6 +18,7 @@ void TGenericListener::Connect(TGenericEmitter *a_pEmitter, void *a_pCaller, t_C
 	a_pEmitter->m_Listeners.Insert(this);
 }
 
+// $TKernelInterface: FUNCTION 1000ccf0
 void TGenericListener::Disconnect()
 {
 	Remove();

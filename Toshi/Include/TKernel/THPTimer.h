@@ -14,7 +14,11 @@ public:
 
 	TUINT   GetRaw32();
 	TUINT64 GetRaw64();
+
+	// $TKernelInterface: FUNCTION 10017630
 	float   GetDelta() { return m_fDelta; }
+
+	// $TKernelInterface: FUNCTION 10017640
 	float   GetCurrent() { return m_fCurrent; }
 
 private:

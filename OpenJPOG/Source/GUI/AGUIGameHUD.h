@@ -12,17 +12,17 @@ public:
 
 	};
 
-	// $JPOG: 0046e4e0 FUNCTION
+	// $JPOG: FUNCTION 0046e4e0
 	void AddToHUD(HUDComponents a_eHUDComponets)
 	{
 		SetHUD(static_cast<HUDComponents>(m_eHUDComponents | a_eHUDComponets));
 	}
-	// $JPOG: 0046e500 FUNCTION
+	// $JPOG: FUNCTION 0046e500
 	void ToggleHUD(HUDComponents a_eHUDComponets)
 	{
 		SetHUD(static_cast<HUDComponents>(m_eHUDComponents ^ a_eHUDComponets));
 	}
-	// $JPOG: 00673140 FUNCTION
+	// $JPOG: FUNCTION 00673140
 	void SetHUD(HUDComponents a_eHUDComponets)
 	{
 		if (a_eHUDComponets == m_eHUDComponents) {
@@ -31,22 +31,22 @@ public:
 		m_eHUDComponents = a_eHUDComponets;
 		AGUISystem::GetGUISystem()->UpdateHUDComponets();
 	}
-	// $JPOG: 0046e4a0 FUNCTION
+	// $JPOG: FUNCTION 0046e4a0
 	Toshi::TLString GetHintMessage()
 	{
 		return m_LSHintMessage;
 	}
-	// $JPOG: 0046e520 FUNCTION
+	// $JPOG: FUNCTION 0046e520
 	HUDComponents GetHUD()
 	{
 		return m_eHUDComponents;
 	}
-	// $JPOG: 00673100 FUNCTION
+	// $JPOG: FUNCTION 00673100
 	void ClearBackgroundPicture()
 	{
 		m_szBKGMatLib = Toshi::TCString();
 	}
-	// $JPOG: 00673110 FUNCTION
+	// $JPOG: FUNCTION 00673110
 	void SetBackgroundMatLib(TPCCHAR a_szBKGMatLib)
 	{
 		m_szBKGMatLib = a_szBKGMatLib;

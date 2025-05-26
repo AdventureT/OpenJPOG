@@ -56,6 +56,7 @@ public:
 	virtual void  EnableColourCorrection(TBOOL a_bEnable);
 
 	TBOOL IsTextureFormatSupported(D3DFORMAT a_eFormat);
+	// $TRenderD3DInterface: FUNCTION 10008330
 	void  Exit() { m_bIsExited = TTRUE; }
 
 	void SetTextureAddressMode(DWORD a_dwStage, TTextureResource::ADDRESSMODE a_eType);
@@ -71,9 +72,13 @@ protected:
 	void  SetDefaultRenderStates();
 
 public:
+	// $TRenderD3DInterface: FUNCTION 10002400
 	IDirect3DDevice8 *GetD3DDevice() { return m_pD3DDevice; }
+	// $TRenderD3DInterface: FUNCTION 10002410
 	IDirect3D8       *GetD3DInterface() { return m_pD3DInterface; }
+	// $TRenderD3DInterface: FUNCTION 10008350
 	TMSWindow        *GetMSWindow() { return &m_pMSWindow; }
+	// $TRenderD3DInterface: FUNCTION 10008340
 	HACCEL            GetAcceleratorTable() { return m_hAccel; }
 
 private:

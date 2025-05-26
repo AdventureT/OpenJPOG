@@ -15,6 +15,7 @@ TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNCREATE(TRenderD3DInterface, TRenderInterface)
 
+// $TRenderD3DInterface: FUNCTION 10005f80
 TRenderD3DInterface::TRenderD3DInterface()
 {
 	m_pD3DInterface                   = NULL;
@@ -32,6 +33,7 @@ TRenderD3DInterface::TRenderD3DInterface()
 	m_bEnableColourCorrection         = TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 10006de0
 void TOSHI_API TRenderD3DInterface::TD3DAssert(HRESULT a_hr, TPCCHAR a_pError)
 {
 	if (FAILED(a_hr)) {
@@ -45,11 +47,13 @@ void TOSHI_API TRenderD3DInterface::TD3DAssert(HRESULT a_hr, TPCCHAR a_pError)
 	}
 }
 
+// $TRenderD3DInterface: FUNCTION 100083b0
 TRenderD3DInterface::~TRenderD3DInterface()
 {
 	Destroy();
 }
 
+// $TRenderD3DInterface: FUNCTION 10006040
 TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams &a_rParams)
 {
 	TASSERT(TTRUE == IsCreated());
@@ -153,6 +157,7 @@ TBOOL TRenderD3DInterface::CreateDisplay(const TRenderInterface::DisplayParams &
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 100064d0
 TBOOL TRenderD3DInterface::DestroyDisplay()
 {
 	// Member deletetion 0x4f
@@ -165,6 +170,7 @@ TBOOL TRenderD3DInterface::DestroyDisplay()
 	return TRenderInterface::DestroyDisplay();
 }
 
+// $TRenderD3DInterface: FUNCTION 10006560
 TBOOL TRenderD3DInterface::Update(float a_fDeltaTime)
 {
 	TASSERT(TTRUE == IsCreated());
@@ -183,6 +189,7 @@ TBOOL TRenderD3DInterface::Update(float a_fDeltaTime)
 	return TFALSE;
 }
 
+// $TRenderD3DInterface: FUNCTION 10006660
 TBOOL TRenderD3DInterface::BeginScene()
 {
 	TASSERT(TTRUE == IsDisplayCreated());
@@ -209,6 +216,7 @@ TBOOL TRenderD3DInterface::BeginScene()
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 10006780
 TBOOL TRenderD3DInterface::EndScene()
 {
 	TASSERT(TTRUE == IsDisplayCreated());
@@ -246,16 +254,19 @@ TBOOL TRenderD3DInterface::EndScene()
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 100083a0
 TRenderAdapter::Mode::Device *TRenderD3DInterface::GetCurrentDevice()
 {
 	return m_pCurrentDevice;
 }
 
+// $TRenderD3DInterface: FUNCTION 10008390
 TRenderInterface::DisplayParams *TRenderD3DInterface::GetCurrentDisplayParams()
 {
 	return &m_oDisplayParams;
 }
 
+// $TRenderD3DInterface: FUNCTION 10006a10
 TBOOL TRenderD3DInterface::Create(TKernelInterface *a_pKernel)
 {
 	TASSERT(TFALSE == IsCreated());
@@ -286,6 +297,7 @@ TBOOL TRenderD3DInterface::Create(TKernelInterface *a_pKernel)
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 10006b50
 TBOOL TRenderD3DInterface::Destroy()
 {
 	if (!IsCreated()) {
@@ -305,20 +317,24 @@ TBOOL TRenderD3DInterface::Destroy()
 	return TRenderInterface::Destroy();
 }
 
+// $TRenderD3DInterface: FUNCTION 10006c40
 void TRenderD3DInterface::RenderIndexPrimitive(int param_2, int param_3, int param_4, int param_5, int param_6, int param_7)
 {
 }
 
+// $TRenderD3DInterface: FUNCTION 10008380
 float TRenderD3DInterface::GetPixelAspectRatio()
 {
 	return 0.0f;
 }
 
+// $TRenderD3DInterface: FUNCTION 10008360
 TBOOL TRenderD3DInterface::SetPixelAspectRatio(float a_fPixelAspectRatio)
 {
 	return TBOOL();
 }
 
+// $TRenderD3DInterface: FUNCTION 10006e90
 TRenderContext *TRenderD3DInterface::CreateRenderContext()
 {
 	TRenderContextD3D *pRenderContext = new TRenderContextD3D();
@@ -326,11 +342,13 @@ TRenderContext *TRenderD3DInterface::CreateRenderContext()
 	return pRenderContext;
 }
 
+// $TRenderD3DInterface: FUNCTION 100082b0
 TRenderCapture *TRenderD3DInterface::CreateCapture()
 {
 	return nullptr;
 }
 
+// $TRenderD3DInterface: FUNCTION 10007100
 void TRenderD3DInterface::DestroyCapture(TRenderCapture *a_pRenderCapture)
 {
 }
@@ -339,11 +357,13 @@ void TRenderD3DInterface::ConnectDefaultViewportHandelrs(TViewport &a_pViewport)
 {
 }
 
+// $TRenderD3DInterface: FUNCTION 10007450
 TModel *TRenderD3DInterface::CreateModel(TPCCHAR a_szName, TINT a_iUnk1)
 {
 	return nullptr;
 }
 
+// $TRenderD3DInterface: FUNCTION 100073a0
 TBOOL TRenderD3DInterface::IsCapableColourCorrection()
 {
 	if (!m_bCheckedCapableColourCorrection) {
@@ -355,6 +375,7 @@ TBOOL TRenderD3DInterface::IsCapableColourCorrection()
 	return m_bCapableColourCorrection;
 }
 
+// $TRenderD3DInterface: FUNCTION 10007420
 void TRenderD3DInterface::EnableColourCorrection(TBOOL a_bEnable)
 {
 	m_bEnableColourCorrection = a_bEnable && IsCapableColourCorrection();
@@ -388,6 +409,7 @@ TBOOL TRenderD3DInterface::IsTextureFormatSupported(D3DFORMAT a_eFormat)
 			a_eFormat));
 }
 
+// $TRenderD3DInterface: FUNCTION 10007270
 void TRenderD3DInterface::SetTextureAddressMode(DWORD a_dwStage, TTextureResource::ADDRESSMODE a_eAddressMode)
 {
 	switch (a_eAddressMode)
@@ -413,11 +435,13 @@ void TRenderD3DInterface::SetTextureAddressMode(DWORD a_dwStage, TTextureResourc
 	}
 }
 
+// $TRenderD3DInterface: FUNCTION 100069d0
 TBOOL TRenderD3DInterface::Supports32BitTextures()
 {
 	return IsTextureFormatSupported(R8G8B8A8) && IsTextureFormatSupported(R8G8B8);
 }
 
+// $TRenderD3DInterface: FUNCTION 10007d20
 void TRenderD3DInterface::BuildAdapterDatabase()
 {
 	for (UINT i = 0; i < m_pD3DInterface->GetAdapterCount(); i++) {
@@ -446,6 +470,7 @@ void TRenderD3DInterface::BuildAdapterDatabase()
 	}
 }
 
+// $TRenderD3DInterface: FUNCTION 10007f50
 void TRenderD3DInterface::CreateAcceleratorTableA()
 {
 	DestroyAcceleratorTable();
@@ -461,6 +486,7 @@ void TRenderD3DInterface::CreateAcceleratorTableA()
 	m_hAccel       = ::CreateAcceleratorTableA(accel, 2);
 }
 
+// $TRenderD3DInterface: FUNCTION 10008010
 void TRenderD3DInterface::DestroyAcceleratorTable()
 {
 	if (m_hAccel) {
@@ -469,11 +495,13 @@ void TRenderD3DInterface::DestroyAcceleratorTable()
 	}
 }
 
+// $TRenderD3DInterface: FUNCTION 10007500
 TBOOL TRenderD3DInterface::LoadShaders()
 {
 	return TBOOL();
 }
 
+// $TRenderD3DInterface: FUNCTION 100077c0
 void TRenderD3DInterface::SetDefaultRenderStates()
 {
 	m_pD3DDevice->SetRenderState(D3DRS_ZENABLE, 1);

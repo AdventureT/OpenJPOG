@@ -35,8 +35,11 @@ public:
 	virtual TBOOL                         Create(TVertexFactoryFormat *a_pVertexFormat, TUSHORT a_uiMaxStaticVertices, TUINT a_uiFlags);
 	virtual TVertexPoolResourceInterface *CreatePool(TUSHORT a_usMaxStaticVertices, TUINT a_uiFlags);
 
+	// $TRenderInterface: FUNCTION 10012720
 	TVertexFactoryFormat *GetVertexFormat() { return &m_oVertexFormat; }
+	// $TRenderInterface: FUNCTION 10012710
 	TUSHORT               GetMaxStaticVertices() { return m_usMaxStaticVertices; }
+	// $TRenderInterface: FUNCTION 10012700
 	TUINT                 GetFlags() { return m_uiFlags; }
 
 private:

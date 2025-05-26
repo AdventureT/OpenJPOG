@@ -8,6 +8,7 @@
 
 TOSHI_NAMESPACE_USING
 
+// $TKernelInterface: FUNCTION 10017540
 THPTimer::THPTimer()
 {
 	LARGE_INTEGER iPerformancCounter;
@@ -17,6 +18,7 @@ THPTimer::THPTimer()
 	Reset();
 }
 
+// $TKernelInterface: FUNCTION 10017650
 void THPTimer::Reset()
 {
 	QueryPerformanceCounter(&m_iCurrentTime);
@@ -25,6 +27,7 @@ void THPTimer::Reset()
 	m_fDelta   = 0;
 }
 
+// $TKernelInterface: FUNCTION 10017590
 void THPTimer::Update()
 {
 	m_iOldTime = m_iCurrentTime;
@@ -35,6 +38,7 @@ void THPTimer::Update()
 	m_fCurrent    = m_iCurrentTime.QuadPart * ratio;
 }
 
+// $TKernelInterface: FUNCTION 10017610
 TUINT THPTimer::GetRaw32()
 {
 	LARGE_INTEGER raw32;
@@ -42,6 +46,7 @@ TUINT THPTimer::GetRaw32()
 	return raw32.LowPart;
 }
 
+// $TKernelInterface: FUNCTION 100175f0
 TUINT64 THPTimer::GetRaw64()
 {
 	LARGE_INTEGER raw32;

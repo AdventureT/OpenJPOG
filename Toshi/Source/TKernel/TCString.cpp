@@ -13,6 +13,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
+// $TKernelInterface: FUNCTION 1000b200
 TBOOL TCString::AllocBuffer(TINT a_iLength, TBOOL a_bClear)
 {
 	TASSERT(a_iLength >= 0);
@@ -89,6 +90,7 @@ TCString &TCString::Concat(TPCCHAR a_String, TINT a_iLength)
 	return *this;
 }
 
+// $TKernelInterface: FUNCTION 1000a840
 TINT TCString::Compare(TPCCHAR a_pcString, int a_iLength) const
 {
 	TASSERT(a_pcString != TNULL);
@@ -129,6 +131,7 @@ void TCString::Copy(TPCCHAR a_pcString, TINT a_iLength)
 	}
 }
 
+// $TKernelInterface: FUNCTION 1000a600
 TCString &TOSHI_CALLBACKAPI TCString::Format(TPCCHAR a_pcFormat, ...)
 {
 	char    buffer[0x400];
@@ -140,6 +143,7 @@ TCString &TOSHI_CALLBACKAPI TCString::Format(TPCCHAR a_pcFormat, ...)
 	return *this;
 }
 
+// $TKernelInterface: FUNCTION 1000abe0
 TINT TCString::Find(TCHAR a_cFind, TINT a_iIndex) const
 {
 	if (!IsIndexValid(a_iIndex)) return -1;
@@ -149,6 +153,7 @@ TINT TCString::Find(TCHAR a_cFind, TINT a_iIndex) const
 	return foundAt - GetString();
 }
 
+// $TKernelInterface: FUNCTION 1000ad60
 void TCString::Truncate(TINT a_iLength)
 {
 	TINT len = Length();
@@ -166,6 +171,7 @@ void TCString::Truncate(TINT a_iLength)
 	}
 }
 
+// $TKernelInterface: FUNCTION 1000acc0
 TINT TCString::FindReverse(TCHAR a_cFind, TINT a_iIndex /*= -1*/) const
 {
 	if (a_iIndex == -1) {
@@ -202,6 +208,7 @@ TINT TCString::FindReverse(TCHAR a_cFind, TINT a_iIndex /*= -1*/) const
 	return -1;
 }
 
+// $TKernelInterface: FUNCTION 1000a660
 TCString TCString::Mid(TINT a_iFirst, TINT a_iCount) const
 {
 	if (a_iFirst < 0) {

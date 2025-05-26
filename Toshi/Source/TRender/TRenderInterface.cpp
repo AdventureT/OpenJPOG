@@ -15,6 +15,7 @@ IMPLEMENT_DYNAMIC(TRenderInterface, TObject)
 
 TRenderInterface *TRenderInterface::s_Interface = TNULL;
 
+// $TRenderInterface: FUNCTION 1000cd70
 TRenderInterface::TRenderInterface()
 {
 	m_bIsCreated            = TFALSE;
@@ -30,6 +31,7 @@ TRenderInterface::TRenderInterface()
 	TCString("Created TRenderInterface\n").Print();
 }
 
+// $TRenderInterface: FUNCTION 1000d2e0
 TBOOL TRenderInterface::CreateDisplay(const DisplayParams &a_rParams)
 {
 	TASSERT(TTRUE == IsCreated());
@@ -38,6 +40,7 @@ TBOOL TRenderInterface::CreateDisplay(const DisplayParams &a_rParams)
 	return TTRUE;
 }
 
+// $TRenderInterface: FUNCTION 1000d360
 TBOOL TRenderInterface::DestroyDisplay()
 {
 	TASSERT(TTRUE == IsCreated());
@@ -45,12 +48,14 @@ TBOOL TRenderInterface::DestroyDisplay()
 	return TTRUE;
 }
 
+// $TRenderInterface: FUNCTION 1000f290
 TBOOL TRenderInterface::Update(float a_fDeltaTime)
 {
 	FlushDyingResources();
 	return TTRUE;
 }
 
+// $TRenderInterface: FUNCTION 1000d3b0
 TBOOL TRenderInterface::BeginScene()
 {
 	TASSERT(TTRUE == IsCreated());
@@ -59,6 +64,7 @@ TBOOL TRenderInterface::BeginScene()
 	return TTRUE;
 }
 
+// $TRenderInterface: FUNCTION 1000d430
 TBOOL TRenderInterface::EndScene()
 {
 	TASSERT(TTRUE == IsCreated());
@@ -76,6 +82,7 @@ TRenderInterface::DisplayParams *TRenderInterface::GetCurrentDisplayParams()
 	return nullptr;
 }
 
+// $TRenderInterface: FUNCTION 1000d4b0
 TBOOL TRenderInterface::Create(TKernelInterface *pKernelInterface)
 {
 	TASSERT(TFALSE == IsCreated());
@@ -94,6 +101,7 @@ TBOOL TRenderInterface::Create(TKernelInterface *pKernelInterface)
 	return TFALSE;
 }
 
+// $TRenderInterface: FUNCTION 1000e6b0
 TBOOL TRenderInterface::CreateSystemResources()
 {
 	TCString("  Adding base resources\n").Print();
@@ -126,10 +134,12 @@ TBOOL TRenderInterface::CreateSystemResources()
 	return TTRUE;
 }
 
+// $TRenderInterface: FUNCTION 1000f100
 void TRenderInterface::DestroySystemResources()
 {
 }
 
+// $TRenderInterface: FUNCTION 1000def0
 TResource *TRenderInterface::CreateResource(const TClass *a_pClass, TPCCHAR a_szResName, TResource *a_pParent)
 {
 	TASSERT(TNULL != a_pClass);
@@ -157,6 +167,7 @@ TResource *TRenderInterface::CreateResource(const TClass *a_pClass, TPCCHAR a_sz
 	return pResource;
 }
 
+// $TRenderInterface: FUNCTION 1000da40
 const TRenderAdapter::Mode::Device *TRenderInterface::FindDevice(const DisplayParams *a_pDisplayParams)
 {
 	auto pAdapter = GetAdapterList()->Begin();
@@ -237,6 +248,7 @@ const TRenderAdapter::Mode::Device *TRenderInterface::FindDevice(const DisplayPa
 	}
 }
 
+// $TRenderInterface: FUNCTION 1000e380
 void TRenderInterface::FlushDyingResources()
 {
 	while (m_bHasDyingResources)
@@ -246,6 +258,7 @@ void TRenderInterface::FlushDyingResources()
 	}
 }
 
+// $TRenderInterface: FUNCTION 1000ec90
 void TRenderInterface::DestroyDyingResources(TResource *a_pResource)
 {
 	// TODO: refactor
@@ -290,12 +303,14 @@ void TRenderInterface::DestroyDyingResources(TResource *a_pResource)
 	}
 }
 
+// $TRenderInterface: FUNCTION 1000f090
 void TRenderInterface::DeleteResource(TResource *a_pResource)
 {
 	DeleteResourceRecurse(a_pResource->Child());
 	DeleteResourceAtomic(a_pResource);
 }
 
+// $TRenderInterface: FUNCTION 1000eda0
 void TRenderInterface::DeleteResourceRecurse(TResource *a_pResource)
 {
 	while (a_pResource)
@@ -308,6 +323,7 @@ void TRenderInterface::DeleteResourceRecurse(TResource *a_pResource)
 	}
 }
 
+// $TRenderInterface: FUNCTION 1000edf0
 void TRenderInterface::DeleteResourceAtomic(TResource *a_pResource)
 {
 	if (a_pResource) {
@@ -330,37 +346,45 @@ void TRenderInterface::DeleteResourceAtomic(TResource *a_pResource)
 	}
 }
 
+// $TRenderInterface: FUNCTION 1000d590
 TBOOL TRenderInterface::Destroy()
 {
 	return TBOOL();
 }
 
+// $TRenderInterface: FUNCTION 10008bf0
 void TRenderInterface::RenderIndexPrimitive(int param_2, int param_3, int param_4, int param_5, int param_6, int param_7)
 {
 }
 
+// $TRenderInterface: FUNCTION 1000d5d0
 void TRenderInterface::DumpStats()
 {
 }
 
+// $TRenderInterface: FUNCTION 1000f260
 void TRenderInterface::GetScreenOffset(TVector2 &a_rVec)
 {
 }
 
+// $TRenderInterface: FUNCTION 1000f240
 void TRenderInterface::SetScreenOffset(const TVector2 &a_rVec)
 {
 }
 
+// $TRenderInterface: FUNCTION 10008be0
 float TRenderInterface::GetScreenAspectRatio()
 {
 	return 0.0f;
 }
 
+// $TRenderInterface: FUNCTION 10008bd0
 float TRenderInterface::GetPixelAspectRatio()
 {
 	return 0.0f;
 }
 
+// $TRenderInterface: FUNCTION 10008bc0
 TBOOL TRenderInterface::SetPixelAspectRatio(float a_fPixelAspectRatio)
 {
 	return TBOOL();
@@ -380,10 +404,12 @@ void TRenderInterface::DestroyCapture(TRenderCapture *a_pRenderCapture)
 {
 }
 
+// $TRenderInterface: FUNCTION 10008890
 void TRenderInterface::SetLightDirectionMatrix(const TMatrix44 &a_rMatrix)
 {
 }
 
+// $TRenderInterface: FUNCTION 10008740
 void TRenderInterface::SetLightColourMatrix(const TMatrix44 &a_rMatrix)
 {
 }

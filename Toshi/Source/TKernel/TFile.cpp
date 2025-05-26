@@ -8,6 +8,7 @@
 
 TOSHI_NAMESPACE_USING
 
+// $TKernelInterface: FUNCTION 1000d590
 TFile *TOSHI_API TFile::Create(const TCString &a_sName, TUINT a_uiMode)
 {
 	TFileManager *pFileManager = TFileManager::GetFileManager();
@@ -24,6 +25,7 @@ void TOSHI_API TFile::Destroy(TFile *a_pFile)
 	}
 }
 
+// $TKernelInterface: FUNCTION 1000d8b0
 TCString TOSHI_API TFile::ConcatPath(TCString const &a_rcPath1, TCString const &a_rcPath2)
 {
 	TCString strResult;
@@ -82,6 +84,7 @@ TCString TOSHI_API TFile::ConcatPath(TCString const &a_rcPath1, TCString const &
 }
 
 
+// $TKernelInterface: FUNCTION 1000d6a0
 TCString TOSHI_API TFile::SimplifyPath(const TCString &a_rcPath)
 {
 	TCString strPath = a_rcPath;
@@ -164,6 +167,7 @@ void TFile::Destroy()
 	Destroy(this);
 }
 
+// $TKernelInterface: FUNCTION 10007300
 TFileManager::TFileManager()
 	: m_pcWorkingDirectory("/")
 {
@@ -173,12 +177,14 @@ TFileManager::TFileManager()
 	m_mFileSystem.Create();
 }
 
+// $TKernelInterface: FUNCTION 1000ce70
 TFileManager::~TFileManager()
 {
 	TASSERT(s_pFileManager != TNULL);
 	s_pFileManager = TNULL;
 }
 
+// $TKernelInterface: FUNCTION 1000cf10
 TFile *TFileManager::CreateFile(TCString const &a_sName, TUINT a_uiMode)
 {
 	TASSERT(a_sName.Length() > 0);
@@ -217,6 +223,7 @@ TFileSystem *TFileManager::FindFileSystem(const TCString &a_rFileSysName)
 	return pFileSystem;
 }
 
+// $TKernelInterface: FUNCTION 1000d0c0
 void TFileManager::MountFileSystem(TFileSystem *a_pFileSystem)
 {
 	TASSERT(FindFileSystem(a_pFileSystem->GetName()) == TNULL);
@@ -224,6 +231,7 @@ void TFileManager::MountFileSystem(TFileSystem *a_pFileSystem)
 	InvalidateSystemPath();
 }
 
+// $TKernelInterface: FUNCTION 1000d160
 void TFileManager::UnmountFileSystem(TFileSystem *a_pFileSystem)
 {
 	TASSERT(FindFileSystem(a_pFileSystem->GetName()) == TNULL);
@@ -231,6 +239,7 @@ void TFileManager::UnmountFileSystem(TFileSystem *a_pFileSystem)
 	InvalidateSystemPath();
 }
 
+// $TKernelInterface: FUNCTION 1000db60
 TCString TFileManager::MakeAbsolutePath(TCString const &a_rPath)
 {
 	return TFile::ConcatPath(a_rPath, GetWorkingDirectory());
@@ -244,6 +253,7 @@ TFileSystem *TOSHI_API TFileManager::FindFileSystem(TDList<TFileSystem> &a_rFile
 	return TNULL;
 }
 
+// $TKernelInterface: FUNCTION 1000d200
 void TFileManager::ValidateSystemPath()
 {
 	if (!m_bValidated) {
@@ -268,6 +278,7 @@ void TFileManager::ValidateSystemPath()
 	}
 }
 
+// $TKernelInterface: FUNCTION 1000d520
 void TFileSystem::SetPrefix(const TCString &a_rPrefix)
 {
 	m_sPrefix = a_rPrefix;

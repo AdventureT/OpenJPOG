@@ -24,6 +24,7 @@ TUINT                         TTerrainInterface::s_ui32TStamp         = 1;
 TTerrainInterface            *TTerrainInterface::ms_pTerrainInterface = TNULL;
 TTerrainInterface::TERRAINLOD TTerrainInterface::sm_eLOD              = TERRAINLOD_HIGH;
 
+// $TTerrainInterface: FUNCTION 1000d340
 void TTerrainInterface::SetLODDetail(TERRAINLOD a_eLODDetail)
 {
 	switch (a_eLODDetail)

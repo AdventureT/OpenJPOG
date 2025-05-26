@@ -16,6 +16,7 @@ public:
 	virtual TBOOL OnUpdate(TFLOAT a_fDeltaTime) override;
 
 	void                                     UpdateHUDComponets();
+	// $JPOG: FUNCTION 0067e5e0
 	Toshi::TManagedPtr<Toshi::TGUIInterface> GetGUIInterface() const
 	{
 		return m_pGUIInterface;

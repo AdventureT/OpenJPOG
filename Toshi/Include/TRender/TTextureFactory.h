@@ -29,6 +29,7 @@ public:
 	class TRENDERINTERFACE_EXPORTS NameEntry : public TNodeList<NameEntry>::TNode
 	{
 	public:
+		// $TRenderInterface: FUNCTION 1000f450
 		NameEntry(TPCCHAR a_szName, TTextureResource *a_pTexture)
 		{
 			m_pTexture = a_pTexture;
@@ -41,12 +42,15 @@ public:
 				*m_szName = '\0';
 			}
 		}
+		// $TRenderInterface: FUNCTION 1000f400
 		~NameEntry()
 		{
 			TASSERT(IsLinked() == TFALSE);
 		}
 
+		// $TRenderInterface: FUNCTION 1000f440
 		TPCCHAR           GetName() const { return m_szName; }
+		// $TRenderInterface: FUNCTION 1000f430
 		TTextureResource *GetTexture() { return m_pTexture; }
 
 	private:

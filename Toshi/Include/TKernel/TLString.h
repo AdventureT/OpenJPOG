@@ -18,6 +18,7 @@ public:
 class TKERNELINTERFACE_EXPORTS TLocalisedString
 {
 public:
+	// $TKernelInterface: FUNCTION 1001f300
 	static TFreeList &TOSHI_API GetFreeList() { return m_oFreelist; }
 
 private:

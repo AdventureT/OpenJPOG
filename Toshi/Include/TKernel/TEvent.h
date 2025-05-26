@@ -21,6 +21,7 @@ public:
 	{
 		Connect(a_pEmitter, a_pCaller, a_pCallback, a_iPriority);
 	}
+	// $TKernelInterface: FUNCTION 1000cd10
 	~TGenericListener()
 	{
 		Disconnect();
@@ -49,11 +50,13 @@ public:
 		Create(a_pOwner);
 	}
 
+	// $TKernelInterface: FUNCTION 1000cd90
 	~TGenericEmitter()
 	{
 		Destroy();
 	}
 
+	// $TKernelInterface: FUNCTION 1000cc50
 	void Throw(void *a_pData)
 	{
 		for (auto it = m_Listeners.Begin(); it != m_Listeners.End(); it++) {
@@ -61,11 +64,13 @@ public:
 		}
 	}
 
+	// $TKernelInterface: FUNCTION 1000cd80
 	void Create(void *a_pOwner)
 	{
 		m_pOwner = a_pOwner;
 	}
 
+	// $TKernelInterface: FUNCTION 1000cc20
 	void Destroy()
 	{
 		for (auto it = m_Listeners.Begin(); it != m_Listeners.End(); it++) {

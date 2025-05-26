@@ -43,14 +43,18 @@ public:
 	static TTextureResource *TOSHI_API CreateHAL(TRenderInterface *a_pRenderer, TPCCHAR a_szName, TResource *a_pResource);
 
 public:
+	// $TRenderInterface: FUNCTION 1000f3a0
 	TTextureFactory::NameEntry *GetNameEntry() { return m_pNameEntry; }
+	// $TRenderInterface: FUNCTION 1000f390
 	TUINT                       GetCreateFlags() { return m_CreateFlags; }
 
+	// $TRenderInterface: FUNCTION 1000f370
 	ADDRESSMODE GetAddressMode()
 	{
 		return m_eAddressMode;
 	}
 
+	// $TRenderInterface: FUNCTION 1000f380
 	ADDRESSMODE SetAddressModeMode(ADDRESSMODE a_eAddressMode)
 	{
 		m_eAddressMode = a_eAddressMode;

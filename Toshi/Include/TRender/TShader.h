@@ -16,6 +16,7 @@ class TRENDERINTERFACE_EXPORTS TMaterial : public TResource
 {
 	DECLARE_DYNAMIC(TMaterial)
 public:
+	// $TRenderInterface: FUNCTION 100083b0
 	TMaterial()
 	{
 		m_iFlags       = 0;

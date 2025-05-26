@@ -6,6 +6,8 @@
 #include "TSpriteShader/Include/TSpriteShader.h"
 #include "PGUIRenderer/PGUITRDisplayContext.h"
 
+typedef TINT16 PGUITextureID;
+
 class PGUIRENDERER_EXPORTS PGUITRTextureFactory : public Toshi::TGUITextureFactory
 {
 	DECLARE_DYNAMIC(PGUITRTextureFactory)
@@ -15,63 +17,22 @@ public:
 	{
 
 	};
-	// inherits TNode? Does not align with disassembly
-	class Texture : public Toshi::TNodeList<Texture>::TNode
+
+	class Texture
 	{
 	public:
-		Texture(const Toshi::TPCString &a_rName, PGUITRTextureFactory *a_pTextureFactory, TBOOL a_bValidate)
-		{
-			m_sName           = a_rName;
-			m_pTextureFactory = a_pTextureFactory;
-			m_pMaterial       = TNULL;
-			m_iWidth          = -1;
-			m_iHeight         = -1;
-		}
+		Texture(const Toshi::TPCString &a_rName, PGUITRTextureFactory *a_pTextureFactory, TBOOL a_bValidate);
 
-		TBOOL GetFlag(TextureFlag a_eFlag) const
-		{
-			return (m_eFlags & a_eFlag) != 0;
-		}
-		TINT GetHeight()
-		{
-			return m_iHeight;
-		}
-		const Toshi::TPCString &GetName() const
-		{
-			return m_sName;
-		}
-		TINT GetWidth()
-		{
-			return m_iWidth;
-		}
+		TINT GetHeight();
+		TINT GetWidth();
+		
+		void Validate();
+		void Invalidate();
 
-		void SetFlag(TextureFlag a_eFlag, bool a_bEnable)
-		{
-			if (a_bEnable) {
-				m_eFlags |= a_eFlag;
-			}
-			else {
-				m_eFlags &= a_eFlag;
-			}
-		}
-		void Validate()
-		{
-			bool invalid = !m_sName || m_sName->IsEmpty();
-			if (invalid) {
-				return;
-			}
-			static const Toshi::TClass *s_pAllowedClass = Toshi::TClass::Find("TSpriteMaterialHAL", TNULL);
-			Toshi::TMaterial *pMaterial = Toshi::TRenderInterface::GetRenderer()->GetMaterialLibraryManager()->GetMaterial(*m_sName);
-			if (!pMaterial || !pMaterial->IsA(*s_pAllowedClass)) {
-				m_pMaterial = TNULL;
-				return;
-			}
-			m_pMaterial = TSTATICCAST(Toshi::TSpriteMaterial *, pMaterial);
+		void SetFlag(TextureFlag a_eFlag, bool a_bEnable);
+		TBOOL GetFlag(TextureFlag a_eFlag) const;
 
-		}
-		void Invalidate()
-		{
-		}
+		const Toshi::TPCString &GetName() const;
 
 	private:
 		Toshi::TPCString        m_sName;           // 0x0
@@ -82,41 +43,40 @@ public:
 		TUINT                   m_eFlags;          // 0x18
 	};
 
-	class TextureSet : public Toshi::TNodeList<Texture>
+	class TextureSet
 	{
 	public:
-		TextureSet(PGUITRTextureFactory *a_pTextureFactory)
-		{
-			m_pTextureFactory = a_pTextureFactory;
-		}
-		// Revisit this, not sure if it lines up with the disassembly
-		void Add(TPCCHAR a_szTextureName)
-		{
-			Toshi::TPCString textureName = Toshi::TSystem::GetCStringPool()->Get(a_szTextureName);
-			short            sTextureID  = m_pTextureFactory->ReserveTextureID(textureName);
-			Texture         *texture     = new Texture(textureName, m_pTextureFactory, true);
-			m_pTextureFactory->m_oTextureSet[sTextureID].InsertTail(*texture);
-		}
-		void Invalidate()
-		{
-			for (auto node = Begin(); node != End(); node++) {
-				node->Validate();
-			}
-		}
-		void Validate()
-		{
-			for (auto node = Begin(); node != End(); node++) {
-				node->Invalidate();
-			}
-		}
+		using TextureNode = Toshi::TNodeListNodeWrapper<Texture>;
+
+	public:
+		TextureSet(PGUITRTextureFactory *a_pTextureFactory);
+
+		void Add(TPCCHAR a_szTextureName);
+
+		void Invalidate();
+		void Validate();
+
 	private:
-		PGUITRTextureFactory     *m_pTextureFactory; // 0x10
+		Toshi::TNodeList<TextureNode> m_listTextures;
+		PGUITRTextureFactory         *m_pTextureFactory; // 0x10
 	};
+
+public:
+	PGUITRTextureFactory();
+	~PGUITRTextureFactory();
+
+	virtual PGUITextureID ReserveTextureID(const Toshi::TPCString &a_rTextureName);
 
 	void Create(PGUITRDisplayContext *a_pDisplayContext);
 
-	virtual short ReserveTextureID(const Toshi::TPCString &a_rTextureName);
+	Texture *GetTexture( PGUITextureID a_iID );
 
-	Toshi::TArray<TextureSet> m_oTextureSet; // 0x4
+protected:
+	// [5/26/2025 InfiniteC0re]
+	// Commented m_oTextureSet since it's probably storing something else, not TextureSet
+	//Toshi::TArray<TextureSet> m_oTextureSet; // 0x4
+	Texture                 **m_ppTextures;
+
+	// ...
 	PGUITRDisplayContext *m_pDisplayContext; // 0x1C
 };

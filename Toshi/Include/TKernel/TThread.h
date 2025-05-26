@@ -20,6 +20,7 @@ public:
 		Create(a_pMutex);
 	}
 
+	// $TKernelInterface: FUNCTION 100073d0
 	~TMutexLock()
 	{
 		Destroy();

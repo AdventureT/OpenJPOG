@@ -9,6 +9,7 @@
 
 AApplication g_oTheApp;
 
+// $JPOG: FUNCTION 00484330
 TBOOL AApplication::OnCreate(TINT argc, TPCHAR *const argv)
 {
 	m_pRenderTask = (ADummyTask *)g_oTheApp.GetKernel()->GetScheduler()->CreateTask(TGetClass(ADummyTask), TNULL);
@@ -47,6 +48,7 @@ TBOOL AApplication::OnCreate(TINT argc, TPCHAR *const argv)
 	return TApplication::OnCreate(argc, argv);
 }
 
+// $JPOG: FUNCTION 00484dc0
 TBOOL AApplication::OnDestroy()
 {
 	m_pRootTask->DestroyTask();

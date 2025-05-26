@@ -24,7 +24,9 @@ public:
 
 	operator HWND() const { return m_hWnd; }
 
+	// $TRenderD3DInterface: FUNCTION 10003560
 	HWND                 GetHWND() const { return m_hWnd; }
+	// $TRenderD3DInterface: FUNCTION 10003550
 	TRenderD3DInterface *GetD3DInterface() const { return m_pD3DInterface; }
 
 private:

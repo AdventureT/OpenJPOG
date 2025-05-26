@@ -13,12 +13,16 @@ class TKERNELINTERFACE_EXPORTS TUser
 public:
 	TUser(TCHAR const *a_sName);
 
+	// $TKernelInterface: FUNCTION 1000c760
 	TBOOL  IsRegistered() { return m_iUserID != -1; }
 	TSHORT Register();
 	void   Deregister();
 
+	// $TKernelInterface: FUNCTION 1000c730
 	TSHORT       GetUserID() { return m_iUserID; }
+	// $TKernelInterface: FUNCTION 1000c740
 	TSHORT       GetNameLength() { return m_iNameLen; }
+	// $TKernelInterface: FUNCTION 1000c750
 	TCHAR const *GetName() { return m_sName; }
 
 private:
@@ -38,7 +42,9 @@ public:
 	void   DeregisterUser(TUser &a_rUser);
 	TUser *FindUser(TCHAR const *a_sName);
 
+	// $TKernelInterface: FUNCTION 1000c7b0
 	TINT                           GetUserCount() { return m_iUserCount; }
+	// $TKernelInterface: FUNCTION 1000c7a0
 	TUser                         *GetUser(TINT a_iUserID) { return m_pUsers[a_iUserID]; }
 	static TUserHandler &TOSHI_API GetSingleton();
 

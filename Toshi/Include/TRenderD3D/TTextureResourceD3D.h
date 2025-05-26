@@ -47,6 +47,7 @@ protected:
 	TBOOL IsPPM(TPCCHAR a_pFileName);
 
 public:
+	// $TRenderD3DInterface: FUNCTION 10004880
 	IDirect3DTexture8 *GetD3DTexture() { return m_pD3DTexture; }
 
 private:

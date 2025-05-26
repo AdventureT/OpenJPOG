@@ -52,6 +52,9 @@ public:
 		}
 	}
 
+	// $JPOG: FUNCTION 004762c0
+	// $TKernelInterface: FUNCTION 100169e0
+	// $PGUIRenderer: FUNCTION 10007aa0
 	~TPCString()
 	{
 		if (m_pPCS) {
@@ -62,6 +65,7 @@ public:
 		}
 	}
 
+	// $TKernelInterface: FUNCTION 10027e30
 	TINT Compare(const TPCString &a_rString) const
 	{
 		if (!GetPtr() && a_rString.GetPtr()) {
@@ -76,6 +80,7 @@ public:
 		return 0;
 	}
 
+	// $TKernelInterface: FUNCTION 10016b20
 	TBOOL IsEmpty() const
 	{
 		if (!GetPtr()) {
@@ -84,31 +89,37 @@ public:
 		return GetCString().IsEmpty();
 	}
 
+	// $TKernelInterface: FUNCTION 10016a30
 	TBOOL operator!=(const TPCString &a_rString) const
 	{
 		return GetPtr() != a_rString.GetPtr();
 	}
 
+	// $TKernelInterface: FUNCTION 10016a80
 	const TCString &operator*() const
 	{
 		return m_pPCS ? m_pPCS->m_oString : ms_sEmpty;
 	}
 
+	// $TKernelInterface: FUNCTION 10016a70
 	const TCString *operator->() const
 	{
 		return m_pPCS ? &m_pPCS->m_oString : &ms_sEmpty;
 	}
 
+	// $TKernelInterface: FUNCTION 10016a10
 	TBOOL operator<(const TPCString &a_rString) const
 	{
 		return Compare(a_rString) == 0;
 	}
 
+	// $TKernelInterface: FUNCTION 10016a50
 	TBOOL operator==(const TPCString &a_rString) const
 	{
 		return GetPtr() == a_rString.GetPtr();
 	}
 
+	// $TKernelInterface: FUNCTION 100169a0
 	TPCString &operator=(const TPCString &a_rString)
 	{
 		if (GetPtr() != a_rString.GetPtr()) {
@@ -131,16 +142,19 @@ public:
 		return m_pPCS;
 	}
 
+	// $TKernelInterface: FUNCTION 10016b40
 	const TCString &GetCString() const
 	{
 		return GetPtr() ? GetPtr()->m_oString : ms_sEmpty;
 	}
 
+	// $TKernelInterface: FUNCTION 10016b50
 	TCStringPool *GetStringPool() const
 	{
 		return GetPtr()->m_pCStringPool;
 	}
 
+	// $TKernelInterface: FUNCTION 10016aa0
 	TCString &GetVolatileCString() const
 	{
 		TASSERT(GetPtr() != TNULL);

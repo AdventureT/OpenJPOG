@@ -13,6 +13,7 @@ class TKERNELINTERFACE_EXPORTS TKernelInterfaceDLL : public TDLL
 	, public TNodeList<TKernelInterfaceDLL>::TNode
 {
 public:
+	// $TKernelInterface: FUNCTION 1001a8d0
 	TKernelInterfaceDLL()
 	{
 	}
@@ -37,7 +38,9 @@ public:
 	void                 UnloadInterface(TKernelInterfaceDLL &a_rInterface);
 	void                 UnloadInterface(const TCString &a_rszInterface);
 
+	// $TKernelInterface: FUNCTION 1001a4d0
 	THPTimer   *GetSystemTimer() { return &m_oSysTimer; }
+	// $TKernelInterface: FUNCTION 1001a4e0
 	TScheduler *GetScheduler() const { return m_pScheduler; }
 
 private:
