@@ -175,9 +175,7 @@ const PPropertyValue *PProperties::GetProperty(const PPropertyName &a_rPropertyN
 
 const PPropertyValue *PProperties::GetProperty(const TPCString &a_rPropertyName, TINT a_iIndex) const
 {
-	// This format is in the binary but seems unused
-	TCString().Format("%i", a_iIndex);
-	return GetProperty(PPropertyName(a_rPropertyName, TSystem::GetCStringPool()->Get(a_iIndex)));
+	return GetProperty(PPropertyName(a_rPropertyName, TSystem::GetCStringPool()->Get(TCString().Format("%i", a_iIndex))));
 }
 
 const PPropertyValue *PProperties::GetProperty(const TPCString &a_rPropertyName, const TPCString &a_rPropertySubname) const

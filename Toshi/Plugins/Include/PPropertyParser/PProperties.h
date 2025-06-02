@@ -21,8 +21,8 @@ public:
 		// $PPropertyParser: FUNCTION 10001e30 COMPLETED
 		PProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue)
 		{
-			m_oName  = PPropertyName(a_rName);
-			m_oValue = PPropertyValue(a_rValue);
+			m_oName  = a_rName;
+			m_oValue = a_rValue;
 		}
 		// $PPropertyParser: FUNCTION 10001e70 COMPLETED
 		PProperty(const PPropertyName &a_rName, const PPropertyValue &a_rValue, const Toshi::TPCString &a_rComment)

@@ -186,6 +186,7 @@ public:
 
 	TPCString Get(TPCCHAR a_szString);
 	TPCString Get(TINT a_iInt);
+	TPCString Get(const TCString &a_sString);
 
 protected:
 	void Remove(TPooledCString &a_rPooledCString);

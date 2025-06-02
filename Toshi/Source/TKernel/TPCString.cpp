@@ -17,6 +17,7 @@ TCStringPool::TCStringPool(TINT a_iMaxSize, TINT a_iInitialSize)
 	m_oPooledCStrings = TArray<TPooledCString>(a_iMaxSize, a_iInitialSize);
 }
 
+// $TKernelInterface: FUNCTION 10028000
 TPCString TCStringPool::Get(TPCCHAR a_szString)
 {
 	if (!a_szString || TSystem::StringLength(a_szString) == 0) {
@@ -34,9 +35,16 @@ TPCString TCStringPool::Get(TPCCHAR a_szString)
 	return TPCString(string);
 }
 
+// $TKernelInterface: FUNCTION 100281f0
 TPCString TCStringPool::Get(TINT a_iInt)
 {
 	return Get(TCString().Format("%d", a_iInt));
+}
+
+// $TKernelInterface: FUNCTION 10028ee0
+TPCString TCStringPool::Get(const TCString &a_sString)
+{
+	return Get(a_sString.GetString());
 }
 
 // $TKernelInterface: FUNCTION 10028d10
