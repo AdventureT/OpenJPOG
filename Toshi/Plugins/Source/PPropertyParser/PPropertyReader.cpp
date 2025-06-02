@@ -14,6 +14,11 @@ PPropertyReader::PPropertyReader()
 	m_bAssertOnError = TTRUE;
 }
 
+void PPropertyReader::AddDefinitionBlock(Toshi::TManagedPtr<PPropertyBlock> a_MPBlock)
+{
+	m_oDefinitionBlocks.Push(*a_MPBlock);
+}
+
 void PPropertyReader::Close()
 {
 	if (m_pFile) {
