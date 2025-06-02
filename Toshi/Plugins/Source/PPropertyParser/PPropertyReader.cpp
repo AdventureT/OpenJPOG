@@ -105,18 +105,9 @@ TBOOL PPropertyReader::GetValue(PPropertyValue &a_rValue)
 
 PPropertyValue PPropertyReader::Token2Value(const Toshi::TFileLexer::Token &a_rToken)
 {
-	static TINT             s_boolFlags = 0;
-	static Toshi::TPCString s_true;
-	static Toshi::TPCString s_false;
 	// PENDING: true and false is unicode
-	if ((s_boolFlags & 1) == 0) {
-		s_boolFlags |= 1;
-		s_true = Toshi::TSystem::GetCStringPool()->Get("true");
-	}
-	if ((s_boolFlags & 2) == 0) {
-		s_boolFlags |= 2;
-		s_false = Toshi::TSystem::GetCStringPool()->Get("false");
-	}
+	static Toshi::TPCString s_true  = Toshi::TSystem::GetCStringPool()->Get("true");
+	static Toshi::TPCString s_false = Toshi::TSystem::GetCStringPool()->Get("false");
 	if (a_rToken.GetType() == Toshi::TFileLexer::TOKEN_INTEGER) {
 		return PPropertyValue(a_rToken.GetInteger());
 	}

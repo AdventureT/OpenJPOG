@@ -242,12 +242,7 @@ Toshi::TObject *PPropertyValue::GetTObject() const
 
 const Toshi::TPCString &PPropertyValue::GetTPCString() const
 {
-	static TBYTE     s_firstTime = 0;
-	static TPCString s_pEmptyString;
-	if ((s_firstTime & 1) == 0) {
-		s_firstTime |= 1;
-		s_pEmptyString = TPCString();
-	}
+	static TPCString s_pEmptyString = TPCString();
 	if (m_type != TYPE_TPCSTRING) {
 		return s_pEmptyString;
 	}
@@ -256,12 +251,7 @@ const Toshi::TPCString &PPropertyValue::GetTPCString() const
 
 Toshi::TPCString &PPropertyValue::GetTPCString()
 {
-	static TBYTE     s_firstTime = 0;
-	static TPCString s_pEmptyString;
-	if ((s_firstTime & 1) == 0) {
-		s_firstTime |= 1;
-		s_pEmptyString = TPCString();
-	}
+	static TPCString s_pEmptyString = TPCString();
 	if (m_type != TYPE_TPCSTRING) {
 		return s_pEmptyString;
 	}
