@@ -3,7 +3,7 @@
 #include "TKernel/TObject.h"
 #include "TKernel/TPCString.h"
 
-class PPROPERTYPARSER_EXPORTS PPropertyBlock : public Toshi::TObject
+class PPROPERTYPARSER_EXPORTS PPropertyBlock : public Toshi::TObject, public Toshi::TRefCounted
 {
 	DECLARE_DYNAMIC(PPropertyBlock);
 
