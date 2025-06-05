@@ -4,13 +4,17 @@
 #include "TKernel/TManagedPointer.h"
 #include "TGui/TGUIDisplayContext.h"
 #include "TRender/TRenderInterface.h"
-#include "PGUIRenderer/PGUITRFontFactory.h"
+#include "TRender/TResource.h"
 
 class PGUITRTextureFactory;
+class PGUITRFontFactory;
 
 class PGUIRENDERER_EXPORTS PGUITRDisplayContext : Toshi::TGUIDisplayContext
 {
 public:
+
+	PGUITRDisplayContext();
+
 	void Create();
 	void Create(Toshi::TManagedPtr<Toshi::TRenderInterface> a_MPRenderer);
 	void Create(Toshi::TManagedPtr<Toshi::TRenderInterface> a_MPRenderer, PGUITRTextureFactory *a_pTextureFactory, PGUITRFontFactory *a_pFontFactory);
@@ -41,14 +45,52 @@ protected:
 	virtual void Imp_DrawOutlineRectangle(int a_iX, int a_iY, int a_iWidth, int a_iHeight, const Toshi::TGUIColour &m_rColour);
 
 public:
+	// $PGUIRenderer: FUNCTION 10005a10
+	virtual TFLOAT GetBackDepth()
+	{
+		return -15.0f;
+	}
+	// $PGUIRenderer: FUNCTION 10005a00
+	virtual TFLOAT GetFrontDepth()
+	{
+		return -6551.5f;
+	}
+	// $PGUIRenderer: FUNCTION 100059f0
+	virtual TFLOAT GetDepthIncrement()
+	{
+		return -1.0f;
+	}
+
+protected:
+	void RenderTexture(const Toshi::TGUITextureSection *a_pTextureSection, const Toshi::TGUIColour &a_rColour, int param_4, int param_5, int param_6, int param_7, int param_8);
+
+public:
 	// $PGUIRenderer: FUNCTION 10005c20
 	Toshi::TRenderInterface *GetRenderInterface() const
 	{
-		return m_MPRenderer;
+		return m_pRenderer;
+	}
+	// $PGUIRenderer: FUNCTION 10005bd0
+	PGUITRTextureFactory *GetTextureFactory()
+	{
+		return m_pTextureFactory;
+	}
+	// $PGUIRenderer: FUNCTION 10005bf0
+	TFLOAT GetScaleX() const
+	{
+		return m_fScaleX;
+	}
+	// $PGUIRenderer: FUNCTION 10005be0
+	TFLOAT GetScaleY() const
+	{
+		return m_fScaleY;
 	}
 
 private:
-	Toshi::TManagedPtr<Toshi::TRenderInterface> m_MPRenderer;      // 0x210
-	PGUITRTextureFactory                       *m_pTextureFactory; // 0x214
-	PGUITRFontFactory                          *m_pFontFactory;    // 0x218
+	Toshi::TRenderInterface *m_pRenderer;       // 0x210
+	PGUITRTextureFactory    *m_pTextureFactory; // 0x214
+	PGUITRFontFactory       *m_pFontFactory;    // 0x218
+	Toshi::TResource        *m_pGUIRoot;        // 0x220
+	TFLOAT                   m_fScaleX;         // 0x224
+	TFLOAT                   m_fScaleY;         // 0x228
 };

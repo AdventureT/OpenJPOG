@@ -25,7 +25,8 @@ TBOOL AGUISystem::OnCreate()
 	m_pGUIInterface->Create();
 	m_pDisplayContext = new PGUITRDisplayContext();
 	m_pDisplayContext->Create(g_oTheApp.GetRootTask()->GetRenderInterface(), m_pTextureFactory, m_pFontFactory);
-	return TBOOL();
+	m_pScreen = new TGUIScreen();
+	return true;
 }
 
 // $JPOG: FUNCTION 0067c1f0

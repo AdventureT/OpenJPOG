@@ -1,4 +1,4 @@
-#include "TGUIScreen.h"
+#include "PGuiRenderer/PGUITRFontFactory.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -6,13 +6,6 @@
 //-----------------------------------------------------------------------------
 #include <TKernel/TMemoryDebugOn.h>
 
-TOSHI_NAMESPACE_BEGIN
-
-IMPLEMENT_DYNAMIC(TGUIScreen, TGUIWidget);
-
-TGUIScreen::TGUIScreen()
+void PGUITRFontFactory::Create(PGUITRDisplayContext *a_pDisplayContext)
 {
-
 }
-
-TOSHI_NAMESPACE_END

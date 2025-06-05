@@ -1,4 +1,4 @@
-#include "TGUIScreen.h"
+#include "AGUIPicture.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -6,13 +6,11 @@
 //-----------------------------------------------------------------------------
 #include <TKernel/TMemoryDebugOn.h>
 
-TOSHI_NAMESPACE_BEGIN
+TOSHI_NAMESPACE_USING
 
-IMPLEMENT_DYNAMIC(TGUIScreen, TGUIWidget);
+IMPLEMENT_DYNAMIC(AGUIPicture, TObject)
 
-TGUIScreen::TGUIScreen()
+AGUIPicture::AGUIPicture()
 {
 
 }
-
-TOSHI_NAMESPACE_END

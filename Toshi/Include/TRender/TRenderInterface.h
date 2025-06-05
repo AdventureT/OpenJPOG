@@ -14,6 +14,10 @@
 #include "TModel.h"
 #include "TMaterialLibrary.h"
 
+#ifdef FindResource
+#undef FindResource
+#endif
+
 TOSHI_NAMESPACE_BEGIN
 
 class TRENDERINTERFACE_EXPORTS TRenderInterface
@@ -107,6 +111,7 @@ public:
 
 public:
 	TResource *CreateResource(const TClass *a_pClass, TPCCHAR a_szResName, TResource *a_pResource);
+	TResource *FindResource(TPCCHAR a_szResName, TResource *a_pResource);
 
 	const TRenderAdapter::Mode::Device *FindDevice(const DisplayParams *a_pDisplayParams);
 
@@ -133,7 +138,7 @@ public:
 	// $TRenderInterface: FUNCTION 1000f210
 	TBOOL IsDisplayCreated() { return m_bIsDiplayCreated; }
 	// $TRenderInterface: FUNCTION 1000f230
-	TBOOL                      IsInScene() { return m_bInScene; }
+	TBOOL IsInScene() { return m_bInScene; }
 	// $TRenderInterface: FUNCTION 1000f280
 	TNodeList<TRenderAdapter> *GetAdapterList() { return &m_pAdapterList; };
 

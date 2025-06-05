@@ -167,6 +167,18 @@ TResource *TRenderInterface::CreateResource(const TClass *a_pClass, TPCCHAR a_sz
 	return pResource;
 }
 
+// $TRenderInterface: FUNCTION 1000e3d0
+TResource *TRenderInterface::FindResource(TPCCHAR a_szResName, TResource *a_pResource)
+{
+	// MakeIterator?
+	for (TResource *it = a_pResource ? a_pResource->Child() : m_Resources.GetRoot(); it != TNULL; it = it->Next()) {
+		if (Toshi::TSystem::StringCompareNoCase(it->GetName(), a_szResName, -1) == 0) {
+			return it;
+		}
+	}
+	return TNULL;
+}
+
 // $TRenderInterface: FUNCTION 1000da40
 const TRenderAdapter::Mode::Device *TRenderInterface::FindDevice(const DisplayParams *a_pDisplayParams)
 {
