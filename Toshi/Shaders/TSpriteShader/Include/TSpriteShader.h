@@ -1,10 +1,16 @@
 #pragma once
 #include "Toshi/Toshi.h"
 #include "TRender/TShader.h"
+#include "TGUI/TGUIColour.h"
 
 TOSHI_NAMESPACE_BEGIN
 
 class TTextureResourceHAL;
+
+class TSpriteMesh
+{
+
+};
 
 class TSpriteMaterial : public TMaterial
 {
@@ -25,7 +31,9 @@ protected:
 
 class TSpriteShader : public TShader
 {
-
+public:
+	virtual void SetMaterial(TSpriteMaterial *a_pMaterial);
+	virtual void SetColour(const TGUIColour &a_rColour);
 };
 
 TOSHI_NAMESPACE_END

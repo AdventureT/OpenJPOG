@@ -10,6 +10,7 @@ project ("OpenJPOG")
 		"TRenderInterface",
 		"TRenderD3DInterface",
 		"TGuiInterface",
+		"TSpriteShaderD3D",
 		"PGUIRenderer",
 		"PPropertyParser",
 		"d3d8.lib",

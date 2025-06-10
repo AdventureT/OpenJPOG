@@ -79,6 +79,15 @@ TBOOL AOptionsLogic::GetOption(OPTION a_eOption, AScreenRes &a_rScreenRes)
 	return setting.m_bFetched;
 }
 
+TBOOL AOptionsLogic::GetOption(OPTION a_eOption, LMH &a_rLMH)
+{
+	AOptionSetting setting;
+	setting.m_eOption = a_eOption;
+	OptionGet(setting);
+	a_rLMH = *(LMH *)(&setting + 1);
+	return setting.m_bFetched;
+}
+
 TBOOL AOptionsLogic::SetOption(OPTION a_eOption, AScreenRes &a_rScreenRes)
 {
 	return TBOOL();

@@ -25,6 +25,7 @@ public:
 
 	virtual TBOOL RenderToTexture(TTextureResource *a_pTexture);
 
+	virtual TBOOL Render();
 	virtual TBOOL RenderToFrameBuffer();
 	virtual TBOOL RenderToFrameBuffer(TPBYTE a_pDest, TINT a_iSourceHeigth, TINT a_iDestHeigth, TINT a_iDestPitch, TINT a_iDestX, INT a_iDestY, INT a_iSrcX, INT a_iSrcY);
 

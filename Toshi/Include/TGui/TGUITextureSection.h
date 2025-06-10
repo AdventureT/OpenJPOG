@@ -20,7 +20,6 @@ public:
 	TGUITextureSection();
 
 public:
-	// ll = lower left | ur = upper right
 	virtual void GetBBox(TUSHORT &a_usX, TUSHORT &a_usY, TUSHORT &a_usWidth, TUSHORT &a_usHeight, TINT) const;
 	virtual void GetBBox(TUSHORT &a_usX, TUSHORT &a_usY, TUSHORT &a_usWidth, TUSHORT &a_usHeight, TFLOAT) const;
 

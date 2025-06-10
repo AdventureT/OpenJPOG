@@ -55,5 +55,6 @@ public:
 private:
 	Toshi::TLString m_LSHintMessage;  // 0x4
 	HUDComponents   m_eHUDComponents; // 0x8
+public:
 	Toshi::TCString m_szBKGMatLib;    // 0x2C
 };

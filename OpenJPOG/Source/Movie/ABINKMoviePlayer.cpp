@@ -109,7 +109,7 @@ TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a
 		TTextureFactory *pTextureFactory = (TTextureFactory *)renderer->GetSystemResource(TRenderInterface::SYSRESOURCE_TEXTUREFACTORY);
 		TPCHAR           pData           = new char[0x200000];
 		TSystem::MemSet(pData, 0xFF, sizeof(pData));
-		pTexture = pTextureFactory->CreateEx(pData, 0x200000, 1024, 512, 1, TTEXTURERESOURCEFORMAT::R8G8B8A8, 32);
+		pTexture = pTextureFactory->CreateEx(pData, 0x200000, 1024, 512, 1, TTEXTURERESOURCEFORMAT_R8G8B8A8, 32);
 		if (pTexture) {
 			pTexture->Validate();
 			m_iFrameBufferWidth  = 1024;
@@ -139,6 +139,17 @@ TBOOL ABINKMoviePlayer::Update(TFLOAT a_fDeltaTime)
 		RenderToFrameBuffer();
 	}
 	return TFALSE;
+}
+
+// $JPOG: FUNCTION 006d6190
+TBOOL ABINKMoviePlayer::Render()
+{
+	if (!m_bRenderMovie) {
+		return TFALSE;
+	}
+	if (!FrameReady()) {
+		return TFALSE;
+	}
 }
 
 // $JPOG: FUNCTION 006d5dc0
@@ -211,12 +222,12 @@ TBOOL ABINKMoviePlayer::InitializeVideoResource()
 	TINT                   textureFormatSize;
 	if (renderer->Supports32BitTextures()) {
 		size              = 4;
-		textureFormat     = TTEXTURERESOURCEFORMAT::R8G8B8A8;
+		textureFormat     = TTEXTURERESOURCEFORMAT_R8G8B8A8;
 		textureFormatSize = 32;
 	}
 	else {
 		size              = 2;
-		textureFormat     = TTEXTURERESOURCEFORMAT::R5G5B5A1;
+		textureFormat     = TTEXTURERESOURCEFORMAT_R5G5B5A1;
 		textureFormatSize = 8;
 	}
 	size *= 256 * 256;

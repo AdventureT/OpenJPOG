@@ -146,7 +146,7 @@ TBOOL TTextureResourceHAL::Create(TPVOID a_pData, TUINT a_uiDataSize, TUINT a_eT
 	m_uiWidth         = a_uiWidth;
 	m_uiHeight        = a_uiHeight;
 	m_uiMipLevels     = 0;
-	m_eResourceFormat = UNKNOWN;
+	m_eResourceFormat = TTEXTURERESOURCEFORMAT_INVALID;
 	m_uiMipmapFlags   = MIPMAPFLAGS_DISABLED;
 	m_iLoadFromMemory = 1;
 	m_pData           = a_pData;
@@ -196,15 +196,15 @@ TBOOL TTextureResourceHAL::CreateFromFormat()
 
 	switch (m_eResourceFormat)
 	{
-		case TTEXTURERESOURCEFORMAT::R8G8B8A8:
+		case TTEXTURERESOURCEFORMAT_R8G8B8A8:
 			return CreateFromMemory8888(m_uiWidth, m_uiHeight, uiMipLevels, m_pData);
-		case TTEXTURERESOURCEFORMAT::R8G8B8:
+		case TTEXTURERESOURCEFORMAT_R8G8B8:
 			return CreateFromMemory888(m_uiWidth, m_uiHeight, uiMipLevels, m_pData);
-		case TTEXTURERESOURCEFORMAT::R5G5B5A1:
+		case TTEXTURERESOURCEFORMAT_R5G5B5A1:
 			return CreateFromMemory5551(m_uiWidth, m_uiHeight, uiMipLevels, m_pData);
-		case TTEXTURERESOURCEFORMAT::DDS:
+		case TTEXTURERESOURCEFORMAT_DDS:
 			return CreateFromMemoryDDS(m_uiWidth, m_uiHeight, uiMipLevels, m_pData);
-		case TTEXTURERESOURCEFORMAT::R4G4B4A4:
+		case TTEXTURERESOURCEFORMAT_R4G4B4A4:
 			return CreateFromMemory4444(m_uiWidth, m_uiHeight, uiMipLevels, m_pData);
 		default:
 			TASSERT(!"Unknown format!\n");

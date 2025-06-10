@@ -384,13 +384,13 @@ void TRenderD3DInterface::EnableColourCorrection(TBOOL a_bEnable)
 TBOOL TRenderD3DInterface::IsTextureFormatSupported(TTEXTURERESOURCEFORMAT a_eTextureFormat)
 {
 	switch (a_eTextureFormat) {
-		case R8G8B8A8:
+		case TTEXTURERESOURCEFORMAT_R8G8B8A8:
 			return IsTextureFormatSupported(D3DFMT_A8R8G8B8);
-		case R8G8B8:
+		case TTEXTURERESOURCEFORMAT_R8G8B8:
 			return IsTextureFormatSupported(D3DFMT_X8R8G8B8);
-		case R5G5B5A1:
+		case TTEXTURERESOURCEFORMAT_R5G5B5A1:
 			return IsTextureFormatSupported(D3DFMT_A1R5G5B5);
-		case DDS:
+		case TTEXTURERESOURCEFORMAT_DDS:
 			return TTRUE;
 		default:
 			return TFALSE;
@@ -438,7 +438,7 @@ void TRenderD3DInterface::SetTextureAddressMode(DWORD a_dwStage, TTextureResourc
 // $TRenderD3DInterface: FUNCTION 100069d0
 TBOOL TRenderD3DInterface::Supports32BitTextures()
 {
-	return IsTextureFormatSupported(R8G8B8A8) && IsTextureFormatSupported(R8G8B8);
+	return IsTextureFormatSupported(TTEXTURERESOURCEFORMAT_R8G8B8A8) && IsTextureFormatSupported(TTEXTURERESOURCEFORMAT_R8G8B8);
 }
 
 // $TRenderD3DInterface: FUNCTION 10007d20

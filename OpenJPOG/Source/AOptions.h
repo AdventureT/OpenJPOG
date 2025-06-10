@@ -7,7 +7,15 @@ class AOptionsLogic
 public:
 	enum OPTION
 	{
-		OPTION_SCREENRES
+		OPTION_SCREENRES,
+		OPTION_SCREENDEPTH
+	};
+
+	enum LMH
+	{
+		LMH_UNK,
+		LMH_UNK2,
+		LMH_UNK3
 	};
 
 	struct AOptionSetting
@@ -28,6 +36,7 @@ public:
 	AOptionsLogic();
 
 	TBOOL GetOption(OPTION a_eOption, AScreenRes &a_rScreenRes);
+	TBOOL GetOption(OPTION a_eOption, LMH &a_rLMH);
 	TBOOL SetOption(OPTION a_eOption, AScreenRes &a_rScreenRes);
 	void  OptionGet(AOptionSetting &a_rSetting);
 

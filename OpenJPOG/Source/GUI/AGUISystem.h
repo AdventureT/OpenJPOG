@@ -2,10 +2,13 @@
 #include "TKernel/TCString.h"
 #include "TKernel/TTask.h"
 #include "TKernel/TManagedPointer.h"
+#include "TKernel/TEvent.h"
 #include "TRender/TNullResource.h"
 #include "TGui/TGUIInterface.h"
 #include "TGUI/TGUIScreen.h"
 #include "PGuiRenderer/PGUITRDisplayContext.h"
+#include "TSpriteShader/Include/TSpriteShader.h"
+#include "AGUIMatLibPicture.h"
 
 class AGUISystem : public Toshi::TTask
 {
@@ -16,20 +19,34 @@ public:
 	virtual TBOOL OnCreate() override;
 	virtual TBOOL OnUpdate(TFLOAT a_fDeltaTime) override;
 
+public:
+
+
 	void                                     UpdateHUDComponets();
 	// $JPOG: FUNCTION 0067e5e0
 	Toshi::TManagedPtr<Toshi::TGUIInterface> GetGUIInterface() const
 	{
 		return m_pGUIInterface;
 	}
+	// $JPOG: FUNCTION 0046e340
+	Toshi::TGUIScreen *GetScreen() const
+	{
+		return m_pScreen;
+	}
 
 	static AGUISystem *TOSHI_API GetGUISystem();
 
+protected:
+	static TBOOL OnScreenPaint(AGUISystem *a_pGUISystem, Toshi::TGUIScreen *a_pScreen, Toshi::TGUIScreenPaintEvent *a_pEvent);
+
 private:
-	Toshi::TGUIInterface *m_pGUIInterface;   // 0x24
-	Toshi::TGUIScreen    *m_pScreen;         // 0x28
-	PGUITRDisplayContext *m_pDisplayContext; // 0xA4
-	PGUITRTextureFactory *m_pTextureFactory; // 0xA8
-	PGUITRFontFactory    *m_pFontFactory;    // 0xAC
-	Toshi::TNullResource *m_pNullResource;   // 0x140
+	Toshi::TGUIInterface                                                        *m_pGUIInterface;   // 0x24
+	Toshi::TGUIScreen                                                           *m_pScreen;         // 0x28
+	PGUITRDisplayContext                                                        *m_pDisplayContext; // 0xA4
+	PGUITRTextureFactory                                                        *m_pTextureFactory; // 0xA8
+	PGUITRFontFactory                                                           *m_pFontFactory;    // 0xAC
+	Toshi::TListener<Toshi::TGUIScreen, Toshi::TGUIScreenPaintEvent, AGUISystem> m_oPaintListener;  // 0x118
+	Toshi::TNullResource                                                        *m_pNullResource;   // 0x140
+	Toshi::TSpriteShader                                                        *m_pSpriteShader;   // 0x144
+	AGUIMatLibPicture                                                           *m_pMatLibPic;      // 0x19C
 };

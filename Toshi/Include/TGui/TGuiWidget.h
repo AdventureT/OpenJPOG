@@ -18,6 +18,22 @@ class TGUIINTERFACE_EXPORTS TGUIWidget : public TGUIDeserialisable
 		STATE_ROLLOVER = BITFIELD(3),
 		STATE_SELECTED = BITFIELD(4),
 	};
+
+public:
+	// $TGUIInterface: FUNCTION 100076c0
+	TINT GetWidth() const
+	{
+		return m_iWidth;
+	}
+	// $TGUIInterface: FUNCTION 100076b0
+	TINT GetHeight() const
+	{
+		return m_iHeight;
+	}
+
+private:
+	TSHORT m_iWidth;  // 0x70
+	TSHORT m_iHeight; // 0x72
 };
 
 TOSHI_NAMESPACE_END

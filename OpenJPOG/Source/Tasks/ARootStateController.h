@@ -26,6 +26,11 @@ public:
 	ARootState                            *GetBaseAppState() { return m_pBaseAppState; }
 	// $JPOG: FUNCTION 0046dfc0
 	static ARootStateController *TOSHI_API GetRootStateController() { return s_pCurrentStateController; }
+	// $JPOG: FUNCTION 0058ec80
+	ARootState &GetCurrentGameState()
+	{
+		return m_pBaseAppState->GetCurrent();
+	}
 
 private:
 	ARootState *m_pBaseAppState; // 0x24
