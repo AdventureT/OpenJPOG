@@ -127,6 +127,8 @@ TBOOL TRenderInterface::CreateSystemResources()
 	bRes                                            = static_cast<TVertexFactoryResourceInterface *>(GetSystemResource(SYSRESOURCE_VFSKIN))->Create(&vertexFormat, 11000, 0);
 	TASSERT(TTRUE == bRes);
 
+	m_aSysResources[SYSRESOURCE_SHADERS] = CreateResource(TFindClass(TNullResource, TNULL), "Shaders", TNULL);
+
 	m_aSysResources[SYSRESOURCE_TEXTUREFACTORY] = CreateResource(TFindClass(TTextureFactoryHAL, TNULL), "TextureFactory", TNULL);
 	bRes                                        = m_aSysResources[SYSRESOURCE_TEXTUREFACTORY]->Create();
 	TASSERT(TTRUE == bRes);

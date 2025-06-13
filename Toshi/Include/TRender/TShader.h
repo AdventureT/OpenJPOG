@@ -8,8 +8,16 @@ TOSHI_NAMESPACE_BEGIN
 
 class TRegMaterial;
 
-class TRENDERINTERFACE_EXPORTS TShader
+class TRENDERINTERFACE_EXPORTS TShader : public TResource
 {
+	DECLARE_DYNAMIC(TShader)
+
+public:
+	
+	TShader()
+	{
+
+	}
 };
 
 class TRENDERINTERFACE_EXPORTS TMaterial : public TResource

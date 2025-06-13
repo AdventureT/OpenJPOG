@@ -80,6 +80,7 @@ private:
 	void  CreateARenderer();
 	TBOOL CreateRenderInterface();
 	void  CreateGameStateController();
+	void  CreateGUISystem();
 
 	const Toshi::TRenderAdapter::Mode::Device *CreateDisplayDevice(Toshi::TRenderInterface::DisplayParams &a_rDisplayParams, bool a_bReverseOrder);
 

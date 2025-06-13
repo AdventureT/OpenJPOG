@@ -43,6 +43,7 @@ TBOOL ARootTask::OnCreate()
 	DeserialiseOptions();
 	CreateARenderer();
 	CreateGameStateController();
+	CreateGUISystem();
 	GetRootStateController()->TransferControl(new AFrontEndSplashState());
 	return TTask::OnCreate();
 }
@@ -159,6 +160,15 @@ TBOOL ARootTask::CreateRenderInterface()
 void ARootTask::CreateGameStateController()
 {
 	GetRootStateController()->Create();
+}
+
+// $JPOG: FUNCTION 0047cbe0
+void ARootTask::CreateGUISystem()
+{
+	if (m_pGUISystem && m_pGUISystem->Create()) {
+		return;
+	}
+	m_pGUISystem = TNULL;;
 }
 
 // $JPOG: FUNCTION 0047c070

@@ -10,6 +10,8 @@ TOSHI_NAMESPACE_BEGIN
 
 IMPLEMENT_DYNAMIC(TSpriteMaterial, TMaterial)
 
+IMPLEMENT_DYNAMIC(TSpriteShader, TShader)
+
 void TSpriteShader::SetMaterial(TSpriteMaterial *a_pMaterial)
 {
 

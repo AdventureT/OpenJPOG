@@ -1,4 +1,5 @@
 #pragma once
+#include "D3D/Defines.h"
 #include "Toshi/Toshi.h"
 #include "TRender/TShader.h"
 #include "TGUI/TGUIColour.h"
@@ -29,9 +30,16 @@ protected:
 	TINT                 m_eBlendMode;  // 0x48
 };
 
-class TSpriteShader : public TShader
+class TSPRITESHADERD3D_EXPORTS TSpriteShader : public TShader
 {
+	DECLARE_DYNAMIC(TSpriteShader)
 public:
+
+	TSpriteShader()
+	{
+
+	}
+
 	virtual void SetMaterial(TSpriteMaterial *a_pMaterial);
 	virtual void SetColour(const TGUIColour &a_rColour);
 };

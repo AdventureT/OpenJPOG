@@ -70,4 +70,6 @@ void TSpriteMaterialHAL::PostRender()
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 }
 
+IMPLEMENT_DYNCREATE(TSpriteShaderHAL, TSpriteShader)
+
 TOSHI_NAMESPACE_END

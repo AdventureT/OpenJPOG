@@ -1,6 +1,6 @@
 #pragma once
 #include "Defines.h"
-#include "TSpriteShader.h"
+#include "../TSpriteShader.h"
 #include "TRenderD3D/TRenderD3DInterface.h"
 #include "TRenderD3D/TTextureResourceD3D.h"
 
@@ -31,6 +31,14 @@ class TSPRITESHADERD3D_EXPORTS TSpriteMeshHAL
 
 class TSPRITESHADERD3D_EXPORTS TSpriteShaderHAL : public TSpriteShader
 {
+	DECLARE_DYNAMIC(TSpriteShaderHAL)
+
+public:
+
+	TSpriteShaderHAL()
+	{
+
+	}
 };
 
 class TSPRITESHADERD3D_EXPORTS TSpriteShaderOrderTableHAL

@@ -1,5 +1,6 @@
 #include "AGUISystem.h"
 #include "main.h"
+#include "TSpriteShader/Include/D3D/TSpriteShaderD3D.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -22,7 +23,8 @@ TBOOL AGUISystem::OnCreate()
 {
 	auto pRenderer  = g_oTheApp.GetRootTask()->GetRenderInterface();
 	m_pNullResource = (TNullResource *)pRenderer->CreateResource(&TGetClass(TNullResource), TNULL, TNULL);
-	m_pSpriteShader = (TSpriteShader *)pRenderer->CreateResource(TFindClass(TSpriteShaderHAL, TNULL), "SHSPRITE", pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SHADERS));
+	// Why does it not find TSpriteShaderHAL?
+	//m_pSpriteShader = (TSpriteShader *)pRenderer->CreateResource(TFindClass(TSpriteShaderHAL, TNULL), "SHSPRITE", pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SHADERS));
 	m_pGUIInterface->Create();
 	m_pDisplayContext = new PGUITRDisplayContext();
 	m_pDisplayContext->Create(g_oTheApp.GetRootTask()->GetRenderInterface(), m_pTextureFactory, m_pFontFactory);
