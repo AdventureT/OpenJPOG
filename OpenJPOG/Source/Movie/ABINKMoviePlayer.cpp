@@ -2,6 +2,7 @@
 #include "main.h"
 #include "TKernel/TManagedPointer.h"
 #include "TRenderD3D/TRenderD3DInterface.h"
+#include "TRenderD3D/TTextureResourceD3D.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -131,11 +132,14 @@ TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a
 TBOOL ABINKMoviePlayer::Update(TFLOAT a_fDeltaTime)
 {
 	if (!m_bHasMovieStopped && m_hBink) {
+		m_bRenderingTiles = TFALSE;
 		BinkService(m_hBink);
 		if (BinkWait(m_hBink)) {
+			m_bDrawingFrame = TFALSE;
 			BinkSleep(500);
 			return TFALSE;
 		}
+		m_bDrawingFrame = TTRUE;
 		RenderToFrameBuffer();
 	}
 	return TFALSE;
@@ -233,8 +237,62 @@ TBOOL ABINKMoviePlayer::InitializeVideoResource()
 	size *= 256 * 256;
 	TPVOID buffer = tmalloc(size);
 	TSystem::MemSet(buffer, 0xFF, size);
-	m_pTextures[2] = factory->CreateEx(buffer, size, 256, 256, 1, textureFormat, textureFormatSize);
-	m_pTextures[2]->SetAddressModeMode(TTextureResource::ADDRESSMODE_CLAMP);
+	TSpriteShader *pShader = AGUISystem::GetGUISystem()->GetShader();
+	for (int i = 0; i < MAX_TILES; i++)
+	{
+		m_pTextures[i] = factory->CreateEx(buffer, size, 256, 256, 1, textureFormat, textureFormatSize);
+		m_pTextures[i]->SetAddressModeMode(TTextureResource::ADDRESSMODE_CLAMP);
+		m_pTextures[i]->Validate();
+		
+		m_pMaterial = pShader->CreateMaterial(TNULL);
+		m_pMaterial->Create();
+		m_pMaterial->SetBlendMode(6);
+		m_pMaterial->Validate();
+
+		m_aRects[i].pTexture = m_pTextures[i];
+		m_aRects[i].pMaterial = m_pMaterial;
+	}
+	m_aRects[0].m_iPosX   = 0.0f;
+	m_aRects[0].m_iPosY   = 0.0f;
+	m_aRects[0].m_iWidth  = 256.0f;
+	m_aRects[0].m_iHeight = 256.0f;
+	m_aRects[0].m_vPos.Set(0.0f, 0.0f);
+	m_aRects[0].m_vUV.Set(1.0f, 1.0f);
+
+	m_aRects[1].m_iPosX   = 256.0f;
+	m_aRects[1].m_iPosY   = 0.0f;
+	m_aRects[1].m_iWidth  = 512.0f;
+	m_aRects[1].m_iHeight = 256.0f;
+	m_aRects[1].m_vPos.Set(0.0f, 0.0f);
+	m_aRects[1].m_vUV.Set(1.0f, 1.0f);
+
+	m_aRects[2].m_iPosX   = 512.0f;
+	m_aRects[2].m_iPosY   = 0.0f;
+	m_aRects[2].m_iWidth  = 640.0f;
+	m_aRects[2].m_iHeight = 256.0f;
+	m_aRects[2].m_vPos.Set(0.0f, 0.0f);
+	m_aRects[2].m_vUV.Set(0.5f, 1.0f);
+
+	m_aRects[3].m_iPosX   = 0.0f;
+	m_aRects[3].m_iPosY   = 256.0f;
+	m_aRects[3].m_iWidth  = 256.0f;
+	m_aRects[3].m_iHeight = 448.0f;
+	m_aRects[3].m_vPos.Set(0.0f, 0.0f);
+	m_aRects[3].m_vUV.Set(1.0f, 0.75f);
+
+	m_aRects[4].m_iPosX   = 256.0f;
+	m_aRects[4].m_iPosY   = 256.0f;
+	m_aRects[4].m_iWidth  = 512.0f;
+	m_aRects[4].m_iHeight = 448.0f;
+	m_aRects[4].m_vPos.Set(0.0f, 0.0f);
+	m_aRects[4].m_vUV.Set(1.0f, 0.75f);
+
+	m_aRects[5].m_iPosX   = 512.0f;
+	m_aRects[5].m_iPosY   = 256.0f;
+	m_aRects[5].m_iWidth  = 640.0f;
+	m_aRects[5].m_iHeight = 448.0f;
+	m_aRects[5].m_vPos.Set(0.0f, 0.0f);
+	m_aRects[5].m_vUV.Set(0.5f, 0.75f);
 
 	return TTRUE;
 }
@@ -302,5 +360,51 @@ void ABINKMoviePlayer::BinkSleep(TINT a_iMicroseconds)
 // $JPOG: FUNCTION 006d5f20
 TBOOL ABINKMoviePlayer::RenderToTiles()
 {
-	return TBOOL();
+	if (m_hBink == TNULL || m_bHasMovieStopped || !m_bDrawingFrame) {
+		return TFALSE;
+	}
+
+	auto pRootTask        = g_oTheApp.GetRootTask();
+	auto pRenderInterface = pRootTask->GetRenderInterface();
+
+	m_iFrameCount++;
+
+	pRenderInterface->Supports32BitTextures();
+
+	BinkDoFrame(m_hBink);
+
+	if (!m_bUnk && m_iFrameCount == m_hBink->Frames) {
+		StopMovie();
+		m_bHasMovieStopped = TTRUE;
+		return TFALSE;
+	}
+
+	SetFrameReady(TTRUE);
+	m_bFrameReady = TTRUE;
+
+	// Render to each tile
+	for (int i = 0; i < MAX_TILES; i++)
+	{
+		TTextureResourceHAL *pTexture = static_cast<TTextureResourceHAL *>(m_aRects[i].pTexture);
+		IDirect3DTexture8 *d3dtexture = pTexture->GetD3DTexture();
+
+		D3DLOCKED_RECT lockedRect;
+		d3dtexture->LockRect(0, &lockedRect, NULL, 0);
+
+		BinkCopyToBuffer(
+			m_hBink,
+			lockedRect.pBits,
+			lockedRect.Pitch,
+			0x100,
+			static_cast<int>(m_aRects[i].m_iWidth - m_aRects[i].m_iPosX),
+			static_cast<int>(m_aRects[i].m_iHeight - m_aRects[i].m_iPosY),
+			BINKSURFACE8P);
+
+		d3dtexture->UnlockRect(0);
+	}
+
+	m_bFrameReady = TTRUE;
+	BinkNextFrame(m_hBink);
+
+	return TTRUE;
 }

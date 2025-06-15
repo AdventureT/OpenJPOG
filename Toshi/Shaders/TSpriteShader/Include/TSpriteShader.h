@@ -25,12 +25,17 @@ public:
 		m_eBlendMode  = 0;
 	}
 
+	virtual void SetBlendMode(TINT a_eBlendMode)
+	{
+		m_eBlendMode = a_eBlendMode;
+	}
+
 protected:
 	TTextureResourceHAL *m_pTexture[2]; // 0x40
 	TINT                 m_eBlendMode;  // 0x48
 };
 
-class TSPRITESHADERD3D_EXPORTS TSpriteShader : public TShader
+class TSpriteShader : public TShader
 {
 	DECLARE_DYNAMIC(TSpriteShader)
 public:
@@ -40,6 +45,7 @@ public:
 
 	}
 
+	virtual TSpriteMaterial *CreateMaterial(TPCCHAR a_szName) = 0;
 	virtual void SetMaterial(TSpriteMaterial *a_pMaterial);
 	virtual void SetColour(const TGUIColour &a_rColour);
 };

@@ -68,6 +68,7 @@ public:
 	virtual PGUITextureID GetTextureID(const Toshi::TPCString &a_rTextureName);
 	virtual PGUITextureID FindTextureID(const Toshi::TPCString &a_rTextureName);
 	virtual PGUITextureID ReserveTextureID(const Toshi::TPCString &a_rTextureName);
+	virtual Toshi::TTextureResource *LoadTTexture(const Toshi::TPCString &a_sFileName, int &a_iWidth, int &a_iHeight);
 
 	void Create(PGUITRDisplayContext *a_pDisplayContext);
 

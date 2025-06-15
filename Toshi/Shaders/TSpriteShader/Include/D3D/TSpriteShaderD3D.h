@@ -39,6 +39,8 @@ public:
 	{
 
 	}
+
+	virtual TSpriteMaterial *CreateMaterial(TPCCHAR a_szName);
 };
 
 class TSPRITESHADERD3D_EXPORTS TSpriteShaderOrderTableHAL

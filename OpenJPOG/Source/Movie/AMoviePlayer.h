@@ -176,6 +176,7 @@ protected:
 	// 0x0 vftable
 	TBOOL m_bIsStopped;     // 0x4
 	TBOOL m_bIsInitialized; // 0x5
+	TBOOL m_bUnk;           // 0x6
 	TBOOL m_bIsFrameReady;  // 0x7
 	TBOOL m_bIsFullscreen;  // 0x8
 	TBOOL m_bDoAudio;       // 0x9

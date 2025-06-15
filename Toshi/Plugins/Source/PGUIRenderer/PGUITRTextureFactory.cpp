@@ -1,4 +1,5 @@
 #include "PGuiRenderer/PGUITRTextureFactory.h"
+#include "TRender/TTextureResource.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -126,6 +127,11 @@ PGUITextureID PGUITRTextureFactory::FindTextureID(const Toshi::TPCString &a_rTex
 PGUITextureID PGUITRTextureFactory::ReserveTextureID(const Toshi::TPCString &a_rTextureName)
 {
 	return 0;
+}
+
+Toshi::TTextureResource *PGUITRTextureFactory::LoadTTexture(const Toshi::TPCString &a_sFileName, int &a_iWidth, int &a_iHeight)
+{
+	return TNULL;
 }
 
 // $PGUIRenderer: FUNCTION 10007770

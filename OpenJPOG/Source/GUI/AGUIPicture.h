@@ -5,7 +5,7 @@
 
 class AGUIPicture : public Toshi::TObject
 {
-	DECLARE_DYNAMIC(AGUIPicture, Toshi::TObject);
+	DECLARE_DYNAMIC(AGUIPicture);
 
 public:
 

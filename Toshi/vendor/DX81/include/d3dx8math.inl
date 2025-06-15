@@ -9,8 +9,7 @@
 
 #ifndef __D3DX8MATH_INL__
 #define __D3DX8MATH_INL__
-
-
+#undef f32
 //===========================================================================
 //
 // Inline Class Methods

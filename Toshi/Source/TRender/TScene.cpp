@@ -1,5 +1,4 @@
-#include "TGUITextureFactory.h"
-#include "TRender/TTextureResource.h"
+#include "TScene.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -7,8 +6,6 @@
 //-----------------------------------------------------------------------------
 #include <TKernel/TMemoryDebugOn.h>
 
-TOSHI_NAMESPACE_BEGIN
+TOSHI_NAMESPACE_USING
 
-IMPLEMENT_DYNAMIC(TGUITextureFactory, TObject);
-
-TOSHI_NAMESPACE_END
+IMPLEMENT_DYNCREATE(TScene, TResource)

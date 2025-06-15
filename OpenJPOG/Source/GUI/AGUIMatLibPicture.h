@@ -4,7 +4,7 @@
 
 class AGUIMatLibPicture : public AGUIPicture
 {
-	DECLARE_DYNAMIC(AGUIMatLibPicture, AGUIPicture);
+	DECLARE_DYNAMIC(AGUIMatLibPicture);
 
 public:
 

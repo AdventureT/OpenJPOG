@@ -70,6 +70,15 @@ void TSpriteMaterialHAL::PostRender()
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 }
 
+TSpriteMaterial *TSpriteShaderHAL::CreateMaterial(TPCCHAR a_szName)
+{
+	//Validate()
+	TSpriteMaterial *pMaterial = static_cast<TSpriteMaterial *>(GetRenderer()->CreateResource(&TGetClass(TSpriteShaderHAL), a_szName, this));
+	pMaterial->SetShader(this);
+	pMaterial->SetFlag(1, TTRUE);
+	return pMaterial;
+}
+
 IMPLEMENT_DYNCREATE(TSpriteShaderHAL, TSpriteShader)
 
 TOSHI_NAMESPACE_END

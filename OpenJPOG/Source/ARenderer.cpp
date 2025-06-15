@@ -24,6 +24,7 @@ ARenderer::ARenderer()
 	m_pViewport             = TNULL;
 	m_fFarClip              = 160.0f;
 	m_pcScreenCaptureBuffer = TNULL;
+	m_eCaptureState         = CAPTURESTATE_CREATE;
 }
 
 TBOOL ARenderer::OnCreate()
@@ -44,6 +45,9 @@ TBOOL ARenderer::OnUpdate(TFLOAT a_fDeltaTime)
 	MoviePlayerState state = RenderMovie(a_fDeltaTime);
 	if (state != MOVIEPLAYERSTATE_RUNNING) {
 		// Render things
+		if (m_eCaptureState != CAPTURESTATE_POLL) {
+
+		}
 	}
 	g_oTheApp.GetRootTask()->GetRenderInterface()->Update(a_fDeltaTime);
 	return TTask::OnUpdate(a_fDeltaTime);

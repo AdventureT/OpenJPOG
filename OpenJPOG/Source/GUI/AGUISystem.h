@@ -9,6 +9,7 @@
 #include "PGuiRenderer/PGUITRDisplayContext.h"
 #include "TSpriteShader/Include/TSpriteShader.h"
 #include "AGUIMatLibPicture.h"
+#include "AGUITextureFactory.h"
 
 class AGUISystem : public Toshi::TTask
 {
@@ -33,6 +34,11 @@ public:
 	{
 		return m_pScreen;
 	}
+	// $JPOG: FUNCTION 0046e3a0
+	Toshi::TSpriteShader *GetShader()
+	{
+		return m_pSpriteShader;
+	}
 
 	static AGUISystem *TOSHI_API GetGUISystem();
 
@@ -40,10 +46,10 @@ protected:
 	static TBOOL OnScreenPaint(AGUISystem *a_pGUISystem, Toshi::TGUIScreen *a_pScreen, Toshi::TGUIScreenPaintEvent *a_pEvent);
 
 private:
-	Toshi::TGUIInterface                                                        *m_pGUIInterface;   // 0x24
+	Toshi::TManagedPtr<Toshi::TGUIInterface>                                     m_pGUIInterface;   // 0x24
 	Toshi::TGUIScreen                                                           *m_pScreen;         // 0x28
 	PGUITRDisplayContext                                                        *m_pDisplayContext; // 0xA4
-	PGUITRTextureFactory                                                        *m_pTextureFactory; // 0xA8
+	AGUITextureFactory                                                          *m_pTextureFactory; // 0xA8
 	PGUITRFontFactory                                                           *m_pFontFactory;    // 0xAC
 	Toshi::TListener<Toshi::TGUIScreen, Toshi::TGUIScreenPaintEvent, AGUISystem> m_oPaintListener;  // 0x118
 	Toshi::TNullResource                                                        *m_pNullResource;   // 0x140

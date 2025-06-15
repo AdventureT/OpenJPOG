@@ -9,7 +9,7 @@
 
 TOSHI_NAMESPACE_BEGIN
 
-IMPLEMENT_DYNAMIC(TGUIInterface, TObject);
+IMPLEMENT_DYNCREATE(TGUIInterface, TObject);
 
 // $TGuiInterface: FUNCTION 10010620
 void TGUIInterface::Create()

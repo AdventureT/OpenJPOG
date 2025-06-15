@@ -7,11 +7,30 @@
 #include <windows.h>
 #include "TKernel/TMemory.h"
 #include "TRender/TTextureFactory.h"
+#include "TSpriteShader/Include/TSpriteShader.h"
+
+#define MAX_TILES 6
 
 TOSHI_NAMESPACE_BEGIN
 
 class ABINKMoviePlayer : public AMoviePlayer
 {
+	struct Rect
+	{
+		TTextureResource *pTexture  = TNULL; // 0x280
+		TSpriteMaterial  *pMaterial = TNULL; // 0x284
+		TFLOAT            m_iPosX;           // 0x288
+		TFLOAT            m_iPosY;           // 0x28C
+		TFLOAT            m_iWidth;          // 0x290
+		TFLOAT            m_iHeight;         // 0x294
+		Toshi::TVector2   m_vPos;
+		Toshi::TVector2   m_vUV;
+
+		//~Rect();
+
+		//TBOOL Create(int a_iPosX, int a_iPosY, int a_iWidth, int a_iHeight, TFLOAT a_iRenderPos1X, TFLOAT a_iRenderPos1Y, TFLOAT a_iRenderWidth, TFLOAT a_iRenderHeight, Toshi::TTEXTURERESOURCEFORMAT a_eFormat);
+	};
+
 public:
 	ABINKMoviePlayer();
 
@@ -33,6 +52,12 @@ public:
 	virtual TBOOL InitializeAudioResource();
 
 	virtual TBOOL FreeVideoResource();
+
+	// $JPOG: FUNCTION 006d6610
+	virtual TBOOL IsMoviePlaying()
+	{
+		return !m_bHasMovieStopped;
+	}
 
 	// $JPOG: FUNCTION 006d6640
 	virtual TBOOL FreeAudioResource()
@@ -76,6 +101,7 @@ private:
 	TBOOL                    m_bIsBINKInitialized;   // 0x211
 	TBOOL                    m_bDrawingFrame;        // 0x213
 	TBOOL                    m_bRenderingTiles;      // 0x214
+	TBOOL                    m_bFrameReady;          // 0x212
 	HBINK                    m_hBink;                // 0x218
 	TINT                     m_iFrameCount;          // 0x220
 	TINT                     m_iFrameBufferWidth;    // 0x224
@@ -84,8 +110,10 @@ private:
 	TINT                     m_iHeight;              // 0x230
 	Toshi::TTextureResource *m_pTextures[8];         // 0x240
 	TPBYTE                   m_pFrameBufferBits;     // 0x234
+	Toshi::TSpriteMaterial  *m_pMaterial;            // 0x260
 	LPDIRECTSOUND            m_pDirectSound;         // 0x278
 	TINT                     m_iCurrentTextureIndex; // 0x27C
+	Rect                     m_aRects[6];            // 0x280
 };
 
 TOSHI_NAMESPACE_END

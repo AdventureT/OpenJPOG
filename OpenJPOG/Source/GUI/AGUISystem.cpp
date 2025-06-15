@@ -16,6 +16,12 @@ IMPLEMENT_DYNCREATE(AGUISystem, TTask)
 AGUISystem::AGUISystem()
 {
 	m_pGUIInterface = TNULL;
+	m_pDisplayContext = TNULL;
+	m_pTextureFactory = TNULL;
+	m_pFontFactory    = TNULL;
+	m_pGUIInterface   = static_cast<TGUIInterface *>(TFindClass(TGUIInterface, TNULL)->CreateObject());
+	m_pGUIInterface->SetKernelInterface(g_oTheApp.GetKernel());
+	m_pTextureFactory = new AGUITextureFactory();
 }
 
 // $JPOG: FUNCTION 0067bc30
@@ -23,8 +29,9 @@ TBOOL AGUISystem::OnCreate()
 {
 	auto pRenderer  = g_oTheApp.GetRootTask()->GetRenderInterface();
 	m_pNullResource = (TNullResource *)pRenderer->CreateResource(&TGetClass(TNullResource), TNULL, TNULL);
-	// Why does it not find TSpriteShaderHAL?
-	//m_pSpriteShader = (TSpriteShader *)pRenderer->CreateResource(TFindClass(TSpriteShaderHAL, TNULL), "SHSPRITE", pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SHADERS));
+	TClass *pClass  = &TGetClass(TSpriteShaderHAL);
+	m_pSpriteShader = (TSpriteShader *)pRenderer->CreateResource(TFindClass(TSpriteShaderHAL, TNULL), "SHSPRITE", pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SHADERS));
+	m_pSpriteShader->Create();
 	m_pGUIInterface->Create();
 	m_pDisplayContext = new PGUITRDisplayContext();
 	m_pDisplayContext->Create(g_oTheApp.GetRootTask()->GetRenderInterface(), m_pTextureFactory, m_pFontFactory);
