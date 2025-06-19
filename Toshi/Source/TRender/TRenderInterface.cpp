@@ -428,7 +428,7 @@ void TRenderInterface::SetLightColourMatrix(const TMatrix44 &a_rMatrix)
 {
 }
 
-void TRenderInterface::ConnectDefaultViewportHandelrs(TViewport &a_pViewport)
+void TRenderInterface::ConnectDefaultViewportHandlers(TViewport &a_pViewport)
 {
 }
 

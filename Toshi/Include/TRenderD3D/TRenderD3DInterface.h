@@ -23,7 +23,6 @@ class TMSWindow;
 
 class TRENDERINTERFACED3D_EXPORTS TRenderD3DInterface : public TRenderInterface
 {
-
 	DECLARE_DYNAMIC(TRenderD3DInterface)
 
 public:
@@ -49,7 +48,7 @@ public:
 	virtual TRenderContext                  *CreateRenderContext() override;
 	virtual TRenderCapture                  *CreateCapture() override;
 	virtual void                             DestroyCapture(TRenderCapture *a_pRenderCapture) override;
-	virtual void                             ConnectDefaultViewportHandelrs(TViewport &a_pViewport) override;
+	virtual void                             ConnectDefaultViewportHandlers(TViewport &a_pViewport) override;
 	virtual TModel                          *CreateModel(TPCCHAR a_szName, TINT a_iUnk1) override;
 
 	virtual TBOOL IsCapableColourCorrection();

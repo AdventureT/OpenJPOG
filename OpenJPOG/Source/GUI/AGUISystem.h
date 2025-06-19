@@ -46,13 +46,14 @@ protected:
 	static TBOOL OnScreenPaint(AGUISystem *a_pGUISystem, Toshi::TGUIScreen *a_pScreen, Toshi::TGUIScreenPaintEvent *a_pEvent);
 
 private:
-	Toshi::TManagedPtr<Toshi::TGUIInterface>                                     m_pGUIInterface;   // 0x24
-	Toshi::TGUIScreen                                                           *m_pScreen;         // 0x28
-	PGUITRDisplayContext                                                        *m_pDisplayContext; // 0xA4
-	AGUITextureFactory                                                          *m_pTextureFactory; // 0xA8
-	PGUITRFontFactory                                                           *m_pFontFactory;    // 0xAC
-	Toshi::TListener<Toshi::TGUIScreen, Toshi::TGUIScreenPaintEvent, AGUISystem> m_oPaintListener;  // 0x118
-	Toshi::TNullResource                                                        *m_pNullResource;   // 0x140
-	Toshi::TSpriteShader                                                        *m_pSpriteShader;   // 0x144
-	AGUIMatLibPicture                                                           *m_pMatLibPic;      // 0x19C
+	Toshi::TManagedPtr<Toshi::TGUIInterface>                                     m_pGUIInterface;        // 0x24
+	Toshi::TGUIScreen                                                           *m_pScreen;              // 0x28
+	PGUITRDisplayContext                                                        *m_pDisplayContext;      // 0xA4
+	AGUITextureFactory                                                          *m_pTextureFactory;      // 0xA8
+	PGUITRFontFactory                                                           *m_pFontFactory;         // 0xAC
+	Toshi::TListener<Toshi::TGUIScreen, Toshi::TGUIScreenPaintEvent, AGUISystem> m_oScreenPaintListener; // 0x118
+	Toshi::TNullResource                                                        *m_pNullResource;        // 0x140
+	Toshi::TSpriteShader                                                        *m_pSpriteShader;        // 0x144
+	Toshi::TScene                                                               *m_pScenes[2];           // 0x190
+	AGUIMatLibPicture                                                           *m_pMatLibPic;           // 0x19C
 };

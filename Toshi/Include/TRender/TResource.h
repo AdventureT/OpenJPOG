@@ -49,6 +49,11 @@ public:
 	TBOOL IsDying() const { return m_Flags & FLAGS_DYING; }
 	// $TRenderInterface: FUNCTION 10009890
 	TBOOL IsSceneObject() const { return m_Flags & FLAGS_SCENEOBJECT; }
+	// $TRenderInterface: FUNCTION 10018440
+	void MarkAsSceneObject()
+	{
+		m_Flags |= FLAGS_SCENEOBJECT;
+	}
 	TBOOL IsDead() const { return m_Flags & FLAGS_DEAD; }
 	// $TRenderInterface: FUNCTION 10018470
 	TBOOL IsValid() const { return IsCreated() && m_Flags & FLAGS_VALID; }

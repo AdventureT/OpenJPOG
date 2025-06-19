@@ -1,5 +1,6 @@
 #include "ARenderer.h"
 #include "main.h"
+#include "TRender/TScene.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -22,6 +23,8 @@ const TMatrix44 ARenderer::ms_mLightDir = TMatrix44();
 ARenderer::ARenderer()
 {
 	m_pViewport             = TNULL;
+	m_pSkyScene             = TNULL;
+	m_pSkyViewport          = TNULL;
 	m_fFarClip              = 160.0f;
 	m_pcScreenCaptureBuffer = TNULL;
 	m_eCaptureState         = CAPTURESTATE_CREATE;
@@ -31,7 +34,12 @@ TBOOL ARenderer::OnCreate()
 {
 	TRenderInterface *pRenderer = TRenderInterface::GetRenderer();
 	//pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SHSYS);
-	//pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SCENE);
+	//TScene *pMainScene = static_cast<TScene *>(pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SCENE));
+	//pMainScene->SetName("MainScene");
+	//m_pViewport = pMainScene->CreateViewport("MainViewport", TNULL, TTRUE);
+	m_pSkyScene = static_cast<TScene *>(pRenderer->CreateResource(&TGetClass(TScene), "SkyScene", TNULL));
+	m_pSkyScene->Create();
+	m_pSkyViewport = m_pSkyScene->CreateViewport("SkyViewport", TNULL, TTRUE);
 	return TTask::OnCreate();
 }
 
@@ -45,8 +53,11 @@ TBOOL ARenderer::OnUpdate(TFLOAT a_fDeltaTime)
 	MoviePlayerState state = RenderMovie(a_fDeltaTime);
 	if (state != MOVIEPLAYERSTATE_RUNNING) {
 		// Render things
-		if (m_eCaptureState != CAPTURESTATE_POLL) {
-
+		if (m_pSkyScene) {
+			m_pSkyScene->Begin();
+			m_pSkyScene->Update(a_fDeltaTime);
+			m_pSkyScene->Render();
+			m_pSkyScene->End();
 		}
 	}
 	g_oTheApp.GetRootTask()->GetRenderInterface()->Update(a_fDeltaTime);

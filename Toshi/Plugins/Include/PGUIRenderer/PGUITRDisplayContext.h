@@ -9,7 +9,7 @@
 class PGUITRTextureFactory;
 class PGUITRFontFactory;
 
-class PGUIRENDERER_EXPORTS PGUITRDisplayContext : Toshi::TGUIDisplayContext
+class PGUIRENDERER_EXPORTS PGUITRDisplayContext : public Toshi::TGUIDisplayContext
 {
 public:
 

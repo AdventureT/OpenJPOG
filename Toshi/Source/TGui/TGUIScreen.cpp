@@ -15,4 +15,13 @@ TGUIScreen::TGUIScreen()
 
 }
 
+void TGUIScreen::NotifyDescendantCantFocus(TGUIWidget *a_pWidget)
+{
+
+}
+
+void TGUIScreen::NotifyDescendantCanFocus(TGUIWidget *a_pWidget)
+{
+}
+
 TOSHI_NAMESPACE_END

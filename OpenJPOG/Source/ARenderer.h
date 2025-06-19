@@ -60,6 +60,8 @@ private:
 	TFLOAT          m_fLastRenderTime;       // 0x24
 	TFLOAT          m_fCurRenderTime;        // 0x28
 	TViewport      *m_pViewport;             // 0x2C
+	TScene         *m_pSkyScene;             // 0x30
+	TViewport      *m_pSkyViewport;          // 0x34
 	TFLOAT          m_fFarClip;              // 0x38
 	CaptureState    m_eCaptureState;         // 0x3C
 	TRenderCapture *m_pCapture;              // 0x40

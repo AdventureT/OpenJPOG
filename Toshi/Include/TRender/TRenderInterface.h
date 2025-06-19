@@ -103,7 +103,7 @@ public:
 	virtual void                          DestroyCapture(TRenderCapture *a_pRenderCapture) = 0;
 	virtual void                          SetLightDirectionMatrix(const TMatrix44 &a_rMatrix);
 	virtual void                          SetLightColourMatrix(const TMatrix44 &a_rMatrix);
-	virtual void                          ConnectDefaultViewportHandelrs(TViewport &a_pViewport);
+	virtual void                          ConnectDefaultViewportHandlers(TViewport &a_pViewport);
 	virtual TModel                       *CreateModel(TPCCHAR a_szName, TINT a_iUnk1);
 	virtual TBOOL                         CreateSystemResources();
 	virtual void                          DestroySystemResources();

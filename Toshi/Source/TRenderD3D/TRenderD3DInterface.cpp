@@ -4,6 +4,7 @@
 #include "TRenderD3D/TTextureFactoryD3D.h"
 #include <dxerr8.h>
 #include <TRenderD3D/TRenderContextD3D.h>
+#include "TKernel/TEvent.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -353,8 +354,46 @@ void TRenderD3DInterface::DestroyCapture(TRenderCapture *a_pRenderCapture)
 {
 }
 
-void TRenderD3DInterface::ConnectDefaultViewportHandelrs(TViewport &a_pViewport)
+class THandler : public TViewport::THandler
 {
+public:
+	THandler(TViewport &a_rViewport)
+		: TViewport::THandler(a_rViewport)
+	{
+
+	}
+
+	TListener<TViewport, TViewport::BeginRenderEvent, THandler> m_oBeginRenderEmitter; // 0x14
+	TListener<TViewport, TViewport::EndRenderEvent, THandler>   m_oEndRenderEmitter;   // 0x28
+};
+
+TBOOL OnBeginRender(THandler *a_pHandler, TViewport *a_pViewport, TViewport::BeginRenderEvent *a_pEvent)
+{
+	TRenderD3DInterface *pRenderer = static_cast<TRenderD3DInterface *>(a_pHandler->GetViewport().GetRenderer());
+	_D3DVIEWPORT8        viewport;
+	viewport.X = a_pViewport->GetX();
+	viewport.Y = a_pViewport->GetY();
+	viewport.Width = a_pViewport->GetWidth();
+	viewport.Height = a_pViewport->GetHeight();
+	viewport.MinZ   = 0.0f;
+	viewport.MaxZ   = 1.0f;
+	pRenderer->GetD3DDevice()->SetViewport(&viewport);
+	return TTRUE;
+}
+
+TBOOL OnEndRender(THandler *a_pHandler, TViewport *a_pViewport, TViewport::EndRenderEvent *a_pEvent)
+{
+	return TTRUE;
+}
+
+void TRenderD3DInterface::ConnectDefaultViewportHandlers(TViewport &a_rViewport)
+{
+	TRenderInterface::ConnectDefaultViewportHandlers(a_rViewport);
+	THandler *pHandler = new THandler(a_rViewport);
+	TVALIDADDRESS(pHandler);
+	// Invalid address access
+	pHandler->m_oBeginRenderEmitter.Connect(&a_rViewport.GetBeginRenderEmitter(), pHandler, OnBeginRender, 0);
+	pHandler->m_oEndRenderEmitter.Connect(&a_rViewport.GetEndRenderEmitter(), pHandler, OnEndRender, 0);
 }
 
 // $TRenderD3DInterface: FUNCTION 10007450
