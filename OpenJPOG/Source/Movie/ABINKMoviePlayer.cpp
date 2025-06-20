@@ -154,6 +154,9 @@ TBOOL ABINKMoviePlayer::Render()
 	if (!FrameReady()) {
 		return TFALSE;
 	}
+	TSpriteShader *pShader = AGUISystem::GetGUISystem()->GetShader();
+	for (int i = 0; i < MAX_TILES; i++) {
+	}
 }
 
 // $JPOG: FUNCTION 006d5dc0

@@ -49,7 +49,15 @@ void AGUIMatLibPicture::UnloadMaterialLibrary()
 
 void AGUIMatLibPicture::SetFile(TPCCHAR a_szFile)
 {
-
+	if (m_sFileName != a_szFile) {
+		Flush();
+	}
+	m_sFileName = a_szFile;
+	if (!m_sFileName.IsEmpty()) {
+		TINT fileNameIndex = m_sFileName.FindReverse('/');
+		TINT extensionidx  = m_sFileName.FindReverse('.');
+		m_sPrefix          = m_sFileName.Mid(fileNameIndex+1, extensionidx);
+	}
 }
 
 void AGUIMatLibPicture::Flush()
@@ -74,8 +82,10 @@ void AGUIMatLibPicture::Cache()
 	if (m_sFileName.IsEmpty()) {
 		return;
 	}
-	m_pTiles = new Tile[split_tile_count];
-	m_pTextures = new Texture[split_texture_count];
+	m_iSplitTileCount    = split_tile_count;
+	m_pTiles             = new Tile[m_iSplitTileCount];
+	m_iSplitTextureCount = split_texture_count;
+	m_pTextures          = new Texture[m_iSplitTextureCount];
 	LoadMaterialLibrary();
 	TCString format;
 	for (TINT i = 0; i < m_iSplitTextureCount; i++) {
