@@ -39,6 +39,11 @@ public:
 	{
 		return m_pSpriteShader;
 	}
+	// $JPOG: FUNCTION 0046e390
+	Toshi::TScene *GetScene(TINT a_iIndex)
+	{
+		return m_pScenes[a_iIndex];
+	}
 
 	static AGUISystem *TOSHI_API GetGUISystem();
 

@@ -33,13 +33,31 @@ ARenderer::ARenderer()
 TBOOL ARenderer::OnCreate()
 {
 	TRenderInterface *pRenderer = TRenderInterface::GetRenderer();
+	TRenderInterface::DisplayParams *pDisplayParams = pRenderer->GetCurrentDisplayParams();
 	//pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SHSYS);
-	//TScene *pMainScene = static_cast<TScene *>(pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SCENE));
-	//pMainScene->SetName("MainScene");
-	//m_pViewport = pMainScene->CreateViewport("MainViewport", TNULL, TTRUE);
+	TScene *pMainScene = static_cast<TScene *>(pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SCENE));
+	pMainScene->SetName("MainScene");
+	m_pViewport = pMainScene->CreateViewport("MainViewport", TNULL, TTRUE);
+	m_pViewport->SetX(0.0f);
+	m_pViewport->SetY(0.0f);
+	m_pViewport->SetWidth(pDisplayParams->uiWidth);
+	m_pViewport->SetHeight(pDisplayParams->uiHeight);
+	m_pViewport->SetMinZ(0.0f);
+	m_pViewport->SetMaxZ(1.0f);
+	m_pViewport->AllowBackgroundClear(TFALSE);
+	m_pViewport->AllowDepthClear(TFALSE);
 	m_pSkyScene = static_cast<TScene *>(pRenderer->CreateResource(&TGetClass(TScene), "SkyScene", TNULL));
 	m_pSkyScene->Create();
 	m_pSkyViewport = m_pSkyScene->CreateViewport("SkyViewport", TNULL, TTRUE);
+	m_pSkyViewport->SetX(0.0f);
+	m_pSkyViewport->SetY(0.0f);
+	m_pSkyViewport->SetWidth(pDisplayParams->uiWidth);
+	m_pSkyViewport->SetHeight(pDisplayParams->uiHeight);
+	m_pSkyViewport->SetMinZ(0.0f);
+	m_pSkyViewport->SetMaxZ(1.0f);
+	m_pSkyViewport->AllowBackgroundClear(TTRUE);
+	m_pSkyViewport->AllowDepthClear(TTRUE);
+	m_pSkyViewport->SetBackgroundColour(0, 0, 0, 0xff);
 	return TTask::OnCreate();
 }
 
@@ -58,6 +76,23 @@ TBOOL ARenderer::OnUpdate(TFLOAT a_fDeltaTime)
 			m_pSkyScene->Update(a_fDeltaTime);
 			m_pSkyScene->Render();
 			m_pSkyScene->End();
+		}
+	}
+	if (m_eCaptureState != CAPTURESTATE_POLL) {
+		AGUISystem *pGUISystem = AGUISystem::GetGUISystem();
+		TScene *pFirstScene = pGUISystem->GetScene(0);
+		if (pFirstScene) {
+			pFirstScene->Begin();
+			pFirstScene->Update(a_fDeltaTime);
+			pFirstScene->Render();
+			pFirstScene->End();
+		}
+		TScene *pSecondScene = pGUISystem->GetScene(1);
+		if (pSecondScene) {
+			pSecondScene->Begin();
+			pSecondScene->Update(a_fDeltaTime);
+			pSecondScene->Render();
+			pSecondScene->End();
 		}
 	}
 	g_oTheApp.GetRootTask()->GetRenderInterface()->Update(a_fDeltaTime);

@@ -2,6 +2,7 @@
 #include "TSystemTools.h"
 #include "TNullResource.h"
 #include "TVertexFactoryResourceInterface.h"
+#include "TScene.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -129,6 +130,10 @@ TBOOL TRenderInterface::CreateSystemResources()
 	TASSERT(TTRUE == bRes);
 
 	m_aSysResources[SYSRESOURCE_SHADERS] = CreateResource(TFindClass(TNullResource, TNULL), "Shaders", TNULL);
+
+	m_aSysResources[SYSRESOURCE_SCENE] = CreateResource(&TGetClass(TScene), "Scene", TNULL);
+	bRes                               = m_aSysResources[SYSRESOURCE_SCENE]->Create();
+	TASSERT(TTRUE == bRes);
 
 	m_aSysResources[SYSRESOURCE_TEXTUREFACTORY] = CreateResource(TFindClass(TTextureFactoryHAL, TNULL), "TextureFactory", TNULL);
 	bRes                                        = m_aSysResources[SYSRESOURCE_TEXTUREFACTORY]->Create();

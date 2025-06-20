@@ -101,14 +101,15 @@ project ("TRenderInterface")
 	links
 	{
 		"winmm.lib",
-		"TKernelInterface",
+		"TKernelInterface"
 	}
 
 	includedirs
 	{
 		"Include",
 		"Include/TKernel",
-		"Include/TRender"
+		"Include/TRender",
+		"Plugins/Include"
 	}
 
 	defines

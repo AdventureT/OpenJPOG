@@ -75,6 +75,16 @@ public:
 	{
 		return m_pTextureFactory;
 	}
+	// $PGUIRenderer: FUNCTION 10005c10
+	void SetScaleX(TFLOAT a_fScaleX)
+	{
+		m_fScaleX = a_fScaleX;
+	}
+	// $PGUIRenderer: FUNCTION 10005c00
+	void SetScaleY(TFLOAT a_fScaleY)
+	{
+		m_fScaleY = a_fScaleY;
+	}
 	// $PGUIRenderer: FUNCTION 10005bf0
 	TFLOAT GetScaleX() const
 	{

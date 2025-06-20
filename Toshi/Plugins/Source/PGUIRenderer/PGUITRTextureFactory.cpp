@@ -1,4 +1,4 @@
-#include "PGuiRenderer/PGUITRTextureFactory.h"
+#include "PGUIRenderer/PGUITRTextureFactory.h"
 #include "TRender/TTextureResource.h"
 
 //-----------------------------------------------------------------------------

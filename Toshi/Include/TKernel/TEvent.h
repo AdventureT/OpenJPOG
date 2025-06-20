@@ -117,4 +117,9 @@ public:
 	}
 };
 
+class TKERNELINTERFACE_EXPORTS TNullEvent
+{
+
+};
+
 TOSHI_NAMESPACE_END

@@ -60,6 +60,8 @@ public:
 
 	void SetTextureAddressMode(DWORD a_dwStage, TTextureResource::ADDRESSMODE a_eType);
 
+	void Clear(TUINT a_uiX, TUINT a_uiY, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiFlags, TBYTE a_cR, TBYTE a_cG, TBYTE a_cB, TFLOAT a_fDepthVal, TUINT a_uiStencil);
+
 private:
 	void BuildAdapterDatabase();
 	void CreateAcceleratorTableA();

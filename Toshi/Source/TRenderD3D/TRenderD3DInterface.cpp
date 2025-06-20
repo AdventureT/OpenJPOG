@@ -5,6 +5,7 @@
 #include <dxerr8.h>
 #include <TRenderD3D/TRenderContextD3D.h>
 #include "TKernel/TEvent.h"
+#include "TKernel/TMath.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -377,7 +378,14 @@ TBOOL OnBeginRender(THandler *a_pHandler, TViewport *a_pViewport, TViewport::Beg
 	viewport.Height = a_pViewport->GetHeight();
 	viewport.MinZ   = 0.0f;
 	viewport.MaxZ   = 1.0f;
+	TBYTE r, g, b, a;
+	a_pViewport->GetBackgroundColour(r, g, b, a);
 	pRenderer->GetD3DDevice()->SetViewport(&viewport);
+	TUINT uiFlags = a_pViewport->IsDepthClearAllowed() ? D3DCLEAR_ZBUFFER : 0;
+	uiFlags |= a_pViewport->IsBackgroundClearAllowed();
+	if (uiFlags != 0) {
+		static_cast<TRenderD3DInterface *>(a_pHandler->GetViewport().GetRenderer())->Clear(a_pViewport->GetX(), a_pViewport->GetY(), a_pViewport->GetWidth(), a_pViewport->GetHeight(), uiFlags, r, g, b, 1.0f, 0);
+	}
 	return TTRUE;
 }
 
@@ -472,6 +480,22 @@ void TRenderD3DInterface::SetTextureAddressMode(DWORD a_dwStage, TTextureResourc
 		default:
 			return;
 	}
+}
+// $TRenderD3DInterface: FUNCTION 10006fa0
+void TRenderD3DInterface::Clear(TUINT a_uiX, TUINT a_uiY, TUINT a_uiWidth, TUINT a_uiHeight, TUINT a_uiFlags, TBYTE a_cR, TBYTE a_cG, TBYTE a_cB, TFLOAT a_fDepthVal, TUINT a_uiStencil)
+{
+	DWORD dwFlags = (a_uiFlags & D3DCLEAR_TARGET) != 0;
+	if ((a_uiFlags & D3DCLEAR_ZBUFFER) != 0) {
+		dwFlags |= D3DCLEAR_ZBUFFER;
+		TASSERT(a_fDepthVal >= 0.0f);
+		TASSERT(a_fDepthVal <= 1.0f);
+		TMAX(1.0f, a_fDepthVal);
+		TMIN(0.0f, a_fDepthVal);
+	}
+	if ((a_uiFlags & D3DCLEAR_STENCIL) != 0) {
+		dwFlags |= D3DCLEAR_STENCIL;
+	}
+	m_pD3DDevice->Clear(0, NULL, dwFlags, D3DCOLOR_XRGB(a_cR, a_cG, a_cB), a_fDepthVal, a_uiStencil);
 }
 
 // $TRenderD3DInterface: FUNCTION 100069d0

@@ -2,6 +2,7 @@
 #include "main.h"
 #include "TSpriteShader/Include/D3D/TSpriteShaderD3D.h"
 #include "TRender/TScene.h"
+#include "PGUIRenderer/PGUITRRenderObject.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -46,14 +47,27 @@ TBOOL AGUISystem::OnCreate()
 		TCString sceneName = TCString().Format("Scene%d", i);
 		m_pScenes[i] = static_cast<TScene *>(pRenderer->CreateResource(&TGetClass(TScene), sceneName, TNULL));
 		m_pScenes[i]->Create();
-		m_pScenes[i]->CreateViewport("GUIViewport", TNULL, TRUE);
+		TViewport *pViewport = m_pScenes[i]->CreateViewport("GUIViewport", TNULL, TRUE);
+		pViewport->SetX(0.0f);
+		pViewport->SetY(0.0f);
+		pViewport->SetWidth(pDisplayParams->uiWidth);
+		pViewport->SetHeight(pDisplayParams->uiHeight);
+		pViewport->SetMinZ(0.0f);
+		pViewport->SetMaxZ(1.0f);
+		pViewport->SetBackgroundColour(150, 0, 0, 0xff);
+		pViewport->AllowBackgroundClear(TFALSE);
+		pViewport->AllowDepthClear(TTRUE);
+		PGUITRRenderObject *pRenderObject = static_cast<PGUITRRenderObject *>(pRenderer->CreateResource(TFindClass(PGUITRRenderObject, TNULL), "ScreenSet1", pViewport));
+		pRenderObject->Create(i);
+		pRenderObject->SetViewport(pViewport);
+		pRenderObject->SetScreen(m_pScreen);
 	}
 	// m_pScreen->SetAudioContext
 	// m_pScreen->SetInputContext
 	TCString guiTexturePath = TCString("data/gui/textures");
 	m_pMatLibPic = new AGUIMatLibPicture();
 	m_pMatLibPic->Create(guiTexturePath, m_pSpriteShader);
-	return true;
+	return TTRUE;
 }
 
 // $JPOG: FUNCTION 0067c1f0
