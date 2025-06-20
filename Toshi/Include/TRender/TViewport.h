@@ -12,7 +12,7 @@ class TRENDERINTERFACE_EXPORTS TViewport : public TSceneObject
 
 public:
 
-	class THandler : public TNodeList<THandler>::TNode
+	class TRENDERINTERFACE_EXPORTS THandler : public TNodeList<THandler>::TNode
 	{
 	public:
 		THandler(TViewport &a_rViewport)
@@ -41,11 +41,10 @@ public:
 public:
 
 	TViewport()
+		: m_oBeginRenderEmitter(this), m_oEndRenderEmitter(this)
 	{
 		m_pRenderContext = TNULL;
 		m_bIsEnabled     = TTRUE;
-		m_oBeginRenderEmitter = TEmitter<TViewport, BeginRenderEvent>(this);
-		m_oEndRenderEmitter = TEmitter<TViewport, EndRenderEvent>(this);
 	}
 
 public:

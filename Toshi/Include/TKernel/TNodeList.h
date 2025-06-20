@@ -673,6 +673,11 @@ public:
 			m_List = node.m_List;
 		}
 
+		virtual ~TNode()
+		{
+			TASSERT(IsLinked() == TFALSE);
+		}
+
 		void Remove()
 		{
 			m_List->Remove(*this);

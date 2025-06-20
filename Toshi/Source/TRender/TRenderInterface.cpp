@@ -18,6 +18,7 @@ TRenderInterface *TRenderInterface::s_Interface = TNULL;
 // $TRenderInterface: FUNCTION 1000cd70
 TRenderInterface::TRenderInterface()
 {
+	m_bInScene              = TFALSE;
 	m_bIsCreated            = TFALSE;
 	m_bIsDiplayCreated      = TFALSE;
 	m_pDefaultRenderContext = TNULL;
