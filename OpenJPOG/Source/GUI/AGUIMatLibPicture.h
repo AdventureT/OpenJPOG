@@ -18,6 +18,7 @@ public:
 	void SetFile(TPCCHAR a_szFile);
 
 public:
+	virtual void Create(Toshi::TSpriteShader *a_pShader);
 	virtual void Flush();
 	virtual void Cache();
 

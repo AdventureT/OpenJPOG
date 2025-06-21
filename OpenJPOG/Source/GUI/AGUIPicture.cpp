@@ -47,8 +47,7 @@ void AGUIPicture::Render()
 	AGUISystem *system = AGUISystem::GetGUISystem();
 	TFLOAT height = system->GetScreen()->GetHeight() / 447.0f;
 	TFLOAT width = system->GetScreen()->GetWidth() / 638.0f;
-	for (TUINT i = 0; i < m_iSplitTileCount; i++)
-	{
+	for (TUINT i = 0; i < m_iSplitTileCount; i++) {
 		m_pShader->SetColour(TGUIColour());
 		m_pShader->SetMaterial(*m_pTiles[i].ppMaterial);
 	}

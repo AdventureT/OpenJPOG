@@ -33,11 +33,16 @@ void AGUIMatLibPicture::LoadMaterialLibrary()
 			supportscreendepth = lmh != AOptionsLogic::LMH_UNK3;
 		}
 	}
+	// Should not be here!
+	supportscreendepth = TFALSE;
 	if (supportscreendepth) {
 		TINT extensionidx = m_sFileName.FindReverse('.');
 		TINT     len      = m_sFileName.Length();
 		TCString fullname = m_sFileName.Mid(0, extensionidx) + sixteen + m_sFileName.Mid(extensionidx, len);
 		m_tmlidx          = TRenderInterface::GetRenderer()->GetMaterialLibraryManager()->LoadMaterialLibrary(fullname);
+	}
+	if (m_tmlidx == -1 || !supportscreendepth) {
+		m_tmlidx = TRenderInterface::GetRenderer()->GetMaterialLibraryManager()->LoadMaterialLibrary(m_sFileName);
 	}
 }
 
@@ -60,6 +65,11 @@ void AGUIMatLibPicture::SetFile(TPCCHAR a_szFile)
 	}
 }
 
+void AGUIMatLibPicture::Create(TSpriteShader *a_pShader)
+{
+	m_pShader = a_pShader;
+}
+
 void AGUIMatLibPicture::Flush()
 {
 	if (m_iSplitTileCount == 0) {
@@ -76,10 +86,10 @@ void AGUIMatLibPicture::Flush()
 
 void AGUIMatLibPicture::Cache()
 {
-	if (m_iSplitTileCount == 0) {
+	if (m_iSplitTileCount != 0) {
 		return;
 	}
-	if (m_sFileName.IsEmpty()) {
+	if (!m_sFileName.GetString()) {
 		return;
 	}
 	m_iSplitTileCount    = split_tile_count;

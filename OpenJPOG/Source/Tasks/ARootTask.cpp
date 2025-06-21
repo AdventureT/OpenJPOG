@@ -153,6 +153,7 @@ TBOOL ARootTask::CreateRenderInterface()
 	displayParams.eDepthStencilFormat = 0;
 	CreateDisplayDevice(displayParams, TFALSE);
 	m_pRenderInterface->CreateDisplay(displayParams);
+	m_pRenderInterface->GetMaterialLibraryManager()->Create();
 	return TTRUE;
 }
 

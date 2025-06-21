@@ -1,5 +1,7 @@
 #include "TMaterialLibrary.h"
 #include "TRender/TRenderInterface.h"
+#include "TKernel/TMemory.h"
+#include "TSpriteShader/Include/TSpriteShader.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -35,6 +37,10 @@ TMaterialLibrary::TMaterialLibrary(TMaterialLibraryManager *a_pManager)
 	m_pManager = a_pManager;
 	m_iNumTextures = 0;
 	m_pTextures    = TNULL;
+	m_iNumMaterials = 0;
+	m_pTextureNames  = TNULL;
+	m_pMaterials     = TNULL;
+	m_pMaterialNames = TNULL;
 }
 
 TBOOL TMaterialLibrary::Create(TPCCHAR a_szFileName)
@@ -43,12 +49,15 @@ TBOOL TMaterialLibrary::Create(TPCCHAR a_szFileName)
 	if (f) {
 		if (ReadHeader(f)) {
 			if (LoadTextures(f)) {
-
+				if (LoadMaterials(f)) {
+					f->Destroy();
+					return TTRUE;
+				}
 			}
 		}
 	}
 	f->Destroy();
-	TDPRINTF("Error loading material library %s\n");
+	TDPRINTF("Error loading material library %s\n", a_szFileName);
 	Destroy();
 	return TFALSE;
 }
@@ -60,19 +69,93 @@ void TMaterialLibrary::Destroy()
 	m_pTextures = TNULL;
 }
 
+TBOOL TMaterialLibrary::LoadSpriteMaterial(TINT a_iIndex, TFile *file, const TMLDISKMATERIALHEADER &dh)
+{
+	TSpriteShader *pShader = static_cast<TSpriteShader *>(m_pManager->GetShader(4));
+	TVALIDADDRESS(pShader);
+	TSpriteMaterial *pMat = pShader->CreateMaterial(TNULL);
+	if (!pMat) {
+		TDPRINTF("TMaterialLibrary::LoadSpriteMaterial(): CreateMaterial() failed for %d\n", a_iIndex);
+		return TFALSE;
+	}
+	return TTRUE;
+}
+
+TBOOL TMaterialLibrary::LoadMaterial(TINT a_iIndex, TFile *file)
+{
+	TMLDISKMATERIALHEADER dh;
+	TINT read = file->Read(&dh, sizeof(TMLDISKMATERIALHEADER));
+	if (read != sizeof(TMLDISKMATERIALHEADER)) {
+		TDPRINTF("TMaterialLibrary::LoadMaterial(): Failed to read material header\n");
+		return TFALSE;
+	}
+	TDPRINTF("Loading material \"%s\" (id %d)\n", m_pMaterialNames[a_iIndex], dh.id);
+	TMLDISKMATERIALSHADERTYPE eShaderType = (TMLDISKMATERIALSHADERTYPE)(dh.flags & TMLDISKMATERIALSHADERTYPE_MASK);
+	switch (eShaderType)
+	{
+		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_SKIN:
+			break;
+		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_TERRAIN:
+			break;
+		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_TERRAINDECAL:
+			break;
+		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_SYSTEM:
+			break;
+		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_SPRITE:
+			LoadSpriteMaterial(a_iIndex, file, dh);
+			break;
+		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_MASK:
+			break;
+		default:
+			TASSERT(!"************* TMaterialLibrary::LoadMaterial(): Unrecognised shader type");
+	}
+}
+
+TBOOL TMaterialLibrary::LoadMaterials(TFile *file)
+{
+	if (file->Read(&m_iNumMaterials, 4) != 4) {
+		TDPRINTF("TMaterialLibrary::LoadMaterials(): Failed to read number of materials\n");
+		return TFALSE;
+	}
+	m_pTextureNames = new TCHAR *[m_iNumMaterials];
+	m_pMaterialNames = new MaterialName[m_iNumMaterials];
+	if (file->Read(m_pMaterialNames, m_iNumMaterials * sizeof(MaterialName)) != m_iNumMaterials * sizeof(MaterialName)) {
+		TDPRINTF("TMaterialLibrary::LoadMaterials(): Failed to read number of materials\n");
+		return TFALSE;
+	}
+	m_pMaterials = new TMaterial *[m_iNumMaterials];
+	for (TINT i = 0; i < m_iNumMaterials; i++) {
+		m_pMaterials[i]    = TNULL;
+		m_pTextureNames[i] = m_pMaterialNames[i];
+	}
+	for (TINT i = 0; i < m_iNumMaterials; i++) {
+		TMaterialLibraryManager *pManager = TRenderInterface::GetRenderer()->GetMaterialLibraryManager();
+		for (auto it = pManager->m_oLibraries.Begin(); it != pManager->m_oLibraries.End(); it++) {
+			TMaterial *pMat = it->GetMaterial(m_pMaterialNames[i]);
+			if (pMat) {
+				TDPRINTF("******** TMaterialLibraryManager::LoadMaterials() MATERIAL \"%s\" ALREADY LOADED BY ANOTHER LIBRARY!!!!!!! **********\n", m_pMaterialNames[i]);
+			}
+		}
+		if (!LoadMaterial(i, file)) {
+			return TFALSE;
+		}
+	}
+	return TTRUE;
+}
+
 TBOOL TMaterialLibrary::ReadHeader(TFile *file)
 {
-	Header header;
-	TINT   read = file->Read(&header, sizeof(Header));
-	if (read != sizeof(Header)) {
+	TMLDISKHEADER dh;
+	TINT          read = file->Read(&dh, sizeof(TMLDISKHEADER));
+	if (read != sizeof(TMLDISKHEADER)) {
 		TDPRINTF("TMaterialLibrary::ReadHeader(): Error failed to read header\n");
 		return TFALSE;
 	}
-	if (header.m_iMagic != MAKEFOURCC('T', 'M', 'L', '1')) {
+	if (dh.m_iMagic != MAKEFOURCC('T', 'M', 'L', '1')) {
 		TDPRINTF("TMaterialLibrary::ReadHeader(): Error incorrect magic number in header\n");
 		return TFALSE;
 	}
-	if (header.m_iType != 0) {
+	if (dh.m_iType != 0) {
 		TDPRINTF("TMaterialLibrary::ReadHeader(): Error incorrect type number in header\n");
 		return TFALSE;
 	}
@@ -82,8 +165,8 @@ TBOOL TMaterialLibrary::ReadHeader(TFile *file)
 // $TRenderInterface: FUNCTION 100100b0
 TBOOL TMaterialLibrary::LoadTexture(TINT a_iIndex, TFile *file)
 {
-	TextureHeader dh;
-	if (file->Read(&dh, sizeof(TextureHeader)) != sizeof(TextureHeader)) {
+	TMLDISKTEXTUREHEADER dh;
+	if (file->Read(&dh, sizeof(TMLDISKTEXTUREHEADER)) != sizeof(TMLDISKTEXTUREHEADER)) {
 		TDPRINTF("TMaterialLibrary::LoadTexture(): Failed to read texture header %d\n");
 		return TFALSE;
 	}
@@ -117,7 +200,7 @@ TBOOL TMaterialLibrary::LoadTextures(TFile *file)
 		return TFALSE;
 	}
 	m_pTextures = new TTextureResource *[m_iNumTextures];
-	TSystem::MemSet(m_pTextures, 0, sizeof(m_iNumTextures * 4));
+	TSystem::MemSet(m_pTextures, 0, m_iNumTextures * 4);
 	for (TINT i = 0; i < m_iNumTextures; i++) {
 		if (!LoadTexture(i, file)) {
 			return TFALSE;
@@ -126,9 +209,30 @@ TBOOL TMaterialLibrary::LoadTextures(TFile *file)
 	return TTRUE;
 }
 
+// $TRenderInterface: FUNCTION 10010f60
+TINT TMaterialLibrary::GetIndexForName(TPCCHAR a_szName, TPCHAR *a_pMaterialNames, TINT a_iNumMaterials)
+{
+	for (TINT i = 0; i < a_iNumMaterials; i++) {
+		if (i + 1 == a_iNumMaterials) {
+			if (TSystem::StringCompareNoCase(a_szName, a_pMaterialNames[i], 32) != 0) {
+				return -1;
+			}
+			return i;
+		}
+		if (TSystem::StringCompareNoCase(a_szName, a_pMaterialNames[(a_iNumMaterials - (i / 2)) + i], 32) <= 0) {
+			return (a_iNumMaterials - (i / 2)) + i;
+		}
+	}
+	return -1;
+}
+
 // $TRenderInterface: FUNCTION 1000ff40
 TMaterial *TMaterialLibrary::GetMaterial(TPCCHAR a_szMaterial)
 {
+	TINT iIndex = GetIndexForName(a_szMaterial, m_pTextureNames, m_iNumMaterials);
+	if (iIndex >= 0 && iIndex < m_iNumMaterials) {
+		return m_pMaterials[iIndex];
+	}
 	return TNULL;
 }
 
@@ -141,7 +245,8 @@ TTextureResource *TMaterialLibrary::GetTexture(TINT a_iIndex)
 // $TRenderInterface: FUNCTION 10011020
 void TMaterialLibraryManager::Create()
 {
-	TMaterial *pSkin = reinterpret_cast<TMaterial *>(TRenderInterface::GetRenderer()->GetSystemResource(TRenderInterface::SYSRESOURCE_SHSKIN));
+	//TMaterial *pSkin = reinterpret_cast<TMaterial *>(TRenderInterface::GetRenderer()->GetSystemResource(TRenderInterface::SYSRESOURCE_SHSKIN));
+
 }
 
 // $TRenderInterface: FUNCTION 100110a0

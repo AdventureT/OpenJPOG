@@ -109,7 +109,8 @@ project ("TRenderInterface")
 		"Include",
 		"Include/TKernel",
 		"Include/TRender",
-		"Plugins/Include"
+		"Plugins/Include",
+		"Shaders"
 	}
 
 	defines

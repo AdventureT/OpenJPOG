@@ -64,9 +64,8 @@ TBOOL AGUISystem::OnCreate()
 	}
 	// m_pScreen->SetAudioContext
 	// m_pScreen->SetInputContext
-	TCString guiTexturePath = TCString("data/gui/textures");
 	m_pMatLibPic = new AGUIMatLibPicture();
-	m_pMatLibPic->Create(guiTexturePath, m_pSpriteShader);
+	m_pMatLibPic->Create(m_pSpriteShader);
 	return TTRUE;
 }
 
