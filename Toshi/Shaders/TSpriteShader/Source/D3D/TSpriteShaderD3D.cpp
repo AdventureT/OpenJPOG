@@ -15,11 +15,12 @@ void TSpriteMaterialHAL::PreRender()
 {
 	TRenderD3DInterface *pRenderer = GetRenderer();
 	IDirect3DDevice8    *pDevice   = pRenderer->GetD3DDevice();
-	if (m_pTexture) {
-		m_pTexture[0]->Validate();
-		if (m_pTexture[0]->GetD3DTexture()) {
-			pDevice->SetTexture(0, m_pTexture[0]->GetD3DTexture());
-			pRenderer->SetTextureAddressMode(0, m_pTexture[0]->GetAddressMode());
+	TTextureResourceHAL *pResource = static_cast<TTextureResourceHAL *>(m_pTexture[0]);
+	if (pResource) {
+		pResource->Validate();
+		if (pResource->GetD3DTexture()) {
+			pDevice->SetTexture(0, pResource->GetD3DTexture());
+			pRenderer->SetTextureAddressMode(0, pResource->GetAddressMode());
 		}
 	}
 	else {
@@ -70,15 +71,112 @@ void TSpriteMaterialHAL::PostRender()
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 }
 
+void TSpriteShaderOrderTable::Render()
+{
+	for (TINT i = 0; i < m_uiNumRendPackets; i++) {
+		m_pShader->Render(&m_pRenderPackets[i]);
+	}
+	m_uiNumRendPackets = 0;
+}
+
+IMPLEMENT_DYNCREATE(TSpriteShaderHAL, TSpriteShader)
+
+const DWORD TSpriteShaderHAL::SHADERDECL[] = {
+	0x20000000, 0x40020000, 0x40040001, 0x40010002, 0xFFFFFFFFF
+};
+
 TSpriteMaterial *TSpriteShaderHAL::CreateMaterial(TPCCHAR a_szName)
 {
-	//Validate()
+	Validate();
 	TSpriteMaterial *pMaterial = static_cast<TSpriteMaterial *>(GetRenderer()->CreateResource(&TGetClass(TSpriteShaderHAL), a_szName, this));
 	pMaterial->SetShader(this);
 	pMaterial->SetFlag(1, TTRUE);
 	return pMaterial;
 }
 
-IMPLEMENT_DYNCREATE(TSpriteShaderHAL, TSpriteShader)
+void TSpriteShaderHAL::Flush()
+{
+	TRenderD3DInterface *pRenderer = GetRenderer();
+	IDirect3DDevice8 *pDevice = pRenderer->GetD3DDevice();
+	HRESULT hRes = pDevice->SetVertexShader(GetVertexShaderHandle());
+	TRenderD3DInterface::TD3DAssert(hRes, TNULL);
+	pDevice->SetPixelShader(0);
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	pDevice->SetRenderState(D3DRS_ALPHAREF, FALSE);
+	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+	pDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_CURRENT);
+	pDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TEXTURE);
+	pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
+	if (m_bMipMapLODBias) {
+		pDevice->SetTextureStageState(0, D3DTSS_MIPMAPLODBIAS, 0xC0000000);
+	}
+	pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_DISABLE);
+	pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
+	pDevice->SetRenderState(D3DRS_SPECULARENABLE, FALSE);
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	m_oOrderTable.Render();
+	if (m_bMipMapLODBias) {
+		pDevice->SetTextureStageState(0, D3DTSS_MIPMAPLODBIAS, 0);
+	}
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+}
+
+void TSpriteShaderHAL::Render(TRenderPacket *a_pRenderPacket)
+{
+	TRenderD3DInterface *pRenderer = GetRenderer();
+	IDirect3DDevice8    *pDevice   = pRenderer->GetD3DDevice();
+	/*TMesh *pMesh = a_pRenderPacket->GetMesh();
+	if (pMesh->IsDying()) {
+		return;
+	}*/
+	TIMPLEMENT();
+}
+
+TBOOL TSpriteShaderHAL::SupportMipMapLODBias()
+{
+	TRenderD3DInterface *pRenderer  = GetRenderer();
+	IDirect3DDevice8    *pDevice    = pRenderer->GetD3DDevice();
+	D3DCAPS8             caps;
+	if (pDevice) {
+		pDevice->GetDeviceCaps(&caps);
+	}
+	else {
+		IDirect3D8 *pInterface = pRenderer->GetD3DInterface();
+		if (!pInterface) {
+			return TFALSE;
+		}
+		pInterface->GetDeviceCaps(0, D3DDEVTYPE_HAL, &caps);
+	}
+	return (caps.DevCaps & D3DDEVCAPS_DRAWPRIMITIVES2) != 0;
+}
+
+static const char VERTEXSHADER[] = {
+	0x00, 0x01, 0xFE, 0xFF, 0xFE, 0xFF, 0x09, 0x00, 0x44, 0x33, 0x44, 0x58, 0x38, 0x20, 0x53, 0x68, 0x61, 0x64, 0x65, 0x72, 0x20, 0x41, 0x73, 0x73, 0x65, 0x6D, 0x62, 0x6C, 0x65, 0x72, 0x20, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6F, 0x6E, 0x20, 0x30, 0x2E, 0x39, 0x31, 0x00, 0xFE, 0xFF, 0x07, 0x00, 0x46, 0x49, 0x4C, 0x45, 0x54, 0x53, 0x70, 0x72, 0x69, 0x74, 0x65, 0x53, 0x68, 0x61, 0x64, 0x65, 0x72, 0x44, 0x33, 0x44, 0x2E, 0x76, 0x73, 0x68, 0x00, 0x00, 0x00, 0x00, 0xFE, 0xFF, 0x02, 0x00, 0x4C, 0x49, 0x4E, 0x45, 0x12, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0F, 0xC0, 0x00, 0x00, 0xE4, 0x90, 0x00, 0x00, 0xE4, 0xA0, 0xFE, 0xFF, 0x02, 0x00, 0x4C, 0x49, 0x4E, 0x45, 0x13, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0F, 0xD0, 0x01, 0x00, 0xE4, 0x90, 0x04, 0x00, 0xE4, 0xA0, 0xFE, 0xFF, 0x02, 0x00, 0x4C, 0x49, 0x4E, 0x45, 0x14, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0xE0, 0x02, 0x00, 0xE4, 0x90, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90, 0x33, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
+TBOOL TSpriteShaderHAL::Validate()
+{
+	TASSERT(TTRUE == IsCreated());
+	if (TResource::IsValid()) {
+		return TTRUE;
+	}
+	TASSERT(INVALIDSHADERHANDLE==m_dwVertexShaderHandle)
+	m_bMipMapLODBias          = SupportMipMapLODBias();
+	IDirect3DDevice8 *pDevice = GetRenderer()->GetD3DDevice();
+	if (!pDevice) {
+		return TFALSE;
+	}
+	HRESULT res = pDevice->CreateVertexShader(SHADERDECL, (DWORD *)VERTEXSHADER, &m_dwVertexShaderHandle, 0);
+	if (FAILED(res)) {
+		m_dwVertexShaderHandle = 0x142;
+	}
+	return TResource::Validate();
+}
+
 
 TOSHI_NAMESPACE_END

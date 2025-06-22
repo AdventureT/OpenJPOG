@@ -74,6 +74,14 @@ public:
 		TBOOL   bWindowed;
 	};
 
+	class BeginSceneEvent
+	{
+	};
+
+	class EndSceneEvent
+	{
+	};
+
 public:
 	TRenderInterface();
 
@@ -116,6 +124,7 @@ public:
 	const TRenderAdapter::Mode::Device *FindDevice(const DisplayParams *a_pDisplayParams);
 
 	void FlushDyingResources();
+	void FlushShaders();
 
 	// $TRenderInterface: FUNCTION 1000e5b0
 	TResource *GetSystemResource(SYSRESOURCES a_SystemResource)
@@ -149,8 +158,19 @@ public:
 	{
 		return &m_oMaterialLibraryManager;
 	}
+	// $TRenderInterface: FUNCTION 10008b90
+	TEmitter<TRenderInterface, BeginSceneEvent> *GetBeginSceneEmitter()
+	{
+		return &m_oBeginSceneEmitter;
+	}
+	// $TRenderInterface: FUNCTION 10008b90
+	TEmitter<TRenderInterface, EndSceneEvent> *GetEndSceneEmitter()
+	{
+		return &m_oEndSceneEmitter;
+	}
 
 private:
+	void FlushShadersRecurse(TResource *a_pResource);
 	void DestroyDyingResources(TResource *a_pResource);
 	void DeleteResource(TResource *a_pResource);
 	void DeleteResourceRecurse(TResource *a_pResource);
@@ -159,19 +179,21 @@ private:
 	static TRenderInterface *s_Interface;
 
 protected:
-	TBOOL                     m_bInScene;                          // 0x8
-	TBOOL                     m_bIsCreated;                        // 0x9
-	TBOOL                     m_bIsDiplayCreated;                  // 0xA
-	TRenderContext           *m_pCurrentRenderContext;             // 0x1C
-	TRenderContext           *m_pDefaultRenderContext;             // 0x20
-	TKernelInterface         *m_pKernel;                           // 0x24
-	TResource                *m_aSysResources[SYSRESOURCES_NUMOF]; // 0x28
-	TNodeList<TRenderAdapter> m_pAdapterList;                      // 0xFC
-	TINT                      m_iResourceCount;                    // 0x124
-	TNodeTree<TResource>      m_Resources;                         // 0x128???
-	TINT                      m_iSceneCount;                       // 0x128
-	TBOOL                     m_bHasDyingResources;                // 0x12C
-	TMaterialLibraryManager   m_oMaterialLibraryManager;           // 0x130
+	TBOOL                                       m_bInScene;                          // 0x8
+	TBOOL                                       m_bIsCreated;                        // 0x9
+	TBOOL                                       m_bIsDiplayCreated;                  // 0xA
+	TRenderContext                             *m_pCurrentRenderContext;             // 0x1C
+	TRenderContext                             *m_pDefaultRenderContext;             // 0x20
+	TKernelInterface                           *m_pKernel;                           // 0x24
+	TResource                                  *m_aSysResources[SYSRESOURCES_NUMOF]; // 0x28
+	TNodeList<TRenderAdapter>                   m_pAdapterList;                      // 0xFC
+	TINT                                        m_iResourceCount;                    // 0x124
+	TNodeTree<TResource>                        m_Resources;                         // 0x128???
+	TINT                                        m_iSceneCount;                       // 0x128
+	TBOOL                                       m_bHasDyingResources;                // 0x12C
+	TMaterialLibraryManager                     m_oMaterialLibraryManager;           // 0x130
+	TEmitter<TRenderInterface, BeginSceneEvent> m_oBeginSceneEmitter;                // 0x164
+	TEmitter<TRenderInterface, EndSceneEvent>   m_oEndSceneEmitter;                  // 0x170
 };
 
 TOSHI_NAMESPACE_END

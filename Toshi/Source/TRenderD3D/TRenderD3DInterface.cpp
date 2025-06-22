@@ -213,7 +213,7 @@ TBOOL TRenderD3DInterface::BeginScene()
 		m_pD3DDevice->SetViewport(&viewport);
 		//UpdateColourSettings();
 		m_bInScene = TTRUE;
-		//m_BeginSceneEmitter.Throw(0);
+		GetBeginSceneEmitter()->Throw(BeginSceneEvent());
 	}
 	return TTRUE;
 }
@@ -221,10 +221,11 @@ TBOOL TRenderD3DInterface::BeginScene()
 // $TRenderD3DInterface: FUNCTION 10006780
 TBOOL TRenderD3DInterface::EndScene()
 {
-	TASSERT(TTRUE == IsDisplayCreated());
-	TASSERT(TFALSE == IsInScene());
+	TASSERT(TTRUE==IsDisplayCreated());
+	TASSERT(IsInScene()==TTRUE);
 	static TBOOL s_bDeviceLost = TFALSE;
 	if (IsInScene()) {
+		GetEndSceneEmitter()->Throw(EndSceneEvent());
 		if (FAILED(m_pD3DDevice->EndScene())) {
 			return TFALSE;
 		}

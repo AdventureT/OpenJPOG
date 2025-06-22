@@ -22,7 +22,7 @@ void PGUITRDisplayContext::Create()
 	m_pTextureFactory->Create(this);
 	m_pFontFactory->Create(this);
 	m_pGUIRoot = m_pRenderer->CreateResource(&TGetClass(Toshi::TNullResource), "GUIRoot", TNULL);
-	m_pRenderer->FindResource("SHSPRITE", m_pRenderer->GetSystemResource(Toshi::TRenderInterface::SYSRESOURCE_SHADERS));
+	m_pShader = static_cast<Toshi::TSpriteShader *>(m_pRenderer->FindResource("SHSPRITE", m_pRenderer->GetSystemResource(Toshi::TRenderInterface::SYSRESOURCE_SHADERS)));
 }
 
 void PGUITRDisplayContext::Create(Toshi::TManagedPtr<Toshi::TRenderInterface> a_MPRenderer)
@@ -79,11 +79,15 @@ void PGUITRDisplayContext::PopAdditiveColour()
 // $PGUIRenderer: FUNCTION 100012e0
 void PGUITRDisplayContext::BeginScene()
 {
+	m_pShader->BeginMeshGeneration();
+	m_pShader->SetMaterial(TNULL);
 }
 
 // $PGUIRenderer: FUNCTION 10005a50
 void PGUITRDisplayContext::EndScene()
 {
+	m_pShader->EndMeshGeneration();
+	m_pRenderer->FlushShaders();
 }
 
 // $PGUIRenderer: FUNCTION 10005a40

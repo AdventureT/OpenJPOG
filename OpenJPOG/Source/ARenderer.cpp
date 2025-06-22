@@ -68,6 +68,9 @@ TBOOL ARenderer::OnUpdate(TFLOAT a_fDeltaTime)
 	//if (!kernel) {
 	//	return false;
 	//}
+	TRenderInterface *pRenderer = g_oTheApp.GetRootTask()->GetRenderInterface();
+	pRenderer->Update(a_fDeltaTime);
+	pRenderer->BeginScene();
 	MoviePlayerState state = RenderMovie(a_fDeltaTime);
 	if (state != MOVIEPLAYERSTATE_RUNNING) {
 		// Render things
@@ -95,6 +98,7 @@ TBOOL ARenderer::OnUpdate(TFLOAT a_fDeltaTime)
 			pSecondScene->End();
 		}
 	}
+	pRenderer->EndScene();
 	g_oTheApp.GetRootTask()->GetRenderInterface()->Update(a_fDeltaTime);
 	return TTask::OnUpdate(a_fDeltaTime);
 }

@@ -98,6 +98,9 @@ public:
 
 	void Create(Owner *owner) { TGenericEmitter::Create(owner); }
 	void Destroy() { TGenericEmitter::Destroy(); }
+
+	TEmitter(const TEmitter &) = delete;
+	TEmitter(TEmitter &&)      = delete;
 };
 
 template <typename Owner, typename Data, typename Caller>

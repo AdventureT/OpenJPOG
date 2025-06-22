@@ -78,6 +78,28 @@ TBOOL TMaterialLibrary::LoadSpriteMaterial(TINT a_iIndex, TFile *file, const TML
 		TDPRINTF("TMaterialLibrary::LoadSpriteMaterial(): CreateMaterial() failed for %d\n", a_iIndex);
 		return TFALSE;
 	}
+	TASSERT(dh.numtextures <= 4);
+	for (TINT i = 0; i < dh.numtextures; i++) {
+		TINT textureID;
+		if (file->Read(&textureID, 4) != 4) {
+			TDPRINTF("TMaterialLibrary::LoadSpriteMaterial(): Failed to read texture id %d for material %d\n", i, a_iIndex);
+			return TFALSE;
+		}
+		pMat->SetTexture1(GetTexture(a_iIndex));
+		m_pTextures[i]->SetAddressModeMode(TTextureResource::ADDRESSMODE_CLAMP);
+	}
+	if ((dh.flags & 4) != 0) {
+		pMat->SetBlendMode(1);
+	}
+	else if ((dh.flags & 8) != 0) {
+		pMat->SetBlendMode(4);
+	}
+	else if ((dh.flags & 0x10) != 0) {
+		pMat->SetBlendMode(3);
+	}
+	else {
+		pMat->SetBlendMode(0);
+	}
 	return TTRUE;
 }
 
@@ -94,21 +116,23 @@ TBOOL TMaterialLibrary::LoadMaterial(TINT a_iIndex, TFile *file)
 	switch (eShaderType)
 	{
 		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_SKIN:
+			TDPRINTF("Not implemented");
 			break;
 		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_TERRAIN:
+			TDPRINTF("Not implemented");
 			break;
 		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_TERRAINDECAL:
+			TDPRINTF("Not implemented");
 			break;
 		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_SYSTEM:
+			TDPRINTF("Not implemented");
 			break;
 		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_SPRITE:
-			LoadSpriteMaterial(a_iIndex, file, dh);
-			break;
-		case Toshi::TMaterialLibrary::TMLDISKMATERIALSHADERTYPE_MASK:
-			break;
+			return LoadSpriteMaterial(a_iIndex, file, dh);
 		default:
 			TASSERT(!"************* TMaterialLibrary::LoadMaterial(): Unrecognised shader type");
 	}
+	return TFALSE;
 }
 
 TBOOL TMaterialLibrary::LoadMaterials(TFile *file)
@@ -212,15 +236,23 @@ TBOOL TMaterialLibrary::LoadTextures(TFile *file)
 // $TRenderInterface: FUNCTION 10010f60
 TINT TMaterialLibrary::GetIndexForName(TPCCHAR a_szName, TPCHAR *a_pMaterialNames, TINT a_iNumMaterials)
 {
-	for (TINT i = 0; i < a_iNumMaterials; i++) {
-		if (i + 1 == a_iNumMaterials) {
-			if (TSystem::StringCompareNoCase(a_szName, a_pMaterialNames[i], 32) != 0) {
-				return -1;
+	for (TINT low = 0; low < a_iNumMaterials;) {
+		if (a_iNumMaterials == low + 1) {
+			if (TSystem::StringCompareNoCase(a_szName, a_pMaterialNames[low], 0x20) != 0) {
+				break;
 			}
-			return i;
+			return low;
 		}
-		if (TSystem::StringCompareNoCase(a_szName, a_pMaterialNames[(a_iNumMaterials - (i / 2)) + i], 32) <= 0) {
-			return (a_iNumMaterials - (i / 2)) + i;
+		TINT mid = (a_iNumMaterials - low) / 2 + low;
+		TINT cmpResult = TSystem::StringCompareNoCase(a_szName, a_pMaterialNames[mid], 0x20);
+		if (cmpResult < 0) {
+			a_iNumMaterials = mid;
+		}
+		else if (cmpResult == 0) {
+			return mid;
+		}
+		else {
+			low = mid;
 		}
 	}
 	return -1;

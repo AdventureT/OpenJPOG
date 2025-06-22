@@ -18,6 +18,11 @@ public:
 	{
 
 	}
+
+	virtual void Flush()
+	{
+
+	}
 };
 
 class TRENDERINTERFACE_EXPORTS TMaterial : public TResource

@@ -16,7 +16,13 @@
 			  __debugbreak();                                                                                                               \
 		  }                                                                                                                                 \
 	  }
-
+// TIMPLEMENT has been added for the decomp
+#  define TIMPLEMENT()            \
+	  TFIREFLAG_CREATE(__LINE__); \
+      if (!TFIREFLAG(__LINE__)) { \
+		Toshi::TDebug_PrintWarning("%s is not yet implemented!\n", __FUNCTION__); \
+        TFIREFLAG(__LINE__) = true; \
+	  }
 #  define TDPRINTF(format, ...)     Toshi::TDebug_Printf(format, __VA_ARGS__)
 #  define TWARNING(format, ...)     Toshi::TDebug_PrintWarning(format, __VA_ARGS__)
 #  define TERROR(format, ...)       Toshi::TDebug_PrintError(format, __VA_ARGS__)

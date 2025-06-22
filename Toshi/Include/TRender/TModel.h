@@ -1,6 +1,7 @@
 #pragma once
 #include "Defines.h"
 #include "TKernel/TKernelInterface.h"
+#include "TRender/TResource.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -44,6 +45,11 @@ private:
 	TINT      m_iInstanceCount; // 0x8
 	TINT      m_iLODCount;      // 0xC
 	TModelLOD m_LODs[MAX_NUM_LODS];
+};
+
+class TRENDERINTERFACE_EXPORTS TMesh : public TResource
+{
+	DECLARE_DYNAMIC(TMesh)
 };
 
 TOSHI_NAMESPACE_END

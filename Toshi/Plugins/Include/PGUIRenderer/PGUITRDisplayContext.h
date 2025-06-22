@@ -5,6 +5,7 @@
 #include "TGui/TGUIDisplayContext.h"
 #include "TRender/TRenderInterface.h"
 #include "TRender/TResource.h"
+#include "TSpriteShader/Include/TSpriteShader.h"
 
 class PGUITRTextureFactory;
 class PGUITRFontFactory;
@@ -95,11 +96,17 @@ public:
 	{
 		return m_fScaleY;
 	}
+	// $PGUIRenderer: FUNCTION 10005b0
+	Toshi::TSpriteShader *GetShader() const
+	{
+		return m_pShader;
+	}
 
 private:
 	Toshi::TRenderInterface *m_pRenderer;       // 0x210
 	PGUITRTextureFactory    *m_pTextureFactory; // 0x214
 	PGUITRFontFactory       *m_pFontFactory;    // 0x218
+	Toshi::TSpriteShader    *m_pShader;         // 0x21C
 	Toshi::TResource        *m_pGUIRoot;        // 0x220
 	TFLOAT                   m_fScaleX;         // 0x224
 	TFLOAT                   m_fScaleY;         // 0x228

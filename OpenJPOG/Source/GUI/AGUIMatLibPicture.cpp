@@ -41,7 +41,7 @@ void AGUIMatLibPicture::LoadMaterialLibrary()
 		TCString fullname = m_sFileName.Mid(0, extensionidx) + sixteen + m_sFileName.Mid(extensionidx, len);
 		m_tmlidx          = TRenderInterface::GetRenderer()->GetMaterialLibraryManager()->LoadMaterialLibrary(fullname);
 	}
-	if (m_tmlidx == -1 || !supportscreendepth) {
+	else if (m_tmlidx == -1) {
 		m_tmlidx = TRenderInterface::GetRenderer()->GetMaterialLibraryManager()->LoadMaterialLibrary(m_sFileName);
 	}
 }

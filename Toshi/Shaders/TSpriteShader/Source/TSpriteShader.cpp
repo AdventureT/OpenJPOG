@@ -14,12 +14,22 @@ IMPLEMENT_DYNAMIC(TSpriteShader, TShader)
 
 void TSpriteShader::SetMaterial(TSpriteMaterial *a_pMaterial)
 {
-
+	TIMPLEMENT()
 }
 
 void TSpriteShader::SetColour(const TGUIColour &a_rColour)
 {
-	
+	TIMPLEMENT()
+}
+
+void TSpriteShader::BeginMeshGeneration()
+{
+	TIMPLEMENT()
+}
+
+void TSpriteShader::EndMeshGeneration()
+{
+	TIMPLEMENT()
 }
 
 TOSHI_NAMESPACE_END

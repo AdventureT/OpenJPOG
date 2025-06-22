@@ -2,6 +2,7 @@
 #include "TSystemTools.h"
 #include "TNullResource.h"
 #include "TVertexFactoryResourceInterface.h"
+#include "TSpriteShader/Include/TSpriteShader.h"
 #include "TScene.h"
 
 //-----------------------------------------------------------------------------
@@ -130,6 +131,11 @@ TBOOL TRenderInterface::CreateSystemResources()
 	TASSERT(TTRUE == bRes);
 
 	m_aSysResources[SYSRESOURCE_SHADERS] = CreateResource(TFindClass(TNullResource, TNULL), "Shaders", TNULL);
+
+	/* m_aSysResources[SYSRESOURCE_SHSKIN] = CreateResource(TFindClass(TSkinShaderHAL, TNULL), "SHSKIN", GetSystemResource(SYSRESOURCE_SHADERS));
+	TVALIDADDRESS(m_aSysResources[SYSRESOURCE_SHSKIN]);
+	bRes = static_cast<TSkinShader *>(GetSystemResource(SYSRESOURCE_SHSKIN))->Create(&vertexFormat, 11000, 0);
+	TASSERT(TTRUE == bRes); */
 
 	m_aSysResources[SYSRESOURCE_SCENE] = CreateResource(&TGetClass(TScene), "Scene", TNULL);
 	bRes                               = m_aSysResources[SYSRESOURCE_SCENE]->Create();
@@ -275,6 +281,33 @@ void TRenderInterface::FlushDyingResources()
 	{
 		m_bHasDyingResources = TFALSE;
 		DestroyDyingResources(m_Resources.ChildOfRoot());
+	}
+}
+
+static TINT s_iFlushShaderSorted = 0;
+
+// $TRenderInterface: FUNCTION 1000e630
+void TRenderInterface::FlushShaders()
+{
+	TASSERT(TTRUE==IsInScene());
+	if (IsInScene()) {
+		s_iFlushShaderSorted = 0;
+		FlushShadersRecurse(GetSystemResource(SYSRESOURCE_SHADERS)->Child());
+		s_iFlushShaderSorted = 1;
+		FlushShadersRecurse(GetSystemResource(SYSRESOURCE_SHADERS)->Child());
+	}
+}
+
+// $TRenderInterface: FUNCTION 1000eea0
+void TRenderInterface::FlushShadersRecurse(TResource *a_pResource)
+{
+	for (TResource *it = a_pResource; it; it = it->Next()) {
+		if (it->IsA(TGetClass(TShader))) {
+			static_cast<TShader *>(it)->Flush();
+		}
+		if (it == it->Next()) {
+			break;
+		}
 	}
 }
 

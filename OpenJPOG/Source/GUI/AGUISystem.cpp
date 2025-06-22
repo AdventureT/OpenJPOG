@@ -34,6 +34,7 @@ TBOOL AGUISystem::OnCreate()
 	TClass *pClass  = &TGetClass(TSpriteShaderHAL);
 	m_pSpriteShader = (TSpriteShader *)pRenderer->CreateResource(TFindClass(TSpriteShaderHAL, TNULL), "SHSPRITE", pRenderer->GetSystemResource(TRenderInterface::SYSRESOURCE_SHADERS));
 	m_pSpriteShader->Create();
+	pRenderer->GetMaterialLibraryManager()->SetShader(4, m_pSpriteShader);
 	m_pGUIInterface->Create();
 	m_pDisplayContext = new PGUITRDisplayContext();
 	m_pDisplayContext->Create(g_oTheApp.GetRootTask()->GetRenderInterface(), m_pTextureFactory, m_pFontFactory);
