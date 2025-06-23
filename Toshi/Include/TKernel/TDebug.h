@@ -90,6 +90,7 @@ TOSHI_NAMESPACE_END
 #else
 
 #  define TASSERT(expression)
+#  define TIMPLEMENT()
 #  define TDPRINTF(format, ...)
 #  define TWARNING(format, ...)
 #  define TERROR(format, ...)
