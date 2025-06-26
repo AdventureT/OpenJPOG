@@ -4,7 +4,7 @@ projects
     {
         "functions"     "Tools/ProgressCalculation/TKernelInterface/functions.csv"
         "ignore"        "Tools/ProgressCalculation/TKernelInterface/ignorelist.txt"
-        "svgtemplate"   "Tools/ProgressCalculation/TKernelInterface/template.svg"
+        "svgtemplate"   "Tools/ProgressCalculation/template.svg"
 
         "files"
         {
@@ -20,7 +20,7 @@ projects
     {
         "functions"     "Tools/ProgressCalculation/PPropertyParser/functions.csv"
         "ignore"        "Tools/ProgressCalculation/PPropertyParser/ignorelist.txt"
-        "svgtemplate"   "Tools/ProgressCalculation/PPropertyParser/template.svg"
+        "svgtemplate"   "Tools/ProgressCalculation/template.svg"
 
         "files"
         {
@@ -36,7 +36,7 @@ projects
     {
         "functions"     "Tools/ProgressCalculation/TRenderInterface/functions.csv"
         "ignore"        "Tools/ProgressCalculation/TRenderInterface/ignorelist.txt"
-        "svgtemplate"   "Tools/ProgressCalculation/TRenderInterface/template.svg"
+        "svgtemplate"   "Tools/ProgressCalculation/template.svg"
 
         "files"
         {
