@@ -1,10 +1,25 @@
 projects
 {
+    "JPOG"
+    {
+        "functions"     "Tools/ProgressCalculation/JPOG/functions.csv"
+        "ignore"        "Tools/ProgressCalculation/JPOG/ignorelist.txt"
+        "svgtemplate"   "Tools/ProgressCalculation/templates/template_jpog.svg"
+
+        "files"
+        {
+            "extension" ".cpp"
+            "extension" ".hpp"
+            "extension" ".c"
+            "extension" ".h"
+            "directory" "OpenJPOG/Source"
+        }
+    }
     "TKernelInterface"
     {
         "functions"     "Tools/ProgressCalculation/TKernelInterface/functions.csv"
         "ignore"        "Tools/ProgressCalculation/TKernelInterface/ignorelist.txt"
-        "svgtemplate"   "Tools/ProgressCalculation/template.svg"
+        "svgtemplate"   "Tools/ProgressCalculation/templates/template_dll.svg"
 
         "files"
         {
@@ -20,7 +35,7 @@ projects
     {
         "functions"     "Tools/ProgressCalculation/PPropertyParser/functions.csv"
         "ignore"        "Tools/ProgressCalculation/PPropertyParser/ignorelist.txt"
-        "svgtemplate"   "Tools/ProgressCalculation/template.svg"
+        "svgtemplate"   "Tools/ProgressCalculation/templates/template_dll.svg"
 
         "files"
         {
@@ -36,7 +51,7 @@ projects
     {
         "functions"     "Tools/ProgressCalculation/TRenderInterface/functions.csv"
         "ignore"        "Tools/ProgressCalculation/TRenderInterface/ignorelist.txt"
-        "svgtemplate"   "Tools/ProgressCalculation/template.svg"
+        "svgtemplate"   "Tools/ProgressCalculation/templates/template_dll.svg"
 
         "files"
         {
