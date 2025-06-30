@@ -37,6 +37,24 @@ Clone the repository with the following commands:
 
 Then compile the generated solution and that's it
 
+## Ghidra Repository
+
+In case you want to contribute or learn something about how the game (or the engine) works, you can use our Ghidra repository where the game is being reverse engineered.
+
+DM @infc0re on Discord if you want to contribute and get your own account on the Ghidra repository to be able to make commits.
+
+```
+Version:  11.3.2
+File:     JPOG
+Hostname: repository.opentoshi.net
+Username: guest
+Password: guest1
+```
+
+## Contributing
+
+The project is open to any kind of contributions!
+
 ## Thirdparty libraries
 - [catch2](https://github.com/catchorg/Catch2)
 - [fmod](https://fmod.com/)
