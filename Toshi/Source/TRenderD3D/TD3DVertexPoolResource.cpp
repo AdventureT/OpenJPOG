@@ -78,6 +78,27 @@ TBOOL TVertexPoolResource::Lock(LockBuffer *a_pLockBuffer)
 // $TRenderD3DInterface: FUNCTION 10009f60
 void TVertexPoolResource::Unlock(TUSHORT a_uiNewNumVertices)
 {
+	TASSERT(m_uiLockCount > 0);
+	if (m_uiLockCount > 0 && --m_uiLockCount == 0) {
+		TINT iChange = a_uiNewNumVertices - GetNumVertices();
+		if (iChange != 0) {
+			if (GetParent()) {
+				if (GetParent()->GetClass().IsA(TGetClass(TVertexBlockResource))) {
+					TVertexBlockResource *pVertexBlock = static_cast<TVertexBlockResource *>(Parent());
+					pVertexBlock->ChildVertexUsedChanged(iChange);
+				}
+			}
+		}
+		m_usNumVertices = a_uiNewNumVertices;
+		if (!(GetFlags() & 6)) {
+			if (GetFlags() & 1) {
+				Validate();
+			}
+		}
+		else {
+			GetVertexBlock()->Unlock();
+		}
+	}
 }
 
 // $TRenderD3DInterface: FUNCTION 1000a3c0

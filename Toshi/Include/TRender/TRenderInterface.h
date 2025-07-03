@@ -142,6 +142,12 @@ public:
 		return pLastRenderContext;
 	}
 
+	// $TRenderInterface: FUNCTION 1000f160
+	TRenderContext *GetCurrentRenderContext()
+	{
+		return m_pCurrentRenderContext;
+	}
+
 	// $TRenderInterface: FUNCTION 1000f220
 	TBOOL IsCreated() { return m_bIsCreated; }
 	// $TRenderInterface: FUNCTION 1000f210

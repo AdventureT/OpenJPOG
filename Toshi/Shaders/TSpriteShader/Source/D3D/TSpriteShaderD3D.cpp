@@ -79,6 +79,15 @@ void TSpriteShaderOrderTable::Render()
 	m_uiNumRendPackets = 0;
 }
 
+TRenderPacket *TSpriteShaderOrderTable::AllocRenderPacket()
+{
+	m_uiNumRendPackets++;
+	if (m_uiNumRendPackets == m_uiMaxRendPackets) {
+		return TNULL;
+	}
+	return &m_pRenderPackets[m_uiNumRendPackets];
+}
+
 IMPLEMENT_DYNCREATE(TSpriteShaderHAL, TSpriteShader)
 
 const DWORD TSpriteShaderHAL::SHADERDECL[] = {
@@ -178,5 +187,20 @@ TBOOL TSpriteShaderHAL::Validate()
 	return TResource::Validate();
 }
 
+void TSpriteShaderHAL::EndMeshGeneration()
+{
+	TSpriteShader::EndMeshGeneration();
+	//m_pVertexPool->Unlock(m_iNumVertices);
+}
+
+TBOOL TSpriteMeshHAL::Render()
+{
+	if (!TMesh::Render()) {
+		return TFALSE;
+	}
+	TRenderInterface *pRenderer = GetRenderer();
+	TRenderContext *pContext = pRenderer->GetCurrentRenderContext();
+	return TBOOL();
+}
 
 TOSHI_NAMESPACE_END

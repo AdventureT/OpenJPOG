@@ -32,6 +32,17 @@ public:
 	TBOOL AttachPool(TVertexPoolResource *a_pPool);
 	TBOOL CanFit(TVertexPoolResource *a_pPoolResource);
 
+	void Unlock();
+
+	// $TRenderD3DInterface: FUNCTION 10008e90
+	void ChildVertexUsedChanged(TINT a_iChange)
+	{
+		if (a_iChange < 0) {
+			TASSERT(m_uiVerticesUsed >= -a_iChange);
+		}
+		m_uiVerticesUsed += a_iChange;
+	}
+
 	// $TRenderD3DInterface: FUNCTION 10009510
 	TVertexFactoryResourceInterface *GetFactory() { return m_pFactory; }
 	// $TRenderD3DInterface: FUNCTION 100094e0

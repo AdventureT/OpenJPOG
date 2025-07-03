@@ -9,3 +9,9 @@
 TOSHI_NAMESPACE_USING
 
 IMPLEMENT_DYNAMIC(TMesh, TResource)
+
+TBOOL TMesh::Render()
+{
+	static const TBOOL s_bEnableRender = TTRUE;
+	return s_bEnableRender;
+}

@@ -37,7 +37,7 @@ public:
 	// $TRenderInterface: FUNCTION 10012980
 	TBOOL                            IsLocked() const { return m_uiLockCount != 0; }
 
-private:
+protected:
 	// TResource base 0x0 -> 0x30
 	TVertexFactoryResourceInterface *m_pFactory;      // 0x30
 	TUSHORT                          m_usFlags;       // 0x34

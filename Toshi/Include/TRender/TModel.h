@@ -2,6 +2,7 @@
 #include "Defines.h"
 #include "TKernel/TKernelInterface.h"
 #include "TRender/TResource.h"
+#include "TRender/TShader.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -50,6 +51,17 @@ private:
 class TRENDERINTERFACE_EXPORTS TMesh : public TResource
 {
 	DECLARE_DYNAMIC(TMesh)
+
+public:
+	virtual TBOOL Render();
+
+	TShader *GetShader()
+	{
+		return m_pShader;
+	}
+
+private:
+	TShader *m_pShader; // 0x34
 };
 
 TOSHI_NAMESPACE_END

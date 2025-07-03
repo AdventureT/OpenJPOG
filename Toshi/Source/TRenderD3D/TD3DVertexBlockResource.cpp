@@ -7,6 +7,7 @@
 // Note: Should be the last include!
 //-----------------------------------------------------------------------------
 #include <TKernel/TMemoryDebugOn.h>
+#include <TRenderD3D/TRenderD3DInterface.h>
 
 TOSHI_NAMESPACE_USING
 
@@ -21,6 +22,19 @@ TBOOL TVertexBlockResource::CanFit(TVertexPoolResource *a_pPoolResource)
 	}
 
 	return TFALSE;
+}
+
+// $TRenderD3DInterface: FUNCTION 100090e0
+void TVertexBlockResource::Unlock()
+{
+	TASSERT(m_uiLockCount>0);
+	if (m_uiLockCount > 0) {
+		for (TUINT i = 0; i < m_pFactory->GetVertexFormat()->m_uiNumStreams; i++) {
+			HRESULT hRes = m_HALBuffer.apVertexBuffers[i]->Unlock();
+			TRenderD3DInterface::TD3DAssert(hRes, "Couldn't unlock stream vertex buffer!");
+		}
+		m_uiLockCount--;
+	}
 }
 
 // $TRenderD3DInterface: FUNCTION 10008b00

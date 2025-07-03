@@ -44,7 +44,7 @@ void TVertexPoolResourceInterface::OnDestroy()
 
 TBOOL TVertexPoolResourceInterface::Lock(LockBuffer *a_pLockBuffer)
 {
-	return TBOOL();
+	return TTRUE;
 }
 
 void TVertexPoolResourceInterface::Unlock(TUSHORT a_uiNewNumVertices)
