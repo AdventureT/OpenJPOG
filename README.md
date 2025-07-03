@@ -2,10 +2,16 @@
 Decompilation of the Toshi engine 1.0 and Jurassic Park: Operation Genesis (JPOG).
 
 ## Status
-<img src="https://opentoshi.net/progress/JPOG.svg" width="100%"/>
+<img src="https://opentoshi.net/progress/JPOG.svg" style="width:100%; display:block; margin-bottom: 1em;"/>
 
-<img src="https://opentoshi.net/progress/TKernelInterface.svg" width="50%"/><img src="https://opentoshi.net/progress/TRenderInterface.svg" width="50%"/>
-<img src="https://opentoshi.net/progress/PPropertyParser.svg" width="50%"/>
+<div style="display:flex; flex-wrap:wrap; gap:0.5em;">
+  <img src="https://opentoshi.net/progress/TKernelInterface.svg" style="width:49%;">
+  <img src="https://opentoshi.net/progress/TApplication.svg" style="width:49%;">
+  <img src="https://opentoshi.net/progress/TRenderInterface.svg" style="width:49%;">
+  <img src="https://opentoshi.net/progress/TRenderD3DInterface.svg" style="width:49%;">
+  <img src="https://opentoshi.net/progress/TGuiInterface.svg" style="width:49%;">
+  <img src="https://opentoshi.net/progress/TSpriteShaderD3D.svg" style="width:49%;">
+</div>
 
 At the moment, this is not an accurate representation of the actual progress of the decomp, since many functions have not been marked as done.
 

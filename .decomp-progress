@@ -63,4 +63,68 @@ projects
             "directory" "Toshi/Source/TRender"
         }
     }
+    "TRenderD3DInterface"
+    {
+        "functions"     "Tools/ProgressCalculation/TRenderD3DInterface/functions.csv"
+        "ignore"        "Tools/ProgressCalculation/TRenderD3DInterface/ignorelist.txt"
+        "svgtemplate"   "Tools/ProgressCalculation/templates/template_dll.svg"
+
+        "files"
+        {
+            "extension" ".cpp"
+            "extension" ".hpp"
+            "extension" ".c"
+            "extension" ".h"
+            "directory" "Toshi/Include/TRenderD3D"
+            "directory" "Toshi/Source/TRenderD3D"
+        }
+    }
+    "TApplication"
+    {
+        "functions"     "Tools/ProgressCalculation/TApplication/functions.csv"
+        "ignore"        "Tools/ProgressCalculation/TApplication/ignorelist.txt"
+        "svgtemplate"   "Tools/ProgressCalculation/templates/template_dll.svg"
+
+        "files"
+        {
+            "extension" ".cpp"
+            "extension" ".hpp"
+            "extension" ".c"
+            "extension" ".h"
+            "directory" "Toshi/Include/TApplication"
+            "directory" "Toshi/Source/TApplication"
+        }
+    }
+    "TGuiInterface"
+    {
+        "functions"     "Tools/ProgressCalculation/TGuiInterface/functions.csv"
+        "ignore"        "Tools/ProgressCalculation/TGuiInterface/ignorelist.txt"
+        "svgtemplate"   "Tools/ProgressCalculation/templates/template_dll.svg"
+
+        "files"
+        {
+            "extension" ".cpp"
+            "extension" ".hpp"
+            "extension" ".c"
+            "extension" ".h"
+            "directory" "Toshi/Include/TGui"
+            "directory" "Toshi/Source/TGui"
+        }
+    }
+    "TSpriteShaderD3D"
+    {
+        "functions"     "Tools/ProgressCalculation/TSpriteShaderD3D/functions.csv"
+        "ignore"        "Tools/ProgressCalculation/TSpriteShaderD3D/ignorelist.txt"
+        "svgtemplate"   "Tools/ProgressCalculation/templates/template_dll.svg"
+
+        "files"
+        {
+            "extension" ".cpp"
+            "extension" ".hpp"
+            "extension" ".c"
+            "extension" ".h"
+            "directory" "Toshi/Shaders/TSpriteShader/Include"
+            "directory" "Toshi/Shaders/TSpriteShader/Source"
+        }
+    }
 }
