@@ -1,5 +1,6 @@
 #include "D3D/TSpriteShaderD3D.h"
 #include "TRenderD3D/TRenderD3DInterface.h"
+#include "TRenderD3D/TD3DVertexFactoryResource.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -15,7 +16,7 @@ void TSpriteMaterialHAL::PreRender()
 {
 	TRenderD3DInterface *pRenderer = GetRenderer();
 	IDirect3DDevice8    *pDevice   = pRenderer->GetD3DDevice();
-	TTextureResourceHAL *pResource = static_cast<TTextureResourceHAL *>(m_pTexture[0]);
+	TTextureResourceHAL *pResource = static_cast<TTextureResourceHAL *>(m_pTexture);
 	if (pResource) {
 		pResource->Validate();
 		if (pResource->GetD3DTexture()) {
@@ -94,13 +95,62 @@ const DWORD TSpriteShaderHAL::SHADERDECL[] = {
 	0x20000000, 0x40020000, 0x40040001, 0x40010002, 0xFFFFFFFFF
 };
 
+TBOOL TSpriteShaderHAL::Create()
+{
+	OnResetDevice();
+	if (!TSpriteShader::Create()) {
+		return TFALSE;
+	}
+	m_pLineMaterial = CreateMaterial("LineMat");
+	m_pLineMaterial->SetBlendMode2(1);
+	m_pLineMaterial->SetBlendMode(1);
+	m_pFillMaterial = CreateMaterial("FillMat");
+	m_pLineMaterial->SetBlendMode(1);
+	return TTRUE;
+}
+
 TSpriteMaterial *TSpriteShaderHAL::CreateMaterial(TPCCHAR a_szName)
 {
 	Validate();
-	TSpriteMaterial *pMaterial = static_cast<TSpriteMaterial *>(GetRenderer()->CreateResource(&TGetClass(TSpriteShaderHAL), a_szName, this));
+	TSpriteMaterial *pMaterial = static_cast<TSpriteMaterial *>(GetRenderer()->CreateResource(&TGetClass(TSpriteMaterialHAL), a_szName, this));
 	pMaterial->SetShader(this);
 	pMaterial->SetFlag(1, TTRUE);
 	return pMaterial;
+}
+
+TSpriteMesh *TSpriteShaderHAL::CreateMesh(TINT a_iCount, TINT &a_rMeshSize)
+{
+	TSpriteMeshHAL *pMeshes = new TSpriteMeshHAL[a_iCount];
+	for (TINT i = 0; i < a_iCount; i++) {
+		TSpriteMeshHAL *pMesh = static_cast<TSpriteMeshHAL *>(GetRenderer()->CreateResourceInPlace(&TGetClass(TSpriteMeshHAL), &pMeshes[i], TNULL, this));
+		pMesh->SetShader(this);
+	}
+	a_rMeshSize = sizeof(TSpriteMeshHAL);
+	return pMeshes;
+}
+
+TBOOL TSpriteShaderHAL::OnResetDevice()
+{
+	TVertexFactoryResource *pVertexFactory = static_cast<TVertexFactoryResource *>(GetRenderer()->GetSystemResource(TRenderInterface::SYSRESOURCE_VFSYSSVNDUV1));
+	TUINT                   uiFlags = 0;
+	if ((m_uiFlags & 1) != 0) {
+		uiFlags = 1;
+	}
+	else if ((m_uiFlags & 2) != 0) {
+		uiFlags = 2;
+	}
+	else if ((m_uiFlags & 4) != 0) {
+		uiFlags = 4;
+	}
+	m_pVertexPool = static_cast<TVertexPoolResource *>(pVertexFactory->CreatePoolResource(m_usMaxStaticVertices, uiFlags));
+	// Same with IndexPool
+	TIMPLEMENT();
+	for (auto it = m_aMeshes.Begin(); it != m_aMeshes.End(); it++) {
+		it->Get()->SetVertexPool(m_pVertexPool);
+		// Same with IndexPool
+	}
+	Validate();
+	return TTRUE;
 }
 
 void TSpriteShaderHAL::Flush()
@@ -170,7 +220,6 @@ static const char VERTEXSHADER[] = {
 
 TBOOL TSpriteShaderHAL::Validate()
 {
-	TASSERT(TTRUE == IsCreated());
 	if (TResource::IsValid()) {
 		return TTRUE;
 	}
@@ -187,10 +236,26 @@ TBOOL TSpriteShaderHAL::Validate()
 	return TResource::Validate();
 }
 
+void TSpriteShaderHAL::BeginMeshGeneration()
+{
+	m_pVertexPool->Lock(m_pVertexLockBuffer);
+	TSpriteShader::BeginMeshGeneration();
+}
+
 void TSpriteShaderHAL::EndMeshGeneration()
 {
 	TSpriteShader::EndMeshGeneration();
-	//m_pVertexPool->Unlock(m_iNumVertices);
+	m_pVertexPool->Unlock(m_iNumVertices);
+}
+
+IMPLEMENT_DYNCREATE(TSpriteMeshHAL, TSpriteMesh)
+
+TBOOL TSpriteMeshHAL::Create(TUINT a_uiFlags, TUSHORT a_usX, TUSHORT a_usY)
+{
+	m_uiFlags = a_uiFlags;
+	m_pVertexPool = GetShader()->GetVertexPool();
+	//m_pIndexPool = GetShader()->GetIndexPool();
+	return TResource::Create();
 }
 
 TBOOL TSpriteMeshHAL::Render()

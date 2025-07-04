@@ -53,15 +53,31 @@ class TRENDERINTERFACE_EXPORTS TMesh : public TResource
 	DECLARE_DYNAMIC(TMesh)
 
 public:
+
+	TMesh()
+	{
+		m_pOwnerShader = TNULL;
+	}
+
 	virtual TBOOL Render();
+
+public:
+	// $TRenderInterface: FUNCTION 10011590
+	void SetShader(TShader *a_pShader)
+	{
+		TASSERT(TNULL==m_pOwnerShader);
+		m_pOwnerShader = a_pShader;
+	}
+
+public:
 
 	TShader *GetShader()
 	{
-		return m_pShader;
+		return m_pOwnerShader;
 	}
 
 private:
-	TShader *m_pShader; // 0x34
+	TShader *m_pOwnerShader; // 0x34
 };
 
 TOSHI_NAMESPACE_END

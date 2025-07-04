@@ -43,6 +43,7 @@ public:
 	{
 		m_dwVertexShaderHandle = INVALIDSHADERHANDLE;
 		m_bMipMapLODBias       = TTRUE;
+		m_pVertexPool          = TNULL;
 	}
 
 	TRenderD3DInterface *GetRenderer() const
@@ -61,10 +62,14 @@ public:
 		return m_pVertexPool;
 	}
 
+	virtual TBOOL            Create();
 	virtual TSpriteMaterial *CreateMaterial(TPCCHAR a_szName);
+	virtual TSpriteMesh     *CreateMesh(TINT a_iCount, TINT &a_rMeshSize);
+	virtual TBOOL            OnResetDevice();
 	virtual void             Flush();
 	virtual void             Render(TRenderPacket *a_pRenderPacket);
 	virtual TBOOL            Validate();
+	virtual void             BeginMeshGeneration();
 	virtual void             EndMeshGeneration();
 
 protected:
@@ -75,6 +80,8 @@ public:
 
 private:
 	TINT                    m_iNumVertices;         // 0x114
+	TSpriteMaterial        *m_pLineMaterial;        // 0x118
+	TSpriteMaterial        *m_pFillMaterial;        // 0x11C
 	DWORD                   m_dwVertexShaderHandle; // 0x128
 	TSpriteShaderOrderTable m_oOrderTable;          // 0x130
 	TVertexPoolResource    *m_pVertexPool;          // 0x140
@@ -88,7 +95,7 @@ public:
 
 	TSpriteMaterialHAL()
 	{
-		m_pTexture[0] = TNULL;
+		m_pTexture = TNULL;
 	}
 
 	TRenderD3DInterface* GetRenderer() const
@@ -102,6 +109,9 @@ public:
 
 class TSPRITESHADERD3D_EXPORTS TSpriteMeshHAL : public TSpriteMesh
 {
+	DECLARE_DYNAMIC(TSpriteMeshHAL)
+
+	virtual TBOOL Create(TUINT a_uiFlags, TUSHORT a_usX, TUSHORT a_usY);
 	virtual TBOOL Render();
 
 public:

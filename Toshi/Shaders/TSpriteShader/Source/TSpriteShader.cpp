@@ -9,6 +9,8 @@
 
 TOSHI_NAMESPACE_BEGIN
 
+IMPLEMENT_DYNAMIC(TSpriteMesh, TMesh)
+
 TBOOL TSpriteMesh::Validate()
 {
 	if (IsValid()) {
@@ -39,6 +41,20 @@ IMPLEMENT_DYNAMIC(TSpriteMaterial, TMaterial)
 
 IMPLEMENT_DYNAMIC(TSpriteShader, TShader)
 
+TBOOL TSpriteShader::Create()
+{
+	if (!TShader::Create()) {
+		return TFALSE;
+	}
+	TINT iMeshSize;
+	TSpriteMesh *pMeshes = CreateMesh(256, iMeshSize);
+	for (size_t i = 0; i < 256; i++) {
+		pMeshes[i].Create(m_uiFlags, m_usMaxStaticIndices, m_usMaxStaticVertices);
+		m_aMeshes.InsertTail(*(new TNodeListNodeWrapper<TSpriteMesh>(&pMeshes[i])));
+	}
+	return TTRUE;
+}
+
 void TSpriteShader::SetMaterial(TSpriteMaterial *a_pMaterial)
 {
 	TIMPLEMENT()
@@ -51,19 +67,21 @@ void TSpriteShader::SetColour(const TGUIColour &a_rColour)
 
 void TSpriteShader::BeginMeshGeneration()
 {
-	TIMPLEMENT()
+	m_aMeshes.Head() = m_aMeshes.End();
+	m_iNumIndices    = 0;
+	m_iNumVertices   = 0;
 }
 
 void TSpriteShader::EndMeshGeneration()
 {
 	if (m_aMeshes.Begin() != m_aMeshes.End()) {
 		TSpriteMesh *pMesh = GetMesh();
-		pMesh->Unlock(m_iHeight, m_iWidth);
-		if (false) {
+		pMesh->Unlock(m_iNumVertices, m_iNumIndices);
+		if (pMesh->m_bRender) {
 			pMesh->Validate();
+			pMesh->Render();
 		}
 	}
-	TIMPLEMENT()
 }
 
 TOSHI_NAMESPACE_END

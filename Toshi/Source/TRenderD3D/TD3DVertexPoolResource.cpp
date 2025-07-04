@@ -72,6 +72,7 @@ void TVertexPoolResource::OnDestroy()
 // $TRenderD3DInterface: FUNCTION 10009cd0
 TBOOL TVertexPoolResource::Lock(LockBuffer *a_pLockBuffer)
 {
+	TVALIDADDRESS(a_pLockBuffer);
 	return TBOOL();
 }
 

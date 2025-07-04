@@ -153,6 +153,34 @@ void TRenderInterface::DestroySystemResources()
 {
 }
 
+// $TRenderInterface: FUNCTION 1000e040
+TResource *TRenderInterface::CreateResourceInPlace(const TClass *a_pClass, void *a_pData, TPCCHAR a_szResName, TResource *a_pParent)
+{
+	TASSERT(TNULL != a_pClass);
+	TASSERT(a_pClass->IsA(TGetClass(TResource)));
+
+	TResource *pResource = static_cast<TResource *>(a_pClass->CreateObjectInPlace(a_pData));
+	TASSERT(TNULL != pResource);
+
+	if (a_pParent && a_pParent->IsDying()) {
+		TASSERT(!"Can't add a resource below a dying resource!")
+	}
+
+	m_Resources.Remove(*pResource, TFALSE);
+
+	if (a_pParent == TNULL) {
+		a_pParent = m_Resources.GetRoot();
+	}
+
+	m_Resources.Insert(a_pParent, pResource);
+	pResource->m_uiUId     = m_iResourceCount++;
+	pResource->m_pRenderer = this;
+	pResource->SetName(a_szResName);
+	pResource->m_Flags |= TResource::FLAGS_EXTERNAL;
+
+	return pResource;
+}
+
 // $TRenderInterface: FUNCTION 1000def0
 TResource *TRenderInterface::CreateResource(const TClass *a_pClass, TPCCHAR a_szResName, TResource *a_pParent)
 {
@@ -168,8 +196,7 @@ TResource *TRenderInterface::CreateResource(const TClass *a_pClass, TPCCHAR a_sz
 
 	m_Resources.Remove(*pResource, TFALSE);
 
-	if (a_pParent == TNULL)
-	{
+	if (a_pParent == TNULL) {
 		a_pParent = m_Resources.GetRoot();
 	}
 

@@ -85,7 +85,7 @@ TBOOL TMaterialLibrary::LoadSpriteMaterial(TINT a_iIndex, TFile *file, const TML
 			TDPRINTF("TMaterialLibrary::LoadSpriteMaterial(): Failed to read texture id %d for material %d\n", i, a_iIndex);
 			return TFALSE;
 		}
-		pMat->SetTexture1(GetTexture(a_iIndex));
+		pMat->SetTexture(GetTexture(a_iIndex));
 		m_pTextures[i]->SetAddressModeMode(TTextureResource::ADDRESSMODE_CLAMP);
 	}
 	if ((dh.flags & 4) != 0) {

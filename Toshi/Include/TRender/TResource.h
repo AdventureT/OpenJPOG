@@ -15,6 +15,8 @@ class TRENDERINTERFACE_EXPORTS TResource
 {
 	DECLARE_DYNAMIC(TResource)
 
+	friend class TRenderInterface;
+
 public:
 	using t_RecurseCb = TBOOL (*)(TResource *a_pResource, void *a_pUserData);
 
