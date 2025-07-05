@@ -1,7 +1,9 @@
 #pragma once
 #include "TRender/TResource.h"
 #include "TKernel/TFreeList.h"
+#include "TKernel/TSystemTools.h"
 #include "TRender/TVertexFactoryResourceInterface.h"
+#include "TRender/TVertexPoolResourceInterface.h"
 #include <d3d8.h>
 #include "Defines.h"
 
@@ -20,6 +22,9 @@ public:
 	{
 		HALBuffer()
 		{
+			uiNumStreams = 0;
+			uiVertexOffset = 0;
+			TSystem::MemSet(apVertexBuffers, 0, sizeof(apVertexBuffers));
 		}
 
 		TUINT                   uiNumStreams;
@@ -27,11 +32,23 @@ public:
 		IDirect3DVertexBuffer8 *apVertexBuffers[TVertexFactoryFormat::MAX_NUM_STREAMS];
 	};
 
+	TVertexBlockResource()
+	{
+		m_pFactory       = TNULL;
+		m_uiFlags        = 0;
+		m_uiMaxVertices  = 0;
+		m_uiOffset       = 0;
+		m_uiVerticesUsed = 0;
+		m_uiLockCount    = 0;
+		m_Unk1           = 0;
+	}
+
 	TBOOL Create(TVertexFactoryResource *a_pFactory, TUSHORT a_uiMaxVertices, TUINT a_uiFlags);
 
 	TBOOL AttachPool(TVertexPoolResource *a_pPool);
 	TBOOL CanFit(TVertexPoolResource *a_pPoolResource);
 
+	TBOOL Lock(TVertexPoolResourceInterface::LockBuffer *a_pLockBuffer, TUSHORT a_usNumVertices);
 	void Unlock();
 
 	// $TRenderD3DInterface: FUNCTION 10008e90
@@ -52,7 +69,7 @@ private:
 	TVertexFactoryResourceInterface *m_pFactory; // 0x30
 	TUINT                            m_uiFlags;  // 0x34
 	TUSHORT                          m_uiMaxVertices;
-	TUINT                            m_uiOffset;
+	TUINT                            m_uiOffset; // 0x3C
 	TUINT                            m_uiVerticesUsed;
 	TUINT                            m_uiLockCount;
 	TUINT                            m_Unk1;

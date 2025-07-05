@@ -238,7 +238,7 @@ TBOOL TSpriteShaderHAL::Validate()
 
 void TSpriteShaderHAL::BeginMeshGeneration()
 {
-	m_pVertexPool->Lock(m_pVertexLockBuffer);
+	m_pVertexPool->Lock(&m_VertexLockBuffer);
 	TSpriteShader::BeginMeshGeneration();
 }
 

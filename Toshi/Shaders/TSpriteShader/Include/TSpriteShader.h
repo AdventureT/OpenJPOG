@@ -97,12 +97,11 @@ public:
 
 	TSpriteShader()
 	{
-		m_pVertexLockBuffer = TNULL;
-		m_iNumIndices       = 0;
-		m_iNumVertices      = 0;
-		m_uiFlags           = 100;
-		m_usMaxStaticIndices               = 6144;
-		m_usMaxStaticVertices               = 9216;
+		m_iNumIndices         = 0;
+		m_iNumVertices        = 0;
+		m_uiFlags             = 100;
+		m_usMaxStaticIndices  = 6144;
+		m_usMaxStaticVertices = 9216;
 	}
 
 	virtual TBOOL            Create();
@@ -121,7 +120,7 @@ public:
 	}
 
 protected:
-	TVertexPoolResourceInterface::LockBuffer    *m_pVertexLockBuffer;   // 0xE0
+	TVertexPoolResourceInterface::LockBuffer     m_VertexLockBuffer;   // 0xE0
 	TNodeList<TNodeListNodeWrapper<TSpriteMesh>> m_aMeshes;             // 0xDC
 	TUSHORT                                      m_iNumIndices;         // 0x110
 	TUSHORT                                      m_iNumVertices;        // 0x114

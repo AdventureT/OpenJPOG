@@ -14,6 +14,13 @@ class TRENDERINTERFACED3D_EXPORTS TVertexPoolResource : public TVertexPoolResour
 
 public:
 
+	TVertexPoolResource()
+	{
+		m_uiVertexOffset = 0;
+		m_uiNumLocksOverall = 0;
+		TSystem::MemSet(m_apManagedStreams, 0, sizeof(m_apManagedStreams));
+	}
+
 	virtual TBOOL Validate() override;
 	virtual void  Invalidate() override;
 	virtual void  OnDestroy() override;
@@ -39,6 +46,11 @@ public:
 		}
 		return TNULL;
 	}
+
+private:
+	TUINT  m_uiVertexOffset;                                          // 0x3C
+	TBYTE *m_apManagedStreams[TVertexFactoryFormat::MAX_NUM_STREAMS]; // 0x40
+	TUINT  m_uiNumLocksOverall;                                       // 0x60
 };
 
 TOSHI_NAMESPACE_END

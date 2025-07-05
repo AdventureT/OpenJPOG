@@ -24,6 +24,50 @@ TBOOL TVertexBlockResource::CanFit(TVertexPoolResource *a_pPoolResource)
 	return TFALSE;
 }
 
+TBOOL TVertexBlockResource::Lock(TVertexPoolResourceInterface::LockBuffer *a_pLockBuffer, TUSHORT a_usNumVertices)
+{
+	TVALIDADDRESS(a_pLockBuffer);
+	TVertexFactoryFormat *vertexFormat = GetFactory()->GetVertexFormat();
+	a_pLockBuffer->uiNumStreams        = vertexFormat->m_uiNumStreams;
+	DWORD uiFlags;
+	TUINT uiNumVertices = 0;
+	TUINT uiUnk1        = m_uiFlags & 7;
+	if (uiUnk1 == 1) {
+		uiFlags                 = D3DLOCK_NOSYSLOCK;
+		a_pLockBuffer->uiOffset = 0;
+	}
+	else if (uiUnk1 == 2) {
+		Validate();
+		uiFlags                 = D3DLOCK_DISCARD | D3DLOCK_NOSYSLOCK;
+		a_pLockBuffer->uiOffset = 0;
+	}
+	else if (uiUnk1 == 4) {
+		TASSERT(m_uiLockCount==0);
+		Validate();
+		uiNumVertices = a_usNumVertices;
+		if (m_uiMaxVertices < m_uiOffset + uiNumVertices) {
+			uiFlags                 = D3DLOCK_DISCARD | D3DLOCK_NOSYSLOCK;
+			a_pLockBuffer->uiOffset = 0;
+			m_uiOffset              = uiNumVertices;
+		}
+		else {
+			uiFlags                 = D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK;
+			a_pLockBuffer->uiOffset = m_uiOffset;
+			m_uiOffset += uiNumVertices;
+		}
+	}
+	for (TUINT i = 0; i < a_pLockBuffer->uiNumStreams; i++) {
+		HRESULT hRes = m_HALBuffer.apVertexBuffers[i]->Lock(
+			a_pLockBuffer->uiOffset * vertexFormat->m_aStreamFormats[i].m_uiVertexSize,
+			uiNumVertices * vertexFormat->m_aStreamFormats[i].m_uiVertexSize,
+			&a_pLockBuffer->apStreams[i],
+			uiFlags);
+		TRenderD3DInterface::TD3DAssert(hRes, "Couldn't lock stream vertex buffer");
+	}
+	m_uiLockCount++;
+	return TTRUE;
+}
+
 // $TRenderD3DInterface: FUNCTION 100090e0
 void TVertexBlockResource::Unlock()
 {
@@ -41,14 +85,11 @@ void TVertexBlockResource::Unlock()
 TBOOL TVertexBlockResource::AttachPool(TVertexPoolResource *a_pPool)
 {
 	TVALIDADDRESS(a_pPool);
-
 	m_uiVerticesUsed += a_pPool->GetNumVertices();
 	a_pPool->SetParent(this);
-
-	if (m_uiFlags & 1) {
+	if (GetFlags() & 1) {
 		Invalidate();
 	}
-
 	return TTRUE;
 }
 

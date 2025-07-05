@@ -1,6 +1,7 @@
 #include "TRenderD3D/TD3DVertexPoolResource.h"
 #include "TRenderD3D/TD3DVertexBlockResource.h"
 #include "TRenderD3D/TD3DVertexFactoryResource.h"
+#include "TRenderD3D/TRenderD3DInterface.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -62,18 +63,47 @@ TBOOL TVertexPoolResource::Validate()
 // $TRenderD3DInterface: FUNCTION 10009c30
 void TVertexPoolResource::Invalidate()
 {
+	TIMPLEMENT();
 }
 
 // $TRenderD3DInterface: FUNCTION 1000a500
 void TVertexPoolResource::OnDestroy()
 {
+	TIMPLEMENT();
 }
 
 // $TRenderD3DInterface: FUNCTION 10009cd0
 TBOOL TVertexPoolResource::Lock(LockBuffer *a_pLockBuffer)
 {
 	TVALIDADDRESS(a_pLockBuffer);
-	return TBOOL();
+	if ((m_uiLockCount++) == 0) {
+		TUINT flags = GetFlags() & 7;
+		if (flags == 1) {
+			TASSERT(TFALSE==IsValid());
+			a_pLockBuffer->uiNumStreams = GetFactory()->GetVertexFormat()->GetNumStreams();
+			for (TUINT i = 0; i < a_pLockBuffer->uiNumStreams; i++) {
+				a_pLockBuffer->apStreams[i] = m_apManagedStreams[i];
+			}
+			return TTRUE;
+		}
+		else if (flags == 2) {
+			TASSERT(TTRUE==GetRenderer()->IsInScene());
+			Validate();
+			if (GetVertexBlock()->Lock(a_pLockBuffer, 0)) {
+				m_uiVertexOffset = a_pLockBuffer->uiOffset;
+				return TTRUE;
+			}
+		}
+		else if (flags == 4) {
+			TASSERT(TTRUE == GetRenderer()->IsInScene());
+			Validate();
+			if (GetVertexBlock()->Lock(a_pLockBuffer, GetMaxVertices())) {
+				m_uiVertexOffset = a_pLockBuffer->uiOffset;
+				return TTRUE;
+			}
+		}
+	}
+	return TFALSE;
 }
 
 // $TRenderD3DInterface: FUNCTION 10009f60
@@ -105,5 +135,19 @@ void TVertexPoolResource::Unlock(TUSHORT a_uiNewNumVertices)
 // $TRenderD3DInterface: FUNCTION 1000a3c0
 TBOOL TVertexPoolResource::Create(TVertexFactoryResourceInterface *a_pFactory, TUINT a_uiMaxVertices, TUINT a_uiFlags)
 {
-	return TBOOL();
+	TASSERT(TFALSE==IsCreated());
+	if (a_uiFlags & 4) {
+		a_uiFlags = a_uiFlags & ~4 | 2;
+	}
+	if (!TVertexPoolResourceInterface::Create(a_pFactory, a_uiMaxVertices, a_uiFlags)) {
+		return TFALSE;
+	}
+	if (GetFlags() & 1) {
+		TVertexFactoryFormat *vertexFormat = GetFactory()->GetVertexFormat();
+		for (TUINT i = 0; i < vertexFormat->m_uiNumStreams; i++) {
+			m_apManagedStreams[i] = new TBYTE[a_uiMaxVertices * vertexFormat->m_aStreamFormats[i].m_uiVertexSize];
+			TVALIDADDRESS(m_apManagedStreams[i]);
+		}
+	}
+	return TTRUE;
 }

@@ -10,11 +10,12 @@ class TRENDERINTERFACE_EXPORTS TVertexPoolResourceInterface : public TResource
 public:
 	class TRENDERINTERFACE_EXPORTS LockBuffer
 	{
+	public:
 		LockBuffer();
 
-		TUINT          uiNumStreams;
-		TUINT32        uiOffset;
-		unsigned char *apStreams[TVertexFactoryFormat::MAX_NUM_STREAMS];
+		TUINT          uiNumStreams;                                     // 0x0
+		TUINT32        uiOffset;                                         // 0x4
+		unsigned char *apStreams[TVertexFactoryFormat::MAX_NUM_STREAMS]; // 0x8
 	};
 
 	TVertexPoolResourceInterface();
