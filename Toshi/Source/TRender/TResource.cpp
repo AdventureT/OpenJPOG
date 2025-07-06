@@ -72,15 +72,17 @@ void TResource::OnDestroy()
 void TResource::SetParent(TResource *a_pParent)
 {
 	TASSERT((TNULL == a_pParent) || (TTRUE == IsDying()) || (TFALSE == a_pParent->IsDying()));
+
+	TNodeTree<TResource> *pTree = GetTree();
 	TASSERT(TNULL != GetTree());
 
-	GetTree()->Remove(this, TFALSE);
+	pTree->Remove(this, TFALSE);
 
 	if (!a_pParent) {
-		GetTree()->InsertAtRoot(this);
+		pTree->InsertAtRoot(this);
 	}
 	else {
-		GetTree()->Insert(a_pParent, this);
+		pTree->Insert(a_pParent, this);
 	}
 }
 
