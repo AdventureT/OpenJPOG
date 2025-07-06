@@ -1,4 +1,5 @@
 #include "TMemory.h"
+#include "TSystemTools.h"
 #include <new>
 
 #include "TMemoryDebug.h"
@@ -76,6 +77,12 @@ TMemory::MemBlock *TOSHI_API TMemory::GetGlobalBlock()
 {
 	Initialise();
 	return g_oMemManager.m_pMemBlock;
+}
+
+// $TKernelInterface: FUNCTION 10025d70
+void TMemory::GetHALMemInfo(HALMemInfo &a_rInfo)
+{
+	TSystem::MemSet(&a_rInfo, 0, sizeof(HALMemInfo));
 }
 
 // $TKernelInterface: FUNCTION 100245a0

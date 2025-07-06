@@ -11,9 +11,10 @@ TOSHI_NAMESPACE_BEGIN
 
 class TKERNELINTERFACE_EXPORTS TMemory
 {
-
+public:
 	struct HALMemInfo
 	{
+		TINT m_iMemUsage; // 0x40
 		// sizeof 0x54
 	};
 
@@ -57,6 +58,7 @@ public:
 	static void TOSHI_API      DebugPrintHALMemInfo(TCHAR const *a_pPrint){};
 	static TMemory &TOSHI_API  GetMemMangager();
 	static MemBlock *TOSHI_API GetGlobalBlock();
+	static void                GetHALMemInfo(HALMemInfo &a_rInfo);
 	static MemNode *TOSHI_API  GetMemNodeFromAddress(TPVOID a_pAddr);
 	static void TOSHI_API      ExtendNodeSize(MemNode *a_pMemNode, TUINT a_iuSize);
 

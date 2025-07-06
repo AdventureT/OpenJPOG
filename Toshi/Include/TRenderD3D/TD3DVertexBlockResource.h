@@ -43,7 +43,16 @@ public:
 		m_Unk1           = 0;
 	}
 
+	virtual TBOOL Validate();
+
 	TBOOL Create(TVertexFactoryResource *a_pFactory, TUSHORT a_uiMaxVertices, TUINT a_uiFlags);
+
+protected:
+
+	TBOOL CreateHAL();
+	void  DestroyHAL();
+
+public:
 
 	TBOOL AttachPool(TVertexPoolResource *a_pPool);
 	TBOOL CanFit(TVertexPoolResource *a_pPoolResource);
@@ -64,6 +73,14 @@ public:
 	TVertexFactoryResourceInterface *GetFactory() { return m_pFactory; }
 	// $TRenderD3DInterface: FUNCTION 100094e0
 	TUINT                            GetFlags() { return m_uiFlags; }
+
+	inline static TINT s_iCurrentNumHALCreated;
+	inline static TINT s_iTotalNumHALCreated;
+	inline static TINT s_iTotalNumHALDestroyed;
+	inline static TINT s_iCurrentVertexBufferBytesAllocated;
+	inline static TINT s_iTotalVertexBufferBytesAllocated;
+	inline static TINT s_iHALMemoryUsage;
+	inline static TINT s_iWastedVertexBufferBytesAllocated;
 
 private:
 	TVertexFactoryResourceInterface *m_pFactory; // 0x30

@@ -93,6 +93,22 @@ TBOOL TVertexBlockResource::AttachPool(TVertexPoolResource *a_pPool)
 	return TTRUE;
 }
 
+// $TRenderD3DInterface: FUNCTION 10008960
+TBOOL TVertexBlockResource::Validate()
+{
+	if (IsValid()) {
+		return TTRUE;
+	}
+	TASSERT(TTRUE==Parent()->GetClass().IsExactly(TGetClass(TVertexFactoryResource)));
+	if (!CreateHAL()) {
+		return TFALSE;
+	}
+	if (GetFlags() & 1) {
+
+	}
+	TIMPLEMENT();
+}
+
 // $TRenderD3DInterface: FUNCTION 100088c0
 TBOOL TVertexBlockResource::Create(TVertexFactoryResource *a_pFactory, TUSHORT a_uiMaxVertices, TUINT a_uiFlags)
 {
@@ -102,4 +118,67 @@ TBOOL TVertexBlockResource::Create(TVertexFactoryResource *a_pFactory, TUSHORT a
 	m_uiMaxVertices = a_uiMaxVertices;
 	m_uiFlags       = a_uiFlags;
 	return TResource::Create();
+}
+
+// $TRenderD3DInterface: FUNCTION 100091a0
+TBOOL TVertexBlockResource::CreateHAL()
+{
+	DestroyHAL();
+	TRenderD3DInterface  *pRenderer    = static_cast<TRenderD3DInterface *>(GetRenderer());
+	TVertexFactoryFormat *vertexFormat = GetFactory()->GetVertexFormat();
+	m_HALBuffer.uiNumStreams           = vertexFormat->m_uiNumStreams;
+	for (TUINT i = 0; i < m_HALBuffer.uiNumStreams; i++) {
+		UINT  length = vertexFormat->m_aStreamFormats[i].m_uiVertexSize * m_uiMaxVertices;
+		DWORD usage  = D3DUSAGE_WRITEONLY;
+		if (GetFlags() & 1) {
+			usage      = D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY;
+			m_uiOffset = 0;
+		}
+		if (!pRenderer->GetCurrentDevice()->SupportsHardwareTransfomations()) {
+			usage |= D3DUSAGE_SOFTWAREPROCESSING;
+		}
+		HRESULT hRes = pRenderer->GetD3DDevice()->CreateVertexBuffer(
+			length,
+			usage,
+			0,
+			D3DPOOL_DEFAULT,
+			&m_HALBuffer.apVertexBuffers[i]);
+		TRenderD3DInterface::TD3DAssert(hRes, "Unable to create a new vertex buffer!");
+		
+		TMemory::HALMemInfo memInfoHAL;
+		TMemory::GetHALMemInfo(memInfoHAL);
+		s_iHALMemoryUsage += memInfoHAL.m_iMemUsage;
+		s_iCurrentNumHALCreated += 1;
+		s_iTotalNumHALCreated += 1;
+		s_iTotalVertexBufferBytesAllocated += length;
+		s_iCurrentVertexBufferBytesAllocated += length;
+
+		if (s_iTotalVertexBufferBytesAllocated < s_iHALMemoryUsage) {
+			s_iWastedVertexBufferBytesAllocated = s_iHALMemoryUsage - s_iTotalVertexBufferBytesAllocated;
+		}
+	}
+
+	return TTRUE;
+}
+
+// $TRenderD3DInterface: FUNCTION 10009300
+void TVertexBlockResource::DestroyHAL()
+{
+	TMemory::HALMemInfo memInfoHAL;
+	TMemory::GetHALMemInfo(memInfoHAL);
+	for (TUINT i = 0; i < m_HALBuffer.uiNumStreams; i++) {
+		if (m_HALBuffer.apVertexBuffers[i]) {
+			TD3DRELEASE(m_HALBuffer.apVertexBuffers[i]);
+			m_HALBuffer.apVertexBuffers[i] = TNULL;
+			s_iCurrentNumHALCreated--;
+			s_iTotalNumHALDestroyed++;
+			s_iCurrentVertexBufferBytesAllocated -= GetFactory()->GetVertexFormat()->m_aStreamFormats[i].m_uiVertexSize * m_uiMaxVertices;
+		}
+	}
+	m_HALBuffer.uiNumStreams = 0;
+	TMemory::GetHALMemInfo(memInfoHAL);
+	s_iHALMemoryUsage = s_iHALMemoryUsage - memInfoHAL.m_iMemUsage;
+	if (s_iTotalVertexBufferBytesAllocated < s_iHALMemoryUsage) {
+		s_iWastedVertexBufferBytesAllocated = s_iHALMemoryUsage - s_iTotalVertexBufferBytesAllocated;
+	}
 }
