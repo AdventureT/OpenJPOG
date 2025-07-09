@@ -20,7 +20,6 @@ TBOOL TVertexBlockResource::CanFit(TVertexPoolResource *a_pPoolResource)
 	if (GetFlags() & 1 && a_pPoolResource->GetFlags() & 1) {
 		return m_uiMaxVertices >= a_pPoolResource->GetNumVertices() + m_uiVerticesUsed;
 	}
-
 	return TFALSE;
 }
 
@@ -28,18 +27,18 @@ TBOOL TVertexBlockResource::Lock(TVertexPoolResourceInterface::LockBuffer *a_pLo
 {
 	TVALIDADDRESS(a_pLockBuffer);
 	TVertexFactoryFormat *vertexFormat = GetFactory()->GetVertexFormat();
-	a_pLockBuffer->uiNumStreams        = vertexFormat->m_uiNumStreams;
+	a_pLockBuffer->m_uiNumStreams        = vertexFormat->m_uiNumStreams;
 	DWORD uiFlags;
 	TUINT uiNumVertices = 0;
 	TUINT uiUnk1        = m_uiFlags & 7;
 	if (uiUnk1 == 1) {
 		uiFlags                 = D3DLOCK_NOSYSLOCK;
-		a_pLockBuffer->uiOffset = 0;
+		a_pLockBuffer->m_uiStartVertex = 0;
 	}
 	else if (uiUnk1 == 2) {
 		Validate();
 		uiFlags                 = D3DLOCK_DISCARD | D3DLOCK_NOSYSLOCK;
-		a_pLockBuffer->uiOffset = 0;
+		a_pLockBuffer->m_uiStartVertex = 0;
 	}
 	else if (uiUnk1 == 4) {
 		TASSERT(m_uiLockCount==0);
@@ -47,18 +46,18 @@ TBOOL TVertexBlockResource::Lock(TVertexPoolResourceInterface::LockBuffer *a_pLo
 		uiNumVertices = a_usNumVertices;
 		if (m_uiMaxVertices < m_uiOffset + uiNumVertices) {
 			uiFlags                 = D3DLOCK_DISCARD | D3DLOCK_NOSYSLOCK;
-			a_pLockBuffer->uiOffset = 0;
+			a_pLockBuffer->m_uiStartVertex = 0;
 			m_uiOffset              = uiNumVertices;
 		}
 		else {
 			uiFlags                 = D3DLOCK_NOOVERWRITE | D3DLOCK_NOSYSLOCK;
-			a_pLockBuffer->uiOffset = m_uiOffset;
+			a_pLockBuffer->m_uiStartVertex = m_uiOffset;
 			m_uiOffset += uiNumVertices;
 		}
 	}
-	for (TUINT i = 0; i < a_pLockBuffer->uiNumStreams; i++) {
+	for (TUINT i = 0; i < a_pLockBuffer->m_uiNumStreams; i++) {
 		HRESULT hRes = m_HALBuffer.apVertexBuffers[i]->Lock(
-			a_pLockBuffer->uiOffset * vertexFormat->m_aStreamFormats[i].m_uiVertexSize,
+			a_pLockBuffer->m_uiStartVertex * vertexFormat->m_aStreamFormats[i].m_uiVertexSize,
 			uiNumVertices * vertexFormat->m_aStreamFormats[i].m_uiVertexSize,
 			&a_pLockBuffer->apStreams[i],
 			uiFlags);
@@ -93,6 +92,38 @@ TBOOL TVertexBlockResource::AttachPool(TVertexPoolResource *a_pPool)
 	return TTRUE;
 }
 
+struct CallbackStruct
+{
+	TVertexBlockResource                    *m_pVertexBlock;   // 0x0
+	TVertexPoolResourceInterface::LockBuffer m_oHALStaticLock; // 0x4
+};
+
+// $TRenderD3DInterface: FUNCTION 100086c0
+static TBOOL CallBack(TResource *a_pResource, TPVOID a_pUserData)
+{
+	CallbackStruct      *pData = TSTATICCAST(CallbackStruct *, a_pUserData);
+	TVertexPoolResource *pPool   = TSTATICCAST(TVertexPoolResource *, a_pResource);
+	if (!a_pResource->IsExactly(TGetClass(TVertexPoolResource))) {
+		return TTRUE;
+	}
+	if (!(pPool->GetFlags() & 1)) {
+		return TTRUE;
+	}
+	TVertexFactoryResource *pFactory     = TSTATICCAST(TVertexFactoryResource *, pPool->GetFactory());
+	TVertexFactoryFormat   *vertexFormat = pFactory->GetVertexFormat();
+	pPool->m_uiVertexOffset              = pData->m_oHALStaticLock.m_uiStartVertex;
+	pData->m_oHALStaticLock.m_uiStartVertex += pPool->GetNumVertices();
+	TASSERT(pData->m_oHALStaticLock.m_uiStartVertex <= pData->m_pVertexBlock->GetMaxVertices());
+	for (TUINT i = 0; i < vertexFormat->GetNumStreams(); i++) {
+		TUSHORT uiVertexSize = vertexFormat->m_aStreamFormats[i].m_uiVertexSize;
+		TSystem::MemCopy(
+			pData->m_oHALStaticLock.apStreams[i] + pPool->m_uiVertexOffset * uiVertexSize,
+			pPool->GetManagedStream(i),
+			pPool->GetNumVertices() * uiVertexSize);
+	}
+	return TTRUE;
+}
+
 // $TRenderD3DInterface: FUNCTION 10008960
 TBOOL TVertexBlockResource::Validate()
 {
@@ -104,9 +135,13 @@ TBOOL TVertexBlockResource::Validate()
 		return TFALSE;
 	}
 	if (GetFlags() & 1) {
-
+		CallbackStruct oData;
+		if (Lock(&oData.m_oHALStaticLock, 0)) {
+			RecurseSimple(CallBack, this, &oData);
+			Unlock();
+		}
 	}
-	TIMPLEMENT();
+	return TResource::Validate();
 }
 
 // $TRenderD3DInterface: FUNCTION 100088c0

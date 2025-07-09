@@ -12,8 +12,8 @@ IMPLEMENT_DYNAMIC(TVertexPoolResourceInterface, TResource)
 
 TVertexPoolResourceInterface::LockBuffer::LockBuffer()
 {
-	uiNumStreams = 0;
-	uiOffset     = 0;
+	m_uiNumStreams = 0;
+	m_uiStartVertex     = 0;
 	apStreams[0] = TNULL;
 	apStreams[1] = TNULL;
 	apStreams[2] = TNULL;

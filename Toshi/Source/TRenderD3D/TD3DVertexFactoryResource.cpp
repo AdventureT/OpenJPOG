@@ -31,19 +31,17 @@ struct CallbackStruct
 	TVertexPoolResource  *m_pPool;
 };
 
+// $TRenderD3DInterface: FUNCTION 100095b0
 static TBOOL CallBack(TResource *a_pResource, TPVOID a_pUserData)
 {
 	CallbackStruct       *pStruct        = TSTATICCAST(CallbackStruct *, a_pUserData);
 	TVertexBlockResource *pBlockResource = TSTATICCAST(TVertexBlockResource *, a_pResource);
-
-	if (a_pResource->IsA(TGetClass(TVertexBlockResource))) {
-
+	if (a_pResource->IsExactly(TGetClass(TVertexBlockResource))) {
 		if (pBlockResource->CanFit(pStruct->m_pPool) && !pBlockResource->IsDying()) {
 			pStruct->m_pBlock = pBlockResource;
 			return TFALSE;
 		}
 	}
-
 	return TTRUE;
 }
 

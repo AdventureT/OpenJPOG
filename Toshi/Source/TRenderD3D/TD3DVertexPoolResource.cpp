@@ -80,8 +80,8 @@ TBOOL TVertexPoolResource::Lock(LockBuffer *a_pLockBuffer)
 		TUINT flags = GetFlags() & 7;
 		if (flags == 1) {
 			TASSERT(TFALSE==IsValid());
-			a_pLockBuffer->uiNumStreams = GetFactory()->GetVertexFormat()->GetNumStreams();
-			for (TUINT i = 0; i < a_pLockBuffer->uiNumStreams; i++) {
+			a_pLockBuffer->m_uiNumStreams = GetFactory()->GetVertexFormat()->GetNumStreams();
+			for (TUINT i = 0; i < a_pLockBuffer->m_uiNumStreams; i++) {
 				a_pLockBuffer->apStreams[i] = m_apManagedStreams[i];
 			}
 			return TTRUE;
@@ -90,7 +90,7 @@ TBOOL TVertexPoolResource::Lock(LockBuffer *a_pLockBuffer)
 			TASSERT(TTRUE==GetRenderer()->IsInScene());
 			Validate();
 			if (GetVertexBlock()->Lock(a_pLockBuffer, 0)) {
-				m_uiVertexOffset = a_pLockBuffer->uiOffset;
+				m_uiVertexOffset = a_pLockBuffer->m_uiStartVertex;
 				return TTRUE;
 			}
 		}
@@ -98,7 +98,7 @@ TBOOL TVertexPoolResource::Lock(LockBuffer *a_pLockBuffer)
 			TASSERT(TTRUE == GetRenderer()->IsInScene());
 			Validate();
 			if (GetVertexBlock()->Lock(a_pLockBuffer, GetMaxVertices())) {
-				m_uiVertexOffset = a_pLockBuffer->uiOffset;
+				m_uiVertexOffset = a_pLockBuffer->m_uiStartVertex;
 				return TTRUE;
 			}
 		}

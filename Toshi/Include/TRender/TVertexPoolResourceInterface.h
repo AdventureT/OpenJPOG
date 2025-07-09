@@ -13,8 +13,8 @@ public:
 	public:
 		LockBuffer();
 
-		TUINT          uiNumStreams;                                     // 0x0
-		TUINT32        uiOffset;                                         // 0x4
+		TUINT          m_uiNumStreams;                                   // 0x0
+		TUINT32        m_uiStartVertex;                                  // 0x4
 		unsigned char *apStreams[TVertexFactoryFormat::MAX_NUM_STREAMS]; // 0x8
 	};
 

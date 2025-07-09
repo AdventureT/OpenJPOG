@@ -7,7 +7,10 @@ class TKERNELINTERFACE_EXPORTS TMatrix44
 {
 public:
 
-	TMatrix44() = default;
+	TMatrix44()
+	{
+		Identity();
+	}
 
 	TMatrix44(
 		TFLOAT a_f11,
@@ -65,10 +68,21 @@ public:
 		m_f44 = a_f44;
 	}
 
+	const TMatrix44 &operator=(const TMatrix44 &a_rcMatrix)
+	{
+		Set(
+			a_rcMatrix.m_f11, a_rcMatrix.m_f12, a_rcMatrix.m_f13, a_rcMatrix.m_f14,
+			a_rcMatrix.m_f21, a_rcMatrix.m_f22, a_rcMatrix.m_f23, a_rcMatrix.m_f24,
+			a_rcMatrix.m_f31, a_rcMatrix.m_f32, a_rcMatrix.m_f33, a_rcMatrix.m_f34,
+			a_rcMatrix.m_f41, a_rcMatrix.m_f42, a_rcMatrix.m_f43, a_rcMatrix.m_f44);
+		return *this;
+	}
+
 	void Identity()
 	{
 		*this = IDENTITY;
 	}
+
 
 private:
 

@@ -7,6 +7,8 @@
 #include "TRender/TModel.h"
 #include "TRender/TIndexPoolResourceInterface.h"
 #include "TRender/TVertexPoolResourceInterface.h"
+#include "TKernel/TMatrix44.h"
+#include "TKernel/TVector2.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -25,11 +27,13 @@ class TSpriteMesh : public TMesh
 
 public:
 	TSpriteMesh()
+		: m_vPos1(1.0f, 1.0f), m_vPos2(1.0f, 1.0f)
 	{
-		m_uiFlags     = 0;
-		m_bRender     = 0;
-		m_pVertexPool = TNULL;
-		m_pIndexPool  = TNULL;
+		m_uiFlags           = 0;
+		m_iDeltaNumVertices = 0;
+		m_iDeltaNumIndices  = 0;
+		m_pVertexPool       = TNULL;
+		m_pIndexPool        = TNULL;
 	}
 
 	virtual TBOOL Create(TUINT a_uiFlags, TUSHORT a_iX, TUSHORT a_iY) = 0;
@@ -49,11 +53,28 @@ public:
 		m_pIndexPool = a_pIndexPool;
 	}
 
+	TUSHORT GetNumIndices()
+	{
+		return m_iNumIndices;
+	}
+
+	TUSHORT GetNumVertices()
+	{
+		return m_iNumVertices;
+	}
+
 protected:
-	TUINT                         m_uiFlags;     // 0x38
-	TBOOL                         m_bRender;     // 0x3E
-	TVertexPoolResourceInterface *m_pVertexPool; // 0x40
-	TIndexPoolResourceInterface  *m_pIndexPool;  // 0x44
+	TUINT                         m_uiFlags;           // 0x38
+	TUSHORT                       m_iDeltaNumVertices; // 0x3C
+	TUSHORT                       m_iDeltaNumIndices;  // 0x3E
+	TVertexPoolResourceInterface *m_pVertexPool;       // 0x40
+	TIndexPoolResourceInterface  *m_pIndexPool;        // 0x44
+	TVector2                      m_vPos1;             // 0x48
+	TVector2                      m_vPos2;             // 0x50
+	TVector2                      m_vUV1;              // 0x58
+	TVector2                      m_vUV2;              // 0x60
+	TUSHORT                       m_iNumIndices;       // 0x68
+	TUSHORT                       m_iNumVertices;      // 0x6A
 };
 
 class TSpriteMaterial : public TMaterial
@@ -96,32 +117,58 @@ class TSpriteShader : public TShader
 public:
 
 	TSpriteShader()
+		: m_vPos1(1.0f, 1.0f), m_vPos2(1.0f, 1.0f)
 	{
+		m_bForceRender        = TFALSE;
 		m_iNumIndices         = 0;
 		m_iNumVertices        = 0;
 		m_uiFlags             = 100;
 		m_usMaxStaticIndices  = 6144;
 		m_usMaxStaticVertices = 9216;
+		m_pMaterial           = TNULL;
 	}
 
 	virtual TBOOL            Create();
 	virtual TSpriteMaterial *CreateMaterial(TPCCHAR a_szName) = 0;
 	virtual TSpriteMesh     *CreateMesh(TINT a_iCount, TINT &a_rMeshSize) = 0;
+	virtual TSpriteMesh     *CreateMesh(TPCCHAR a_szName) = 0;
 	virtual void             SetMaterial(TSpriteMaterial *a_pMaterial);
 	virtual void             SetColour(const TGUIColour &a_rColour);
 	virtual void             BeginMeshGeneration();
 	virtual void             EndMeshGeneration();
+	virtual void             RenderTriStrip(TFLOAT pos1x, TFLOAT pos1y, TFLOAT pos2x, TFLOAT pos2y, TFLOAT a_fColour, TFLOAT uv1x, TFLOAT uv1y, TFLOAT uv2x, TFLOAT uv2y);
 
 public:
+
+	TSpriteMesh *FUN_10001ad0(TUSHORT a_iNumVertices, TUSHORT a_iNumIndices);
+	void FUN_100019e0();
+	void FUN_10001b60();
 
 	TSpriteMesh *GetMesh()
 	{
 		return m_aMeshes.Tail()->Get();
 	}
 
+	TUSHORT GetNumIndices()
+	{
+		return m_iNumIndices;
+	}
+
+	TUSHORT GetNumVertices()
+	{
+		return m_iNumVertices;
+	}
+
 protected:
-	TVertexPoolResourceInterface::LockBuffer     m_VertexLockBuffer;   // 0xE0
+	TSpriteMaterial                             *m_pMaterial;           // 0x4C
+	TVector2                                     m_vPos1;               // 0x54
+	TVector2                                     m_vPos2;               // 0x5C
+	TVector2                                     m_vUV1;                // 0x64
+	TVector2                                     m_vUV2;                // 0x6C
+	TVertexPoolResourceInterface::LockBuffer     m_VertexLockBuffer;    // 0xE0
+	TBOOL                                        m_bForceRender;        // 0xC8
 	TNodeList<TNodeListNodeWrapper<TSpriteMesh>> m_aMeshes;             // 0xDC
+	TMatrix44                                    m_oModelViewMatrix;    // 0x8C
 	TUSHORT                                      m_iNumIndices;         // 0x110
 	TUSHORT                                      m_iNumVertices;        // 0x114
 	TUINT                                        m_uiFlags;             // 0x120

@@ -50,5 +50,11 @@ void AGUIPicture::Render()
 	for (TUINT i = 0; i < m_iSplitTileCount; i++) {
 		m_pShader->SetColour(TGUIColour());
 		m_pShader->SetMaterial(*m_pTiles[i].ppMaterial);
+		m_pShader->RenderTriStrip(
+			m_pTiles[i].pos1(0) * width + (-0.5f), m_pTiles[i].pos1(1) * height + (-0.5f),
+			m_pTiles[i].pos2(0) * width + (-0.5f), m_pTiles[i].pos2(1) * height + (-0.5f),
+			-10.0f,
+			m_pTiles[i].uv1(0), m_pTiles[i].uv1(1),
+			m_pTiles[i].uv2(0), m_pTiles[i].uv1(1));
 	}
 }

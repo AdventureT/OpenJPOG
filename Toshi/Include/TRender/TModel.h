@@ -56,6 +56,7 @@ public:
 
 	TMesh()
 	{
+		m_pMaterial    = TNULL;
 		m_pOwnerShader = TNULL;
 	}
 
@@ -68,15 +69,27 @@ public:
 		TASSERT(TNULL==m_pOwnerShader);
 		m_pOwnerShader = a_pShader;
 	}
+	// $TRenderInterface: FUNCTION 10011540
+	void SetMaterial(TMaterial *a_pMaterial)
+	{
+		TVALIDADDRESS(a_pMaterial);
+		m_pMaterial = a_pMaterial;
+	}
 
 public:
-
+	// $TRenderInterface: FUNCTION 100083a0
 	TShader *GetShader()
 	{
 		return m_pOwnerShader;
 	}
+	// $TRenderInterface: FUNCTION 10008390
+	TMaterial* GetMaterial()
+	{
+		return m_pMaterial;
+	}
 
-private:
+protected:
+	TMaterial *m_pMaterial; // 0x30
 	TShader *m_pOwnerShader; // 0x34
 };
 

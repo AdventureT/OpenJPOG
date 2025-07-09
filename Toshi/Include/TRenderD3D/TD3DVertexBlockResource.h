@@ -70,9 +70,20 @@ public:
 	}
 
 	// $TRenderD3DInterface: FUNCTION 10009510
-	TVertexFactoryResourceInterface *GetFactory() { return m_pFactory; }
+	TVertexFactoryResourceInterface *GetFactory()
+	{
+		return m_pFactory;
+	}
 	// $TRenderD3DInterface: FUNCTION 100094e0
-	TUINT                            GetFlags() { return m_uiFlags; }
+	TUINT GetFlags() 
+	{
+		return m_uiFlags;
+	}
+	// $TRenderD3DInterface: FUNCTION 10009500
+	TUSHORT GetMaxVertices()
+	{
+		return m_uiMaxVertices;
+	}
 
 	inline static TINT s_iCurrentNumHALCreated;
 	inline static TINT s_iTotalNumHALCreated;

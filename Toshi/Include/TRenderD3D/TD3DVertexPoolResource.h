@@ -47,7 +47,18 @@ public:
 		return TNULL;
 	}
 
-private:
+	// $TRenderD3DInterface: FUNCTION 1000a1b0
+	TBYTE* GetManagedStream(TUINT a_uiStream)
+	{
+		TASSERT(a_uiStream<GetFactory()->GetVertexFormat()->GetNumStreams());
+		TASSERT(TFALSE==IsLocked());
+		if (!IsLocked() && a_uiStream < GetFactory()->GetVertexFormat()->GetNumStreams()) {
+			return m_apManagedStreams[a_uiStream];
+		}
+		return TNULL;
+	}
+
+public:
 	TUINT  m_uiVertexOffset;                                          // 0x3C
 	TBYTE *m_apManagedStreams[TVertexFactoryFormat::MAX_NUM_STREAMS]; // 0x40
 	TUINT  m_uiNumLocksOverall;                                       // 0x60

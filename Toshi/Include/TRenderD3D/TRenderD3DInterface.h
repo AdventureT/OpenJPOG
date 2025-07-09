@@ -6,7 +6,7 @@
 #include "TRenderD3D/TMSWindow.h"
 #include "TRenderD3D/TRenderD3DAdapter.h"
 #include "TRender/TTextureResource.h"
-#include <d3d8.h>
+#include <d3dx8.h>
 
 TOSHI_NAMESPACE_BEGIN
 

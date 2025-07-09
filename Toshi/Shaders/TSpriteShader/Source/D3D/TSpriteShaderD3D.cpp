@@ -86,7 +86,7 @@ TRenderPacket *TSpriteShaderOrderTable::AllocRenderPacket()
 	if (m_uiNumRendPackets == m_uiMaxRendPackets) {
 		return TNULL;
 	}
-	return &m_pRenderPackets[m_uiNumRendPackets];
+	return &m_pRenderPackets[m_uiNumRendPackets-1];
 }
 
 IMPLEMENT_DYNCREATE(TSpriteShaderHAL, TSpriteShader)
@@ -127,6 +127,14 @@ TSpriteMesh *TSpriteShaderHAL::CreateMesh(TINT a_iCount, TINT &a_rMeshSize)
 	}
 	a_rMeshSize = sizeof(TSpriteMeshHAL);
 	return pMeshes;
+}
+
+TSpriteMesh *TSpriteShaderHAL::CreateMesh(TPCCHAR a_szName)
+{
+	Validate();
+	TSpriteMesh *pMesh = static_cast<TSpriteMesh *>(GetRenderer()->CreateResource(&TGetClass(TSpriteMeshHAL), a_szName, this));
+	pMesh->SetShader(this);
+	return pMesh;
 }
 
 TBOOL TSpriteShaderHAL::OnResetDevice()
@@ -189,10 +197,35 @@ void TSpriteShaderHAL::Render(TRenderPacket *a_pRenderPacket)
 {
 	TRenderD3DInterface *pRenderer = GetRenderer();
 	IDirect3DDevice8    *pDevice   = pRenderer->GetD3DDevice();
-	/*TMesh *pMesh = a_pRenderPacket->GetMesh();
+	TSpriteMeshHAL      *pMesh     = static_cast<TSpriteMeshHAL *>(a_pRenderPacket->GetMesh());
 	if (pMesh->IsDying()) {
 		return;
-	}*/
+	}
+	TIMPLEMENT();
+	return;
+	pMesh->GetMaterial()->PreRender();
+	if (m_bVertexShaderSuccess) {
+		D3DXVECTOR4 vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		pDevice->SetVertexShaderConstant(4, &vec4, 1);
+		D3DXMATRIX mat = reinterpret_cast<D3DXMATRIX &>(a_pRenderPacket->GetModelViewMatrix()) * reinterpret_cast<const D3DXMATRIX &>(GetRenderer()->GetCurrentRenderContext()->GetModelViewMatrix());
+		pDevice->SetVertexShaderConstant(0, &mat, 4);
+	}
+	else {
+		static TMatrix44 oViewMatrix;
+		D3DXMATRIX mat;
+		reinterpret_cast<D3DXMATRIX &>(a_pRenderPacket->GetModelViewMatrix()) *= reinterpret_cast<const D3DXMATRIX &>(GetRenderer()->GetCurrentRenderContext()->GetModelViewMatrix());
+		pDevice->SetTransform(D3DTS_PROJECTION, &mat);
+		pDevice->SetTransform(D3DTS_WORLDMATRIX(0), reinterpret_cast<const D3DXMATRIX *>(&a_pRenderPacket->GetModelViewMatrix()));
+		pDevice->SetTransform(D3DTS_VIEW, reinterpret_cast<const D3DXMATRIX *>(&oViewMatrix));
+		pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+		pDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+		pDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
+		pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+		pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_CURRENT);
+		pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE);
+		pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_DISABLE);
+		pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
+	}
 	TIMPLEMENT();
 }
 
@@ -232,6 +265,10 @@ TBOOL TSpriteShaderHAL::Validate()
 	HRESULT res = pDevice->CreateVertexShader(SHADERDECL, (DWORD *)VERTEXSHADER, &m_dwVertexShaderHandle, 0);
 	if (FAILED(res)) {
 		m_dwVertexShaderHandle = 0x142;
+		m_bVertexShaderSuccess = TFALSE;
+	}
+	else {
+		m_bVertexShaderSuccess = TTRUE;
 	}
 	return TResource::Validate();
 }
@@ -255,6 +292,7 @@ TBOOL TSpriteMeshHAL::Create(TUINT a_uiFlags, TUSHORT a_usX, TUSHORT a_usY)
 	m_uiFlags = a_uiFlags;
 	m_pVertexPool = GetShader()->GetVertexPool();
 	//m_pIndexPool = GetShader()->GetIndexPool();
+	TIMPLEMENT();
 	return TResource::Create();
 }
 
@@ -263,9 +301,11 @@ TBOOL TSpriteMeshHAL::Render()
 	if (!TMesh::Render()) {
 		return TFALSE;
 	}
-	TRenderInterface *pRenderer = GetRenderer();
-	TRenderContext *pContext = pRenderer->GetCurrentRenderContext();
-	return TBOOL();
+	TRenderContext *pContext      = GetRenderer()->GetCurrentRenderContext();
+	TRenderPacket  *pRenderPacket = GetShader()->GetOrderTable()->AllocRenderPacket();
+	pRenderPacket->SetMesh(this);
+	pRenderPacket->SetModelViewMatrix(pContext->GetModelViewMatrix());
+	return TTRUE;
 }
 
 TOSHI_NAMESPACE_END

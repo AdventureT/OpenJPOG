@@ -1,6 +1,7 @@
 #pragma once
 #include "TKernel/TObject.h"
 #include "TKernel/TKernelInterface.h"
+#include "TKernel/TMatrix44.h"
 #include "Defines.h"
 
 TOSHI_NAMESPACE_BEGIN
@@ -36,6 +37,9 @@ public:
 		TFLOAT fMaxZ;
 	};
 
+public:
+	virtual void SetModelViewMatrix(const TMatrix44 &a_rModelViewMatrix);
+
 protected:
 	// $TRenderInterface: FUNCTION 1000ca50
 	void SetDirty(TBOOL a_bDirty)
@@ -59,11 +63,16 @@ public:
 	{
 		return m_oViewportParams;
 	}
+	const TMatrix44 &GetModelViewMatrix() const
+	{
+		return m_oModelViewMatrix;
+	}
 
 private:
 	TRenderInterface *m_pRenderInterface; // 0x4
 	FLAG              m_iFlags;           // 0x8
-	VIEWPORTPARAMS    m_oViewportParams; // 0x18
+	VIEWPORTPARAMS    m_oViewportParams;  // 0x18
+	TMatrix44         m_oModelViewMatrix; // 0x4C
 };
 
 TOSHI_NAMESPACE_END

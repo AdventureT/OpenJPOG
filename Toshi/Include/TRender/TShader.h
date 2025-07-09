@@ -98,7 +98,7 @@ public:
 		return m_iNumTextures;
 	}
 
-private:
+protected:
 	TINT          m_iFlags;       // 0x30
 	TShader      *m_pOwnerShader; // 0x34
 	TRegMaterial *m_pRegMaterial; // 0x38

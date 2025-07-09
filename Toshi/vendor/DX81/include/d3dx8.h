@@ -10,6 +10,8 @@
 #ifndef __D3DX8_H__
 #define __D3DX8_H__
 
+#include "TKernel/TMemoryDebugOff.h"
+
 #include "d3d8.h"
 #include <limits.h>
 

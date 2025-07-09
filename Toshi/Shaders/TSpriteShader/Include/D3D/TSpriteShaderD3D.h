@@ -19,7 +19,7 @@ public:
 	{
 		m_pShader          = a_pShader;
 		m_uiMaxRendPackets = a_uiMaxRendPackets;
-		m_uiNumRendPackets = a_uiRenderPackets;
+		m_uiNumRendPackets = 0;
 		m_pRenderPackets   = new TRenderPacket[a_uiMaxRendPackets];
 	}
 
@@ -42,8 +42,9 @@ public:
 		: m_oOrderTable(this, 1000, 5000)
 	{
 		m_dwVertexShaderHandle = INVALIDSHADERHANDLE;
-		m_bMipMapLODBias       = TTRUE;
+		m_bVertexShaderSuccess = TTRUE;
 		m_pVertexPool          = TNULL;
+		m_bMipMapLODBias       = TTRUE;
 	}
 
 	TRenderD3DInterface *GetRenderer() const
@@ -61,10 +62,16 @@ public:
 	{
 		return m_pVertexPool;
 	}
+	// $TSpriteShaderD3D: FUNCTION 10003970
+	TSpriteShaderOrderTable *GetOrderTable()
+	{
+		return &m_oOrderTable;
+	}
 
 	virtual TBOOL            Create();
 	virtual TSpriteMaterial *CreateMaterial(TPCCHAR a_szName);
 	virtual TSpriteMesh     *CreateMesh(TINT a_iCount, TINT &a_rMeshSize);
+	virtual TSpriteMesh     *CreateMesh(TPCCHAR a_szName);
 	virtual TBOOL            OnResetDevice();
 	virtual void             Flush();
 	virtual void             Render(TRenderPacket *a_pRenderPacket);
@@ -83,6 +90,7 @@ private:
 	TSpriteMaterial        *m_pLineMaterial;        // 0x118
 	TSpriteMaterial        *m_pFillMaterial;        // 0x11C
 	DWORD                   m_dwVertexShaderHandle; // 0x128
+	TBOOL                   m_bVertexShaderSuccess; // 0x12C
 	TSpriteShaderOrderTable m_oOrderTable;          // 0x130
 	TVertexPoolResource    *m_pVertexPool;          // 0x140
 	TBOOL                   m_bMipMapLODBias;       // 0x148
@@ -97,10 +105,15 @@ public:
 	{
 		m_pTexture = TNULL;
 	}
-
+	// $TSpriteShaderD3D: FUNCTION 10003940
 	TRenderD3DInterface* GetRenderer() const
 	{
 		return TSTATICCAST(TRenderD3DInterface *, m_pRenderer);
+	}
+	// $TSpriteShaderD3D: FUNCTION 10003930
+	TSpriteShaderHAL *GetShader() const
+	{
+		return TSTATICCAST(TSpriteShaderHAL *, m_pOwnerShader);
 	}
 
 	virtual void PreRender() override;
@@ -115,9 +128,15 @@ class TSPRITESHADERD3D_EXPORTS TSpriteMeshHAL : public TSpriteMesh
 	virtual TBOOL Render();
 
 public:
+	// $TSpriteShaderD3D: FUNCTION 100038e0
 	TSpriteShaderHAL* GetShader()
 	{
-		return static_cast<TSpriteShaderHAL *>(TMesh::GetShader());
+		return static_cast<TSpriteShaderHAL *>(TSpriteMesh::GetShader());
+	}
+	// $TSpriteShaderD3D: FUNCTION 100038d0
+	TSpriteMaterialHAL *GetMaterial()
+	{
+		return static_cast<TSpriteMaterialHAL *>(TSpriteMesh::GetMaterial());
 	}
 };
 
