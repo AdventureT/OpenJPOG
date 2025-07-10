@@ -894,14 +894,14 @@ protected:
 };
 
 template<typename T>
-class TNodeListNodeWrapper : public Toshi::TNodeList<TNodeListNodeWrapper<T>>::TNode
+class TNodeWrapper : public Toshi::TNodeList<TNodeWrapper<T>>::TNode
 {
 public:
 	using Type = T;
 
 public:
-	TNodeListNodeWrapper() {}
-	TNodeListNodeWrapper(Type *a_pValue)
+	TNodeWrapper() {}
+	TNodeWrapper(Type *a_pValue)
 		: m_pValue(a_pValue) {}
 
 	Type *Get() const { return m_pValue; }

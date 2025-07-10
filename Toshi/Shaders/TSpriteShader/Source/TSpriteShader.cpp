@@ -57,7 +57,7 @@ TBOOL TSpriteShader::Create()
 	TSpriteMesh *pMeshes = CreateMesh(256, iMeshSize);
 	for (size_t i = 0; i < 256; i++) {
 		pMeshes[i].Create(m_uiFlags, m_usMaxStaticVertices, m_usMaxStaticIndices);
-		m_aMeshes.InsertTail(*(new TNodeListNodeWrapper<TSpriteMesh>(&pMeshes[i])));
+		m_aMeshes.InsertTail(*(new TNodeWrapper<TSpriteMesh>(&pMeshes[i])));
 	}
 	return TTRUE;
 }
@@ -145,7 +145,7 @@ void TSpriteShader::FUN_10001b60()
 {
 	TSpriteMesh *pMesh = CreateMesh(TNULL);
 	pMesh->Create(m_uiFlags, m_usMaxStaticVertices, m_usMaxStaticIndices);
-	m_aMeshes.InsertTail(*(new TNodeListNodeWrapper<TSpriteMesh>(pMesh)));
+	m_aMeshes.InsertTail(*(new TNodeWrapper<TSpriteMesh>(pMesh)));
 }
 
 TOSHI_NAMESPACE_END

@@ -46,7 +46,7 @@ public:
 	class TextureSet
 	{
 	public:
-		using TextureNode = Toshi::TNodeListNodeWrapper<Texture>;
+		using TextureNode = Toshi::TNodeWrapper<Texture>;
 
 	public:
 		TextureSet(PGUITRTextureFactory *a_pTextureFactory);
