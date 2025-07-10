@@ -76,6 +76,7 @@ public:
 	virtual void             Flush();
 	virtual void             Render(TRenderPacket *a_pRenderPacket);
 	virtual TBOOL            Validate();
+	virtual void             SetMaterial(TSpriteMaterial *a_pMaterial);
 	virtual void             BeginMeshGeneration();
 	virtual void             EndMeshGeneration();
 
@@ -86,9 +87,6 @@ public:
 	static const DWORD SHADERDECL[];
 
 private:
-	TINT                    m_iNumVertices;         // 0x114
-	TSpriteMaterial        *m_pLineMaterial;        // 0x118
-	TSpriteMaterial        *m_pFillMaterial;        // 0x11C
 	DWORD                   m_dwVertexShaderHandle; // 0x128
 	TBOOL                   m_bVertexShaderSuccess; // 0x12C
 	TSpriteShaderOrderTable m_oOrderTable;          // 0x130

@@ -16,7 +16,17 @@ class TRENDERINTERFACED3D_EXPORTS TTextureResourceHAL : public TTextureResource
 		MIPMAPFLAGS_DISABLED = BITFIELD(0)
 	};
 
+	TTextureResourceHAL()
+	{
+		m_uiLockCount     = 0;
+		m_iLoadFromMemory = 0;
+		m_pData           = TNULL;
+		m_uiDataSize      = 0;
+		m_pD3DTexture     = NULL;
+	}
+
 public:
+
 	virtual ~TTextureResourceHAL() = default;
 
 	virtual TBOOL Validate() override;

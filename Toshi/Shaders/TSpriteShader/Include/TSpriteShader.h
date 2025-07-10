@@ -120,11 +120,15 @@ public:
 		: m_vPos1(1.0f, 1.0f), m_vPos2(1.0f, 1.0f)
 	{
 		m_bForceRender        = TFALSE;
+		m_pCurrentMesh        = TNULL;
 		m_iNumIndices         = 0;
 		m_iNumVertices        = 0;
+		m_pLineMaterial       = TNULL;
+		m_pFillMaterial       = TNULL;
 		m_uiFlags             = 100;
 		m_usMaxStaticIndices  = 6144;
 		m_usMaxStaticVertices = 9216;
+		m_unkFlags            = m_unkFlags & 0x80 | 0x4E;
 		m_pMaterial           = TNULL;
 	}
 
@@ -146,7 +150,7 @@ public:
 
 	TSpriteMesh *GetMesh()
 	{
-		return m_aMeshes.Tail()->Get();
+		return m_pCurrentMesh->Get();
 	}
 
 	TUSHORT GetNumIndices()
@@ -160,6 +164,7 @@ public:
 	}
 
 protected:
+	TINT                                         m_unkFlags;            // 0x30
 	TSpriteMaterial                             *m_pMaterial;           // 0x4C
 	TVector2                                     m_vPos1;               // 0x54
 	TVector2                                     m_vPos2;               // 0x5C
@@ -167,10 +172,13 @@ protected:
 	TVector2                                     m_vUV2;                // 0x6C
 	TVertexPoolResourceInterface::LockBuffer     m_VertexLockBuffer;    // 0xE0
 	TBOOL                                        m_bForceRender;        // 0xC8
-	TNodeList<TNodeListNodeWrapper<TSpriteMesh>> m_aMeshes;             // 0xDC
+	TNodeList<TNodeListNodeWrapper<TSpriteMesh>> m_aMeshes;             // 0xCC
+	TNodeListNodeWrapper<TSpriteMesh>           *m_pCurrentMesh;        // 0xDC
 	TMatrix44                                    m_oModelViewMatrix;    // 0x8C
 	TUSHORT                                      m_iNumIndices;         // 0x110
 	TUSHORT                                      m_iNumVertices;        // 0x114
+	TSpriteMaterial                             *m_pLineMaterial;       // 0x118
+	TSpriteMaterial                             *m_pFillMaterial;       // 0x11C
 	TUINT                                        m_uiFlags;             // 0x120
 	TUSHORT                                      m_usMaxStaticVertices; // 0x124
 	TUSHORT                                      m_usMaxStaticIndices;  // 0x126

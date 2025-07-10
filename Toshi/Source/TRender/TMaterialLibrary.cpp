@@ -100,6 +100,7 @@ TBOOL TMaterialLibrary::LoadSpriteMaterial(TINT a_iIndex, TFile *file, const TML
 	else {
 		pMat->SetBlendMode(0);
 	}
+	m_pMaterials[a_iIndex] = pMat;
 	return TTRUE;
 }
 
@@ -315,7 +316,7 @@ TUINT TMaterialLibraryManager::LoadMaterialLibrary(TPCCHAR a_szFileName)
 		return -1;
 	}
 	m_oLibraries.InsertTail(*lib);
-	return 0;
+	return m_oLibraries.Count();
 }
 
 void TMaterialLibraryManager::UnloadMaterialLibrary(TUINT a_iIndex)

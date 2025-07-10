@@ -273,6 +273,11 @@ TBOOL TSpriteShaderHAL::Validate()
 	return TResource::Validate();
 }
 
+void TSpriteShaderHAL::SetMaterial(TSpriteMaterial *a_pMaterial)
+{
+	TSpriteShader::SetMaterial(a_pMaterial);
+}
+
 void TSpriteShaderHAL::BeginMeshGeneration()
 {
 	m_pVertexPool->Lock(&m_VertexLockBuffer);

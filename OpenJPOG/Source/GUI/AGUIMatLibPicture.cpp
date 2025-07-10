@@ -61,7 +61,7 @@ void AGUIMatLibPicture::SetFile(TPCCHAR a_szFile)
 	if (!m_sFileName.IsEmpty()) {
 		TINT fileNameIndex = m_sFileName.FindReverse('/');
 		TINT extensionidx  = m_sFileName.FindReverse('.');
-		m_sPrefix          = m_sFileName.Mid(fileNameIndex+1, extensionidx);
+		m_sPrefix          = m_sFileName.Mid(fileNameIndex+1, extensionidx-fileNameIndex-1);
 	}
 }
 
@@ -97,9 +97,11 @@ void AGUIMatLibPicture::Cache()
 	m_iSplitTextureCount = split_texture_count;
 	m_pTextures          = new Texture[m_iSplitTextureCount];
 	LoadMaterialLibrary();
+	static const TClass *s_pReferenceSpriteMaterial = TFindClass(TSpriteMaterial, &TGetClass(TMaterial));
 	TCString format;
 	for (TINT i = 0; i < m_iSplitTextureCount; i++) {
-		Toshi::TMaterial *pMat = Toshi::TRenderInterface::GetRenderer()->GetMaterialLibraryManager()->GetMaterial(format.Format("%s_%d", m_sPrefix, i));
+		format.Format("%s_%d", m_sPrefix.GetString(), i + 1);
+		Toshi::TMaterial *pMat   = Toshi::TRenderInterface::GetRenderer()->GetMaterialLibraryManager()->GetMaterial(format);
 		m_pTextures[i].pMaterial = static_cast<TSpriteMaterial *>(pMat);
 		m_pTextures[i].pTexture  = TNULL;
 	}

@@ -64,7 +64,9 @@ TBOOL TSpriteShader::Create()
 
 void TSpriteShader::SetMaterial(TSpriteMaterial *a_pMaterial)
 {
-	TIMPLEMENT()
+	if (m_pMaterial != a_pMaterial) {
+		m_pMaterial = a_pMaterial;
+	}
 }
 
 void TSpriteShader::SetColour(const TGUIColour &a_rColour)
@@ -74,14 +76,14 @@ void TSpriteShader::SetColour(const TGUIColour &a_rColour)
 
 void TSpriteShader::BeginMeshGeneration()
 {
-	m_aMeshes.Head() = m_aMeshes.End();
-	m_iNumIndices    = 0;
-	m_iNumVertices   = 0;
+	m_pCurrentMesh = m_aMeshes.End();
+	m_iNumIndices  = 0;
+	m_iNumVertices = 0;
 }
 
 void TSpriteShader::EndMeshGeneration()
 {
-	if (!m_aMeshes.IsEmpty()) {
+	if (m_pCurrentMesh != m_aMeshes.End()) {
 		TSpriteMesh *pMesh = GetMesh();
 		pMesh->Unlock(m_iNumVertices, m_iNumIndices);
 		if (pMesh->m_iDeltaNumIndices) {
@@ -97,6 +99,7 @@ void TSpriteShader::RenderTriStrip(TFLOAT pos1x, TFLOAT pos1y, TFLOAT pos2x, TFL
 	if (!pMesh) {
 		return;
 	}
+	TIMPLEMENT();
 }
 
 TSpriteMesh *TSpriteShader::FUN_10001ad0(TUSHORT a_iNumVertices, TUSHORT a_iNumIndices)
@@ -105,7 +108,7 @@ TSpriteMesh *TSpriteShader::FUN_10001ad0(TUSHORT a_iNumVertices, TUSHORT a_iNumI
 		(m_iNumIndices + a_iNumIndices >= m_usMaxStaticIndices)) {
 		return TNULL;
 	}
-	if (m_aMeshes.IsEmpty()) {
+	if (m_pCurrentMesh == m_aMeshes.End()) {
 		FUN_100019e0();
 	}
 	else if (m_bForceRender) {
@@ -121,12 +124,12 @@ TSpriteMesh *TSpriteShader::FUN_10001ad0(TUSHORT a_iNumVertices, TUSHORT a_iNumI
 void TSpriteShader::FUN_100019e0()
 {
 	EndMeshGeneration();
-	if (m_aMeshes.End()) {
-		m_aMeshes.End() = m_aMeshes.Begin();
+	if (m_pCurrentMesh) {
+		m_pCurrentMesh = m_aMeshes.Begin();
 	}
-	if (m_aMeshes.IsEmpty()) {
+	if (m_pCurrentMesh == m_aMeshes.End()) {
 		FUN_10001b60();
-		m_aMeshes.End() = m_aMeshes.Tail();
+		m_pCurrentMesh = m_aMeshes.Tail();
 	}
 	TSpriteMesh *pMesh = GetMesh();
 	pMesh->SetMaterial(m_pMaterial);
