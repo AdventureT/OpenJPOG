@@ -9,6 +9,7 @@
 #include "TRender/TVertexPoolResourceInterface.h"
 #include "TKernel/TMatrix44.h"
 #include "TKernel/TVector2.h"
+#include "TKernel/TVector3.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -115,6 +116,13 @@ class TSpriteShader : public TShader
 	DECLARE_DYNAMIC(TSpriteShader)
 
 public:
+	struct Vertex
+	{
+		Toshi::TVector3 Position;
+		TUINT32         Colour = 0;
+		Toshi::TVector2 UV;
+	};
+
 
 	TSpriteShader()
 		: m_vPos1(1.0f, 1.0f), m_vPos2(1.0f, 1.0f)
@@ -130,12 +138,16 @@ public:
 		m_usMaxStaticVertices = 9216;
 		m_unkFlags            = m_unkFlags & 0x80 | 0x4E;
 		m_pMaterial           = TNULL;
+		m_colorR              = -1;
+		m_colorG              = -1;
+		m_colorB              = -1;
+		m_colorA              = -1;
 	}
 
 	virtual TBOOL            Create();
-	virtual TSpriteMaterial *CreateMaterial(TPCCHAR a_szName) = 0;
+	virtual TSpriteMaterial *CreateMaterial(TPCCHAR a_szName)             = 0;
 	virtual TSpriteMesh     *CreateMesh(TINT a_iCount, TINT &a_rMeshSize) = 0;
-	virtual TSpriteMesh     *CreateMesh(TPCCHAR a_szName) = 0;
+	virtual TSpriteMesh     *CreateMesh(TPCCHAR a_szName)                 = 0;
 	virtual void             SetMaterial(TSpriteMaterial *a_pMaterial);
 	virtual void             SetColour(const TGUIColour &a_rColour);
 	virtual void             BeginMeshGeneration();
@@ -143,10 +155,9 @@ public:
 	virtual void             RenderTriStrip(TFLOAT pos1x, TFLOAT pos1y, TFLOAT pos2x, TFLOAT pos2y, TFLOAT a_fColour, TFLOAT uv1x, TFLOAT uv1y, TFLOAT uv2x, TFLOAT uv2y);
 
 public:
-
 	TSpriteMesh *FUN_10001ad0(TUSHORT a_iNumVertices, TUSHORT a_iNumIndices);
-	void FUN_100019e0();
-	void FUN_10001b60();
+	void         FUN_100019e0();
+	void         FUN_10001b60();
 
 	TSpriteMesh *GetMesh()
 	{
@@ -164,24 +175,29 @@ public:
 	}
 
 protected:
-	TINT                                         m_unkFlags;            // 0x30
-	TSpriteMaterial                             *m_pMaterial;           // 0x4C
-	TVector2                                     m_vPos1;               // 0x54
-	TVector2                                     m_vPos2;               // 0x5C
-	TVector2                                     m_vUV1;                // 0x64
-	TVector2                                     m_vUV2;                // 0x6C
-	TVertexPoolResourceInterface::LockBuffer     m_VertexLockBuffer;    // 0xE0
-	TBOOL                                        m_bForceRender;        // 0xC8
-	TNodeList<TNodeWrapper<TSpriteMesh>> m_aMeshes;             // 0xCC
-	TNodeWrapper<TSpriteMesh>           *m_pCurrentMesh;        // 0xDC
-	TMatrix44                                    m_oModelViewMatrix;    // 0x8C
-	TUSHORT                                      m_iNumIndices;         // 0x110
-	TUSHORT                                      m_iNumVertices;        // 0x114
-	TSpriteMaterial                             *m_pLineMaterial;       // 0x118
-	TSpriteMaterial                             *m_pFillMaterial;       // 0x11C
-	TUINT                                        m_uiFlags;             // 0x120
-	TUSHORT                                      m_usMaxStaticVertices; // 0x124
-	TUSHORT                                      m_usMaxStaticIndices;  // 0x126
+	TINT                                     m_unkFlags;            // 0x30
+	TSpriteMaterial                         *m_pMaterial;           // 0x4C
+	TCHAR                                    m_colorR;              // 0x50
+	TCHAR                                    m_colorG;              // 0x51
+	TCHAR                                    m_colorB;              // 0x52
+	TCHAR                                    m_colorA;              // 0x53
+	TVector2                                 m_vPos1;               // 0x54
+	TVector2                                 m_vPos2;               // 0x5C
+	TVector2                                 m_vUV1;                // 0x64
+	TVector2                                 m_vUV2;                // 0x6C
+	TBOOL                                    m_bForceRender;        // 0xC8
+	TNodeList<TNodeWrapper<TSpriteMesh>>     m_aMeshes;             // 0xCC
+	TNodeWrapper<TSpriteMesh>               *m_pCurrentMesh;        // 0xDC
+	TVertexPoolResourceInterface::LockBuffer m_VertexLockBuffer;    // 0xE0
+	Vertex                                   m_aVertices[4];        // 0xE8
+	TMatrix44                                m_oModelViewMatrix;    // 0x8C
+	TUSHORT                                  m_iNumIndices;         // 0x110
+	TUSHORT                                  m_iNumVertices;        // 0x114
+	TSpriteMaterial                         *m_pLineMaterial;       // 0x118
+	TSpriteMaterial                         *m_pFillMaterial;       // 0x11C
+	TUINT                                    m_uiFlags;             // 0x120
+	TUSHORT                                  m_usMaxStaticVertices; // 0x124
+	TUSHORT                                  m_usMaxStaticIndices;  // 0x126
 };
 
 TOSHI_NAMESPACE_END

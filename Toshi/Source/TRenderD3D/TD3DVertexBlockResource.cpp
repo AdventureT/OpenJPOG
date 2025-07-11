@@ -92,6 +92,23 @@ TBOOL TVertexBlockResource::AttachPool(TVertexPoolResource *a_pPool)
 	return TTRUE;
 }
 
+TBOOL TVertexBlockResource::DetachPool(TVertexPoolResource *a_pPool)
+{
+	TVALIDADDRESS(a_pPool);
+	TASSERT(a_pPool->Parent()==this);
+	TResource *pVertexFactory = Parent();
+	TASSERT(TTRUE==pVertexFactory->GetClass().IsExactly(TGetClass(TVertexFactoryResource)));
+	a_pPool->SetParent(pVertexFactory);
+	TASSERT(m_uiVerticesUsed >= a_pPool->GetNumVertices());
+	m_uiVerticesUsed -= a_pPool->GetNumVertices();
+	if (m_uiVerticesUsed == 0 && Child() == TNULL) {
+		GetRenderer()->DestroyResource(this);
+		return TTRUE;
+	}
+	TASSERT(Child() != TNULL);
+	return TFALSE;
+}
+
 struct CallbackStruct
 {
 	TVertexBlockResource                    *m_pVertexBlock;   // 0x0

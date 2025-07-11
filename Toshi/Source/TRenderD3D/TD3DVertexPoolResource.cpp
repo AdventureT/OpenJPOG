@@ -63,7 +63,14 @@ TBOOL TVertexPoolResource::Validate()
 // $TRenderD3DInterface: FUNCTION 10009c30
 void TVertexPoolResource::Invalidate()
 {
-	TIMPLEMENT();
+	if (!IsValid()) {
+		return;
+	}
+	TASSERT(m_uiLockCount==0);
+	TVertexBlockResource *pVertexBlock = GetVertexBlock();
+	TVALIDADDRESS(pVertexBlock);
+	pVertexBlock->DetachPool(this);
+	Invalidate();
 }
 
 // $TRenderD3DInterface: FUNCTION 1000a500

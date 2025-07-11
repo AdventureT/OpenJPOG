@@ -55,6 +55,7 @@ protected:
 public:
 
 	TBOOL AttachPool(TVertexPoolResource *a_pPool);
+	TBOOL DetachPool(TVertexPoolResource *a_pPool);
 	TBOOL CanFit(TVertexPoolResource *a_pPoolResource);
 
 	TBOOL Lock(TVertexPoolResourceInterface::LockBuffer *a_pLockBuffer, TUSHORT a_usNumVertices);

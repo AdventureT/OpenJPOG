@@ -220,6 +220,20 @@ TResource *TRenderInterface::FindResource(TPCCHAR a_szResName, TResource *a_pRes
 	return TNULL;
 }
 
+// $TRenderInterface: FUNCTION 1000e2a
+void TRenderInterface::DestroyResource(TResource *a_pResource)
+{
+	TVALIDADDRESS(a_pResource);
+	TASSERT(TNULL != a_pResource->GetTree());
+	TASSERT(0 == (a_pResource->m_Flags & TResource::FLAGS_DEAD));
+	if (!a_pResource->IsDying()) {
+		m_bHasDyingResources = TTRUE;
+		a_pResource->m_Flags |= TResource::FLAGS_DYING;
+		DestroyResourceRecurse(a_pResource->Child());
+		a_pResource->Invalidate();
+	}
+}
+
 // $TRenderInterface: FUNCTION 1000da40
 const TRenderAdapter::Mode::Device *TRenderInterface::FindDevice(const DisplayParams *a_pDisplayParams)
 {
@@ -335,6 +349,27 @@ void TRenderInterface::FlushShadersRecurse(TResource *a_pResource)
 		if (it == it->Next()) {
 			break;
 		}
+	}
+}
+
+// $TRenderInterface: FUNCTION 1000ed10
+void TRenderInterface::DestroyResourceRecurse(TResource *a_pResource)
+{
+	if (!a_pResource) {
+		return;
+	}
+	TResource *lastResource = a_pResource->Prev();
+	while (a_pResource != TNULL) {
+		TResource *nextResource = (a_pResource != lastResource) ? a_pResource->Next() : TNULL;
+		if (!a_pResource->IsDying()) {
+			m_bHasDyingResources = TTRUE;
+			a_pResource->m_Flags |= TResource::FLAGS_DYING;
+			if (a_pResource->Child()) {
+				DestroyResourceRecurse(a_pResource->Child());
+			}
+			a_pResource->Invalidate();
+		}
+		a_pResource = nextResource;
 	}
 }
 

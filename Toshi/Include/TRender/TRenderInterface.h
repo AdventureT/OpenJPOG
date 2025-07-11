@@ -121,6 +121,7 @@ public:
 	TResource *CreateResourceInPlace(const TClass *a_pClass, void *a_pData, TPCCHAR a_szResName, TResource *a_pParent);
 	TResource *CreateResource(const TClass *a_pClass, TPCCHAR a_szResName, TResource *a_pParent);
 	TResource *FindResource(TPCCHAR a_szResName, TResource *a_pResource);
+	void       DestroyResource(TResource *a_pResource);
 
 	const TRenderAdapter::Mode::Device *FindDevice(const DisplayParams *a_pDisplayParams);
 
@@ -177,9 +178,10 @@ public:
 	}
 
 private:
-	void FlushShadersRecurse(TResource *a_pResource);
-	void DestroyDyingResources(TResource *a_pResource);
 	void DeleteResource(TResource *a_pResource);
+	void FlushShadersRecurse(TResource *a_pResource);
+	void DestroyResourceRecurse(TResource *a_pResource);
+	void DestroyDyingResources(TResource *a_pResource);
 	void DeleteResourceRecurse(TResource *a_pResource);
 	void DeleteResourceAtomic(TResource *a_pResource);
 

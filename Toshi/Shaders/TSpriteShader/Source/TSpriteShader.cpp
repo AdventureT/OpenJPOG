@@ -93,12 +93,35 @@ void TSpriteShader::EndMeshGeneration()
 	}
 }
 
-void TSpriteShader::RenderTriStrip(TFLOAT pos1x, TFLOAT pos1y, TFLOAT pos2x, TFLOAT pos2y, TFLOAT a_fColour, TFLOAT uv1x, TFLOAT uv1y, TFLOAT uv2x, TFLOAT uv2y)
+void TSpriteShader::RenderTriStrip(TFLOAT pos1x, TFLOAT pos1y, TFLOAT pos2x, TFLOAT pos2y, TFLOAT a_fZ, TFLOAT uv1x, TFLOAT uv1y, TFLOAT uv2x, TFLOAT uv2y)
 {
 	TSpriteMesh *pMesh = FUN_10001ad0(4, 6);
 	if (!pMesh) {
 		return;
 	}
+	TUSHORT iVertices = m_iNumVertices;
+	TUSHORT iIndices  = (pMesh->m_iNumIndices == m_iNumIndices) ? 4 : 6;
+	TINT    color     = m_colorR << 0x18 | m_colorG << 0x10 | m_colorB << 0x8 | m_colorA;
+
+	m_aVertices[iVertices].Position = { pos1x, pos1y, a_fZ };
+	m_aVertices[iVertices].Colour   = color;
+	m_aVertices[iVertices].UV       = { uv1x, uv1y };
+	iVertices++;
+	m_aVertices[iVertices].Position = { pos1x, pos2y, a_fZ };
+	m_aVertices[iVertices].Colour   = color;
+	m_aVertices[iVertices].UV       = { uv1x, uv2y };
+	iVertices++;
+	m_aVertices[iVertices].Position = { pos2x, pos1y, a_fZ };
+	m_aVertices[iVertices].Colour   = color;
+	m_aVertices[iVertices].UV       = { uv2x, uv1y };
+	iVertices++;
+	m_aVertices[iVertices].Position = { pos2x, pos2y, a_fZ };
+	m_aVertices[iVertices].Colour   = color;
+	m_aVertices[iVertices].UV       = { uv2x, uv2y };
+
+	m_iNumVertices += 4;
+	m_iNumIndices += iIndices;
+
 	TIMPLEMENT();
 }
 
@@ -125,7 +148,7 @@ void TSpriteShader::FUN_100019e0()
 {
 	EndMeshGeneration();
 	if (m_pCurrentMesh) {
-		m_pCurrentMesh = m_aMeshes.Begin();
+		m_pCurrentMesh = m_pCurrentMesh->Next();
 	}
 	if (m_pCurrentMesh == m_aMeshes.End()) {
 		FUN_10001b60();
