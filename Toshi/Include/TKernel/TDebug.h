@@ -17,12 +17,26 @@
 		  }                                                                                                                                 \
 	  }
 // TIMPLEMENT has been added for the decomp
-#  define TIMPLEMENT()            \
-	  TFIREFLAG_CREATE(__LINE__); \
-      if (!TFIREFLAG(__LINE__)) { \
-		Toshi::TDebug_PrintWarning("%s is not yet implemented!\n", __FUNCTION__); \
-        TFIREFLAG(__LINE__) = true; \
+#  define TIMPLEMENT_1(info)                                                                   \
+	  TFIREFLAG_CREATE(__LINE__);                                                              \
+	  if (!TFIREFLAG(__LINE__)) {                                                              \
+		  Toshi::TDebug_PrintWarning("%s is not yet implemented! (%s)\n", __FUNCTION__, info); \
+		  TFIREFLAG(__LINE__) = true;                                                          \
 	  }
+#  define TIMPLEMENT_0()                                                            \
+	  TFIREFLAG_CREATE(__LINE__);                                                   \
+	  if (!TFIREFLAG(__LINE__)) {                                                   \
+		  Toshi::TDebug_PrintWarning("%s is not yet implemented!\n", __FUNCTION__); \
+		  TFIREFLAG(__LINE__) = true;                                               \
+	  }
+
+#  define FUNC_CHOOSER(_f1, _f2, ...)     _f2
+#  define FUNC_RECOMPOSER(argsWithParentheses) FUNC_CHOOSER argsWithParentheses
+#  define CHOOSE_FROM_ARG_COUNT(...)           FUNC_RECOMPOSER((__VA_ARGS__, TIMPLEMENT_1, ))
+#  define NO_ARG_EXPANDER()                    , TIMPLEMENT_0
+#  define MACRO_CHOOSER(...)                   CHOOSE_FROM_ARG_COUNT(NO_ARG_EXPANDER __VA_ARGS__())
+#  define TIMPLEMENT(...)                      MACRO_CHOOSER(__VA_ARGS__)(__VA_ARGS__)
+
 #  define TDPRINTF(format, ...)     Toshi::TDebug_Printf(format, __VA_ARGS__)
 #  define TWARNING(format, ...)     Toshi::TDebug_PrintWarning(format, __VA_ARGS__)
 #  define TERROR(format, ...)       Toshi::TDebug_PrintError(format, __VA_ARGS__)
