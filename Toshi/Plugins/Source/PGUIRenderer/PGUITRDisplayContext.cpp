@@ -79,8 +79,8 @@ void PGUITRDisplayContext::PopAdditiveColour()
 // $PGUIRenderer: FUNCTION 100012e0
 void PGUITRDisplayContext::BeginScene()
 {
-	m_pShader->BeginMeshGeneration();
 	m_pShader->SetMaterial(TNULL);
+	m_pShader->BeginMeshGeneration();
 }
 
 // $PGUIRenderer: FUNCTION 10005a50

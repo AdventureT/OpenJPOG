@@ -152,7 +152,7 @@ TBOOL TSpriteShaderHAL::OnResetDevice()
 	}
 	m_pVertexPool = static_cast<TVertexPoolResource *>(pVertexFactory->CreatePoolResource(m_usMaxStaticVertices, uiFlags));
 	// Same with IndexPool
-	TIMPLEMENT();
+	TIMPLEMENT("Same with IndexPool");
 	for (auto it = m_aMeshes.Begin(); it != m_aMeshes.End(); it++) {
 		it->Get()->SetVertexPool(m_pVertexPool);
 		// Same with IndexPool
@@ -201,8 +201,6 @@ void TSpriteShaderHAL::Render(TRenderPacket *a_pRenderPacket)
 	if (pMesh->IsDying()) {
 		return;
 	}
-	TIMPLEMENT();
-	return;
 	pMesh->GetMaterial()->PreRender();
 	if (m_bVertexShaderSuccess) {
 		D3DXVECTOR4 vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -271,6 +269,18 @@ TBOOL TSpriteShaderHAL::Validate()
 		m_bVertexShaderSuccess = TTRUE;
 	}
 	return TResource::Validate();
+}
+
+void TSpriteShaderHAL::Invalidate()
+{
+	if (!TResource::IsValid()) {
+		return;
+	}
+	if (m_bVertexShaderSuccess) {
+		GetRenderer()->GetD3DDevice()->DeleteVertexShader(m_dwVertexShaderHandle);
+	}
+	m_dwVertexShaderHandle = INVALIDSHADERHANDLE;
+	TResource::Invalidate();
 }
 
 void TSpriteShaderHAL::SetMaterial(TSpriteMaterial *a_pMaterial)

@@ -76,6 +76,7 @@ public:
 	virtual void             Flush();
 	virtual void             Render(TRenderPacket *a_pRenderPacket);
 	virtual TBOOL            Validate();
+	virtual void             Invalidate();
 	virtual void             SetMaterial(TSpriteMaterial *a_pMaterial);
 	virtual void             BeginMeshGeneration();
 	virtual void             EndMeshGeneration();
