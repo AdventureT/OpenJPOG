@@ -9,11 +9,18 @@ class TRENDERINTERFACE_EXPORTS TIndexPoolResourceInterface : public TResource
 
 public:
 
+	struct LockBuffer
+	{
+		TUINT           m_uiOffset     = 0;
+		TUINT32         m_uiStartIndex = 0;
+		unsigned short *m_pBuffer      = TNULL;
+	};
+
 	TIndexPoolResourceInterface();
 
 protected:
 	virtual void  OnDestroy() override;
-	virtual TBOOL Lock(void *a_pLockBuffer)    = 0;
+	virtual TBOOL Lock(LockBuffer *a_pLockBuffer)    = 0;
 	virtual void  Unlock(TUSHORT a_uiNewNumVertices) = 0;
 	virtual TBOOL Create(TIndexFactoryResourceInterface *a_pFactory, TUINT a_uiMaxVertices, TUINT a_uiFlags);
 
@@ -29,7 +36,7 @@ public:
 	// $TRenderInterface: FUNCTION 1000fce0
 	TBOOL IsLocked() const { return m_uiLockCount != 0; }
 
-private:
+protected:
 	// TResource base 0x0 -> 0x30
 	TIndexFactoryResourceInterface  *m_pFactory;      // 0x30
 	TUSHORT                          m_usFlags;       // 0x34

@@ -54,6 +54,8 @@ protected:
 
 public:
 
+	TBOOL GetHAL(TVertexBlockResource::HALBuffer *a_pHALBuffer);
+
 	TBOOL AttachPool(TVertexPoolResource *a_pPool);
 	TBOOL DetachPool(TVertexPoolResource *a_pPool);
 	TBOOL CanFit(TVertexPoolResource *a_pPoolResource);

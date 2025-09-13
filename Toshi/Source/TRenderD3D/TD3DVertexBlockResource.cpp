@@ -80,6 +80,17 @@ void TVertexBlockResource::Unlock()
 	}
 }
 
+// $TRenderD3DInterface: FUNCTION 10008de0
+TBOOL TVertexBlockResource::GetHAL(TVertexBlockResource::HALBuffer *a_pHALBuffer)
+{
+	TVALIDADDRESS(a_pHALBuffer);
+	if (!Validate()) {
+		return TFALSE;
+	}
+	*a_pHALBuffer = m_HALBuffer;
+	return TTRUE;
+}
+
 // $TRenderD3DInterface: FUNCTION 10008b00
 TBOOL TVertexBlockResource::AttachPool(TVertexPoolResource *a_pPool)
 {

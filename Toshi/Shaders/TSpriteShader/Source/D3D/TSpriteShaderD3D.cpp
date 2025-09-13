@@ -1,6 +1,7 @@
 #include "D3D/TSpriteShaderD3D.h"
 #include "TRenderD3D/TRenderD3DInterface.h"
 #include "TRenderD3D/TD3DVertexFactoryResource.h"
+#include "TRenderD3D/TD3DIndexFactoryResource.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.
@@ -140,6 +141,7 @@ TSpriteMesh *TSpriteShaderHAL::CreateMesh(TPCCHAR a_szName)
 TBOOL TSpriteShaderHAL::OnResetDevice()
 {
 	TVertexFactoryResource *pVertexFactory = static_cast<TVertexFactoryResource *>(GetRenderer()->GetSystemResource(TRenderInterface::SYSRESOURCE_VFSYSSVNDUV1));
+	TIndexFactoryResource  *pIndexFactory  = static_cast<TIndexFactoryResource *>(GetRenderer()->GetSystemResource(TRenderInterface::SYSRESOURCE_IFSYS));
 	TUINT                   uiFlags = 0;
 	if ((m_uiFlags & 1) != 0) {
 		uiFlags = 1;
@@ -151,11 +153,10 @@ TBOOL TSpriteShaderHAL::OnResetDevice()
 		uiFlags = 4;
 	}
 	m_pVertexPool = static_cast<TVertexPoolResource *>(pVertexFactory->CreatePoolResource(m_usMaxStaticVertices, uiFlags));
-	// Same with IndexPool
-	TIMPLEMENT("Same with IndexPool");
+	m_pIndexPool  = static_cast<TIndexPoolResource *>(pIndexFactory->CreatePoolResource(m_usMaxStaticIndices, uiFlags));
 	for (auto it = m_aMeshes.Begin(); it != m_aMeshes.End(); it++) {
 		it->Get()->SetVertexPool(m_pVertexPool);
-		// Same with IndexPool
+		it->Get()->SetIndexPool(m_pIndexPool);
 	}
 	Validate();
 	return TTRUE;
@@ -198,10 +199,12 @@ void TSpriteShaderHAL::Render(TRenderPacket *a_pRenderPacket)
 	TRenderD3DInterface *pRenderer = GetRenderer();
 	IDirect3DDevice8    *pDevice   = pRenderer->GetD3DDevice();
 	TSpriteMeshHAL      *pMesh     = static_cast<TSpriteMeshHAL *>(a_pRenderPacket->GetMesh());
+	HRESULT              hres;
 	if (pMesh->IsDying()) {
 		return;
 	}
-	pMesh->GetMaterial()->PreRender();
+	TSpriteMaterialHAL *pMaterial = pMesh->GetMaterial();
+	pMaterial->PreRender();
 	if (m_bVertexShaderSuccess) {
 		D3DXVECTOR4 vec4(1.0f, 1.0f, 1.0f, 1.0f);
 		pDevice->SetVertexShaderConstant(4, &vec4, 1);
@@ -224,7 +227,47 @@ void TSpriteShaderHAL::Render(TRenderPacket *a_pRenderPacket)
 		pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_DISABLE);
 		pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
 	}
-	TIMPLEMENT();
+	hres = pDevice->SetRenderState(D3DRS_ZBIAS, 0);
+	TRenderD3DInterface::TD3DAssert(hres, TNULL);
+	TVertexBlockResource::HALBuffer oVertexHALBuffer;
+	TIndexBlockResource::HALBuffer  oIndexHALBuffer;
+	TVertexPoolResource            *pVertexPool = static_cast<TVertexPoolResource *>(pMesh->GetVertexPool());
+	TIndexPoolResource             *pIndexPool  = static_cast<TIndexPoolResource *>(pMesh->GetIndexPool());
+	pVertexPool->GetHAL(&oVertexHALBuffer);
+	pIndexPool->GetHAL(&oIndexHALBuffer);
+	pDevice->SetStreamSource(0, oVertexHALBuffer.apVertexBuffers[0], 24);
+	TRenderD3DInterface::TD3DAssert(hres, TNULL);
+	pDevice->SetIndices(oIndexHALBuffer.pIndexBuffer, oVertexHALBuffer.uiVertexOffset);
+	TRenderD3DInterface::TD3DAssert(hres, TNULL);
+	TINT iBlendMode = pMaterial->GetBlendMode();
+	if (iBlendMode == 1) {
+		pDevice->DrawIndexedPrimitive(
+			D3DPT_LINELIST,
+			0,
+			pVertexPool->GetNumVertices(),
+			pMesh->GetNumIndices(),
+			pMesh->GetDeltaNumIndices() / 2);
+	}
+	else if (iBlendMode == 0) {
+		if (m_pIndexPool->GetFlags() & 8) {
+			pDevice->DrawIndexedPrimitive(
+				D3DPT_TRIANGLESTRIP,
+				0,
+				pVertexPool->GetNumVertices(),
+				pMesh->GetNumIndices(),
+				pMesh->GetDeltaNumIndices() - 2);
+		}
+		else {
+			pDevice->DrawIndexedPrimitive(
+				D3DPT_TRIANGLELIST,
+				0,
+				pVertexPool->GetNumVertices(),
+				pMesh->GetNumIndices(),
+				pMesh->GetDeltaNumIndices() / 3);
+		}
+	}
+	TRenderD3DInterface::TD3DAssert(hres, TNULL);
+	pMaterial->PostRender();
 }
 
 TBOOL TSpriteShaderHAL::SupportMipMapLODBias()
@@ -251,7 +294,7 @@ static const char VERTEXSHADER[] = {
 
 TBOOL TSpriteShaderHAL::Validate()
 {
-	if (TResource::IsValid()) {
+	if (TSpriteShader::IsValid()) {
 		return TTRUE;
 	}
 	TASSERT(INVALIDSHADERHANDLE==m_dwVertexShaderHandle)
@@ -262,25 +305,25 @@ TBOOL TSpriteShaderHAL::Validate()
 	}
 	HRESULT res = pDevice->CreateVertexShader(SHADERDECL, (DWORD *)VERTEXSHADER, &m_dwVertexShaderHandle, 0);
 	if (FAILED(res)) {
-		m_dwVertexShaderHandle = 0x142;
+		m_dwVertexShaderHandle = (D3DFVF_TEX1 | D3DFVF_DIFFUSE | D3DFVF_XYZ);
 		m_bVertexShaderSuccess = TFALSE;
 	}
 	else {
 		m_bVertexShaderSuccess = TTRUE;
 	}
-	return TResource::Validate();
+	return TSpriteShader::Validate();
 }
 
 void TSpriteShaderHAL::Invalidate()
 {
-	if (!TResource::IsValid()) {
+	if (!TSpriteShader::IsValid()) {
 		return;
 	}
 	if (m_bVertexShaderSuccess) {
 		GetRenderer()->GetD3DDevice()->DeleteVertexShader(m_dwVertexShaderHandle);
 	}
 	m_dwVertexShaderHandle = INVALIDSHADERHANDLE;
-	TResource::Invalidate();
+	TSpriteShader::Invalidate();
 }
 
 void TSpriteShaderHAL::SetMaterial(TSpriteMaterial *a_pMaterial)
@@ -290,6 +333,7 @@ void TSpriteShaderHAL::SetMaterial(TSpriteMaterial *a_pMaterial)
 
 void TSpriteShaderHAL::BeginMeshGeneration()
 {
+	m_pIndexPool->Lock(&m_IndexLockBuffer);
 	m_pVertexPool->Lock(&m_VertexLockBuffer);
 	TSpriteShader::BeginMeshGeneration();
 }
@@ -297,6 +341,7 @@ void TSpriteShaderHAL::BeginMeshGeneration()
 void TSpriteShaderHAL::EndMeshGeneration()
 {
 	TSpriteShader::EndMeshGeneration();
+	m_pIndexPool->Unlock(m_iNumIndices);
 	m_pVertexPool->Unlock(m_iNumVertices);
 }
 
@@ -306,8 +351,7 @@ TBOOL TSpriteMeshHAL::Create(TUINT a_uiFlags, TUSHORT a_usX, TUSHORT a_usY)
 {
 	m_uiFlags = a_uiFlags;
 	m_pVertexPool = GetShader()->GetVertexPool();
-	//m_pIndexPool = GetShader()->GetIndexPool();
-	TIMPLEMENT();
+	m_pIndexPool = GetShader()->GetIndexPool();
 	return TResource::Create();
 }
 

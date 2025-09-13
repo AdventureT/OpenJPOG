@@ -5,6 +5,7 @@
 #include "TRenderD3D/TTextureResourceD3D.h"
 #include "TRenderD3D/TOrderTable.h"
 #include "TRenderD3D/TD3DVertexPoolResource.h"
+#include "TRenderD3D/TD3DIndexPoolResource.h"
 
 TOSHI_NAMESPACE_BEGIN
 
@@ -38,29 +39,36 @@ class TSPRITESHADERD3D_EXPORTS TSpriteShaderHAL : public TSpriteShader
 	DECLARE_DYNAMIC(TSpriteShaderHAL)
 
 public:
+	// $TSpriteShaderD3D: FUNCTION 10002610
 	TSpriteShaderHAL()
 		: m_oOrderTable(this, 1000, 5000)
 	{
 		m_dwVertexShaderHandle = INVALIDSHADERHANDLE;
 		m_bVertexShaderSuccess = TTRUE;
 		m_pVertexPool          = TNULL;
+		m_pIndexPool           = TNULL;
 		m_bMipMapLODBias       = TTRUE;
 	}
-
+	// $TSpriteShaderD3D: FUNCTION 10003990
 	TRenderD3DInterface *GetRenderer() const
 	{
 		return TSTATICCAST(TRenderD3DInterface *, m_pRenderer);
 	}
-
+	// $TSpriteShaderD3D: FUNCTION 100035c0
 	DWORD GetVertexShaderHandle()
 	{
 		Validate();
 		return m_dwVertexShaderHandle;
 	}
-
+	// $TSpriteShaderD3D: FUNCTION 10003960
 	TVertexPoolResourceInterface *GetVertexPool()
 	{
 		return m_pVertexPool;
+	}
+	// $TSpriteShaderD3D: FUNCTION 10003950
+	TIndexPoolResourceInterface *GetIndexPool()
+	{
+		return m_pIndexPool;
 	}
 	// $TSpriteShaderD3D: FUNCTION 10003970
 	TSpriteShaderOrderTable *GetOrderTable()
@@ -92,6 +100,7 @@ private:
 	TBOOL                   m_bVertexShaderSuccess; // 0x12C
 	TSpriteShaderOrderTable m_oOrderTable;          // 0x130
 	TVertexPoolResource    *m_pVertexPool;          // 0x140
+	TIndexPoolResource     *m_pIndexPool;            // 0x144
 	TBOOL                   m_bMipMapLODBias;       // 0x148
 };
 

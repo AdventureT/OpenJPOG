@@ -137,6 +137,13 @@ TBOOL TRenderInterface::CreateSystemResources()
 	bRes = static_cast<TSkinShader *>(GetSystemResource(SYSRESOURCE_SHSKIN))->Create(&vertexFormat, 11000, 0);
 	TASSERT(TTRUE == bRes); */
 
+	m_aSysResources[SYSRESOURCE_IFACTORIES] = CreateResource(&TGetClass(TNullResource), "IFactories", TNULL);
+
+	m_aSysResources[SYSRESOURCE_IFSYS] = CreateResource(TFindClass(TIndexFactoryResource, TNULL), "IFSYS", GetSystemResource(SYSRESOURCE_IFACTORIES));
+	TVALIDADDRESS(m_aSysResources[SYSRESOURCE_IFSYS]);
+	bRes = static_cast<TIndexFactoryResourceInterface *>(GetSystemResource(SYSRESOURCE_IFSYS))->Create(11000, 0);
+	TASSERT(TTRUE == bRes);
+
 	m_aSysResources[SYSRESOURCE_SCENE] = CreateResource(&TGetClass(TScene), "Scene", TNULL);
 	bRes                               = m_aSysResources[SYSRESOURCE_SCENE]->Create();
 	TASSERT(TTRUE == bRes);

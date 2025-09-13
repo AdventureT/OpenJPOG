@@ -42,10 +42,22 @@ public:
 	virtual void  Unlock(TUSHORT a_iX, TUSHORT a_iY);
 	virtual TBOOL Lock();
 
+	// $TSpriteShaderD3D: FUNCTION 10001f40
+	TVertexPoolResourceInterface *GetVertexPool()
+	{
+		return m_pVertexPool;
+	}
+
 	// $TSpriteShaderD3D: FUNCTION 10001f20
 	void SetVertexPool(TVertexPoolResourceInterface *a_pVertexPool)
 	{
 		m_pVertexPool = a_pVertexPool;
+	}
+
+	// $TSpriteShaderD3D: FUNCTION 10001f30
+	TIndexPoolResourceInterface *GetIndexPool()
+	{
+		return m_pIndexPool;
 	}
 
 	// $TSpriteShaderD3D: FUNCTION 10001f10
@@ -57,6 +69,16 @@ public:
 	TUSHORT GetNumIndices()
 	{
 		return m_iNumIndices;
+	}
+
+	TUSHORT GetDeltaNumIndices()
+	{
+		return m_iDeltaNumIndices;
+	}
+
+	TUSHORT GetDeltaNumVertices()
+	{
+		return m_iDeltaNumVertices;
 	}
 
 	TUSHORT GetNumVertices()
@@ -105,6 +127,11 @@ public:
 		m_pTexture = a_pTexture;
 	}
 
+	TINT GetBlendMode()
+	{
+		return m_eBlendMode;
+	}
+
 protected:
 	TTextureResource *m_pTexture;    // 0x40
 	TINT              m_eBlendMode;  // 0x44
@@ -138,10 +165,6 @@ public:
 		m_usMaxStaticVertices = 9216;
 		m_unkFlags            = m_unkFlags & 0x80 | 0x4E;
 		m_pMaterial           = TNULL;
-		m_colorR              = -1;
-		m_colorG              = -1;
-		m_colorB              = -1;
-		m_colorA              = -1;
 	}
 
 	virtual TBOOL            Create();
@@ -177,10 +200,7 @@ public:
 protected:
 	TINT                                     m_unkFlags;            // 0x30
 	TSpriteMaterial                         *m_pMaterial;           // 0x4C
-	TCHAR                                    m_colorR;              // 0x50
-	TCHAR                                    m_colorG;              // 0x51
-	TCHAR                                    m_colorB;              // 0x52
-	TCHAR                                    m_colorA;              // 0x53
+	TGUIColour                               m_oColour;             // 0x50
 	TVector2                                 m_vPos1;               // 0x54
 	TVector2                                 m_vPos2;               // 0x5C
 	TVector2                                 m_vUV1;                // 0x64
@@ -191,6 +211,7 @@ protected:
 	TVertexPoolResourceInterface::LockBuffer m_VertexLockBuffer;    // 0xE0
 	Vertex                                   m_aVertices[4];        // 0xE8
 	TMatrix44                                m_oModelViewMatrix;    // 0x8C
+	TIndexPoolResourceInterface::LockBuffer  m_IndexLockBuffer;     // 0x108
 	TUSHORT                                  m_iNumIndices;         // 0x110
 	TUSHORT                                  m_iNumVertices;        // 0x114
 	TSpriteMaterial                         *m_pLineMaterial;       // 0x118

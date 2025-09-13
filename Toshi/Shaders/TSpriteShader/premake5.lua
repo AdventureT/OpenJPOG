@@ -14,7 +14,8 @@ project ("TSpriteShaderD3D")
 		"dinput8.lib",
 		"TKernelInterface",
 		"TRenderInterface",
-		"TRenderD3DInterface"
+		"TRenderD3DInterface",
+                "TGUIInterface"
 	}
 
 	includedirs

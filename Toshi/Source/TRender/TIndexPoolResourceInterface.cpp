@@ -20,7 +20,7 @@ TIndexPoolResourceInterface::TIndexPoolResourceInterface()
 	m_uiLockCount  = 0;
 }
 
-TBOOL TIndexPoolResourceInterface::Lock(void *a_pLockBuffer)
+TBOOL TIndexPoolResourceInterface::Lock(TIndexPoolResourceInterface::LockBuffer *a_pLockBuffer)
 {
 	return TTRUE;
 }

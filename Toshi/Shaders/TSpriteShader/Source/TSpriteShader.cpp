@@ -21,7 +21,7 @@ TBOOL TSpriteMesh::Validate()
 	if (m_pVertexPool && m_pIndexPool) {
 		m_pVertexPool->Validate();
 		m_pIndexPool->Validate();
-		return Validate();
+		return TMesh::Validate();
 	}
 	return TFALSE;
 }
@@ -71,7 +71,7 @@ void TSpriteShader::SetMaterial(TSpriteMaterial *a_pMaterial)
 
 void TSpriteShader::SetColour(const TGUIColour &a_rColour)
 {
-	TIMPLEMENT()
+	m_oColour = a_rColour;
 }
 
 void TSpriteShader::BeginMeshGeneration()
@@ -101,7 +101,7 @@ void TSpriteShader::RenderTriStrip(TFLOAT pos1x, TFLOAT pos1y, TFLOAT pos2x, TFL
 	}
 	TUSHORT iVertices = m_iNumVertices;
 	TUSHORT iIndices  = (pMesh->m_iNumIndices == m_iNumIndices) ? 4 : 6;
-	TINT    color     = m_colorR << 0x18 | m_colorG << 0x10 | m_colorB << 0x8 | m_colorA;
+	TUINT    color     = m_oColour.GetABGR();
 
 	m_aVertices[iVertices].Position = { pos1x, pos1y, a_fZ };
 	m_aVertices[iVertices].Colour   = color;
@@ -146,7 +146,7 @@ TSpriteMesh *TSpriteShader::FUN_10001ad0(TUSHORT a_iNumVertices, TUSHORT a_iNumI
 
 void TSpriteShader::FUN_100019e0()
 {
-	EndMeshGeneration();
+	TSpriteShader::EndMeshGeneration();
 	if (m_pCurrentMesh) {
 		m_pCurrentMesh = m_pCurrentMesh->Next();
 	}

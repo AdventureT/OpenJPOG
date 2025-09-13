@@ -158,3 +158,19 @@ TBOOL TVertexPoolResource::Create(TVertexFactoryResourceInterface *a_pFactory, T
 	}
 	return TTRUE;
 }
+
+// $TRenderD3DInterface: FUNCTION 1008ee20
+TBOOL TVertexPoolResource::GetHAL(TVertexBlockResource::HALBuffer *a_pHALBuffer)
+{
+	TVALIDADDRESS(a_pHALBuffer);
+	if (!Validate()) {
+		return TFALSE;
+	}
+	TVertexBlockResource *pVertexBlock = GetVertexBlock();
+	TVALIDADDRESS(pVertexBlock);
+	if (!pVertexBlock->GetHAL(a_pHALBuffer)) {
+		return TFALSE;
+	}
+	a_pHALBuffer->uiVertexOffset = m_uiVertexOffset;
+	return TTRUE;
+}

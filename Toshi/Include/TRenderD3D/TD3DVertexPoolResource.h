@@ -58,6 +58,8 @@ public:
 		return TNULL;
 	}
 
+	TBOOL GetHAL(TVertexBlockResource::HALBuffer *a_pHALBuffer);
+
 public:
 	TUINT  m_uiVertexOffset;                                          // 0x3C
 	TBYTE *m_apManagedStreams[TVertexFactoryFormat::MAX_NUM_STREAMS]; // 0x40
