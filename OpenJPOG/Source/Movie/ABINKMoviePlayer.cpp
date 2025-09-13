@@ -154,8 +154,19 @@ TBOOL ABINKMoviePlayer::Render()
 	if (!FrameReady()) {
 		return TFALSE;
 	}
-	TSpriteShader *pShader = AGUISystem::GetGUISystem()->GetShader();
+	AGUISystem    *system  = AGUISystem::GetGUISystem();
+	TSpriteShader *pShader = system->GetShader();
+	TFLOAT         height  = system->GetScreen()->GetHeight() / 448.0f;
+	TFLOAT         width   = system->GetScreen()->GetWidth() / 640.0f;
+	pShader->SetColour(TGUIColour());
 	for (int i = 0; i < MAX_TILES; i++) {
+		pShader->SetMaterial(m_aRects[i].pMaterial);
+		pShader->RenderTriStrip(
+			m_aRects[i].m_iPosX * width + (-0.0f), m_aRects[i].m_iPosY * height + (-0.0f),
+			m_aRects[i].m_iWidth * width + (-0.0f), m_aRects[i].m_iHeight * height + (-0.0f),
+			-10.0f,
+			m_aRects[i].m_vPos(0), m_aRects[i].m_vPos(1),
+			m_aRects[i].m_vUV(0), m_aRects[i].m_vUV(1));
 	}
 }
 
@@ -165,15 +176,21 @@ TBOOL ABINKMoviePlayer::RenderToTexture(TTextureResource *a_pTexture)
 	if (m_hBink) {
 		m_iWidth  = m_hBink->Width;
 		m_iHeight = m_hBink->Height;
-		if (a_pTexture && !m_bHasMovieStopped) {
+		if (a_pTexture && !m_bHasMovieStopped && !m_bDrawingFrame) {
 			if (s_iPlayForegroundFast) {
 				BinkDoFrame(m_hBink);
 				BinkNextFrame(m_hBink);
 				return FALSE;
 			}
 			m_iFrameCount++;
+			TTextureResourceHAL *pTextureRes = static_cast<TTextureResourceHAL *>(a_pTexture);
+			IDirect3DTexture8 *pTexture = pTextureRes->GetD3DTexture();
+			D3DLOCKED_RECT       rect;
 			// TODO: Do some Texture stuff
 			BinkDoFrame(m_hBink);
+			pTexture->LockRect(0, &rect, TNULL, 0);
+			BinkCopyToBuffer(m_hBink, rect.pBits, rect.Pitch, m_hBink->Height, 0, 0, 3);
+			pTexture->UnlockRect(0);
 			if (m_iFrameCount == m_hBink->Frames) {
 			}
 		}
