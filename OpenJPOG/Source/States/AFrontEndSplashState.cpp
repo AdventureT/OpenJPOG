@@ -27,7 +27,9 @@ void AFrontEndSplashState::OnActivate()
 	ARootState::OnActivate();
 	AMoviePlayer *pMoviePlayer = g_oTheApp.GetRootTask()->GetMoviePlayer();
 
-	//AGUISystem::GetGUISystem()->Get;
+	//AGUISystem *system = AGUISystem::GetGUISystem();
+	//system->GetGUIInterface()->;
+	//system->GetScreen()
 
 	pMoviePlayer->SetDoAudio(TTRUE);
 	pMoviePlayer->InitializeMoviePlayer();

@@ -31,7 +31,7 @@ void TSpriteMaterialHAL::PreRender()
 	if (m_Flags & FLAGS_VALID) {
 		pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	}
-	switch (m_eBlendMode)
+	switch (m_eBlendMode2)
 	{
 		case 0:
 			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
@@ -153,6 +153,21 @@ TBOOL TSpriteShaderHAL::OnResetDevice()
 		uiFlags = 4;
 	}
 	m_pVertexPool = static_cast<TVertexPoolResource *>(pVertexFactory->CreatePoolResource(m_usMaxStaticVertices, uiFlags));
+	if ((m_uiFlags & 8) != 0) {
+		uiFlags = 1;
+	}
+	else if ((m_uiFlags & 0x10) != 0) {
+		uiFlags = 2;
+	}
+	else if ((m_uiFlags & 0x20) != 0) {
+		uiFlags = 4;
+	}
+	if ((m_uiFlags & 0x40) != 0) {
+		uiFlags |= 8;
+	}
+	else {
+		uiFlags |= 0x10;
+	}
 	m_pIndexPool  = static_cast<TIndexPoolResource *>(pIndexFactory->CreatePoolResource(m_usMaxStaticIndices, uiFlags));
 	for (auto it = m_aMeshes.Begin(); it != m_aMeshes.End(); it++) {
 		it->Get()->SetVertexPool(m_pVertexPool);
@@ -235,13 +250,13 @@ void TSpriteShaderHAL::Render(TRenderPacket *a_pRenderPacket)
 	TIndexPoolResource             *pIndexPool  = static_cast<TIndexPoolResource *>(pMesh->GetIndexPool());
 	pVertexPool->GetHAL(&oVertexHALBuffer);
 	pIndexPool->GetHAL(&oIndexHALBuffer);
-	pDevice->SetStreamSource(0, oVertexHALBuffer.apVertexBuffers[0], 24);
+	hres = pDevice->SetStreamSource(0, oVertexHALBuffer.apVertexBuffers[0], 24);
 	TRenderD3DInterface::TD3DAssert(hres, TNULL);
-	pDevice->SetIndices(oIndexHALBuffer.pIndexBuffer, oVertexHALBuffer.uiVertexOffset);
+	hres = pDevice->SetIndices(oIndexHALBuffer.pIndexBuffer, oVertexHALBuffer.uiVertexOffset);
 	TRenderD3DInterface::TD3DAssert(hres, TNULL);
 	TINT iBlendMode = pMaterial->GetBlendMode();
 	if (iBlendMode == 1) {
-		pDevice->DrawIndexedPrimitive(
+		hres = pDevice->DrawIndexedPrimitive(
 			D3DPT_LINELIST,
 			0,
 			pVertexPool->GetNumVertices(),
@@ -250,7 +265,7 @@ void TSpriteShaderHAL::Render(TRenderPacket *a_pRenderPacket)
 	}
 	else if (iBlendMode == 0) {
 		if (m_pIndexPool->GetFlags() & 8) {
-			pDevice->DrawIndexedPrimitive(
+			hres = pDevice->DrawIndexedPrimitive(
 				D3DPT_TRIANGLESTRIP,
 				0,
 				pVertexPool->GetNumVertices(),
@@ -258,7 +273,7 @@ void TSpriteShaderHAL::Render(TRenderPacket *a_pRenderPacket)
 				pMesh->GetDeltaNumIndices() - 2);
 		}
 		else {
-			pDevice->DrawIndexedPrimitive(
+			hres = pDevice->DrawIndexedPrimitive(
 				D3DPT_TRIANGLELIST,
 				0,
 				pVertexPool->GetNumVertices(),

@@ -1,4 +1,5 @@
 #include "TGUIDeserialisable.h"
+#include "TGui/TGUIInterface.h"
 
 //-----------------------------------------------------------------------------
 // Enables memory debugging.

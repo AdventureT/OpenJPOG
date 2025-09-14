@@ -67,6 +67,7 @@ TBOOL AGUISystem::OnCreate()
 	// m_pScreen->SetInputContext
 	m_pMatLibPic = new AGUIMatLibPicture();
 	m_pMatLibPic->Create(m_pSpriteShader);
+	TIMPLEMENT("LoadMain()");
 	return TTRUE;
 }
 

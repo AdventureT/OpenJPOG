@@ -55,15 +55,17 @@ TBOOL ABINKMoviePlayer::ShutdownMoviePlayer()
 		FreeVideoResource();
 		m_bIsBINKInitialized = TFALSE;
 		SetFrameReady(TFALSE);
+
+		m_bHasMovieStopped = TTRUE;
 	}
 	return TFALSE;
 }
 
 // $JPOG: FUNCTION 006d58b0
-TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bUnk1, TPCHAR a_szUnk2, TBOOL a_bUseLocale)
+TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bFrameReady, TPCHAR a_szUnk2, TBOOL a_bUseLocale)
 {
 	TRenderInterface *renderer = g_oTheApp.GetRootTask()->GetRenderInterface();
-
+	m_bFrameReady              = a_bFrameReady;
 	if (a_szMovieName) {
 		Toshi::TSystem::StringCopy(m_szMovieFileName, a_szMovieName, -1);
 	}
@@ -142,7 +144,7 @@ TBOOL ABINKMoviePlayer::Update(TFLOAT a_fDeltaTime)
 		m_bDrawingFrame = TTRUE;
 		RenderToFrameBuffer();
 	}
-	return TFALSE;
+	return TTRUE;
 }
 
 // $JPOG: FUNCTION 006d6190
@@ -156,14 +158,14 @@ TBOOL ABINKMoviePlayer::Render()
 	}
 	AGUISystem    *system  = AGUISystem::GetGUISystem();
 	TSpriteShader *pShader = system->GetShader();
-	TFLOAT         height  = system->GetScreen()->GetHeight() / 448.0f;
-	TFLOAT         width   = system->GetScreen()->GetWidth() / 640.0f;
+	TFLOAT         scaleY  = system->GetScreen()->GetHeight() / 448.0f;
+	TFLOAT         scaleX   = system->GetScreen()->GetWidth() / 640.0f;
 	pShader->SetColour(TGUIColour());
 	for (int i = 0; i < MAX_TILES; i++) {
 		pShader->SetMaterial(m_aRects[i].pMaterial);
 		pShader->RenderTriStrip(
-			m_aRects[i].m_iPosX * width + (-0.0f), m_aRects[i].m_iPosY * height + (-0.0f),
-			m_aRects[i].m_iWidth * width + (-0.0f), m_aRects[i].m_iHeight * height + (-0.0f),
+			m_aRects[i].m_iPosX * scaleX + (-0.0f), m_aRects[i].m_iPosY * scaleY + (-0.0f),
+			m_aRects[i].m_iWidth * scaleX + (-0.0f), m_aRects[i].m_iHeight * scaleY + (-0.0f),
 			-10.0f,
 			m_aRects[i].m_vPos(0), m_aRects[i].m_vPos(1),
 			m_aRects[i].m_vUV(0), m_aRects[i].m_vUV(1));
@@ -186,16 +188,25 @@ TBOOL ABINKMoviePlayer::RenderToTexture(TTextureResource *a_pTexture)
 			TTextureResourceHAL *pTextureRes = static_cast<TTextureResourceHAL *>(a_pTexture);
 			IDirect3DTexture8 *pTexture = pTextureRes->GetD3DTexture();
 			D3DLOCKED_RECT       rect;
-			// TODO: Do some Texture stuff
 			BinkDoFrame(m_hBink);
-			pTexture->LockRect(0, &rect, TNULL, 0);
-			BinkCopyToBuffer(m_hBink, rect.pBits, rect.Pitch, m_hBink->Height, 0, 0, 3);
-			pTexture->UnlockRect(0);
-			if (m_iFrameCount == m_hBink->Frames) {
+			if (!m_bUnk && m_iFrameCount == m_hBink->Frames) {
+				pTexture->LockRect(0, &rect, TNULL, 0);
+				BinkCopyToBuffer(m_hBink, rect.pBits, rect.Pitch, m_hBink->Height, 0, 0, BINKSURFACE32);
+				pTexture->UnlockRect(0);
+				StopMovie();
+				m_bHasMovieStopped = TTRUE;
+			}
+			else {
+				pTexture->LockRect(0, &rect, TNULL, 0);
+				SetFrameReady(TTRUE);
+				m_bFrameReady = TTRUE;
+				BinkCopyToBuffer(m_hBink, rect.pBits, rect.Pitch, m_hBink->Height, 0, 0, BINKSURFACE32);
+				BinkNextFrame(m_hBink);
+				pTexture->UnlockRect(0);
 			}
 		}
 	}
-	return TBOOL();
+	return TFALSE;
 }
 
 TBOOL ABINKMoviePlayer::RenderToFrameBuffer()
@@ -266,6 +277,7 @@ TBOOL ABINKMoviePlayer::InitializeVideoResource()
 		
 		m_pMaterial = pShader->CreateMaterial(TNULL);
 		m_pMaterial->Create();
+		m_pMaterial->SetTexture(m_pTextures[i]);
 		m_pMaterial->SetBlendMode(6);
 		m_pMaterial->Validate();
 
