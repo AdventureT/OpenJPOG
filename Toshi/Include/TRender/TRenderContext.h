@@ -2,6 +2,7 @@
 #include "TKernel/TObject.h"
 #include "TKernel/TKernelInterface.h"
 #include "TKernel/TMatrix44.h"
+#include "TKernel/TVector2.h"
 #include "Defines.h"
 
 TOSHI_NAMESPACE_BEGIN
@@ -37,6 +38,16 @@ public:
 		TFLOAT fMaxZ;
 	};
 
+	struct PROJECTIONPARAMS
+	{
+		TVector2 m_oCentre;
+		TVector2 m_oProj;
+		TFLOAT   m_fNearClip;
+		TFLOAT   m_fFarClip;
+
+		void SetFromFOV(TFLOAT a_fViewportWidth, TFLOAT a_fViewportHeight, TFLOAT a_fFOV, TFLOAT a_fNearPlane, TFLOAT a_fFarPlane);
+	};
+
 public:
 	virtual void SetModelViewMatrix(const TMatrix44 &a_rModelViewMatrix);
 
@@ -63,16 +74,22 @@ public:
 	{
 		return m_oViewportParams;
 	}
+	// $TRenderInterface: FUNCTION 10008ec0
+	const PROJECTIONPARAMS &GetProjectionParameters() const
+	{
+		return m_oProjectionParams;
+	}
 	const TMatrix44 &GetModelViewMatrix() const
 	{
 		return m_oModelViewMatrix;
 	}
 
 private:
-	TRenderInterface *m_pRenderInterface; // 0x4
-	FLAG              m_iFlags;           // 0x8
-	VIEWPORTPARAMS    m_oViewportParams;  // 0x18
-	TMatrix44         m_oModelViewMatrix; // 0x4C
+	TRenderInterface *m_pRenderInterface;  // 0x4
+	FLAG              m_iFlags;            // 0x8
+	VIEWPORTPARAMS    m_oViewportParams;   // 0x18
+	PROJECTIONPARAMS  m_oProjectionParams; // 0x30
+	TMatrix44         m_oModelViewMatrix;  // 0x4C
 };
 
 TOSHI_NAMESPACE_END

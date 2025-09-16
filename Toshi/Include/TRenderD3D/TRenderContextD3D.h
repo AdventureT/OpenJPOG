@@ -6,6 +6,7 @@ TOSHI_NAMESPACE_BEGIN
 
 class TRENDERINTERFACED3D_EXPORTS TRenderContextD3D : public TRenderContext
 {
+	void ComputePerspectiveFrustum();
 };
 
 TOSHI_NAMESPACE_END

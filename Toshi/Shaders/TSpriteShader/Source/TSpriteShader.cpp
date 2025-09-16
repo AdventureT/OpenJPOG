@@ -101,7 +101,7 @@ void TSpriteShader::RenderTriStrip(TFLOAT pos1x, TFLOAT pos1y, TFLOAT pos2x, TFL
 	}
 	TUSHORT iVertices = m_iNumVertices;
 	TUSHORT iIndices  = (pMesh->m_iNumIndices == m_iNumIndices) ? 4 : 6;
-	TUINT    color     = m_oColour.GetABGR();
+	TUINT   color     = m_oColour.GetARGB();
 
 	m_aVertices[iVertices].Position = { pos1x, pos1y, a_fZ };
 	m_aVertices[iVertices].Colour   = color;

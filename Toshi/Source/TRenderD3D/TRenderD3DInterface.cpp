@@ -211,7 +211,7 @@ TBOOL TRenderD3DInterface::BeginScene()
 			.MaxZ   = 1.0f,
 		};
 		m_pD3DDevice->SetViewport(&viewport);
-		//UpdateColourSettings();
+		UpdateColourSettings();
 		m_bInScene = TTRUE;
 		GetBeginSceneEmitter()->Throw(BeginSceneEvent());
 	}
@@ -225,6 +225,7 @@ TBOOL TRenderD3DInterface::EndScene()
 	TASSERT(IsInScene()==TTRUE);
 	static TBOOL s_bDeviceLost = TFALSE;
 	if (IsInScene()) {
+		TIMPLEMENT("(field241_0xf4 + 8)()")
 		GetEndSceneEmitter()->Throw(EndSceneEvent());
 		if (FAILED(m_pD3DDevice->EndScene())) {
 			return TFALSE;
@@ -409,6 +410,14 @@ void TRenderD3DInterface::ConnectDefaultViewportHandlers(TViewport &a_rViewport)
 TModel *TRenderD3DInterface::CreateModel(TPCCHAR a_szName, TINT a_iUnk1)
 {
 	return nullptr;
+}
+
+void TRenderD3DInterface::UpdateColourSettings()
+{
+	if (!IsColourCorrection()) {
+		return;
+	}
+	m_pD3DDevice->SetGammaRamp(0, GetCurrentColourRamp());
 }
 
 // $TRenderD3DInterface: FUNCTION 100073a0

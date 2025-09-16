@@ -50,6 +50,11 @@ public:
 	virtual void                             DestroyCapture(TRenderCapture *a_pRenderCapture) override;
 	virtual void                             ConnectDefaultViewportHandlers(TViewport &a_pViewport) override;
 	virtual TModel                          *CreateModel(TPCCHAR a_szName, TINT a_iUnk1) override;
+	virtual void                             UpdateColourSettings();
+	virtual TBOOL                            IsColourCorrection()
+	{
+		return m_bEnableColourCorrection;
+	}
 
 	virtual TBOOL IsCapableColourCorrection();
 	virtual void  EnableColourCorrection(TBOOL a_bEnable);
@@ -67,6 +72,11 @@ private:
 	void CreateAcceleratorTableA();
 	void DestroyAcceleratorTable();
 
+	D3DGAMMARAMP *GetCurrentColourRamp()
+	{
+		TIMPLEMENT("ComputeTable");
+		return &m_oColourRamp;
+	}
 
 protected:
 	TBOOL LoadShaders();
@@ -97,6 +107,7 @@ private:
 	TBOOL                           m_bCheckedCapableColourCorrection; // 0x21D
 	TBOOL                           m_bCapableColourCorrection;        // 0x21E
 	TBOOL                           m_bEnableColourCorrection;         // 0x21F
+	D3DGAMMARAMP                    m_oColourRamp;
 };
 
 TOSHI_NAMESPACE_END

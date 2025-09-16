@@ -17,7 +17,7 @@ class TSpriteShader;
 
 class TSpriteMesh : public TMesh
 {
-	DECLARE_DYNAMIC(TSpriteMaterial)
+	DECLARE_DYNAMIC(TSpriteMesh)
 
 	friend class TSpriteShader;
 
@@ -28,7 +28,7 @@ class TSpriteMesh : public TMesh
 
 public:
 	TSpriteMesh()
-		: m_vPos1(1.0f, 1.0f), m_vPos2(1.0f, 1.0f)
+		: m_vPos1(1.0f, 1.0f), m_vPos2(1.0f, 1.0f), m_vUV1(0.0f, 0.0f), m_vUV2(0.0f, 0.0f)
 	{
 		m_uiFlags           = 0;
 		m_iDeltaNumVertices = 0;

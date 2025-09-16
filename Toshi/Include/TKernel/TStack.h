@@ -77,12 +77,12 @@ public:
 	}
 
 private:
-	TFORCEINLINE constexpr T &AtUnsafe(TUINT a_uiIndex)
+	TFORCEINLINE  T &AtUnsafe(TUINT a_uiIndex)
 	{
 		return *((T *)(m_aBuffer) + a_uiIndex);
 	}
 
-	TFORCEINLINE constexpr const T &AtUnsafe(TUINT a_uiIndex) const
+	TFORCEINLINE  const T &AtUnsafe(TUINT a_uiIndex) const
 	{
 		return *((const T *)(m_aBuffer) + a_uiIndex);
 	}
