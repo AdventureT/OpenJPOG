@@ -99,30 +99,49 @@ void TSpriteShader::RenderTriStrip(TFLOAT pos1x, TFLOAT pos1y, TFLOAT pos2x, TFL
 	if (!pMesh) {
 		return;
 	}
-	TUSHORT iVertices = m_iNumVertices;
-	TUSHORT iIndices  = (pMesh->m_iNumIndices == m_iNumIndices) ? 4 : 6;
-	TUINT   color     = m_oColour.GetARGB();
 
-	m_aVertices[iVertices].Position = { pos1x, pos1y, a_fZ };
-	m_aVertices[iVertices].Colour   = color;
-	m_aVertices[iVertices].UV       = { uv1x, uv1y };
-	iVertices++;
-	m_aVertices[iVertices].Position = { pos1x, pos2y, a_fZ };
-	m_aVertices[iVertices].Colour   = color;
-	m_aVertices[iVertices].UV       = { uv1x, uv2y };
-	iVertices++;
-	m_aVertices[iVertices].Position = { pos2x, pos1y, a_fZ };
-	m_aVertices[iVertices].Colour   = color;
-	m_aVertices[iVertices].UV       = { uv2x, uv1y };
-	iVertices++;
-	m_aVertices[iVertices].Position = { pos2x, pos2y, a_fZ };
-	m_aVertices[iVertices].Colour   = color;
-	m_aVertices[iVertices].UV       = { uv2x, uv2y };
+	TUSHORT iStartVertex = m_iNumVertices;
+	TUSHORT iNumIndices  = (pMesh->m_iNumIndices == m_iNumIndices) ? 4 : 6;
+	TUINT   color        = m_oColour.GetARGB();
+
+	// TODO: change type of apStreams to void*
+	Vertex *pVertices = TSTATICCAST(Vertex *, (void *)m_VertexLockBuffer.apStreams[0]);
+
+	pVertices[iStartVertex + 0].Position = { pos1x, pos1y, a_fZ };
+	pVertices[iStartVertex + 0].Colour = color;
+	pVertices[iStartVertex + 0].UV       = { uv1x, uv1y };
+	
+	pVertices[iStartVertex + 1].Position = { pos1x, pos2y, a_fZ };
+	pVertices[iStartVertex + 1].Colour   = color;
+	pVertices[iStartVertex + 1].UV       = { uv1x, uv2y };
+
+	pVertices[iStartVertex + 2].Position = { pos2x, pos1y, a_fZ };
+	pVertices[iStartVertex + 2].Colour   = color;
+	pVertices[iStartVertex + 2].UV       = { uv2x, uv1y };
+
+	pVertices[iStartVertex + 3].Position = { pos2x, pos2y, a_fZ };
+	pVertices[iStartVertex + 3].Colour   = color;
+	pVertices[iStartVertex + 3].UV       = { uv2x, uv2y };
+
+	TUINT16* pIndices = m_IndexLockBuffer.m_pBuffer + m_iNumIndices;
+
+	if (iNumIndices == 6)
+	{
+		// Connect to the previous triangle
+		pIndices[0] = iStartVertex - 1;
+		pIndices[1] = iStartVertex;
+
+		pIndices += 2;
+	}
+
+	// Fill indices of the tristrip
+	pIndices[0] = iStartVertex + 0;
+	pIndices[1] = iStartVertex + 1;
+	pIndices[2] = iStartVertex + 2;
+	pIndices[3] = iStartVertex + 3;
 
 	m_iNumVertices += 4;
-	m_iNumIndices += iIndices;
-
-	TIMPLEMENT();
+	m_iNumIndices += iNumIndices;
 }
 
 TSpriteMesh *TSpriteShader::FUN_10001ad0(TUSHORT a_iNumVertices, TUSHORT a_iNumIndices)
@@ -161,6 +180,7 @@ void TSpriteShader::FUN_100019e0()
 	pMesh->m_vUV1 = m_vUV1;
 	pMesh->m_vUV2 = m_vUV2;
 	pMesh->Lock();
+	m_oModelViewMatrix.m_f14 = 5.0f;
 	GetRenderer()->GetCurrentRenderContext()->SetModelViewMatrix(m_oModelViewMatrix);
 }
 

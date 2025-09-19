@@ -48,8 +48,18 @@ public:
 		void SetFromFOV(TFLOAT a_fViewportWidth, TFLOAT a_fViewportHeight, TFLOAT a_fFOV, TFLOAT a_fNearPlane, TFLOAT a_fFarPlane);
 	};
 
+	enum CameraMode
+	{
+		CameraMode_Perspective,
+		CameraMode_Orthographic,
+	};
+
 public:
+
+	TRenderContext(TRenderInterface &a_rRenderer);
+
 	virtual void SetModelViewMatrix(const TMatrix44 &a_rModelViewMatrix);
+	virtual void Update() = 0;
 
 protected:
 	// $TRenderInterface: FUNCTION 1000ca50
@@ -60,6 +70,11 @@ protected:
 			return;
 		}
 		m_iFlags &= ~FLAG_DIRTY;
+	}
+	// $TRenderInterface: FUNCTION 1000ca40
+	TBOOL IsDirty()
+	{
+		return (m_iFlags & 1) != 0;
 	}
 
 public:
@@ -83,13 +98,23 @@ public:
 	{
 		return m_oModelViewMatrix;
 	}
+	const TMatrix44 &GetViewModelMatrix()
+	{
+		if ((m_iFlags & FLAG_DIRTY_VIEWMODELMATRIX) != 0) {
+			//m_oViewModelMatrix.Invert()
+			m_iFlags &= ~FLAG_DIRTY_VIEWMODELMATRIX;
+		}
+		return m_oViewModelMatrix;
+	}
 
-private:
+protected:
 	TRenderInterface *m_pRenderInterface;  // 0x4
 	FLAG              m_iFlags;            // 0x8
+	CameraMode        m_eCameraMode;       // 0x14
 	VIEWPORTPARAMS    m_oViewportParams;   // 0x18
 	PROJECTIONPARAMS  m_oProjectionParams; // 0x30
 	TMatrix44         m_oModelViewMatrix;  // 0x4C
+	TMatrix44         m_oViewModelMatrix;  // 0x444
 };
 
 TOSHI_NAMESPACE_END

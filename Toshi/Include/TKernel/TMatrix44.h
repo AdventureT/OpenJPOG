@@ -84,7 +84,7 @@ public:
 	}
 
 
-private:
+public:
 
 	static const TMatrix44 IDENTITY;
 

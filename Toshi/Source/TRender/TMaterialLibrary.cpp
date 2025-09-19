@@ -212,9 +212,11 @@ TBOOL TMaterialLibrary::LoadTexture(TINT a_iIndex, TFile *file)
 	TTextureResource *res = factory->CreateEx(pMem, dh.texturesize, dh.width, dh.height, 0, eFormat, (dh.flags & 2) == 0);
 	if (!res) {
 		delete pMem;
-		return TTRUE;
+		return TFALSE;
 	}
 	m_pTextures[dh.id] = res;
+	delete pMem;
+	return TTRUE;
 }
 
 // $TRenderInterface: FUNCTION 1000fff0

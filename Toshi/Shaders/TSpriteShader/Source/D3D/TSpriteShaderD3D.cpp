@@ -75,7 +75,7 @@ void TSpriteMaterialHAL::PostRender()
 
 void TSpriteShaderOrderTable::Render()
 {
-	for (TINT i = 0; i < m_uiNumRendPackets; i++) {
+	for (TUINT i = 0; i < m_uiNumRendPackets; i++) {
 		m_pShader->Render(&m_pRenderPackets[i]);
 	}
 	m_uiNumRendPackets = 0;
@@ -241,8 +241,8 @@ void TSpriteShaderHAL::Render(TRenderPacket *a_pRenderPacket)
 		pDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 		pDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_CURRENT);
 		pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-		pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_CURRENT);
-		pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE);
+		pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+		pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
 		pDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_DISABLE);
 		pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_DISABLE);
 	}
@@ -259,6 +259,7 @@ void TSpriteShaderHAL::Render(TRenderPacket *a_pRenderPacket)
 	hres = pDevice->SetIndices(oIndexHALBuffer.pIndexBuffer, oVertexHALBuffer.uiVertexOffset);
 	TRenderD3DInterface::TD3DAssert(hres, TNULL);
 	TINT iBlendMode = pMaterial->GetBlendMode();
+	iBlendMode      = 0;
 	if (iBlendMode == 1) {
 		hres = pDevice->DrawIndexedPrimitive(
 			D3DPT_LINELIST,

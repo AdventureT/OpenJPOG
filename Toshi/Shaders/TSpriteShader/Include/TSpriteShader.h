@@ -119,7 +119,7 @@ public:
 
 	virtual void SetBlendMode2(TINT a_eBlendMode)
 	{
-		m_eBlendMode2 = m_eBlendMode2;
+		m_eBlendMode2 = a_eBlendMode;
 	}
 
 	void SetTexture(TTextureResource *a_pTexture)
@@ -209,7 +209,6 @@ protected:
 	TNodeList<TNodeWrapper<TSpriteMesh>>     m_aMeshes;             // 0xCC
 	TNodeWrapper<TSpriteMesh>               *m_pCurrentMesh;        // 0xDC
 	TVertexPoolResourceInterface::LockBuffer m_VertexLockBuffer;    // 0xE0
-	Vertex                                   m_aVertices[4];        // 0xE8
 	TMatrix44                                m_oModelViewMatrix;    // 0x8C
 	TIndexPoolResourceInterface::LockBuffer  m_IndexLockBuffer;     // 0x108
 	TUSHORT                                  m_iNumIndices;         // 0x110

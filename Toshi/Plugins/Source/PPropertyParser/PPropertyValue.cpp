@@ -282,15 +282,15 @@ PPropertyValueArray::PPropertyValueArray()
 }
 
 PPropertyValueArray::PPropertyValueArray(TINT a_iCount)
+	: m_oValues(a_iCount, a_iCount)
 {
 	m_iReferenceCount = 0;
-	m_oValues         = TArray<PPropertyValue>(a_iCount, a_iCount);
 }
 
 PPropertyValueArray::PPropertyValueArray(PPropertyValue *a_pValues, TINT a_iCount)
+	: m_oValues(a_iCount, 0)
 {
 	m_iReferenceCount = 0;
-	m_oValues         = TArray<PPropertyValue>(a_iCount, 0);
 	for (int i = 0; i < a_iCount; i++) {
 		m_oValues.Push(a_pValues[i]);
 	}

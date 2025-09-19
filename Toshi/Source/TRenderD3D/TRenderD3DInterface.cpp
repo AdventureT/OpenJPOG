@@ -341,7 +341,7 @@ TBOOL TRenderD3DInterface::SetPixelAspectRatio(float a_fPixelAspectRatio)
 // $TRenderD3DInterface: FUNCTION 10006e90
 TRenderContext *TRenderD3DInterface::CreateRenderContext()
 {
-	TRenderContextD3D *pRenderContext = new TRenderContextD3D();
+	TRenderContextD3D *pRenderContext = new TRenderContextD3D(*this);
 	TVALIDADDRESS(pRenderContext);
 	return pRenderContext;
 }

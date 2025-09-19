@@ -24,6 +24,15 @@ public:
 	{
 		return sinf(m_fValue);
 	}
+	static TFLOAT Tan(TFLOAT m_fValue)
+	{
+		return tanf(m_fValue);
+	}
+	// $TKernelInterface: FUNCTION 10011760
+	static TFLOAT DegToRad(TFLOAT m_fValue)
+	{
+		return (m_fValue / 180.0f) * PI;
+	}
 	// $TKernelInterface: FUNCTION 10021560
 	static void SinCos(TFLOAT fVal, TFLOAT &a_rSin, TFLOAT &a_rCos)
 	{

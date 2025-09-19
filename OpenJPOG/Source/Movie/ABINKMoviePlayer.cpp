@@ -111,7 +111,7 @@ TBOOL ABINKMoviePlayer::StartMovie(TPCHAR a_szMovieName, TBOOL a_bFrameReady, TP
 	if (!pTexture) {
 		TTextureFactory *pTextureFactory = (TTextureFactory *)renderer->GetSystemResource(TRenderInterface::SYSRESOURCE_TEXTUREFACTORY);
 		TPCHAR           pData           = new char[0x200000];
-		TSystem::MemSet(pData, 0xFF, sizeof(pData));
+		TSystem::MemSet(pData, 0xFF, 0x200000);
 		pTexture = pTextureFactory->CreateEx(pData, 0x200000, 1024, 512, 1, TTEXTURERESOURCEFORMAT_R8G8B8A8, 32);
 		if (pTexture) {
 			pTexture->Validate();
@@ -160,7 +160,7 @@ TBOOL ABINKMoviePlayer::Render()
 	TSpriteShader *pShader = system->GetShader();
 	TFLOAT         scaleY  = system->GetScreen()->GetHeight() / 448.0f;
 	TFLOAT         scaleX   = system->GetScreen()->GetWidth() / 640.0f;
-	pShader->SetColour(TGUIColour());
+	pShader->SetColour(TGUIColour(0,0,0,0xFF));
 	for (int i = 0; i < MAX_TILES; i++) {
 		pShader->SetMaterial(m_aRects[i].pMaterial);
 		pShader->RenderTriStrip(
@@ -170,6 +170,7 @@ TBOOL ABINKMoviePlayer::Render()
 			m_aRects[i].m_vPos(0), m_aRects[i].m_vPos(1),
 			m_aRects[i].m_vUV(0), m_aRects[i].m_vUV(1));
 	}
+	return TTRUE;
 }
 
 // $JPOG: FUNCTION 006d5dc0
