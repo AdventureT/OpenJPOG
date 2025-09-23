@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
 <svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
  <defs>
-  <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="100%" id="filter0" width="100%" x="0" y="0">
-   <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-   <feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
-   <feOffset dy="3"/>
-   <feComposite in2="hardAlpha" operator="out"/>
-   <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-   <feBlend in2="BackgroundImageFix"/>
-   <feBlend in="SourceGraphic" in2="effect1_dropShadow"/>
+  <filter id="outlineEffect" color-interpolation-filters="sRGB">
+  <feMorphology in="SourceAlpha" result="MORPH" operator="dilate" radius="2" />
+  <feColorMatrix in="MORPH" result="BLACK"/>
+  <feMerge>
+    <feMergeNode in="BLACK"/>
+    <feMergeNode in="SourceGraphic"/>
+  </feMerge>
   </filter>
   <clipPath id="clip0">
    <rect fill="white" height="480" id="svg_1" width="640"/>
@@ -22,10 +21,10 @@
   <title>Layer 1</title>
   <g clip-path="url(#clip0)" id="svg_3">
    <rect fill="url(#pattern0)" height="480" id="svg_4" width="640"/>
-   <text dominant-baseline="middle" fill="white" font-family="monospace" font-size="27px" id="svg_5" text-anchor="middle" x="50%" y="52.5">{PROJECT}</text>
+   <text filter="url(#outlineEffect)" dominant-baseline="middle" fill="white" font-family="monospace" font-size="27px" id="svg_5" text-anchor="middle" x="50%" y="52.5">{PROJECT}</text>
    <rect fill="#E56E00" height="19.5" id="svg_6" width="{BAR:240}" x="200" y="345"/>
-   <rect fill="white" fill-opacity="0.2" height="22.46" id="svg_7" rx="4.5" stroke="white" stroke-width="3" width="242" x="199" y="343.5"/>
-   <g filter="url(#filter0)" id="svg_8">
+   <rect filter="url(#outlineEffect)" fill="white" fill-opacity="0.2" height="22.46" id="svg_7" rx="4.5" stroke="white" stroke-width="3" width="242" x="199" y="343.5"/>
+   <g filter="url(#outlineEffect)" id="svg_8">
     <text dominant-baseline="middle" fill="white" font-family="monospace" font-size="24px" id="svg_9" text-anchor="middle" x="50%" y="396">Progress: {PROGRESS_PERCENT}%</text>
     <text dominant-baseline="middle" fill="white" font-family="monospace" font-size="18px" id="svg_10" text-anchor="middle" x="50%" y="423">Implemented: {PROGRESS_IMPLEMENTED}</text>
    </g>
