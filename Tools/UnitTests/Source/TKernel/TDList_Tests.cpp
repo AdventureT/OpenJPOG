@@ -3,12 +3,12 @@
 
 TOSHI_NAMESPACE_USING
 
-struct Test : TDList<Test>::TNode
+struct Test : public TDList<Test>::TNode
 {
 	Test() {}
 };
 
-struct Test2 : TPriList<Test>::TNode
+struct Test2 : public TPriList<Test>::TNode
 {
 	Test2()
 		: m_iTest(0) {}
@@ -25,7 +25,7 @@ TEST_CASE("List", "[TDList]")
 	Test*		 t = new Test{};
 	list.InsertHead(t);
 	REQUIRE(!list.IsEmpty());
-	TDList<int>::TNode* node = list.Begin();
+	TDList<Test>::TNode *node = list.Begin();
 	Test*				t2	 = list.Head();
 	REQUIRE(t2 == t);
 }

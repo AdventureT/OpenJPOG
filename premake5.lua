@@ -14,6 +14,8 @@ workspace ("OpenJPOG")
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 	
+	nativewchar "Off"
+	
 	-- Global defines
 	defines
 	{
@@ -82,3 +84,7 @@ group "20-Plugin"
 
 group "30-Tools"
 	include "Tools/UnitTests"
+
+group "40-SDK"
+	include "SDK/JPOGSDK"
+	include "SDK/JPOGModCore"

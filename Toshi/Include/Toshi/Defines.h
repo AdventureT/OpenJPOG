@@ -61,6 +61,7 @@
 #define T_FOREACH_ARRAY_BACK(arrName, iteratorName) \
 	for (TINT iteratorName = TARRAYSIZE(arrName) - 1; iteratorName >= 0; iteratorName--)
 
+typedef unsigned short   wchar_t;
 typedef bool             TBOOL;
 typedef int              TINT;
 typedef unsigned int     TUINT;

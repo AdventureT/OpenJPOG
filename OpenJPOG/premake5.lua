@@ -2,6 +2,8 @@ project ("OpenJPOG")
 	kind "ConsoleApp"
 	language "C++"
 	staticruntime "on"
+	
+	debugdir ("%{wks.location}/../Game")
 
 	links
 	{
